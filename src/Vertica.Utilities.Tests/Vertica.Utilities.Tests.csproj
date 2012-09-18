@@ -45,6 +45,11 @@
     <Compile Include="Extensions\ComparableExtensionsTester.cs" />
     <Compile Include="Extensions\Support\ComparableSubjects.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RangeTester.BoundChecking.cs" />
+    <Compile Include="RangeTester.Contains.cs" />
+    <Compile Include="RangeTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
