@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vertica.Utilities.Tests", "src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj", "{2D5D4B2C-B9AE-4426-B9E7-3BCA0B8E6A5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vertica.Utilities", "src\Vertica.Utilities\Vertica.Utilities.csproj", "{CE392854-B196-459D-840C-6C07444A9598}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D5D4B2C-B9AE-4426-B9E7-3BCA0B8E6A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D5D4B2C-B9AE-4426-B9E7-3BCA0B8E6A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D5D4B2C-B9AE-4426-B9E7-3BCA0B8E6A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D5D4B2C-B9AE-4426-B9E7-3BCA0B8E6A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE392854-B196-459D-840C-6C07444A9598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE392854-B196-459D-840C-6C07444A9598}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE392854-B196-459D-840C-6C07444A9598}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE392854-B196-459D-840C-6C07444A9598}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
