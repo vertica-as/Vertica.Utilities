@@ -10,7 +10,7 @@ namespace Vertica.Utilities
 		#region creation
 
 		/// <summary>
-		/// Creates a closed range.
+		/// Creates a closed range: both bounds contained in the range.
 		/// </summary>
 		public static Range<T> New<T>(T lowerBound, T upperBound) where T : IComparable<T>
 		{
@@ -18,7 +18,7 @@ namespace Vertica.Utilities
 		}
 
 		/// <summary>
-		/// Creates a closed range.
+		/// Creates a closed range: both bounds contained in the range.
 		/// </summary>
 		public static Range<T> Closed<T>(T lowerBound, T upperbound) where T : IComparable<T>
 		{
@@ -26,7 +26,7 @@ namespace Vertica.Utilities
 		}
 
 		/// <summary>
-		/// Creates an open range.
+		/// Creates an open range: neither bounds contained in the range.
 		/// </summary>
 		public static Range<T> Open<T>(T lowerBound, T upperbound) where T : IComparable<T>
 		{
@@ -34,16 +34,18 @@ namespace Vertica.Utilities
 		}
 
 		/// <summary>
-		/// Creates a half-open range (closed at the begining, open at the end).
+		/// Creates a half-open range: only lower bound is contained in the range.
 		/// </summary>
+		/// <remarks>Closed at the beginning, open at the end.</remarks>
 		public static Range<T> HalfOpen<T>(T lowerBound, T upperbound) where T : IComparable<T>
 		{
 			return new Range<T>(lowerBound.Close(), upperbound.Open());
 		}
 
 		/// <summary>
-		/// Creates a half-closed range (open at the begining, closed at the end).
+		/// Creates a half-closed range: only the upper bound is contained in the range.
 		/// </summary>
+		/// <remarks>Open at the begining, closed at the end.</remarks>
 		public static Range<T> HalfClosed<T>(T lowerBound, T upperbound) where T : IComparable<T>
 		{
 			return new Range<T>(lowerBound.Open(), upperbound.Close());

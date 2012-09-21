@@ -1,4 +1,5 @@
 ﻿using System;
+using Vertica.Utilities.Extensions.ComparableExt;
 
 namespace Vertica.Utilities
 {
@@ -29,7 +30,9 @@ namespace Vertica.Utilities
 		#region value checking
 
 		bool LessThan(T other);
+		bool CanContainLower(IBound<T> other);
 		bool MoreThan(T other);
+		bool CanContainUpper(IBound<T> other);
 
 		#endregion
 
@@ -64,17 +67,27 @@ namespace Vertica.Utilities
 
 		public bool LessThan(T other)
 		{
-			return _value.CompareTo(other) <= 0;
+			return _value.IsAtMost(other);
+		}
+
+		public bool CanContainLower(IBound<T> other)
+		{
+			return _value.IsAtMost(other.Value);
 		}
 
 		public bool MoreThan(T other)
 		{
-			return _value.CompareTo(other) >= 0;
+			return _value.IsAtLeast(other);
+		}
+
+		public bool CanContainUpper(IBound<T> other)
+		{
+			return _value.IsAtLeast(other.Value);
 		}
 
 		public string ToAssertion()
 		{
-			return Value + " (inclusive)";
+			return _value + " (inclusive)";
 		}
 	}
 
@@ -101,17 +114,27 @@ namespace Vertica.Utilities
 
 		public bool LessThan(T other)
 		{
-			return _value.CompareTo(other) < 0;
+			return _value.IsLessThan(other);
+		}
+
+		public bool CanContainLower(IBound<T> other)
+		{
+			return other is Closed<T> ? _value.IsLessThan(other.Value) : _value.IsAtMost(other.Value);
 		}
 
 		public bool MoreThan(T other)
 		{
-			return _value.CompareTo(other) > 0;
+			return _value.IsMoreThan(other);
+		}
+
+		public bool CanContainUpper(IBound<T> other)
+		{
+			return other is Closed<T> ? _value.IsMoreThan(other.Value) : _value.IsAtLeast(other.Value);
 		}
 
 		public string ToAssertion()
 		{
-			return Value + " (not inclusive)";
+			return _value + " (not inclusive)";
 		}
 	}
 }

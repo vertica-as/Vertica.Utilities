@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using Vertica.Utilities.Extensions.ComparableExt;
 using Vertica.Utilities.Resources;
 
@@ -51,8 +49,8 @@ namespace Vertica.Utilities
 			{
 				return false;
 			}
-
-			return otherRange.LowerBound.IsAtLeast(LowerBound) && otherRange.UpperBound.IsAtMost(UpperBound);
+			
+			return _lowerBound.CanContainLower(otherRange._lowerBound) && _upperBound.CanContainUpper(otherRange._upperBound);
 		}
 
 		/*public virtual bool Intersects(Range<T> otherRange)
@@ -269,6 +267,12 @@ namespace Vertica.Utilities
 		#endregion
 
 		*/
+
+		/// <remarks>
+		/// <c>..</c> separator used instead of standard <c>,</c> in order to to avoid confusion with rational ranges.
+		/// <para><c>[ ]</c> used for closed bounds.</para>
+		/// <para><c>( )</c> used for open bounds, as it is more clear than inverted brackets <c>] [</c>.</para>
+		/// </remarks>
 		public override string ToString()
 		{
 			return string.Format("{0}..{1}", _lowerBound.Lower(), _upperBound.Upper());
