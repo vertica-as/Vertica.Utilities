@@ -43,28 +43,30 @@ namespace Vertica.Utilities
 			return _lowerBound.LessThan(item) && _upperBound.MoreThan(item);
 		}
 
-		public virtual bool Contains(Range<T> otherRange)
+		public virtual bool Contains(Range<T> other)
 		{
-			if (otherRange == null)
+			if (other == null)
 			{
 				return false;
 			}
 			
-			return _lowerBound.CanContainLower(otherRange._lowerBound) && _upperBound.CanContainUpper(otherRange._upperBound);
+			return _lowerBound.CanContainLower(other._lowerBound) && _upperBound.CanContainUpper(other._upperBound);
 		}
 
-		/*public virtual bool Intersects(Range<T> otherRange)
+		public virtual bool Intersects(Range<T> other)
 		{
-			if (otherRange == null)
+			if (other == null)
 			{
 				return false;
 			}
 
-			return otherRange.LowerBound.IsAtLeast(LowerBound) && otherRange.LowerBound.IsAtMost(UpperBound) ||
-				   otherRange.UpperBound.IsAtLeast(LowerBound) && otherRange.UpperBound.IsAtMost(UpperBound);
+			/*return otherRange.LowerBound.IsAtLeast(LowerBound) && otherRange.LowerBound.IsAtMost(UpperBound) ||
+				   otherRange.UpperBound.IsAtLeast(LowerBound) && otherRange.UpperBound.IsAtMost(UpperBound);*/
+			return Contains(other.LowerBound) || Contains(other.UpperBound) || (other.LowerBound.IsLessThan(LowerBound) && other.UpperBound.IsMoreThan(UpperBound));
+
 		}
 
-		public virtual IEnumerable<T> Step(Func<T, T> increment)
+		/*public virtual IEnumerable<T> Step(Func<T, T> increment)
 		{
 			return Generate(LowerBound, UpperBound, increment);
 		}

@@ -9,6 +9,82 @@ namespace Vertica.Utilities.Tests
 	[TestFixture]
 	public partial class RangeTester
 	{
+		#region value sources
+
+		internal Range<int>[] oneToFives = new[]
+		{
+			Range.Open(1, 5),
+			Range.Closed(1, 5),
+			Range.HalfOpen(1, 5),
+			Range.HalfClosed(1, 5)
+		};
+
+		internal Range<int>[] twoToThrees = new[]
+		{
+			Range.Closed(2, 3),
+			Range.Open(2, 3), 
+			Range.HalfClosed(2, 3), 
+			Range.HalfOpen(2, 3)
+		};
+
+		internal Range<int>[] minusTwoToMinusOnes = new[]
+		{
+			Range.Open(-2, -1),
+			Range.Closed(-2, -1),
+			Range.HalfOpen(-2, -1),
+			Range.HalfClosed(-2, -1)
+		};
+
+		internal Range<int>[] sevenToEights = new[]
+		{
+			Range.Open(7, 8),
+			Range.Closed(7, 8),
+			Range.HalfOpen(7, 8),
+			Range.HalfClosed(7, 8)
+		};
+
+		internal Range<int>[] minusTwoToTwos = new[]
+		{
+			Range.Open(-2, 2),
+			Range.Closed(-2, 2),
+			Range.HalfOpen(-2, 2),
+			Range.HalfClosed(-2, 2)
+		};
+
+		internal Range<int>[] threeToNines = new[]
+		{
+			Range.Open(3, 9),
+			Range.Closed(3, 9),
+			Range.HalfOpen(3, 9),
+			Range.HalfClosed(3, 9)
+		};
+
+		internal Range<int>[] oneToFours = new[]
+		{
+			Range.Open(1, 4),
+			Range.Closed(1, 4),
+			Range.HalfOpen(1, 4),
+			Range.HalfClosed(1, 4)
+		};
+
+		internal Range<int>[] twoToFives = new[]
+		{
+			Range.Open(2, 5),
+			Range.Closed(2, 5),
+			Range.HalfOpen(2, 5),
+			Range.HalfClosed(2, 5)
+		};
+
+		internal Range<int>[] minusTwoToSevens = new[]
+		{
+			Range.Open(-2, 7),
+			Range.Closed(-2, 7),
+			Range.HalfOpen(-2, 7),
+			Range.HalfClosed(-2, 7)
+		};
+
+		#endregion
+
 		#region construction
 
 		[Test]
