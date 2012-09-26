@@ -65,5 +65,27 @@ namespace Vertica.Utilities.Tests
 		}
 
 		#endregion
+
+		#region Generate(value)
+
+		[Test]
+		public void Generate_Value_TypeWithSumOperator_ValuesYielded()
+		{
+			Assert.That(Range.Closed(1, 5).Generate(1), Is.EqualTo(new[] { 1, 2, 3, 4, 5 }));
+
+			Assert.That(Range.HalfOpen(0m, 50m).Generate(10m), Is.EqualTo(new[] { 0m, 10m, 20m, 30m, 40m }));
+		}
+
+		[Test]
+		public void Generate_Value_TypeWithoutSumOperator_Exception()
+		{
+			DateTime begin = 3.September(1939), threeMonthsLater = begin.AddMonths(3);
+			
+			Assert.That(() => Range.HalfClosed(begin, threeMonthsLater).Generate(threeMonthsLater),
+				Throws.InstanceOf<InvalidOperationException>()
+				.With.Message.StringContaining("operator Add is not defined"));
+		}
+
+		#endregion
 	}
 }

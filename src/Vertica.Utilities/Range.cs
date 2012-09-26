@@ -136,7 +136,6 @@ namespace Vertica.Utilities
 
 		#endregion
 
-		
 		public IEnumerable<T> Generate(Func<T, T> nextGenerator)
 		{
 			T numberInRange = _lowerBound.Generate(nextGenerator);
@@ -165,7 +164,9 @@ namespace Vertica.Utilities
 		{
 			_nextGenerator = _nextGenerator ?? initNextGenerator(increment);
 			return Generate(_nextGenerator);
-		}/*
+		}
+		
+		/*
 
 		#region Empty Range
 
