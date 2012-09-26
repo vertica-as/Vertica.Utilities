@@ -5,54 +5,40 @@ namespace Vertica.Utilities.Extensions.RangeExt
 {
 	public static class RangeExtensions
 	{
-		public static Range<T> To<T>(this T item, T upperBound) where T : IComparable<T>
+		/// <summary>
+		/// Creates a closed range or an <see cref="Range{T}.Empty"/> if bounds not congruent.
+		/// </summary>
+		public static Range<T> To<T>(this T lowerBound, T upperBound) where T : IComparable<T>
 		{
 			Range<T> result = Range<T>.Empty;
-			if (item.IsLessThan(upperBound))
+			if (lowerBound.IsLessThan(upperBound))
 			{
-				result = new Range<T>(item, upperBound);
+				result = new Range<T>(lowerBound, upperBound);
 			}
 			return result;
 		}
 
-		public static bool Between<T>(this T item, Range<T> range) where T : IComparable<T>
+		/// <summary>
+		/// Checks containment
+		/// </summary>
+		public static bool Within<T>(this T value, Range<T> range) where T : IComparable<T>
 		{
-			return range.Contains(item);
+			return range.Contains(value);
 		}
 
-		public static bool Between<T>(this T item, T lowerBound, T upperBound) where T : IComparable<T>
+		public static T LimitLower<T>(this T value, Range<T> range) where T : IComparable<T>
 		{
-			return item.Between(new Range<T>(lowerBound, upperBound));
+			return range.LimitLower(value);
 		}
 
-		public static T LimitLower<T>(this T item, T lowerBound) where T : IComparable<T>
+		public static T LimitUpper<T>(this T value, Range<T> range) where T : IComparable<T>
 		{
-			return Range<T>.LimitLower(item, lowerBound);
-		}
-
-		public static T LimitLower<T>(this T item, Range<T> range) where T : IComparable<T>
-		{
-			return Range<T>.LimitLower(item, range.LowerBound);
-		}
-
-		public static T LimitUpper<T>(this T item, T upperBound) where T : IComparable<T>
-		{
-			return Range<T>.LimitUpper(item, upperBound);
-		}
-
-		public static T LimitUpper<T>(this T item, Range<T> range) where T : IComparable<T>
-		{
-			return Range<T>.LimitUpper(item, range.UpperBound);
-		}
-
-		public static T Limit<T>(this T item, T loweBound, T upperBound) where T : IComparable<T>
-		{
-			return Range<T>.Limit(item, loweBound, upperBound);
+			return range.LimitUpper(value);
 		}
 
 		public static T Limit<T>(this T item, Range<T> range) where T : IComparable<T>
 		{
-			return Range<T>.Limit(item, range.LowerBound, range.UpperBound);
+			return range.Limit(item);
 		}
 	}
 }

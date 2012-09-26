@@ -9,7 +9,7 @@ namespace Vertica.Utilities.Extensions.ComparableExt
 
 		public static bool IsEqualTo<T>(this T first, T second) where T : IComparable<T>
 		{
-			return first.CompareTo(second) == 0;
+			return IsEqualTo(first, second, Comparer<T>.Default);
 		}
 
 		public static bool IsEqualTo<T>(this T first, T second, IComparer<T> comparer)
@@ -29,7 +29,7 @@ namespace Vertica.Utilities.Extensions.ComparableExt
 
 		public static bool IsAtMost<T>(this T first, T second) where T : IComparable<T>
 		{
-			return first.CompareTo(second) <= 0;
+			return IsAtMost(first, second, Comparer<T>.Default);
 		}
 
 		public static bool IsAtMost<T>(this T first, T second, IComparer<T> comparer)
@@ -39,7 +39,7 @@ namespace Vertica.Utilities.Extensions.ComparableExt
 
 		public static bool IsAtLeast<T>(this T first, T second) where T : IComparable<T>
 		{
-			return first.CompareTo(second) >= 0;
+			return IsAtLeast(first, second, Comparer<T>.Default);
 		}
 
 		public static bool IsAtLeast<T>(this T first, T second, IComparer<T> comparer)
@@ -49,7 +49,7 @@ namespace Vertica.Utilities.Extensions.ComparableExt
 
 		public static bool IsLessThan<T>(this T first, T second) where T : IComparable<T>
 		{
-			return first.CompareTo(second) < 0;
+			return IsLessThan(first, second, Comparer<T>.Default);
 		}
 
 		public static bool IsLessThan<T>(this T first, T second, IComparer<T> comparer)
@@ -59,7 +59,7 @@ namespace Vertica.Utilities.Extensions.ComparableExt
 
 		public static bool IsMoreThan<T>(this T first, T second) where T : IComparable<T>
 		{
-			return first.CompareTo(second) > 0;
+			return IsMoreThan(first, second, Comparer<T>.Default);
 		}
 
 		public static bool IsMoreThan<T>(this T first, T second, IComparer<T> comparer)
@@ -73,7 +73,7 @@ namespace Vertica.Utilities.Extensions.ComparableExt
 
 		public static bool IsEqualTo(this IComparable first, object second)
 		{
-			return first.CompareTo(second) == 0;
+			return Comparer<object>.Default.Compare(first, second) == 0;
 		}
 
 		public static bool IsDifferentFrom(this IComparable first, object second)
