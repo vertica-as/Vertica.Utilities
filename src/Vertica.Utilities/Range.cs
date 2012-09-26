@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Vertica.Utilities.Extensions.ComparableExt;
 using Vertica.Utilities.Resources;
@@ -136,7 +137,7 @@ namespace Vertica.Utilities
 
 		#endregion
 
-		public IEnumerable<T> Generate(Func<T, T> nextGenerator)
+		public virtual IEnumerable<T> Generate(Func<T, T> nextGenerator)
 		{
 			T numberInRange = _lowerBound.Generate(nextGenerator);
 			while (_upperBound.MoreThan(numberInRange))
@@ -160,14 +161,12 @@ namespace Vertica.Utilities
 			return nextExpr.Compile();
 		}
 
-		public IEnumerable<T> Generate(T increment)
+		public virtual IEnumerable<T> Generate(T increment)
 		{
 			_nextGenerator = _nextGenerator ?? initNextGenerator(increment);
 			return Generate(_nextGenerator);
 		}
 		
-		/*
-
 		#region Empty Range
 
 		public static Range<T> Empty { get { return EmptyRange<T>.Instance; } }
@@ -176,10 +175,8 @@ namespace Vertica.Utilities
 		{
 			private EmptyRange() : base(default(U), default(U)) { }
 			public override bool Contains(U item) { return false; }
-			public override bool Contains(Range<U> item) { return false; }
-			public override bool Intersects(Range<U> otherRange) { return false; }
-			public override IEnumerable<U> Step(U increment) { return Enumerable.Empty<U>(); }
-			public override IEnumerable<U> Step(Func<U, U> increment) { return Enumerable.Empty<U>(); }
+			public override IEnumerable<U> Generate(U increment) { return Enumerable.Empty<U>(); }
+			public override IEnumerable<U> Generate(Func<U, U> increment) { return Enumerable.Empty<U>(); }
 			public override U Limit(U value) { return value; }
 			public override U LimitLower(U value) { return value; }
 			public override U LimitUpper(U value) { return value; }
@@ -198,7 +195,7 @@ namespace Vertica.Utilities
 			}
 		}
 
-		#endregion*/
+		#endregion
 
 		#region Equality Members
 

@@ -51,6 +51,11 @@ namespace Vertica.Utilities
 			return new Range<T>(lowerBound.Open(), upperbound.Close());
 		}
 
+		public static Range<T> Empty<T>() where T : IComparable<T>
+		{
+			return Range<T>.Empty;
+		}
+
 		#endregion
 
 
