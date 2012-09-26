@@ -11,12 +11,20 @@ namespace Vertica.Utilities.Tests
 	{
 		#region value sources
 
-		private readonly Range<int>[] oneToFives = new[]
+		private static readonly Range<int>[] oneToFives = new[]
 		{
 			Range.Open(1, 5),
 			Range.Closed(1, 5),
 			Range.HalfOpen(1, 5),
 			Range.HalfClosed(1, 5)
+		};
+
+		private static readonly Range<int>[] oneToThrees = new[]
+		{
+			Range.Open(1, 3),
+			Range.Closed(1, 3),
+			Range.HalfOpen(1, 3),
+			Range.HalfClosed(1, 3)
 		};
 
 		#endregion

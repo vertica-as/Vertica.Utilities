@@ -208,7 +208,7 @@ namespace Vertica.Utilities
 			}
 		}
 
-		#endregion
+		#endregion*/
 
 		#region Equality Members
 
@@ -236,8 +236,6 @@ namespace Vertica.Utilities
 		}
 
 		#endregion
-
-		*/
 
 		/// <remarks>
 		/// <c>..</c> separator used instead of standard <c>,</c> in order to to avoid confusion with rational ranges.

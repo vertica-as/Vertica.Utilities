@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Vertica.Utilities.Extensions.ComparableExt;
 
 namespace Vertica.Utilities
@@ -16,7 +17,7 @@ namespace Vertica.Utilities
 		}
 	}
 
-	public interface IBound<T> where T : IComparable<T>
+	public interface IBound<T> : IEquatable<IBound<T>> where T : IComparable<T>
 	{
 		T Value { get; }
 
@@ -68,25 +69,39 @@ namespace Vertica.Utilities
 			return _value.IsAtMost(other);
 		}
 
-		public bool CanContainLower(IBound<T> other)
-		{
-			return _value.IsAtMost(other.Value);
-		}
-
 		public bool MoreThan(T other)
 		{
 			return _value.IsAtLeast(other);
-		}
-
-		public bool CanContainUpper(IBound<T> other)
-		{
-			return _value.IsAtLeast(other.Value);
 		}
 
 		public string ToAssertion()
 		{
 			return _value + " (inclusive)";
 		}
+
+		#region value equality (to increase performance)
+
+		public bool Equals(IBound<T> other)
+		{
+			return other is Closed<T> && EqualityComparer<T>.Default.Equals(Value, other.Value);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			return obj is Closed<T> && Equals((Closed<T>) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				return (EqualityComparer<T>.Default.GetHashCode(_value) * 397) ^ 1;
+			}
+		}
+
+		#endregion
+
 	}
 
 	[Serializable]
@@ -115,24 +130,37 @@ namespace Vertica.Utilities
 			return _value.IsLessThan(other);
 		}
 
-		public bool CanContainLower(IBound<T> other)
-		{
-			return other is Closed<T> ? _value.IsLessThan(other.Value) : _value.IsAtMost(other.Value);
-		}
-
 		public bool MoreThan(T other)
 		{
 			return _value.IsMoreThan(other);
-		}
-
-		public bool CanContainUpper(IBound<T> other)
-		{
-			return other is Closed<T> ? _value.IsMoreThan(other.Value) : _value.IsAtLeast(other.Value);
 		}
 
 		public string ToAssertion()
 		{
 			return _value + " (not inclusive)";
 		}
+
+		#region value equality (to increase performance)
+
+		public bool Equals(IBound<T> other)
+		{
+			return other is Open<T> && EqualityComparer<T>.Default.Equals(Value, other.Value);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			return obj is Open<T> && Equals((Open<T>)obj);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				return (EqualityComparer<T>.Default.GetHashCode(_value) * 397) ^ 2;	
+			}
+		}
+
+		#endregion
 	}
 }
