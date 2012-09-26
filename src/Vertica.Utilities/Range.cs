@@ -43,28 +43,32 @@ namespace Vertica.Utilities
 			return _lowerBound.LessThan(item) && _upperBound.MoreThan(item);
 		}
 
-		public virtual bool Contains(Range<T> other)
+		#region Limit
+
+		public virtual T LimitLower(T value)
 		{
-			if (other == null)
-			{
-				return false;
-			}
-			
-			return _lowerBound.CanContainLower(other._lowerBound) && _upperBound.CanContainUpper(other._upperBound);
+			return Limit(value, LowerBound, value);
 		}
 
-		public virtual bool Intersects(Range<T> other)
+		public virtual T LimitUpper(T value)
 		{
-			if (other == null)
-			{
-				return false;
-			}
-
-			/*return otherRange.LowerBound.IsAtLeast(LowerBound) && otherRange.LowerBound.IsAtMost(UpperBound) ||
-				   otherRange.UpperBound.IsAtLeast(LowerBound) && otherRange.UpperBound.IsAtMost(UpperBound);*/
-			return Contains(other.LowerBound) || Contains(other.UpperBound) || (other.LowerBound.IsLessThan(LowerBound) && other.UpperBound.IsMoreThan(UpperBound));
-
+			return Limit(value, value, UpperBound);
 		}
+
+		public virtual T Limit(T value)
+		{
+			return Limit(value, LowerBound, UpperBound);
+		}
+
+		private static T Limit(T value, T lowerBound, T upperBound)
+		{
+			T result = value;
+			if (value.IsMoreThan(upperBound)) result = upperBound;
+			if (value.IsLessThan(lowerBound)) result = lowerBound;
+			return result;
+		}
+
+		#endregion
 
 		/*public virtual IEnumerable<T> Step(Func<T, T> increment)
 		{
@@ -77,42 +81,7 @@ namespace Vertica.Utilities
 			return Generate(LowerBound, UpperBound, increment);
 		}
 
-		#region Limit
-
-		public virtual T LimitLower(T value)
-		{
-			return Limit(value, LowerBound, value);
-		}
-
-		public static T LimitLower(T value, T lowerBound)
-		{
-			return Limit(value, lowerBound, value);
-		}
-
-		public virtual T LimitUpper(T value)
-		{
-			return Limit(value, value, UpperBound);
-		}
-
-		public static T LimitUpper(T value, T upperBound)
-		{
-			return Limit(value, value, upperBound);
-		}
-
-		public virtual T Limit(T value)
-		{
-			return Limit(value, LowerBound, UpperBound);
-		}
-
-		public static T Limit(T value, T lowerBound, T upperBound)
-		{
-			T result = value;
-			if (value.IsMoreThan(upperBound)) result = upperBound;
-			if (value.IsLessThan(lowerBound)) result = lowerBound;
-			return result;
-		}
-
-		#endregion
+		
 		*/
 
 		#region bound checking

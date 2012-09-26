@@ -30,9 +30,7 @@ namespace Vertica.Utilities
 		#region value checking
 
 		bool LessThan(T other);
-		bool CanContainLower(IBound<T> other);
 		bool MoreThan(T other);
-		bool CanContainUpper(IBound<T> other);
 
 		#endregion
 
