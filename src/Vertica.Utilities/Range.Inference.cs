@@ -58,7 +58,6 @@ namespace Vertica.Utilities
 
 		#endregion
 
-
 		#region bound checking
 
 		public static bool CheckBounds<T>(T lowerBound, T upperBound) where T : IComparable<T>
@@ -69,6 +68,37 @@ namespace Vertica.Utilities
 		public static void AssertBounds<T>(T lowerBound, T upperBound) where T : IComparable<T>
 		{
 			Range<T>.AssertBounds(lowerBound, upperBound);
+		}
+
+		#endregion
+
+		#region string generation
+
+		public static string StringGenerator(string s)
+		{
+			int lastAlphaNumeric = -1;
+			for (int i = s.Length - 1; i >= 0 && lastAlphaNumeric == -1; i--)
+			{
+				if (char.IsLetterOrDigit(s[i])) lastAlphaNumeric = i;
+			}
+			if (lastAlphaNumeric == s.Length - 1 || lastAlphaNumeric == -1) return succ(s, s.Length);
+			return succ(s, lastAlphaNumeric + 1) + s.Substring(lastAlphaNumeric + 1);
+		}
+
+		private static string succ(string val, int length)
+		{
+			char lastChar = val[length - 1];
+			switch (lastChar)
+			{
+				case '9':
+					return ((length > 1) ? succ(val, length - 1) : "1") + '0';
+				case 'z':
+					return ((length > 1) ? succ(val, length - 1) : "a") + 'a';
+				case 'Z':
+					return ((length > 1) ? succ(val, length - 1) : "A") + 'A';
+				default:
+					return val.Substring(0, length - 1) + (char)(lastChar + 1);
+			}
 		}
 
 		#endregion
