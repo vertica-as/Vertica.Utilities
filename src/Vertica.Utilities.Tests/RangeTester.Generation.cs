@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using Testing.Commons.Time;
 
@@ -47,6 +48,20 @@ namespace Vertica.Utilities.Tests
 		public void Generate_HalfOpenPlusTen_UpperBoundNotYielded()
 		{
 			Assert.That(Range.HalfOpen(0m, 50m).Generate(d => d + 10), Is.EqualTo(new[] { 0m, 10m, 20m, 30m, 40m }));
+		}
+
+		[Test]
+		public void Generate_BackwardsGenerator_Exception()
+		{
+			Func<int, int> minusOne = i => i - 1;
+			Assert.That(()=> Range.Closed(-10, -1).Generate(minusOne).ToArray(), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void Generate_NoOpGenerator_Exception()
+		{
+			Func<int, int> noOp = i => i;
+			Assert.That(() => Range.Closed(-10, -1).Generate(noOp).ToArray(), Throws.ArgumentException);
 		}
 
 		#endregion

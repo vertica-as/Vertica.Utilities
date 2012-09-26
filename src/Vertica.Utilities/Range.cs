@@ -143,7 +143,9 @@ namespace Vertica.Utilities
 			while (_upperBound.MoreThan(numberInRange))
 			{
 				yield return numberInRange;
-				numberInRange = nextGenerator(numberInRange);
+				T next = nextGenerator(numberInRange);
+				if (next.IsAtMost(numberInRange)) throw new ArgumentException(Exceptions.Range_NotIncrementingGenerator, "nextGenerator");
+				numberInRange = next;
 			}
 		}
 

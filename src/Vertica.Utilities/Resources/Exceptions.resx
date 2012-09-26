@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Range_ArgumentAssertion_Template" xml:space="preserve">
-    <value>"The value must be between {0} and {1}. That is, contained within {2}."</value>
+    <value>The value must be between {0} and {1}. That is, contained within {2}.</value>
+  </data>
+  <data name="Range_NotIncrementingGenerator" xml:space="preserve">
+    <value>The generator must generate incrementing values.</value>
   </data>
   <data name="Range_UnorderedBounds_Template" xml:space="preserve">
     <value>The start value of the range ({0}) must not be greater than its end value ({1}).</value>

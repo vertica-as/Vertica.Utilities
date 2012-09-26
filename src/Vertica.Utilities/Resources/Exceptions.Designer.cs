@@ -61,11 +61,20 @@ namespace Vertica.Utilities.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;The value must be between {0} and {1}. That is, contained within {2}.&quot;.
+        ///   Looks up a localized string similar to The value must be between {0} and {1}. That is, contained within {2}..
         /// </summary>
         internal static string Range_ArgumentAssertion_Template {
             get {
                 return ResourceManager.GetString("Range_ArgumentAssertion_Template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The generator must generate incrementing values..
+        /// </summary>
+        internal static string Range_NotIncrementingGenerator {
+            get {
+                return ResourceManager.GetString("Range_NotIncrementingGenerator", resourceCulture);
             }
         }
         
