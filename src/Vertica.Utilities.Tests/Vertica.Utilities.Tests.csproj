@@ -51,6 +51,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RangeTester.Equality.cs" />
+    <Compile Include="RangeTester.Generation.cs" />
     <Compile Include="RangeTester.Limit.cs" />
   </ItemGroup>
   <ItemGroup>

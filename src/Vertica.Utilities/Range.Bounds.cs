@@ -41,6 +41,7 @@ namespace Vertica.Utilities
 
 		#endregion
 
+		T Generate(Func<T, T> nextGenerator);
 	}
 
 	[Serializable]
@@ -72,6 +73,11 @@ namespace Vertica.Utilities
 		public bool MoreThan(T other)
 		{
 			return _value.IsAtLeast(other);
+		}
+
+		public T Generate(Func<T, T> nextGenerator)
+		{
+			return _value;
 		}
 
 		public string ToAssertion()
@@ -133,6 +139,11 @@ namespace Vertica.Utilities
 		public bool MoreThan(T other)
 		{
 			return _value.IsMoreThan(other);
+		}
+
+		public T Generate(Func<T, T> nextGenerator)
+		{
+			return nextGenerator(_value);
 		}
 
 		public string ToAssertion()

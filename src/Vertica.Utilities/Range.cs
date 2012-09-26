@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using Vertica.Utilities.Extensions.ComparableExt;
 using Vertica.Utilities.Resources;
 
@@ -70,20 +71,6 @@ namespace Vertica.Utilities
 
 		#endregion
 
-		/*public virtual IEnumerable<T> Step(Func<T, T> increment)
-		{
-			return Generate(LowerBound, UpperBound, increment);
-		}
-
-
-		public virtual IEnumerable<T> Step(T increment)
-		{
-			return Generate(LowerBound, UpperBound, increment);
-		}
-
-		
-		*/
-
 		#region bound checking
 
 		/// <summary>
@@ -149,19 +136,19 @@ namespace Vertica.Utilities
 
 		#endregion
 
-		/*
-		public static IEnumerable<T> Generate(T lowerBound, T upperBound, Func<T, T> increment)
+		
+		public IEnumerable<T> Generate(Func<T, T> nextGenerator)
 		{
-			T numberInRange = lowerBound;
-			while (numberInRange.IsAtMost(upperBound))
+			T numberInRange = _lowerBound.Generate(nextGenerator);
+			while (_upperBound.MoreThan(numberInRange))
 			{
 				yield return numberInRange;
-				numberInRange = increment(numberInRange);
+				numberInRange = nextGenerator(numberInRange);
 			}
 		}
 
-		private static Func<T, T> _next;
-		private static Func<T, T> initNext(T step)
+		private static Func<T, T> _nextGenerator;
+		private static Func<T, T> initNextGenerator(T step)
 		{
 			ParameterExpression current = Expression.Parameter(typeof(T), "current");
 			Expression<Func<T, T>> nextExpr = Expression.Lambda<Func<T, T>>(
@@ -172,11 +159,11 @@ namespace Vertica.Utilities
 			return nextExpr.Compile();
 		}
 
-		public static IEnumerable<T> Generate(T lowerBound, T upperBound, T increment)
+		public IEnumerable<T> Generate(T increment)
 		{
-			_next = _next ?? initNext(increment);
-			return Generate(lowerBound, upperBound, _next);
-		}
+			_nextGenerator = _nextGenerator ?? initNextGenerator(increment);
+			return Generate(_nextGenerator);
+		}/*
 
 		#region Empty Range
 
