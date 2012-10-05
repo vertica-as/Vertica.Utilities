@@ -39,6 +39,7 @@
     <Compile Include="ExceptionHelper.cs" />
     <Compile Include="Extensions\Comparable.Extensions.cs" />
     <Compile Include="Extensions\Range.Extensions.cs" />
+    <Compile Include="Extensions\Time.Extensions.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Range.Bounds.cs" />
@@ -51,6 +52,8 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Time.cs" />
+    <Compile Include="TimeReseter.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Exceptions.resx">

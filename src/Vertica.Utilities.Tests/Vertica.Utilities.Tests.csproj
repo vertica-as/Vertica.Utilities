@@ -72,6 +72,8 @@
     <Compile Include="RangeTester.Limit.cs">
       <DependentUpon>RangeTester.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\TimeExtensionsTester.cs" />
+    <Compile Include="TimeTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

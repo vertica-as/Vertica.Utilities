@@ -61,6 +61,15 @@ namespace Vertica.Utilities.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The end date has to later than the start date &apos;{0}&apos;..
+        /// </summary>
+        internal static string RandomDate_InvertedRangeTemplate {
+            get {
+                return ResourceManager.GetString("RandomDate_InvertedRangeTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value must be between {0} and {1}. That is, contained within {2}..
         /// </summary>
         internal static string Range_ArgumentAssertion_Template {
@@ -84,6 +93,24 @@ namespace Vertica.Utilities.Resources {
         internal static string Range_UnorderedBounds_Template {
             get {
                 return ResourceManager.GetString("Range_UnorderedBounds_Template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At least one iteration is needed. Increase the targetRuntime value..
+        /// </summary>
+        internal static string Time_AverageAction_OneIteration {
+            get {
+                return ResourceManager.GetString("Time_AverageAction_OneIteration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to set the UtcNow property, the DateTimeOffset must be UTC, but had an offset of {0} instead..
+        /// </summary>
+        internal static string Time_MustBeUtcTemplate {
+            get {
+                return ResourceManager.GetString("Time_MustBeUtcTemplate", resourceCulture);
             }
         }
     }
