@@ -33,14 +33,28 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\Comparable.Extensions.cs" />
+    <Compile Include="Extensions\Range.Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Range.Bounds.cs" />
+    <Compile Include="Range.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Range.Inference.cs" />
+    <Compile Include="Resources\Exceptions.Designer.cs">
+      <DependentUpon>Exceptions.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Exceptions.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Exceptions.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
