@@ -42,34 +42,36 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExceptionHelperTester.cs" />
     <Compile Include="Extensions\ComparableExtensionsTester.cs" />
     <Compile Include="Extensions\RangeExtensionsTester.cs" />
     <Compile Include="Extensions\Support\ComparableSubjects.cs" />
+    <Compile Include="GuardTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Range.StringRangeTester.cs">
-		<DependentUpon>RangeTester.cs</DependentUpon>
-	</Compile>
-	  <Compile Include="RangeTester.BoundChecking.cs">
-		<DependentUpon>RangeTester.cs</DependentUpon>
-	</Compile>
-	  <Compile Include="RangeTester.Contains.cs">
-		<DependentUpon>RangeTester.cs</DependentUpon>
-	</Compile>
-	  <Compile Include="RangeTester.cs">
+      <DependentUpon>RangeTester.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RangeTester.BoundChecking.cs">
+      <DependentUpon>RangeTester.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RangeTester.Contains.cs">
+      <DependentUpon>RangeTester.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RangeTester.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RangeTester.Empty.cs">
-		<DependentUpon>RangeTester.cs</DependentUpon>
-	</Compile>
-	  <Compile Include="RangeTester.Equality.cs">
-		  <DependentUpon>RangeTester.cs</DependentUpon>
-	  </Compile>
-	  <Compile Include="RangeTester.Generation.cs">
-		  <DependentUpon>RangeTester.cs</DependentUpon>
-	  </Compile>
-	  <Compile Include="RangeTester.Limit.cs">
-		  <DependentUpon>RangeTester.cs</DependentUpon>
-	  </Compile>
+      <DependentUpon>RangeTester.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RangeTester.Equality.cs">
+      <DependentUpon>RangeTester.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RangeTester.Generation.cs">
+      <DependentUpon>RangeTester.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RangeTester.Limit.cs">
+      <DependentUpon>RangeTester.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
