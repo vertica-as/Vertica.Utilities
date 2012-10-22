@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Testing.Commons.Globalization;
 using Testing.Commons.Time;
 using Vertica.Utilities.Extensions.TimeExt;
+using Vertica.Utilities.Testing;
 
 namespace Vertica.Utilities.Tests
 {
@@ -160,7 +161,7 @@ namespace Vertica.Utilities.Tests
 		public void LastDayOfWeek_WithFirstDay_DoesNotDependOnCulture()
 		{
 			DayOfWeek usLastDay, esLastDay;
-			DayOfWeek firstDay = DayOfWeek.Thursday;
+			var firstDay = DayOfWeek.Thursday;
 			using (CultureReseter.Set("en-US"))
 			{
 				usLastDay = Time.LastDayOfWeek(firstDay);

@@ -106,76 +106,6 @@ namespace Vertica.Utilities
 			_utcNow = null;
 		}
 
-		#region Quarter information
-
-		// TODO: quarters
-		/*
-		public static Range<DateTimeOffset> Q1(int year)
-		{
-			return new Range<DateTimeOffset>(1.January(year), 31.March(year).At(EndOfDay));
-		}
-
-		public static Range<DateTimeOffset> Q2(int year)
-		{
-			return new Range<DateTimeOffset>(1.April(year), 30.June(year).At(EndOfDay));
-		}
-
-		public static Range<DateTimeOffset> Q3(int year)
-		{
-			return new Range<DateTimeOffset>(1.July(year), 30.September(year).At(EndOfDay));
-		}
-
-		public static Range<DateTimeOffset> Q4(int year)
-		{
-			return new Range<DateTimeOffset>(1.October(year), 31.December(year).At(EndOfDay));
-		}
-
-		public static Range<DateTimeOffset> Quarter(int year, Quarter quarter)
-		{
-			Range<DateTimeOffset> quarterRange;
-			switch (quarter)
-			{
-				case Utilities.Quarter.First:
-					quarterRange = Q1(year);
-					break;
-				case Utilities.Quarter.Second:
-					quarterRange = Q2(year);
-					break;
-				case Utilities.Quarter.Third:
-					quarterRange = Q3(year);
-					break;
-				case Utilities.Quarter.Fourth:
-					quarterRange = Q4(year);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException("quarter");
-			}
-			return quarterRange;
-		}
-
-		public static Quarter Quarter(DateTimeOffset dt)
-		{
-			if (Q1(dt.Year).Contains(dt))
-			{
-				return Utilities.Quarter.First;
-			}
-			if (Q2(dt.Year).Contains(dt))
-			{
-				return Utilities.Quarter.Second;
-			}
-			if (Q3(dt.Year).Contains(dt))
-			{
-				return Utilities.Quarter.Third;
-			}
-			if (Q4(dt.Year).Contains(dt))
-			{
-				return Utilities.Quarter.Fourth;
-			}
-			throw new ArgumentOutOfRangeException("dt");
-		}*/
-
-		#endregion
-
 		public static TimeSpan Noon = new TimeSpan(0, 12, 0, 0, 0);
 		public static TimeSpan MidNight = TimeSpan.Zero;
 		public static TimeSpan EndOfDay = new TimeSpan(0, 23, 59, 59, 999);
@@ -291,13 +221,5 @@ namespace Vertica.Utilities
 		Month,
 		Quarter,
 		Year
-	}
-
-	public enum Quarter
-	{
-		First = 1,
-		Second = 2,
-		Third = 3,
-		Fourth = 4
 	}
 }

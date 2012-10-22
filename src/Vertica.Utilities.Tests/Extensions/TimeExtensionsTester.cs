@@ -1,35 +1,17 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
 using NUnit.Framework;
 using Testing.Commons.Globalization;
 using Testing.Commons.Time;
 using Vertica.Utilities.Extensions.TimeExt;
+using Vertica.Utilities.Testing;
 
 namespace Vertica.Utilities.Tests.Extensions
 {
 	[TestFixture]
 	public class TimeExtensionsTester
 	{
-		private static void assertTimeSpan(TimeSpan actual, Expression<Func<TimeSpan, int>> expectedProperty, int expected, params Expression<Func<TimeSpan, int>>[] zeroProperties)
-		{
-			Assert.That(expectedProperty.Compile().Invoke(actual), Is.EqualTo(expected));
-			if (zeroProperties != null)
-			{
-				foreach (var expression in zeroProperties)
-				{
-					Assert.That(expression.Compile().Invoke(actual), Is.EqualTo(0));
-				}
-			}
-		}
-
-		private static readonly Expression<Func<TimeSpan, int>> days = tc => tc.Days;
-		private static readonly Expression<Func<TimeSpan, int>> hours = tc => tc.Hours;
-		private static readonly Expression<Func<TimeSpan, int>> minutes = tc => tc.Minutes;
-		private static readonly Expression<Func<TimeSpan, int>> seconds = tc => tc.Seconds;
-		private static readonly Expression<Func<TimeSpan, int>> milliSeconds = tc => tc.Milliseconds;
-
 		#region DateTime creation
 
 		[Test]
@@ -107,19 +89,6 @@ namespace Vertica.Utilities.Tests.Extensions
 			Assert.That(actual.Second, Is.EqualTo(59));
 			Assert.That(actual.Millisecond, Is.EqualTo(999));
 			Assert.That(actual.TimeOfDay, Is.EqualTo(Time.EndOfDay));
-			Assert.That(actual.Kind, Is.EqualTo(DateTimeKind.Unspecified));
-		}
-
-		private static void assertDate(DateTime actual, int year, int month, int day, int hour, int minute, int second)
-		{
-			Assert.That(actual.Year, Is.EqualTo(year));
-			Assert.That(actual.Month, Is.EqualTo(month));
-			Assert.That(actual.Day, Is.EqualTo(day));
-			Assert.That(actual.Hour, Is.EqualTo(hour));
-			Assert.That(actual.Minute, Is.EqualTo(minute));
-			Assert.That(actual.Second, Is.EqualTo(second));
-			Assert.That(actual.Millisecond, Is.EqualTo(0));
-			Assert.That(actual.TimeOfDay, Is.EqualTo(hour.Hours().Minutes(minute).Seconds(second)));
 			Assert.That(actual.Kind, Is.EqualTo(DateTimeKind.Unspecified));
 		}
 
@@ -520,37 +489,6 @@ namespace Vertica.Utilities.Tests.Extensions
 			Assert.That(thuInFirsWeek.Week(CalendarWeekRule.FirstFullWeek, DayOfWeek.Wednesday), Is.EqualTo(1), "now counts as week of current year");
 		}
 
-		/*[Test]
-		public void Quarter_SameAsShortcuts()
-		{
-			Assert.That(2008.Quarter(Quarter.First), Is.EqualTo(2008.Q1()));
-			Assert.That(2008.Quarter(Quarter.Second), Is.EqualTo(2008.Q2()));
-			Assert.That(2008.Quarter(Quarter.Third), Is.EqualTo(2008.Q3()));
-			Assert.That(2008.Quarter(Quarter.Fourth), Is.EqualTo(2008.Q4()));
-		}
-
-		[Test]
-		public void Quarter_Inclusion()
-		{
-			Assert.That(12.June(2008).At(_baseTime).Quarter(), Is.EqualTo(Quarter.Second));
-			Assert.That(4.April(2008).At(_baseTime).Quarter(), Is.EqualTo(Quarter.Second));
-			Assert.That(14.February(2008).At(_baseTime).Quarter(), Is.EqualTo(Quarter.First));
-			Assert.That(21.December(2008).At(_baseTime).Quarter(), Is.EqualTo(Quarter.Fourth));
-		}
-
-		[Test]
-		public void Quarter_EdgeCases()
-		{
-			Assert.That(14.February(2008).At(_baseTime).BeginningOfQuarter().Quarter(), Is.EqualTo(Quarter.First));
-			Assert.That(14.February(2008).At(_baseTime).EndOfQuarter().Quarter(), Is.EqualTo(Quarter.First));
-			Assert.That(12.June(2008).At(_baseTime).BeginningOfQuarter().Quarter(), Is.EqualTo(Quarter.Second));
-			Assert.That(12.June(2008).At(_baseTime).EndOfQuarter().Quarter(), Is.EqualTo(Quarter.Second));
-			Assert.That(25.September(2008).At(_baseTime).BeginningOfQuarter().Quarter(), Is.EqualTo(Quarter.Third));
-			Assert.That(25.September(2008).At(_baseTime).EndOfQuarter().Quarter(), Is.EqualTo(Quarter.Third));
-			Assert.That(2.November(2008).At(_baseTime).BeginningOfQuarter().Quarter(), Is.EqualTo(Quarter.Fourth));
-			Assert.That(2.November(2008).At(_baseTime).EndOfQuarter().Quarter(), Is.EqualTo(Quarter.Fourth));
-		}*/
-
 		[Test]
 		public void ToUnixTimestamp()
 		{
@@ -618,7 +556,7 @@ namespace Vertica.Utilities.Tests.Extensions
 				1.January(2008).At(15.Hours()), TimeSpan.Zero);
 		}
 
-		public void assertOffSet(DateTimeOffset dto, DateTime dt, TimeSpan offset)
+		private void assertOffSet(DateTimeOffset dto, DateTime dt, TimeSpan offset)
 		{
 			Assert.That(dto.Offset, Is.EqualTo(offset));
 			Assert.That(dto.Year, Is.EqualTo(dt.Year));

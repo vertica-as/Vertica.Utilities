@@ -53,7 +53,7 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Time.cs" />
-    <Compile Include="TimeReseter.cs" />
+    <Compile Include="Testing\TimeReseter.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Exceptions.resx">
