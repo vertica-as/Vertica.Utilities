@@ -126,10 +126,17 @@ namespace Vertica.Utilities
 		/// </summary>
 		/// <param name="action">The delegate to time</param>
 		/// <returns>The total elapsed time when <paramref name="action"/> it's executed</returns>
-		public static TimeSpan Action(Action action)
+		public static TimeSpan Measure(Action action)
 		{
 			Stopwatch watch = Stopwatch.StartNew();
-			Action(watch, action);
+			Measure(watch, action);
+			return watch.Elapsed;
+		}
+
+		public static TimeSpan Measure(Action action, long numberOfIterations)
+		{
+			Stopwatch watch = Stopwatch.StartNew();
+			Measure(watch, action, numberOfIterations);
 			return watch.Elapsed;
 		}
 
@@ -138,9 +145,9 @@ namespace Vertica.Utilities
 		/// </summary>
 		/// <param name="watch">Instance of watch to measure time with</param>
 		/// <param name="action">The delegate to time</param>
-		public static void Action(Stopwatch watch, Action action)
+		public static void Measure(Stopwatch watch, Action action)
 		{
-			Action(watch, action, 1);
+			Measure(watch, action, 1);
 		}
 
 		/// <summary>
@@ -149,7 +156,7 @@ namespace Vertica.Utilities
 		/// <param name="watch">Instance of watch to measure time with</param>
 		/// <param name="action">The delegate to time</param>
 		/// <param name="numberOfIterations">Number of times the delegate must be executed</param>
-		public static void Action(Stopwatch watch, Action action, long numberOfIterations)
+		public static void Measure(Stopwatch watch, Action action, long numberOfIterations)
 		{
 			watch.Reset();
 			watch.Start();
@@ -162,56 +169,6 @@ namespace Vertica.Utilities
 			watch.Stop();
 		}
 
-		/// <summary>
-		/// Times how long the given delegate takes to complete, averaging over up to 5 seconds of running time
-		/// </summary>
-		/// <param name="action"></param>
-		/// <returns></returns>
-		public static double AverageTime(Action action)
-		{
-			return AverageAction(action, 5);
-		}
-
-		/// <summary>
-		/// Times the given delegate
-		/// </summary>
-		/// <param name="action">The delegate to time</param>
-		/// <param name="targetRunTime">The target amount of time to average over (in seconds)</param>
-		/// <returns>The running time, in fractional seconds</returns>
-		public static double AverageAction(Action action, double targetRunTime)
-		{
-			if (targetRunTime <= 0)
-			{
-				throw new ArgumentException("targetRunTime must be greater than 0.", "targetRunTime");
-			}
-
-			var watch = new Stopwatch();
-
-			// time the action once to see how fast it is
-			Action(watch, action);
-
-			// if the action took more than half of the targetRunTime time, we\'re not going to
-			// fit in a second iteration
-			double firstIterationTime = watch.FractionalSeconds();
-			if (firstIterationTime > targetRunTime / 2)
-			{
-				return firstIterationTime;
-			}
-
-			// otherwise, repeat the action to get an accurate timing
-			// aim for targetRunTime seconds of total running time
-			long numberOfIterations = (long)(targetRunTime / firstIterationTime);
-
-			// the number of iterations should be at least 1 because firstIterationTime is less than half of
-			// targetRunTime
-			Guard.Against(numberOfIterations > 0, Exceptions.Time_AverageAction_OneIteration);
-
-			Action(watch, action, numberOfIterations);
-
-			// calculate the length of time per iteration
-			return watch.FractionalSeconds() / numberOfIterations;
-		}
-
 		#endregion
 	}
 
@@ -219,7 +176,6 @@ namespace Vertica.Utilities
 	{
 		Week,
 		Month,
-		Quarter,
 		Year
 	}
 }

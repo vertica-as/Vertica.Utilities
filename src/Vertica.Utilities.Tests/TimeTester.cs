@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using Testing.Commons.Globalization;
 using Testing.Commons.Time;
-using Vertica.Utilities.Extensions.TimeExt;
 using Vertica.Utilities.Testing;
 
 namespace Vertica.Utilities.Tests
@@ -88,16 +87,19 @@ namespace Vertica.Utilities.Tests
 		public void ToUnixTimestamp()
 		{
 			Assert.That(Time.ToUnixTime(Time.UnixEpoch), Is.EqualTo(0d));
-			Assert.That(Time.ToUnixTime(new DateTimeOffset(2.January(1970), TimeSpan.Zero)), Is.EqualTo(3600d * 24));
-			Assert.That(Time.ToUnixTime(new DateTimeOffset(13.June(1984).SetTime(Time.Noon), TimeSpan.Zero)), Is.EqualTo(455976000d));
+			Assert.That(Time.ToUnixTime(2.January(1970).In(TimeSpan.Zero)), Is.EqualTo(3600d * 24));
+			Assert.That(Time.ToUnixTime(2.January(1970).InUtc()), Is.EqualTo(3600d * 24));
+			Assert.That(Time.ToUnixTime(13.June(1984).At(Time.Noon).InUtc()), Is.EqualTo(455976000d));
 		}
 
 		[Test]
 		public void FromUnixTimestamp()
 		{
 			Assert.That(Time.FromUnixTime(0d), Is.EqualTo(Time.UnixEpoch));
-			Assert.That(Time.FromUnixTime(3600d * 24), Is.EqualTo(new DateTimeOffset(2.January(1970), TimeSpan.Zero)));
-			Assert.That(Time.FromUnixTime(455976000d), Is.EqualTo(new DateTimeOffset(13.June(1984).SetTime(Time.Noon), TimeSpan.Zero)));
+
+			Assert.That(Time.FromUnixTime(3600d * 24), Is.EqualTo(2.January(1970).InUtc()));
+			Assert.That(Time.FromUnixTime(3600d * 24), Is.EqualTo(2.January(1970).InUtc()));
+			Assert.That(Time.FromUnixTime(455976000d), Is.EqualTo(13.June(1984).At(Time.Noon).InUtc()));
 		}
 
 
@@ -122,7 +124,7 @@ namespace Vertica.Utilities.Tests
 		[Test]
 		public void UnixTimestamp_DateIs13OfJune1984_VerifyResult()
 		{
-			using (TimeReseter.Set(new DateTimeOffset(13.June(1984).SetTime(Time.Noon), TimeSpan.Zero)))
+			using (TimeReseter.Set(13.June(1984).At(Time.Noon).InUtc()))
 			{
 				Assert.That(Time.UnixTimestamp, Is.EqualTo(455976000d));
 			}

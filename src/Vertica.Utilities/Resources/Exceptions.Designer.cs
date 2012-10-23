@@ -61,15 +61,6 @@ namespace Vertica.Utilities.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The end date has to later than the start date &apos;{0}&apos;..
-        /// </summary>
-        internal static string RandomDate_InvertedRangeTemplate {
-            get {
-                return ResourceManager.GetString("RandomDate_InvertedRangeTemplate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The value must be between {0} and {1}. That is, contained within {2}..
         /// </summary>
         internal static string Range_ArgumentAssertion_Template {
