@@ -126,4 +126,10 @@
   <data name="Range_UnorderedBounds_Template" xml:space="preserve">
     <value>The start value of the range ({0}) must not be greater than its end value ({1}).</value>
   </data>
+  <data name="Time_AverageAction_OneIteration" xml:space="preserve">
+    <value>At least one iteration is needed. Increase the targetRuntime value.</value>
+  </data>
+  <data name="Time_MustBeUtcTemplate" xml:space="preserve">
+    <value>In order to set the UtcNow property, the DateTimeOffset must be UTC, but had an offset of {0} instead.</value>
+  </data>
 </root>

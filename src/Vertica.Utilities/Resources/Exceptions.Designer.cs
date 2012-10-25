@@ -86,5 +86,23 @@ namespace Vertica.Utilities.Resources {
                 return ResourceManager.GetString("Range_UnorderedBounds_Template", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At least one iteration is needed. Increase the targetRuntime value..
+        /// </summary>
+        internal static string Time_AverageAction_OneIteration {
+            get {
+                return ResourceManager.GetString("Time_AverageAction_OneIteration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to set the UtcNow property, the DateTimeOffset must be UTC, but had an offset of {0} instead..
+        /// </summary>
+        internal static string Time_MustBeUtcTemplate {
+            get {
+                return ResourceManager.GetString("Time_MustBeUtcTemplate", resourceCulture);
+            }
+        }
     }
 }
