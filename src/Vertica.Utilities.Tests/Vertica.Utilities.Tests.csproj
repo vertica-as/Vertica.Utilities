@@ -72,6 +72,9 @@
     <Compile Include="RangeTester.Limit.cs">
       <DependentUpon>RangeTester.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\TimeExtensionsTester.cs" />
+    <Compile Include="Testing\TimeReseterTester.cs" />
+    <Compile Include="TimeTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -82,6 +85,7 @@
       <Name>Vertica.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
