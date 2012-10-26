@@ -16,5 +16,10 @@
 		{
 			return value == null ? Option<T>.None : Some(value);
 		}
+
+		public static Option<string> Maybe(string value)
+		{
+			return string.IsNullOrEmpty(value) ? None(string.Empty) : Some(value);
+		}
 	}
 }

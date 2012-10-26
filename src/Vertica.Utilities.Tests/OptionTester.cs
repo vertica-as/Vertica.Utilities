@@ -193,6 +193,42 @@ namespace Vertica.Utilities.Tests
 			Assert.That(subject.ValueOrDefault, Is.SameAs(reference));
 		}
 
+		[Test]
+		public void Maybe_NullString_NoneWithDefault()
+		{
+			string str = null;
+			Option<string> subject = Option.Maybe(str);
+			Assert.That(subject.IsSome, Is.False);
+			Assert.That(subject.IsNone, Is.True);
+
+			Assert.That(() => subject.Value, Throws.InvalidOperationException);
+			Assert.That(subject.ValueOrDefault, Is.Empty);
+		}
+
+		[Test]
+		public void Maybe_EmptyString_NoneWithDefault()
+		{
+			string str = null;
+			Option<string> subject = Option.Maybe(str);
+			Assert.That(subject.IsSome, Is.False);
+			Assert.That(subject.IsNone, Is.True);
+
+			Assert.That(() => subject.Value, Throws.InvalidOperationException);
+			Assert.That(subject.ValueOrDefault, Is.Empty);
+		}
+
+		[Test]
+		public void Maybe_SomeString_SomeWithValue()
+		{
+			string str = "str";
+			Option<string> subject = Option.Maybe(str);
+			Assert.That(subject.IsSome, Is.True);
+			Assert.That(subject.IsNone, Is.False);
+
+			Assert.That(subject.Value, Is.EqualTo(str));
+			Assert.That(subject.ValueOrDefault, Is.EqualTo(str));
+		}
+
 		#endregion
 	}
 }
