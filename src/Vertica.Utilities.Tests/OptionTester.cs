@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using NUnit.Framework;
 
 namespace Vertica.Utilities.Tests
@@ -227,6 +229,67 @@ namespace Vertica.Utilities.Tests
 
 			Assert.That(subject.Value, Is.EqualTo(str));
 			Assert.That(subject.ValueOrDefault, Is.EqualTo(str));
+		}
+
+		[Test]
+		public void Maybe_NullCollection_NoneWithDefault()
+		{
+			IEnumerable<int> coll = null;
+			Option<IEnumerable<int>> subject = Option.Maybe(coll);
+			Assert.That(subject.IsSome, Is.False);
+			Assert.That(subject.IsNone, Is.True);
+
+			Assert.That(() => subject.Value, Throws.InvalidOperationException);
+			Assert.That(subject.ValueOrDefault, Is.Empty);
+		}
+
+		[Test]
+		public void Maybe_EmptyCollection_NoneWithDefault()
+		{
+			IEnumerable<int> coll = new int[0];
+			Option<IEnumerable<int>> subject = Option.Maybe(coll);
+			Assert.That(subject.IsSome, Is.False);
+			Assert.That(subject.IsNone, Is.True);
+
+			Assert.That(() => subject.Value, Throws.InvalidOperationException);
+			Assert.That(subject.ValueOrDefault, Is.Empty);
+		}
+
+		[Test]
+		public void Maybe_SomeCollection_SomeWithValue()
+		{
+			IEnumerable<int> coll = new[] { 1, 2, 3 };
+			var subject = Option.Maybe(coll);
+			Assert.That(subject.IsSome, Is.True);
+			Assert.That(subject.IsNone, Is.False);
+
+			Assert.That(subject.Value, Is.EqualTo(coll));
+			Assert.That(subject.ValueOrDefault, Is.EqualTo(coll));
+		}
+
+		[Test]
+		public void Maybe_EmptyEnumerations_NoneWithDefault()
+		{
+			int[] emptyArray = new int[0];
+			Option<IEnumerable<int>> subject = Option.Maybe(emptyArray);
+			assertNoneCollection(subject);
+
+			IList<int> emptyList =  new List<int>();
+			subject = Option.Maybe(emptyList);
+			assertNoneCollection(subject);
+
+			ICollection<int> emptyCollection = new Collection<int>();
+			subject = Option.Maybe(emptyCollection);
+			assertNoneCollection(subject);
+		}
+
+		private void assertNoneCollection<T>(Option<IEnumerable<T>> none)
+		{
+			Assert.That(none.IsSome, Is.False);
+			Assert.That(none.IsNone, Is.True);
+
+			Assert.That(() => none.Value, Throws.InvalidOperationException);
+			Assert.That(none.ValueOrDefault, Is.Empty);
 		}
 
 		#endregion

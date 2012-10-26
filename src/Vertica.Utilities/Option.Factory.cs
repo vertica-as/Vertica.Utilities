@@ -1,4 +1,7 @@
-﻿namespace Vertica.Utilities
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Vertica.Utilities
 {
 	public static class Option
 	{
@@ -20,6 +23,26 @@
 		public static Option<string> Maybe(string value)
 		{
 			return string.IsNullOrEmpty(value) ? None(string.Empty) : Some(value);
+		}
+
+		public static Option<IEnumerable<T>> Maybe<T>(IEnumerable<T> value)
+		{
+			return (value == null || !value.Any()) ? None(Enumerable.Empty<T>()) : Some(value);
+		}
+
+		public static Option<IEnumerable<T>> Maybe<T>(T[] value)
+		{
+			return value == null || !value.Any() ? None(Enumerable.Empty<T>()) : Some(value.AsEnumerable());
+		}
+
+		public static Option<IEnumerable<T>> Maybe<T>(IList<T> value)
+		{
+			return value == null || !value.Any() ? None(Enumerable.Empty<T>()) : Some(value.AsEnumerable());
+		}
+
+		public static Option<IEnumerable<T>> Maybe<T>(ICollection<T> value)
+		{
+			return value == null || !value.Any() ? None(Enumerable.Empty<T>()) : Some(value.AsEnumerable());
 		}
 	}
 }
