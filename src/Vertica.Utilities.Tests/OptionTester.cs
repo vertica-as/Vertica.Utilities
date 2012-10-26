@@ -378,5 +378,12 @@ namespace Vertica.Utilities.Tests
 		}
 
 		#endregion
+
+		[Test]
+		public void NullIsAlsoOption_ButPlease_Dont()
+		{
+			Option<int> nullable = null;
+			Assert.That(()=>nullable.IsSome, Throws.InstanceOf<NullReferenceException>());
+		}
 	}
 }
