@@ -11,5 +11,10 @@
 		{
 			return Option<T>.NoneWithDefault(defaultValue);
 		}
+
+		public static Option<T> Maybe<T>(T value)  where T : class
+		{
+			return value == null ? Option<T>.None : Some(value);
+		}
 	}
 }

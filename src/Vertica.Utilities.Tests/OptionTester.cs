@@ -1,10 +1,21 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace Vertica.Utilities.Tests
 {
 	[TestFixture]
 	public class OptionTester
 	{
+		#region documentation
+
+		[Test, Category("Exploratory")]
+		public void Explore()
+		{
+
+		}
+
+		#endregion
+
 		#region Some
 
 		[Test]
@@ -153,6 +164,34 @@ namespace Vertica.Utilities.Tests
 		}
 
 		#endregion
+
+		#endregion
+
+		#region Maybe
+
+		[Test]
+		public void Maybe_NullReferenceType_NoneWithoutDefault()
+		{
+			Exception reference = null;
+			Option<Exception> subject = Option.Maybe(reference);
+			Assert.That(subject.IsSome, Is.False);
+			Assert.That(subject.IsNone, Is.True);
+
+			Assert.That(() => subject.Value, Throws.InvalidOperationException);
+			Assert.That(subject.ValueOrDefault, Is.Null);
+		}
+
+		[Test]
+		public void Maybe_NullReferenceType_SomeWithValue()
+		{
+			var reference = new Exception("msg");
+			Option<Exception> subject = Option.Maybe(reference);
+			Assert.That(subject.IsSome, Is.True);
+			Assert.That(subject.IsNone, Is.False);
+
+			Assert.That(subject.Value, Is.SameAs(reference));
+			Assert.That(subject.ValueOrDefault, Is.SameAs(reference));
+		}
 
 		#endregion
 	}
