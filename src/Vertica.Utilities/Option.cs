@@ -5,9 +5,48 @@ namespace Vertica.Utilities
 {
 	public sealed class Option<T> : IEquatable<Option<T>>
 	{
+		public static Option<T> None { get { return _none; } }
+
+		public static Option<T> NoneWithDefault(T defaultValue)
+		{
+			return new Option<T> { @default = defaultValue };
+		}
+
+		public static Option<T> Some(T value)
+		{
+			return new Option<T>(value);
+		}
+
+		// either the "classic" default
+		public bool IsNone
+		{
+			get { return this == _none || _defaultChanged; }
+		}
+		public bool IsSome
+		{
+			get { return !IsNone; }
+		}
+
+		public T Value
+		{
+			get
+			{
+				if (IsSome) return _value;
+
+				throw new InvalidOperationException();
+			}
+		}
+
+		public T ValueOrDefault { get { return IsSome ? _value : @default; } }
+
+		public T GetValueOrDefault(T defaultValue)
+		{
+			return IsSome ? Value : defaultValue;
+		}
+
 		private readonly T _value;
-		private T _default;
 		private bool _defaultChanged;
+		private T _default;
 		private T @default
 		{
 			get { return _default; }
@@ -44,39 +83,8 @@ namespace Vertica.Utilities
 			return EqualityComparer<T>.Default.GetHashCode(_value);
 		}
 
-		// either the "classic" default
-		public bool IsNone
-		{
-			get { return this == _none || _defaultChanged; }
-		}
-		public bool IsSome
-		{
-			get { return !IsNone; }
-		}
+		
 
-		public T Value
-		{
-			get
-			{
-				if (IsSome) return _value;
-
-				throw new InvalidOperationException();
-			}
-		}
-
-		public T ValueOrDefault { get { return IsSome ? _value : @default; } }
-
-		public static Option<T> None { get { return _none; } }
-
-		public static Option<T> NoneWithDefault(T defaultValue)
-		{
-			return new Option<T> { @default = defaultValue };
-		}
-
-
-		public static Option<T> Some(T value)
-		{
-			return new Option<T>(value);
-		}
+		
 	}
 }

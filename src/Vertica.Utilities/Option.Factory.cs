@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Vertica.Utilities
@@ -18,6 +19,11 @@ namespace Vertica.Utilities
 		public static Option<T> Maybe<T>(T value)  where T : class
 		{
 			return value == null ? Option<T>.None : Some(value);
+		}
+
+		public static Option<T> Maybe<T>(T? value) where T: struct
+		{
+			return value.HasValue ? Some(value.Value) : None(value.GetValueOrDefault());
 		}
 
 		public static Option<string> Maybe(string value)

@@ -18,39 +18,126 @@ namespace Vertica.Utilities.Tests
 
 		#endregion
 
-		#region Some
+		#region Value, ValueOrDefault, GetValueOrDefault
 
 		[Test]
 		public void Some_ReferenceType_HasValue()
 		{
 			var subject = Option<string>.Some("something");
-			Assert.That(subject.IsSome, Is.True);
-			Assert.That(subject.IsNone, Is.False);
-
+			
 			Assert.That(subject.Value, Is.EqualTo("something"));
 			Assert.That(subject.ValueOrDefault, Is.EqualTo("something"));
+			Assert.That(subject.GetValueOrDefault("something else"), Is.EqualTo("something"));
 		}
 
 		[Test]
 		public void Some_ValueType_HasValue()
 		{
 			var subject = Option<decimal>.Some(3m);
-			Assert.That(subject.IsSome, Is.True);
-			Assert.That(subject.IsNone, Is.False);
-
+			
 			Assert.That(subject.Value, Is.EqualTo(3m));
 			Assert.That(subject.ValueOrDefault, Is.EqualTo(3m));
+			Assert.That(subject.GetValueOrDefault(5m), Is.EqualTo(3m));
 		}
 
 		[Test]
-		public void Some_NullableType_HasValue()
+		public void None_ReferenceType_NoValue()
+		{
+			var subject = Option<string>.None;
+			
+			Assert.That(() => subject.Value, Throws.InvalidOperationException);
+			Assert.That(subject.ValueOrDefault, Is.EqualTo(default(string)));
+			Assert.That(subject.GetValueOrDefault("5m"), Is.EqualTo("5m"));
+		}
+
+		[Test]
+		public void None_ValueType_NoValue()
+		{
+			var subject = Option<decimal>.None;
+			
+			Assert.That(() => subject.Value, Throws.InvalidOperationException);
+			Assert.That(subject.ValueOrDefault, Is.EqualTo(default(decimal)));
+			Assert.That(subject.GetValueOrDefault(10m), Is.EqualTo(10m));
+		}
+
+		[Test]
+		public void None_NullableType_NoValue()
+		{
+			var subject = Option<int?>.None;
+			
+			Assert.That(() => subject.Value, Throws.InvalidOperationException);
+			Assert.That(subject.ValueOrDefault, Is.EqualTo(default(int?)));
+			Assert.That(subject.GetValueOrDefault(12), Is.EqualTo(12));
+		}
+
+		[Test]
+		public void None_WithDefaultReferenceType_NoValue()
+		{
+			string defaultValue = "default";
+			var subject = Option<string>.NoneWithDefault(defaultValue);
+			
+			Assert.That(() => subject.Value, Throws.InvalidOperationException);
+			Assert.That(subject.ValueOrDefault, Is.EqualTo(defaultValue));
+			Assert.That(subject.GetValueOrDefault("not the creation default"), Is.EqualTo("not the creation default"));
+		}
+
+		[Test]
+		public void None_WithDefaultValueType_NoValue()
+		{
+			decimal defaultValue = 5m;
+			var subject = Option<decimal>.NoneWithDefault(defaultValue);
+			
+			Assert.That(() => subject.Value, Throws.InvalidOperationException);
+			Assert.That(subject.ValueOrDefault, Is.EqualTo(defaultValue));
+			Assert.That(subject.GetValueOrDefault(10m), Is.EqualTo(10m));
+		}
+
+		[Test]
+		public void None_WithDefaultNullableType_NoValue()
+		{
+			var subject = Option<int?>.NoneWithDefault(5);
+			
+			Assert.That(() => subject.Value, Throws.InvalidOperationException);
+			Assert.That(subject.ValueOrDefault, Is.EqualTo(5));
+			Assert.That(subject.GetValueOrDefault(null), Is.Null);
+		}
+
+		#endregion
+
+		#region Some
+
+		[Test]
+		public void Some_ReferenceType()
+		{
+			var subject = Option<string>.Some("something");
+			Assert.That(subject.IsSome, Is.True);
+			Assert.That(subject.IsNone, Is.False);
+		}
+
+		[Test]
+		public void Some_ValueType()
+		{
+			var subject = Option<decimal>.Some(3m);
+			Assert.That(subject.IsSome, Is.True);
+			Assert.That(subject.IsNone, Is.False);
+		}
+
+		[Test]
+		public void Some_NullableType()
 		{
 			var subject = Option<int?>.Some(null);
 			Assert.That(subject.IsSome, Is.True);
 			Assert.That(subject.IsNone, Is.False);
+		}
 
-			Assert.That(subject.Value, Is.Null);
-			Assert.That(subject.ValueOrDefault, Is.Null);
+		[Test]
+		public void Some_WithTypeInference()
+		{
+			Option<string> some = Option.Some("dry");
+			Assert.That(some.IsSome);
+
+			some = Option<string>.Some("notDryAtAll");
+			Assert.That(some.IsSome);
 		}
 
 		#endregion
@@ -58,36 +145,27 @@ namespace Vertica.Utilities.Tests
 		#region None
 
 		[Test]
-		public void None_ReferenceType_NoValue()
+		public void None_ReferenceType()
 		{
 			var subject = Option<string>.None;
 			Assert.That(subject.IsSome, Is.False);
 			Assert.That(subject.IsNone, Is.True);
-
-			Assert.That(() => subject.Value, Throws.InvalidOperationException);
-			Assert.That(subject.ValueOrDefault, Is.Null);
 		}
 
 		[Test]
-		public void None_ValueType_NoValue()
+		public void None_ValueType()
 		{
 			var subject = Option<decimal>.None;
 			Assert.That(subject.IsSome, Is.False);
 			Assert.That(subject.IsNone, Is.True);
-
-			Assert.That(() => subject.Value, Throws.InvalidOperationException);
-			Assert.That(subject.ValueOrDefault, Is.EqualTo(decimal.Zero));
 		}
 
 		[Test]
-		public void None_NullableType_NoValue()
+		public void None_NullableType()
 		{
 			var subject = Option<int?>.None;
 			Assert.That(subject.IsSome, Is.False);
 			Assert.That(subject.IsNone, Is.True);
-
-			Assert.That(() => subject.Value, Throws.InvalidOperationException);
-			Assert.That(subject.ValueOrDefault, Is.Null);
 		}
 
 		[Test]
@@ -96,40 +174,32 @@ namespace Vertica.Utilities.Tests
 			Assert.That(Option<int?>.None, Is.SameAs(Option<int?>.None));
 		}
 
-		#region defaults
+		#endregion
+
+		#region NoneWithDefault
 
 		[Test]
-		public void None_WithDefaultReferenceType_NoValue()
+		public void None_WithDefaultReferenceType()
 		{
-			string defaultValue = "default";
-			var subject = Option<string>.NoneWithDefault(defaultValue);
+			var subject = Option<string>.NoneWithDefault("default");
 			Assert.That(subject.IsSome, Is.False);
 			Assert.That(subject.IsNone, Is.True);
-
-			Assert.That(() => subject.Value, Throws.InvalidOperationException);
-			Assert.That(subject.ValueOrDefault, Is.EqualTo(defaultValue));
 		}
 
 		[Test]
-		public void None_WithDefaultValueType_NoValue()
+		public void None_WithDefaultValueType()
 		{
-			decimal defaultValue = 5m;
 			var subject = Option<decimal>.NoneWithDefault(5m);
 			Assert.That(subject.IsSome, Is.False);
 			Assert.That(subject.IsNone, Is.True);
-
-			Assert.That(() => subject.Value, Throws.InvalidOperationException);
-			Assert.That(subject.ValueOrDefault, Is.EqualTo(defaultValue));
 		}
+
 		[Test]
-		public void None_WithDefaultNullableType_NoValue()
+		public void None_WithDefaultNullableType()
 		{
 			var subject = Option<int?>.NoneWithDefault(5);
 			Assert.That(subject.IsSome, Is.False);
 			Assert.That(subject.IsNone, Is.True);
-
-			Assert.That(() => subject.Value, Throws.InvalidOperationException);
-			Assert.That(subject.ValueOrDefault, Is.EqualTo(5));
 		}
 
 		[Test]
@@ -146,16 +216,6 @@ namespace Vertica.Utilities.Tests
 		}
 
 		[Test]
-		public void Some_WithTypeInference()
-		{
-			Option<string> some = Option.Some("dry");
-			Assert.That(some.IsSome);
-
-			some = Option<string>.Some("notDryAtAll");
-			Assert.That(some.IsSome);
-		}
-
-		[Test]
 		public void None_WithTypeInference()
 		{
 			Option<string> none = Option.None("dry");
@@ -164,8 +224,6 @@ namespace Vertica.Utilities.Tests
 			none = Option<string>.NoneWithDefault("notDryAtAll");
 			Assert.That(none.IsNone);
 		}
-
-		#endregion
 
 		#endregion
 
@@ -193,6 +251,33 @@ namespace Vertica.Utilities.Tests
 
 			Assert.That(subject.Value, Is.SameAs(reference));
 			Assert.That(subject.ValueOrDefault, Is.SameAs(reference));
+		}
+
+		[Test]
+		public void Maybe_NullNullable_NoneWithDefault()
+		{
+			int? @null = default(int?);
+			Option<int> subject = Option.Maybe(@null);
+
+			Assert.That(subject.IsSome, Is.False);
+			Assert.That(subject.IsNone, Is.True);
+
+			Assert.That(() => subject.Value, Throws.InvalidOperationException);
+			Assert.That(subject.ValueOrDefault, Is.EqualTo(default(int)));
+		}
+
+		[Test]
+		public void Maybe_ValuedNullable_SomeWithValue()
+		{
+			int? valued = 3;
+			Option<int> subject = Option.Maybe(valued);
+
+			Assert.That(subject.IsSome, Is.True);
+			Assert.That(subject.IsNone, Is.False);
+
+			Assert.That(subject.Value, Is.EqualTo(3));
+			Assert.That(subject.ValueOrDefault, Is.EqualTo(3));
+			
 		}
 
 		[Test]
