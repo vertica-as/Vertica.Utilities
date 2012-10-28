@@ -42,6 +42,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DisposableActionTester.cs" />
     <Compile Include="Eventing\EventHelperTester.cs" />
     <Compile Include="Eventing\Support\NotifySubject.cs" />
     <Compile Include="ExceptionHelperTester.cs" />

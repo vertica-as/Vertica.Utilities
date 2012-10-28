@@ -36,6 +36,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DisposableAction.cs" />
     <Compile Include="Eventing\CancelEventArgs.cs" />
     <Compile Include="Eventing\EventArgs.cs" />
     <Compile Include="Eventing\EventHelper.cs" />
