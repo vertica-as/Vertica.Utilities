@@ -4,11 +4,11 @@ namespace Vertica.Utilities.Eventing
 	{
 		public ValueIndexCancelEventArgs(T value, int index) : base(value, index) { }
 
-		public bool IsCanceled { get; private set; }
+		public bool IsCancelled { get; private set; }
 
 		public void Cancel()
 		{
-			IsCanceled = true;
+			IsCancelled = true;
 		}
 	}
 }

@@ -4,7 +4,7 @@
 
 	public interface ICancelEventArgs
 	{
-		bool IsCanceled { get; }
+		bool IsCancelled { get; }
 		void Cancel();
 	}
 

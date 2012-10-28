@@ -43,6 +43,7 @@
     <Compile Include="Eventing\MultiEventArgs.cs" />
     <Compile Include="Eventing\MutableValueEventArgs.cs" />
     <Compile Include="Eventing\PropertyValueChangedEventArgs.cs" />
+    <Compile Include="Eventing\PropertyValueChangingEventArgs.cs" />
     <Compile Include="Eventing\TypedEventHandler.cs" />
     <Compile Include="Eventing\ValueCancelEventArgs.cs" />
     <Compile Include="Eventing\ValueChangedEventArgs.cs" />

@@ -121,8 +121,69 @@ namespace Vertica.Utilities.Tests.Eventing
 
 		#region Notify
 
+		#region property changing
+
 		[Test]
-		public void Notify_NoValues()
+		public void Notify_Changing_NoValues()
+		{
+			var subject = new NotifySubject();
+			string propertyChangingName = null;
+			subject.PropertyChanging += (sender, args) => propertyChangingName = args.PropertyName;
+
+			subject.S = "2";
+			Assert.That(propertyChangingName, Is.EqualTo("S"));
+			subject.I = 2;
+			Assert.That(propertyChangingName, Is.EqualTo("I"));
+		}
+
+		[Test]
+		public void Notify_Changing_Values()
+		{
+			var subject = new NotifySubject { I = 1 };
+
+			string propertyChangingName = null;
+			int oldValue = 0, newValue = 0;
+			subject.PropertyChanging += (sender, args) =>
+			{
+				// nasty casting due to inflexibility of generics
+				var extended = (PropertyValueChangingEventArgs<int>)args;
+				propertyChangingName = extended.PropertyName;
+				oldValue = extended.OldValue;
+				newValue = extended.NewValue;
+			};
+			
+			subject.I = 2;
+			Assert.That(propertyChangingName, Is.EqualTo("I"));
+			Assert.That(oldValue, Is.EqualTo(1));
+			Assert.That(newValue, Is.EqualTo(2));
+		}
+
+		[Test]
+		public void Notify_HowToCancel_OnProperlyImplementedProperties()
+		{
+			var subject = new NotifySubject { I = 1, F = 2.0f };
+
+			subject.PropertyChanging += (sender, args) =>
+			{
+				var cancellable = args as ICancelEventArgs;
+				if (cancellable != null) cancellable.Cancel();
+			};
+
+			subject.I = 2;
+			// I does not obbey cancellation rules
+			Assert.That(subject.I, Is.EqualTo(2));
+			subject.F = 3.0f;
+			// F obbeys cancellation rules and since it is being, regardless, cancelled
+			// the new value will never be set
+			Assert.That(subject.F, Is.EqualTo(2.0f));
+		}
+
+		#endregion
+
+		#region property changed
+
+		[Test]
+		public void Notify_Changed_NoValues()
 		{
 			var subject = new NotifySubject();
 			string propertyChangedName = null;
@@ -135,7 +196,7 @@ namespace Vertica.Utilities.Tests.Eventing
 		}
 
 		[Test]
-		public void Notify_Values()
+		public void Notify_Changed_Values()
 		{
 			var subject = new NotifySubject { I = 1 };
 
@@ -143,6 +204,7 @@ namespace Vertica.Utilities.Tests.Eventing
 			int oldValue = 0, newValue = 0;
 			subject.PropertyChanged += (sender, args) =>
 			{
+				// nasty casting due to inflexibility of generics
 				var extended = (PropertyValueChangedEventArgs<int>)args;
 				propertyChangedName = extended.PropertyName;
 				oldValue = extended.OldValue;
@@ -158,14 +220,16 @@ namespace Vertica.Utilities.Tests.Eventing
 
 		#endregion
 
-		#region Observing
+		#endregion
+
+		#region observations
 
 		[Test]
-		public void Observing_PropertyChanged_Changes()
+		public void Observed_PropertyChanged_Changes()
 		{
 			var subject = new NotifySubject();
 			string propertyChangedName = null;
-			using (subject.Observing((sender, e) => propertyChangedName = e.PropertyName))
+			using (subject.Observed((sender, e) => propertyChangedName = e.PropertyName))
 			{
 				subject.S = "2";
 			}
@@ -173,6 +237,21 @@ namespace Vertica.Utilities.Tests.Eventing
 			subject.I = 2;
 
 			Assert.That(propertyChangedName, Is.EqualTo("S"));
+		}
+
+		[Test]
+		public void Observing_PropertyChanging_Changes()
+		{
+			var subject = new NotifySubject();
+			string propertyChangingName = null;
+			using (subject.Observing((sender, e) => propertyChangingName = e.PropertyName))
+			{
+				subject.S = "2";
+			}
+			// this happens after the handler has been unregistered
+			subject.I = 2;
+
+			Assert.That(propertyChangingName, Is.EqualTo("S"));
 		}
 
 		#endregion
