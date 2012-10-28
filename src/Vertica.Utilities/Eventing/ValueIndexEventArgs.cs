@@ -1,8 +1,8 @@
 namespace Vertica.Utilities.Eventing
 {
-	public class ValueIndexEventArgs<T> : ValueEventArgs<T>
+	public class ValueIndexEventArgs<T> : ValueEventArgs<T>, IIndexEventArgs
 	{
-		public ValueIndexEventArgs(T value, int index) : base(value)
+		public ValueIndexEventArgs(int index, T value) : base(value)
 		{
 			_index = index;
 		}
