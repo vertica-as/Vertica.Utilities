@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using Vertica.Utilities.Eventing;
 using Vertica.Utilities.Tests.Eventing.Support;
@@ -157,6 +154,25 @@ namespace Vertica.Utilities.Tests.Eventing
 			Assert.That(propertyChangedName, Is.EqualTo("I"));
 			Assert.That(oldValue, Is.EqualTo(1));
 			Assert.That(newValue, Is.EqualTo(2));
+		}
+
+		#endregion
+
+		#region Observing
+
+		[Test]
+		public void Observing_PropertyChanged_Changes()
+		{
+			var subject = new NotifySubject();
+			string propertyChangedName = null;
+			using (subject.Observing((sender, e) => propertyChangedName = e.PropertyName))
+			{
+				subject.S = "2";
+			}
+			// this happens after the handler has been unregistered
+			subject.I = 2;
+
+			Assert.That(propertyChangedName, Is.EqualTo("S"));
 		}
 
 		#endregion

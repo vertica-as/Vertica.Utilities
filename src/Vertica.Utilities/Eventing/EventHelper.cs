@@ -56,7 +56,13 @@ namespace Vertica.Utilities.Eventing
 			if (handler == null) return;
 
 			handler(instance, new PropertyValueChangedEventArgs<TValue>(Name.Of(selector), oldValue, newValue));
+		}
 
+		public static IDisposable Observing(this INotifyPropertyChanged notify, PropertyChangedEventHandler handler)
+		{
+			notify.PropertyChanged += handler;
+
+			return new DisposableAction(() => notify.PropertyChanged -= handler);
 		}
 	}
 }
