@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Eventing\EventHelperTester.cs" />
+    <Compile Include="Eventing\Support\NotifySubject.cs" />
     <Compile Include="ExceptionHelperTester.cs" />
     <Compile Include="Extensions\ComparableExtensionsTester.cs" />
     <Compile Include="Extensions\RangeExtensionsTester.cs" />

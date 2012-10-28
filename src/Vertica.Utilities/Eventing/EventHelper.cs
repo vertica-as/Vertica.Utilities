@@ -1,4 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Linq.Expressions;
+using Vertica.Utilities.Reflection;
 
 namespace Vertica.Utilities.Eventing
 {
@@ -31,6 +34,29 @@ namespace Vertica.Utilities.Eventing
 			{
 				copy(sender, e);
 			}
+		}
+
+		public static void Raise(this PropertyChangedEventHandler handler, object sender, string propertyName)
+		{
+			PropertyChangedEventHandler copy = handler;
+			if (copy != null)
+			{
+				copy(sender, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+
+		public static void Notify<T, TValue>(
+			this T instance,
+			PropertyChangedEventHandler handler,
+			Expression<Func<T, TValue>> selector,
+			TValue oldValue = default(TValue),
+			TValue newValue = default(TValue))
+			where T : INotifyPropertyChanged
+		{
+			if (handler == null) return;
+
+			handler(instance, new PropertyValueChangedEventArgs<TValue>(Name.Of(selector), oldValue, newValue));
+
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using Vertica.Utilities.Eventing;
+using Vertica.Utilities.Tests.Eventing.Support;
 
 namespace Vertica.Utilities.Tests.Eventing
 {
@@ -106,6 +107,56 @@ namespace Vertica.Utilities.Tests.Eventing
 		{
 			_simpleEvent = null;
 			Assert.That(() => _simpleEvent.Raise(this, EventArgs.Empty), Throws.Nothing);
+		}
+
+		[Test]
+		public void Raise_PropertyChangeExtension_EventFired()
+		{
+			var raiser = new NotifySubject();
+			string changed = string.Empty;
+			raiser.PropertyChanged += (sender, e) => { changed = e.PropertyName; };
+			raiser.D = 3m;
+
+			Assert.That(changed, Is.EqualTo("D"));
+		}
+
+		#endregion
+
+		#region Notify
+
+		[Test]
+		public void Notify_NoValues()
+		{
+			var subject = new NotifySubject();
+			string propertyChangedName = null;
+			subject.PropertyChanged += (sender, args) => propertyChangedName = args.PropertyName;
+
+			subject.S = "2";
+			Assert.That(propertyChangedName, Is.EqualTo("S"));
+			subject.I = 2;
+			Assert.That(propertyChangedName, Is.EqualTo("I"));
+		}
+
+		[Test]
+		public void Notify_Values()
+		{
+			var subject = new NotifySubject { I = 1 };
+
+			string propertyChangedName = null;
+			int oldValue = 0, newValue = 0;
+			subject.PropertyChanged += (sender, args) =>
+			{
+				var extended = (PropertyValueChangedEventArgs<int>)args;
+				propertyChangedName = extended.PropertyName;
+				oldValue = extended.OldValue;
+				newValue = extended.NewValue;
+			};
+
+
+			subject.I = 2;
+			Assert.That(propertyChangedName, Is.EqualTo("I"));
+			Assert.That(oldValue, Is.EqualTo(1));
+			Assert.That(newValue, Is.EqualTo(2));
 		}
 
 		#endregion
