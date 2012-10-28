@@ -21,6 +21,11 @@ namespace Vertica.Utilities
 			return value == null ? Option<T>.None : Some(value);
 		}
 
+		public static Option<T> Maybe<T>(T value, Func<T> defaultValue) where T : class
+		{
+			return value == null ? None(defaultValue()) : Some(value);
+		}
+
 		public static Option<T> Maybe<T>(T? value) where T: struct
 		{
 			return value.HasValue ? Some(value.Value) : None(value.GetValueOrDefault());

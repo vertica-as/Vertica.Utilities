@@ -72,9 +72,13 @@ namespace Vertica.Utilities
 		}
 		public bool Equals(Option<T> other)
 		{
-			if (IsNone) return other.IsNone;
+			if (other == null) return false;
 
-			return EqualityComparer<T>.Default.Equals(_value, other._value);
+			if (IsNone)
+			{
+				return other.IsNone && EqualityComparer<T>.Default.Equals(_default, other._default);
+			}
+			return other.IsSome && EqualityComparer<T>.Default.Equals(_value, other._value);
 		}
 		public override int GetHashCode()
 		{

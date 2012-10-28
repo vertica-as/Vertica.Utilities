@@ -13,7 +13,51 @@ namespace Vertica.Utilities.Tests
 		[Test, Category("Exploratory")]
 		public void Explore()
 		{
+			Option<Exception> nonMissing = Option<Exception>.Some(new Exception());
+			Option<Exception> inferredNonMissing = Option.Some(new Exception());
+			Assert.That(nonMissing.IsSome, Is.EqualTo(inferredNonMissing.IsSome).And.True);
+			Assert.That(nonMissing.IsNone, Is.EqualTo(inferredNonMissing.IsNone).And.False);
+			
+			Option<Exception> missingWithoutDefault = Option<Exception>.None;
+			Assert.That(missingWithoutDefault.IsSome, Is.False);
+			Assert.That(missingWithoutDefault.IsNone, Is.True);
 
+			var some = Option.Some("something");
+			Assert.That(some.Value, Is
+				.EqualTo(some.ValueOrDefault).And
+				.EqualTo(some.GetValueOrDefault("default")).And
+				.EqualTo("something"));
+
+			var none = Option<string>.None;
+			Assert.That(()=> none.Value, Throws.InvalidOperationException);
+			Assert.That(none.ValueOrDefault, Is.Null);
+			Assert.That(none.GetValueOrDefault("default"), Is.EqualTo("default"));
+
+			var missingWithDefault = Option<Exception>.NoneWithDefault(new Exception());
+			var inferredMissing = Option.None("default");
+			Assert.That(() => inferredMissing.Value, Throws.InvalidOperationException);
+			Assert.That(inferredMissing.ValueOrDefault, Is.EqualTo("default"));
+			Assert.That(inferredMissing.GetValueOrDefault("overriden"), Is.EqualTo("overriden"));
+
+			Uri url = null;
+			Option<Uri> verboseCreation = url != null ?
+				Option.Some(url) :
+				Option.None(new Uri("#", UriKind.Relative));
+			Option<Uri> lessVerboseCreation = Option.Maybe(url);	// null default
+			lessVerboseCreation = Option.Maybe(url, () => new Uri("#", UriKind.Relative));
+
+			string s = null;
+			Option<string> missingString = Option.Maybe(s);
+			Assert.That(missingString.IsNone, Is.True);
+			Assert.That(missingString.ValueOrDefault, Is.Empty);
+
+			Option<int> missingNullable = Option.Maybe(default(int?));
+			Assert.That(missingNullable.IsNone, Is.True);
+			Assert.That(missingNullable.ValueOrDefault, Is.EqualTo(default(int)));
+
+			var missingCollection = Option.Maybe(new int[0]);
+			Assert.That(missingCollection.IsNone, Is.True);
+			Assert.That(missingCollection.ValueOrDefault, Is.Empty);
 		}
 
 		#endregion
@@ -242,6 +286,34 @@ namespace Vertica.Utilities.Tests
 		}
 
 		[Test]
+		public void Maybe_NullReferenceType_NoneWithDefault()
+		{
+			Uri reference = null;
+			Option<Uri> subject = Option.Maybe(reference, ()=> new Uri("#", UriKind.Relative));
+			Assert.That(subject.IsSome, Is.False);
+			Assert.That(subject.IsNone, Is.True);
+
+			Assert.That(() => subject.Value, Throws.InvalidOperationException);
+			Assert.That(subject.ValueOrDefault, Is.Not.Null);
+		}
+
+		[Test]
+		public void Maybe_WithDefault_LazyEvaluation()
+		{
+			bool used = false;
+			Func<Uri> nullObj =()=>
+			{
+				used = true;
+				return new Uri("#", UriKind.Relative);
+			};
+			Option.Maybe(new Uri("http://localhost"), nullObj);
+			Assert.That(used, Is.False);
+
+			Option.Maybe(null, nullObj);
+			Assert.That(used, Is.True);
+		}
+
+		[Test]
 		public void Maybe_NullReferenceType_SomeWithValue()
 		{
 			var reference = new Exception("msg");
@@ -375,6 +447,61 @@ namespace Vertica.Utilities.Tests
 
 			Assert.That(() => none.Value, Throws.InvalidOperationException);
 			Assert.That(none.ValueOrDefault, Is.Empty);
+		}
+
+		#endregion
+
+		#region equality
+
+		[Test]
+		public void Equals_SomethingAndNull_False()
+		{
+			Option<string> @null = null;
+			Assert.That(Option.Some("value").Equals(@null), Is.False);
+			Assert.That(Option<string>.None.Equals(@null), Is.False);
+			Assert.That(Option.None((string)null).Equals(@null), Is.False);
+		}
+
+		[Test]
+		public void Equals_SomeAndNone_False()
+		{
+			Assert.That(Option.Some("some").Equals(Option.None((string)null)), Is.False);
+			Assert.That(Option.Some("some").Equals(Option.None("some")), Is.False);
+			Assert.That(Option.Some((string)null).Equals(Option.None((string)null)), Is.False);
+			Assert.That(Option.Some((string)null).Equals(Option<string>.None), Is.False);
+			Assert.That(Option.Some(string.Empty).Equals(Option.None(string.Empty)), Is.False);
+		}
+
+		[Test]
+		public void Equals_NoneAndSome_False()
+		{
+			Assert.That(Option.None("some").Equals(Option.Some((string)null)), Is.False);
+			Assert.That(Option.None("some").Equals(Option.Some("some")), Is.False);
+			Assert.That(Option.None((string)null).Equals(Option.Some((string)null)), Is.False);
+			Assert.That(Option<string>.None.Equals(Option.Some((string)null)), Is.False);
+			Assert.That(Option.None(string.Empty).Equals(Option.Some(string.Empty)), Is.False);
+		}
+
+		[Test]
+		public void Equals_SomeAndSome_EqualsIfValuesAreEqual()
+		{
+			Uri localhost = new Uri("http://localhost/"),
+				localhostIndex = new Uri("http://localhost/index.htm");
+
+			Assert.That(Option.Some(localhost).Equals(Option.Some(localhost)), Is.True);
+			Assert.That(Option.Some(localhost).Equals(Option.Some(localhostIndex)), Is.False);
+		}
+
+		[Test]
+		public void Equals_NoneAndNone_EqualsIfDeaultsAreEqual()
+		{
+			Uri localhost = new Uri("http://localhost/"),
+				localhostIndex = new Uri("http://localhost/index.htm");
+
+			Assert.That(Option.None(localhost).Equals(Option.None(localhost)), Is.True);
+			Assert.That(Option.None(localhost).Equals(Option.None(localhostIndex)), Is.False);
+
+			Assert.That(Option.None((Uri)null).Equals(Option<Uri>.None), Is.True);
 		}
 
 		#endregion
