@@ -73,6 +73,8 @@
       <DependentUpon>RangeTester.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\TimeExtensionsTester.cs" />
+    <Compile Include="Reflection\NameAndValueTester.cs" />
+    <Compile Include="Reflection\Support\StaticReflectionSubjects.cs" />
     <Compile Include="Testing\TimeReseterTester.cs" />
     <Compile Include="TimeTester.cs" />
   </ItemGroup>

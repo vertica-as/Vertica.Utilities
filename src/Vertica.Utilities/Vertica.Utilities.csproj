@@ -47,6 +47,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Range.Inference.cs" />
+    <Compile Include="Reflection\NameAndValue.cs" />
     <Compile Include="Resources\Exceptions.Designer.cs">
       <DependentUpon>Exceptions.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -61,6 +62,9 @@
       <LastGenOutput>Exceptions.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Eventing\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
