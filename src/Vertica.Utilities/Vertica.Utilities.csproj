@@ -36,6 +36,21 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Eventing\CancelEventArgs.cs" />
+    <Compile Include="Eventing\EventArgs.cs" />
+    <Compile Include="Eventing\EventHelper.cs" />
+    <Compile Include="Eventing\MultiEventArgs.cs" />
+    <Compile Include="Eventing\MutableValueEventArgs.cs" />
+    <Compile Include="Eventing\PropertyValueChangedEventArgs.cs" />
+    <Compile Include="Eventing\TypedEventHandler.cs" />
+    <Compile Include="Eventing\ValueCancelEventArgs.cs" />
+    <Compile Include="Eventing\ValueChangedEventArgs.cs" />
+    <Compile Include="Eventing\ValueChangingEventArgs.cs" />
+    <Compile Include="Eventing\ValueEventArgs.cs" />
+    <Compile Include="Eventing\ValueIndexCancelEventArgs.cs" />
+    <Compile Include="Eventing\ValueIndexChangedEventArgs.cs" />
+    <Compile Include="Eventing\ValueIndexChangingEventArgs.cs" />
+    <Compile Include="Eventing\ValueIndexEventArgs.cs" />
     <Compile Include="ExceptionHelper.cs" />
     <Compile Include="Extensions\Comparable.Extensions.cs" />
     <Compile Include="Extensions\Range.Extensions.cs" />
@@ -63,9 +78,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Eventing\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
