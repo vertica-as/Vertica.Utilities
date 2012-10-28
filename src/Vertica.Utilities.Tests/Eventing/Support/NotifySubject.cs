@@ -57,7 +57,7 @@ namespace Vertica.Utilities.Tests.Eventing.Support
 				if (!cancelled)
 				{
 					_f = value;
-					this.Notify(PropertyChanged, i => i.I, old, value);	
+					this.Notify(PropertyChanged, i => i.F, old, value);	
 				}
 			}
 		}
