@@ -42,6 +42,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DisposableActionTester.cs" />
+    <Compile Include="Eventing\EventArgsTester.cs" />
+    <Compile Include="Eventing\EventHelperTester.cs" />
+    <Compile Include="Eventing\Support\NotifySubject.cs" />
     <Compile Include="ExceptionHelperTester.cs" />
     <Compile Include="Extensions\ComparableExtensionsTester.cs" />
     <Compile Include="Extensions\RangeExtensionsTester.cs" />
@@ -74,6 +78,8 @@
       <DependentUpon>RangeTester.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\TimeExtensionsTester.cs" />
+    <Compile Include="Reflection\NameAndValueTester.cs" />
+    <Compile Include="Reflection\Support\StaticReflectionSubjects.cs" />
     <Compile Include="Testing\TimeReseterTester.cs" />
     <Compile Include="TimeTester.cs" />
   </ItemGroup>
