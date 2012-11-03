@@ -36,17 +36,37 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DisposableAction.cs" />
+    <Compile Include="Eventing\CancelEventArgs.cs" />
+    <Compile Include="Eventing\EventArgs.cs" />
+    <Compile Include="Eventing\EventHelper.cs" />
+    <Compile Include="Eventing\MultiEventArgs.cs" />
+    <Compile Include="Eventing\MutableValueEventArgs.cs" />
+    <Compile Include="Eventing\PropertyValueChangedEventArgs.cs" />
+    <Compile Include="Eventing\PropertyValueChangingEventArgs.cs" />
+    <Compile Include="Eventing\TypedEventHandler.cs" />
+    <Compile Include="Eventing\ValueCancelEventArgs.cs" />
+    <Compile Include="Eventing\ValueChangedEventArgs.cs" />
+    <Compile Include="Eventing\ValueChangingEventArgs.cs" />
+    <Compile Include="Eventing\ValueEventArgs.cs" />
+    <Compile Include="Eventing\ValueIndexCancelEventArgs.cs" />
+    <Compile Include="Eventing\ValueIndexChangedEventArgs.cs" />
+    <Compile Include="Eventing\ValueIndexChangingEventArgs.cs" />
+    <Compile Include="Eventing\ValueIndexEventArgs.cs" />
     <Compile Include="ExceptionHelper.cs" />
     <Compile Include="Extensions\Comparable.Extensions.cs" />
     <Compile Include="Extensions\Range.Extensions.cs" />
     <Compile Include="Extensions\Time.Extensions.cs" />
     <Compile Include="Guard.cs" />
+    <Compile Include="Option.cs" />
+    <Compile Include="Option.Factory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Range.Bounds.cs" />
     <Compile Include="Range.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Range.Inference.cs" />
+    <Compile Include="Reflection\NameAndValue.cs" />
     <Compile Include="Resources\Exceptions.Designer.cs">
       <DependentUpon>Exceptions.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -62,6 +82,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
