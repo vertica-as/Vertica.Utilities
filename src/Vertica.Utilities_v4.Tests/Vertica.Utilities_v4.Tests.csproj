@@ -88,7 +88,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Vertica.Utilities\Vertica.Utilities_v4.csproj">
+    <ProjectReference Include="..\Vertica.Utilities_v4\Vertica.Utilities_v4.csproj">
       <Project>{CE392854-B196-459D-840C-6C07444A9598}</Project>
       <Name>Vertica.Utilities_v4</Name>
     </ProjectReference>

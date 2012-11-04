@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vertica.Utilities_v4.Tests", "src\Vertica.Utilities.Tests\Vertica.Utilities_v4.Tests.csproj", "{2D5D4B2C-B9AE-4426-B9E7-3BCA0B8E6A5A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vertica.Utilities_v4.Tests", "src\Vertica.Utilities_v4.Tests\Vertica.Utilities_v4.Tests.csproj", "{2D5D4B2C-B9AE-4426-B9E7-3BCA0B8E6A5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vertica.Utilities_v4", "src\Vertica.Utilities\Vertica.Utilities_v4.csproj", "{CE392854-B196-459D-840C-6C07444A9598}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vertica.Utilities_v4", "src\Vertica.Utilities_v4\Vertica.Utilities_v4.csproj", "{CE392854-B196-459D-840C-6C07444A9598}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
