@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Vertica.Utilities_v4.Tests")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Helpers, extensions, utilities, better practices, patterns to be used within Vertica.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Vertica A/S")]
 [assembly: AssemblyProduct("Vertica.Utilities_v4.Tests")]
