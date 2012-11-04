@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
-using Vertica.Utilities.Extensions.TimeExt;
-using Vertica.Utilities.Resources;
+using Vertica.Utilities_v4.Extensions.TimeExt;
+using Vertica.Utilities_v4.Resources;
 
-namespace Vertica.Utilities
+namespace Vertica.Utilities_v4
 {
 	public static class Time
 	{

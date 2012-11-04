@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Vertica.Utilities.Extensions.ComparableExt;
-using Vertica.Utilities.Resources;
+using Vertica.Utilities_v4.Extensions.ComparableExt;
+using Vertica.Utilities_v4.Resources;
 
-namespace Vertica.Utilities
+namespace Vertica.Utilities_v4
 {
 	/* inspired on:
 	 * JP´s Range class

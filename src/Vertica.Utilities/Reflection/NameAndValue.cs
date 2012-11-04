@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Vertica.Utilities.Reflection
+namespace Vertica.Utilities_v4.Reflection
 {
 	public static class Name
 	{

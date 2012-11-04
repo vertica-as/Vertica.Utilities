@@ -3,7 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using Testing.Commons.Time;
 
-namespace Vertica.Utilities.Tests
+namespace Vertica.Utilities_v4.Tests
 {
 	// ReSharper disable PossibleNullReferenceException
 	[TestFixture]

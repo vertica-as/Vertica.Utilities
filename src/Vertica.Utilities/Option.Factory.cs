@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Vertica.Utilities
+namespace Vertica.Utilities_v4
 {
 	public static class Option
 	{

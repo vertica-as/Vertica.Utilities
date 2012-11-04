@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
-using Vertica.Utilities.Reflection;
-using Vertica.Utilities.Tests.Reflection.Support;
+using Vertica.Utilities_v4.Reflection;
+using Vertica.Utilities_v4.Tests.Reflection.Support;
 
-namespace Vertica.Utilities.Tests.Reflection
+namespace Vertica.Utilities_v4.Tests.Reflection
 {
 	[TestFixture]
 	public class NameAndValueTester

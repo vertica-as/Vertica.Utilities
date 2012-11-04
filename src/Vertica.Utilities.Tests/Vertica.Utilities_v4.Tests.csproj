@@ -8,8 +8,8 @@
     <ProjectGuid>{2D5D4B2C-B9AE-4426-B9E7-3BCA0B8E6A5A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Vertica.Utilities.Tests</RootNamespace>
-    <AssemblyName>Vertica.Utilities.Tests</AssemblyName>
+    <RootNamespace>Vertica.Utilities_v4.Tests</RootNamespace>
+    <AssemblyName>Vertica.Utilities_v4.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -88,9 +88,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Vertica.Utilities\Vertica.Utilities.csproj">
+    <ProjectReference Include="..\Vertica.Utilities\Vertica.Utilities_v4.csproj">
       <Project>{CE392854-B196-459D-840C-6C07444A9598}</Project>
-      <Name>Vertica.Utilities</Name>
+      <Name>Vertica.Utilities_v4</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

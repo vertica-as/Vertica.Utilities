@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
-using Vertica.Utilities.Reflection;
+using Vertica.Utilities_v4.Reflection;
 
-namespace Vertica.Utilities.Eventing
+namespace Vertica.Utilities_v4.Eventing
 {
 	public static class EventHelper
 	{

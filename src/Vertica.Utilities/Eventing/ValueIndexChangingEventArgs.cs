@@ -1,4 +1,4 @@
-namespace Vertica.Utilities.Eventing
+namespace Vertica.Utilities_v4.Eventing
 {
 	public class ValueIndexChangingEventArgs<T> : ValueChangingEventArgs<T>, IIndexEventArgs
 	{

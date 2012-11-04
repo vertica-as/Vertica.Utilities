@@ -3,10 +3,10 @@ using System.Globalization;
 using NUnit.Framework;
 using Testing.Commons.Globalization;
 using Testing.Commons.Time;
-using Vertica.Utilities.Extensions.TimeExt;
-using Vertica.Utilities.Testing;
+using Vertica.Utilities_v4.Extensions.TimeExt;
+using Vertica.Utilities_v4.Testing;
 
-namespace Vertica.Utilities.Tests.Extensions
+namespace Vertica.Utilities_v4.Tests.Extensions
 {
 	[TestFixture]
 	public class TimeExtensionsTester

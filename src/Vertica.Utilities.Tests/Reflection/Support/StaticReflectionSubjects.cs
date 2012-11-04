@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vertica.Utilities.Tests.Reflection.Support
+namespace Vertica.Utilities_v4.Tests.Reflection.Support
 {
 	internal class StaticReflectionSubjectType
 	{

@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Vertica.Utilities.Eventing;
+using Vertica.Utilities_v4.Eventing;
 
-namespace Vertica.Utilities.Tests.Eventing
+namespace Vertica.Utilities_v4.Tests.Eventing
 {
 	[TestFixture]
 	public class EventArgsTester

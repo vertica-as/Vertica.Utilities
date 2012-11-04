@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
-using Vertica.Utilities.Eventing;
-using Vertica.Utilities.Tests.Eventing.Support;
+using Vertica.Utilities_v4.Eventing;
+using Vertica.Utilities_v4.Tests.Eventing.Support;
 
-namespace Vertica.Utilities.Tests.Eventing
+namespace Vertica.Utilities_v4.Tests.Eventing
 {
 	[TestFixture]
 	public class EventHelperTester

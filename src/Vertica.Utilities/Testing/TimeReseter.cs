@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vertica.Utilities.Testing
+namespace Vertica.Utilities_v4.Testing
 {
 	public class TimeReseter : IDisposable
 	{

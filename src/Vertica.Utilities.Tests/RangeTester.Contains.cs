@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using Testing.Commons.Time;
 
-namespace Vertica.Utilities.Tests
+namespace Vertica.Utilities_v4.Tests
 {
 	[TestFixture]
 	public partial class RangeTester

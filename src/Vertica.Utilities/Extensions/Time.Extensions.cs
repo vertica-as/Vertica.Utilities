@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using Vertica.Utilities.Extensions.ComparableExt;
+using Vertica.Utilities_v4.Extensions.ComparableExt;
 
-namespace Vertica.Utilities.Extensions.TimeExt
+namespace Vertica.Utilities_v4.Extensions.TimeExt
 {
 	public static class TimeExtensions
 	{

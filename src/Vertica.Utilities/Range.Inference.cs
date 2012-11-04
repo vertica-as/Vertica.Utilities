@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vertica.Utilities
+namespace Vertica.Utilities_v4
 {
 	/// <summary>
 	/// Leverages type inference for <see cref="Range{T}"/>.

@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
-using Vertica.Utilities.Extensions.ComparableExt;
-using Vertica.Utilities.Tests.Extensions.Support;
+using Vertica.Utilities_v4.Extensions.ComparableExt;
+using Vertica.Utilities_v4.Tests.Extensions.Support;
 
-namespace Vertica.Utilities.Tests.Extensions
+namespace Vertica.Utilities_v4.Tests.Extensions
 {
 	[TestFixture]
 	public class ComparableExtensionsTester

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using NUnit.Framework;
 
-namespace Vertica.Utilities.Tests
+namespace Vertica.Utilities_v4.Tests
 {
 	[TestFixture]
 	public class OptionTester

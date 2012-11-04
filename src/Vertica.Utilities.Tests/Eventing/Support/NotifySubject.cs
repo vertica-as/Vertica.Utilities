@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
-using Vertica.Utilities.Eventing;
+using Vertica.Utilities_v4.Eventing;
 
-namespace Vertica.Utilities.Tests.Eventing.Support
+namespace Vertica.Utilities_v4.Tests.Eventing.Support
 {
 	internal class NotifySubject : INotifyPropertyChanged, INotifyPropertyChanging
 	{

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vertica.Utilities
+namespace Vertica.Utilities_v4
 {
 	public static class ExceptionHelper
 	{

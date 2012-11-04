@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Vertica.Utilities
+namespace Vertica.Utilities_v4
 {
 	public sealed class Option<T> : IEquatable<Option<T>>
 	{
