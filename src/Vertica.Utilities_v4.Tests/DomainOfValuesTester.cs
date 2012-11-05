@@ -1,10 +1,34 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace Vertica.Utilities_v4.Tests
 {
 	[TestFixture]
 	public class DomainOfValuesTester
 	{
+		#region documentation
+
+		[Test, Category("Exploratory")]
+		public void Explore()
+		{
+			var twoThreeFour = new DomainOfValues<int>(2, 3, 4);
+			twoThreeFour = new DomainOfValues<int>(twoThreeFour);
+			DomainOfValues<string> aToc = DomainOf.Values("a", "b", "c");
+
+			Assert.That(twoThreeFour.CheckContains(2), Is.True);
+			Assert.That(aToc.CheckContains("d"), Is.False);
+
+			Assert.That(aToc.CheckContains("C"), Is.False);
+			Assert.That(aToc.CheckContains("C", StringComparer.OrdinalIgnoreCase), Is.True);
+
+			Assert.That(() => twoThreeFour.CheckContains(2), Throws.Nothing);
+			Assert.That(() => aToc.AssertContains("d"), Throws.InstanceOf<InvalidDomainException<string>>());
+
+			Assert.That(() => aToc.AssertContains("C", StringComparer.OrdinalIgnoreCase), Throws.Nothing);
+		}
+
+		#endregion
+
 		#region creation
 
 		[Test]
@@ -138,7 +162,7 @@ namespace Vertica.Utilities_v4.Tests
 		public void AssertContains_NotContainedReferenceType_False()
 		{
 			var twoThreeFour = DomainOf.Values("2", "3", "4");
-			Assert.That(()=>twoThreeFour.AssertContains("5"), Throws.InstanceOf<InvalidDomainException<string>>());
+			Assert.That(() => twoThreeFour.AssertContains("5"), Throws.InstanceOf<InvalidDomainException<string>>());
 		}
 
 		[Test]
