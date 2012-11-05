@@ -50,6 +50,7 @@
     <Compile Include="Eventing\Support\NotifySubject.cs" />
     <Compile Include="ExceptionHelperTester.cs" />
     <Compile Include="Extensions\ComparableExtensionsTester.cs" />
+    <Compile Include="Extensions\DomainOfValuesExtensionsTester.cs" />
     <Compile Include="Extensions\RangeExtensionsTester.cs" />
     <Compile Include="Extensions\Support\ComparableSubjects.cs" />
     <Compile Include="GuardTester.cs" />
