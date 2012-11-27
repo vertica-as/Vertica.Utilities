@@ -16,7 +16,8 @@ namespace Vertica.Utilities_v4.Tests
 		[Test, Category("Exploratory")]
 		public void Explore()
 		{
-			
+			var thirtySomething = new Age(11.March(1977)); // terminus is injectable (Time.xxxNow)
+			var oneWeekOld = new Age(7.November(2012), 14.November(2012));
 		}
 
 		#endregion
