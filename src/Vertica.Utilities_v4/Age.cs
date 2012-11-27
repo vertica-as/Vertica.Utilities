@@ -5,7 +5,7 @@ using System.Text;
 namespace Vertica.Utilities_v4
 {
 	/* based on: http://www.singular.co.nz/blog/archive/2007/05/01/building-an-age-class-in-csharp.aspx */
-	public struct Age : IFormattable, IEquatable<Age>
+	public struct Age : IFormattable, IEquatable<Age>, IComparable, IComparable<Age>, IComparable<TimeSpan>
 	{
 		#region construction
 
@@ -285,6 +285,34 @@ namespace Vertica.Utilities_v4
 		public static bool operator !=(Age left, Age right)
 		{
 			return !left.Equals(right);
+		}
+
+		#endregion
+
+		#region comparisons
+
+		public int CompareTo(object obj)
+		{
+			if (obj is Age)
+			{
+				return CompareTo((Age)obj);
+			}
+			if (obj is TimeSpan)
+			{
+				return CompareTo((TimeSpan)obj);
+			}
+
+			throw new ArgumentException(string.Format("The object '{0}' is of the wrong type for comparison.", obj.GetType()), "obj");
+		}
+
+		public int CompareTo(Age other)
+		{
+			return CompareTo(other.Elapsed);
+		}
+
+		public int CompareTo(TimeSpan other)
+		{
+			return Elapsed.CompareTo(other);
 		}
 
 		#endregion

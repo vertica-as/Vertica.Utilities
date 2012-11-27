@@ -12,6 +12,8 @@ namespace Vertica.Utilities_v4.Tests
 	public class AgeTester
 	{
 		private static readonly DateTime _keyDateInHistory = new DateTime(1977, 3, 11);
+		private static readonly Age _twoYearsFromKeyDate = new Age(_keyDateInHistory, _keyDateInHistory.AddYears(2));
+		private static readonly Age _oneYearFromKeyDate = new Age(_keyDateInHistory, _keyDateInHistory.AddYears(1));
 
 		#region construction
 
@@ -26,7 +28,7 @@ namespace Vertica.Utilities_v4.Tests
 
 				Assert.That(subject, Must.Be.Age()
 					.WithBounds(advent: yesterday, terminus: now)
-					.Elapsed(1.	Days())
+					.Elapsed(1.Days())
 					.WithComponents(days: 1, weeks: 0, months: 0, years: 0));
 			}
 		}
@@ -217,6 +219,58 @@ namespace Vertica.Utilities_v4.Tests
 
 			Assert.That(oneYearOld != twoYearsOld, Is.True);
 			Assert.That(twoYearsOld != oneYearOld, Is.True);
+		}
+
+		#endregion
+
+		#region comparisons
+
+		[Test]
+		public void CompareTo_NonCompatibleType_Exception()
+		{
+			Age twoYears = new Age(_keyDateInHistory, _keyDateInHistory.AddYears(2));
+			Assert.Throws<ArgumentException>(() => twoYears.CompareTo(3));
+		}
+
+		[Test]
+		public void CompareTo_Ages()
+		{
+			Assert.That(_twoYearsFromKeyDate.CompareTo(_oneYearFromKeyDate), Is.GreaterThan(0));
+			Assert.That(_oneYearFromKeyDate.CompareTo(_twoYearsFromKeyDate), Is.LessThan(0));
+			Assert.That(_oneYearFromKeyDate.CompareTo(_oneYearFromKeyDate), Is.EqualTo(0));
+		}
+
+		[Test]
+		public void CompareTo_AgesWithDifferentAdventAndTerminus_JustElapsedTimeIsCompared()
+		{
+			DateTime now = 12.October(2008);
+			Age oneYear = new Age(now, now.AddYears(1));
+
+			Assert.That(_twoYearsFromKeyDate.CompareTo(oneYear), Is.GreaterThan(0));
+			Assert.That(oneYear.CompareTo(_twoYearsFromKeyDate), Is.LessThan(0));
+		}
+
+		[Test]
+		public void CompareTo_OneYearAgesWithDifferentAdvent_ComparationZero()
+		{
+			DateTime oneYearBeforeKeyDate = _keyDateInHistory.AddYears(-1);
+			Age twoYearsToKeyDate = new Age(oneYearBeforeKeyDate, oneYearBeforeKeyDate.AddYears(2));
+
+			Assert.That(twoYearsToKeyDate.CompareTo(_twoYearsFromKeyDate), Is.EqualTo(0),
+				"Just elapsed time is compared");
+		}
+
+		[Test]
+		public void CompareTo_OneDayTimeSpan_ComparisonAsExpected()
+		{
+			Age twoDays = new Age(_keyDateInHistory, _keyDateInHistory.AddDays(2));
+			TimeSpan oneDay = 1.Days();
+
+			Assert.That(twoDays.CompareTo(oneDay), Is.GreaterThan(0));
+			Assert.That(twoDays.CompareTo(2.Days()), Is.EqualTo(0));
+
+			Assert.That(() => oneDay.CompareTo(twoDays), Throws.InstanceOf<ArgumentException>(),
+				"there is automatic conversion from Age to TimeSpan");
 		}
 
 		#endregion
