@@ -25,7 +25,14 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(subject.ToString(), Is.EqualTo("300 years 2 weeks 1 day 3 hours 30 minutes 15 seconds"));
 			Assert.That(subject.ToString(2), Is.EqualTo("300 years 2 weeks"));
 			Assert.That(subject.ToString(1), Is.EqualTo("300 years"));
-			
+
+			Age twoYears1977 = new Age(11.March(1977), 11.March(1979)),
+				anotherTwoYears1977 = new Age(11.March(1977), 11.March(1979));
+			Age twoYears1981 = new Age(11.March(1981), 11.March(1983));
+			Assert.That(twoYears1977.Equals(anotherTwoYears1977), Is.True);
+			Assert.That(twoYears1977.Equals(twoYears1981), Is.False);
+			Assert.That(twoYears1977 == anotherTwoYears1977, Is.True);
+			Assert.That(twoYears1977 != twoYears1981, Is.True);
 		}
 
 		#endregion
