@@ -11,6 +11,16 @@ namespace Vertica.Utilities_v4.Tests
 	[TestFixture]
 	public class AgeTester
 	{
+		#region documentation
+
+		[Test, Category("Exploratory")]
+		public void Explore()
+		{
+			
+		}
+
+		#endregion
+
 		private static readonly DateTime _keyDateInHistory = new DateTime(1977, 3, 11);
 		private static readonly Age _twoYearsFromKeyDate = new Age(_keyDateInHistory, _keyDateInHistory.AddYears(2));
 		private static readonly Age _oneYearFromKeyDate = new Age(_keyDateInHistory, _keyDateInHistory.AddYears(1));
