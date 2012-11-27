@@ -5,7 +5,7 @@ using System.Text;
 namespace Vertica.Utilities_v4
 {
 	/* based on: http://www.singular.co.nz/blog/archive/2007/05/01/building-an-age-class-in-csharp.aspx */
-	public struct Age : IFormattable
+	public struct Age : IFormattable, IEquatable<Age>
 	{
 		#region construction
 
@@ -252,6 +252,39 @@ namespace Vertica.Utilities_v4
 			}
 
 			throw new FormatException("Could not parse the Age format: " + format);
+		}
+
+		#endregion
+
+		#region Equality
+
+		public bool Equals(Age other)
+		{
+			return _advent.Equals(other._advent) && _terminus.Equals(other._terminus);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			return obj is Age && Equals((Age) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				return (_advent.GetHashCode()*397) ^ _terminus.GetHashCode();
+			}
+		}
+
+		public static bool operator ==(Age left, Age right)
+		{
+			return left.Equals(right);
+		}
+
+		public static bool operator !=(Age left, Age right)
+		{
+			return !left.Equals(right);
 		}
 
 		#endregion

@@ -157,5 +157,68 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		#endregion
+
+		#region equality
+
+		[Test]
+		public void Equality_SameSpan_TrueWhenEqualAdventAndTerminus()
+		{
+			Age twoYears1977 = new Age(11.March(1977), 11.March(1979)),
+				anotherTwoYears1977 = new Age(11.March(1977), 11.March(1979));
+			Age twoYears1981 = new Age(11.March(1981), 11.March(1983));
+
+			Assert.That(twoYears1977.Equals(twoYears1977), Is.True);
+			Assert.That(twoYears1977.Equals(anotherTwoYears1977), Is.True);
+			Assert.That(anotherTwoYears1977.Equals(twoYears1977), Is.True);
+
+			Assert.That(twoYears1977 == twoYears1977, Is.True);
+			Assert.That(twoYears1977 == anotherTwoYears1977, Is.True);
+			Assert.That(anotherTwoYears1977 == twoYears1977, Is.True);
+
+			Assert.That(twoYears1977.Equals(twoYears1981), Is.False);
+			Assert.That(twoYears1981.Equals(twoYears1977), Is.False);
+
+			Assert.That(twoYears1977 == twoYears1981, Is.False);
+			Assert.That(twoYears1981 == twoYears1977, Is.False);
+		}
+
+		[Test]
+		public void Equality_DifferentSpan_False()
+		{
+			Age oneYearOld = new Age(12.October(2007), 12.October(2008));
+			Age twoYearsOld = new Age(12.October(2006), 12.October(2008));
+
+			Assert.That(oneYearOld.Equals(twoYearsOld), Is.False);
+			Assert.That(twoYearsOld.Equals(oneYearOld), Is.False);
+
+			Assert.That(oneYearOld == twoYearsOld, Is.False);
+			Assert.That(twoYearsOld == oneYearOld, Is.False);
+		}
+
+		[Test]
+		public void InEquality_SameSpan_FalseWhenEqualAdventAndTerminus()
+		{
+			Age twoYears1977 = new Age(11.March(1977), 11.March(1979)),
+				anotherTwoYears1977 = new Age(11.March(1977), 11.March(1979));
+			Age twoYears1981 = new Age(11.March(1981), 11.March(1983));
+
+			Assert.That(twoYears1977 != anotherTwoYears1977, Is.False);
+			Assert.That(anotherTwoYears1977 != twoYears1977, Is.False);
+
+			Assert.That(twoYears1977 != twoYears1981, Is.True);
+			Assert.That(twoYears1981 != twoYears1977, Is.True);
+		}
+
+		[Test]
+		public void InEquality_DifferentSpan_True()
+		{
+			Age oneYearOld = new Age(12.October(2007), 12.October(2008));
+			Age twoYearsOld = new Age(12.October(2006), 12.October(2008));
+
+			Assert.That(oneYearOld != twoYearsOld, Is.True);
+			Assert.That(twoYearsOld != oneYearOld, Is.True);
+		}
+
+		#endregion
 	}
 }
