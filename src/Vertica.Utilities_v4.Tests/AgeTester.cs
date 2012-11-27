@@ -145,11 +145,16 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(subject.ToString(20, false), Is.EqualTo("1 year 2 days"));
 		}
 
-		#endregion
-
-		#region IFormattable
-
-
+		[Test]
+		public void ToString_FormatWithSignificance2And3PartAge_LowerLevelTrimmed()
+		{
+			DateTime terminus = _keyDateInHistory;
+			DateTime advent = terminus.AddYears(-300).AddDays(-1).AddHours(-3);
+			Age subject = new Age(advent, terminus);
+			Assert.That(subject.ToString(), Is.EqualTo("300 years 1 day 3 hours"));
+			Assert.That(subject.ToString("g2"), Is.EqualTo("300 years 1 day"));
+			Assert.That(subject.ToString("2"), Is.EqualTo("300 years 1 day"));
+		}
 
 		#endregion
 	}

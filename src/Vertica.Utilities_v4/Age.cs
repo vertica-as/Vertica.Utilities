@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 
 namespace Vertica.Utilities_v4
 {
 	/* based on: http://www.singular.co.nz/blog/archive/2007/05/01/building-an-age-class-in-csharp.aspx */
-	public struct Age
+	public struct Age : IFormattable
 	{
 		#region construction
 
@@ -224,6 +225,33 @@ namespace Vertica.Utilities_v4
 		private static string plural(int number)
 		{
 			return number == 1 ? string.Empty : "s";
+		}
+
+		public string ToString(string format)
+		{
+			return ToString(format, CultureInfo.InvariantCulture);
+		}
+
+		public string ToString(string format, IFormatProvider provider)
+		{
+			if (string.IsNullOrEmpty(format)) format = "g";
+
+			char first = format[0];
+			if (char.ToLower(first) == 'g')
+			{
+				int parts = 0;
+				if (format.Length > 1 && char.IsDigit(format[1]))
+					parts = int.Parse(format[1].ToString(provider));
+				return ToString(parts);
+			}
+
+			if (char.IsDigit(first))
+			{
+				int parts = int.Parse(first.ToString(provider));
+				return ToString(parts);
+			}
+
+			throw new FormatException("Could not parse the Age format: " + format);
 		}
 
 		#endregion
