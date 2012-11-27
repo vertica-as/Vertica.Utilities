@@ -37,6 +37,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DisposableAction.cs" />
+    <Compile Include="DomainOf.cs" />
+    <Compile Include="DomainOfValues.cs" />
     <Compile Include="Eventing\CancelEventArgs.cs" />
     <Compile Include="Eventing\EventArgs.cs" />
     <Compile Include="Eventing\EventHelper.cs" />
@@ -55,6 +57,7 @@
     <Compile Include="Eventing\ValueIndexEventArgs.cs" />
     <Compile Include="ExceptionHelper.cs" />
     <Compile Include="Extensions\Comparable.Extensions.cs" />
+    <Compile Include="Extensions\DomainOfValues.Extensions.cs" />
     <Compile Include="Extensions\Range.Extensions.cs" />
     <Compile Include="Extensions\Time.Extensions.cs" />
     <Compile Include="Guard.cs" />

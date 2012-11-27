@@ -44,11 +44,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DisposableActionTester.cs" />
+    <Compile Include="DomainOfValuesTester.cs" />
     <Compile Include="Eventing\EventArgsTester.cs" />
     <Compile Include="Eventing\EventHelperTester.cs" />
     <Compile Include="Eventing\Support\NotifySubject.cs" />
     <Compile Include="ExceptionHelperTester.cs" />
     <Compile Include="Extensions\ComparableExtensionsTester.cs" />
+    <Compile Include="Extensions\DomainOfValuesExtensionsTester.cs" />
     <Compile Include="Extensions\RangeExtensionsTester.cs" />
     <Compile Include="Extensions\Support\ComparableSubjects.cs" />
     <Compile Include="GuardTester.cs" />

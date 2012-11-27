@@ -61,6 +61,15 @@ namespace Vertica.Utilities_v4.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; is not part of the expected domain: &apos;[{1}]&apos;..
+        /// </summary>
+        internal static string InvalidDomainException_MessageTemplate {
+            get {
+                return ResourceManager.GetString("InvalidDomainException_MessageTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value must be between {0} and {1}. That is, contained within {2}..
         /// </summary>
         internal static string Range_ArgumentAssertion_Template {
