@@ -18,6 +18,14 @@ namespace Vertica.Utilities_v4.Tests
 		{
 			var thirtySomething = new Age(11.March(1977)); // terminus is injectable (Time.xxxNow)
 			var oneWeekOld = new Age(7.November(2012), 14.November(2012));
+
+			DateTime terminus = 27.November(2012);
+			DateTime advent = terminus.AddYears(-300).AddDays(-15).AddHours(-3).AddMinutes(-30).AddSeconds(-15).AddMilliseconds(-3);
+			Age subject = new Age(advent, terminus);
+			Assert.That(subject.ToString(), Is.EqualTo("300 years 2 weeks 1 day 3 hours 30 minutes 15 seconds"));
+			Assert.That(subject.ToString(2), Is.EqualTo("300 years 2 weeks"));
+			Assert.That(subject.ToString(1), Is.EqualTo("300 years"));
+			
 		}
 
 		#endregion
