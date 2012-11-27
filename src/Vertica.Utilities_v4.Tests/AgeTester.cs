@@ -273,6 +273,183 @@ namespace Vertica.Utilities_v4.Tests
 				"there is automatic conversion from Age to TimeSpan");
 		}
 
+		#region gt
+		
+		[Test]
+		public void GreaterThanOperator_EqualDates_SameAsTimeStamp()
+		{
+			DateTime oneYearBeforeKeyDate = _keyDateInHistory.AddYears(-1);
+			Age twoYearsBeforeKeyDate = new Age(oneYearBeforeKeyDate, oneYearBeforeKeyDate.AddYears(2));
+
+			Assert.That(_twoYearsFromKeyDate > _twoYearsFromKeyDate, Is.False);
+			Assert.That(_twoYearsFromKeyDate > twoYearsBeforeKeyDate, Is.False);
+			Assert.That(twoYearsBeforeKeyDate > _twoYearsFromKeyDate, Is.False);
+
+			Assert.That(_twoYearsFromKeyDate.Elapsed > _twoYearsFromKeyDate.Elapsed, Is.False);
+			Assert.That(_twoYearsFromKeyDate.Elapsed > twoYearsBeforeKeyDate.Elapsed, Is.False);
+			Assert.That(twoYearsBeforeKeyDate.Elapsed > _twoYearsFromKeyDate.Elapsed, Is.False);
+		}
+
+		[Test]
+		public void GreaterThanOperator_NonEqualDates_SameAsTimeStamp()
+		{
+			Assert.That(_twoYearsFromKeyDate > _oneYearFromKeyDate, Is.True);
+			Assert.That(_oneYearFromKeyDate > _twoYearsFromKeyDate, Is.False);
+
+			Assert.That(_twoYearsFromKeyDate.Elapsed > _oneYearFromKeyDate.Elapsed, Is.True);
+			Assert.That(_oneYearFromKeyDate.Elapsed > _twoYearsFromKeyDate.Elapsed, Is.False);
+		}
+
+		[Test]
+		public void GreaterThanOperator_ConsistentBehaviorWithCompareTo()
+		{
+			Assert.That(_twoYearsFromKeyDate > _oneYearFromKeyDate, Is.True);
+			Assert.That(_twoYearsFromKeyDate > _oneYearFromKeyDate,
+				Is.EqualTo(_twoYearsFromKeyDate.CompareTo(_oneYearFromKeyDate) > 0));
+
+			Assert.That(_oneYearFromKeyDate > _twoYearsFromKeyDate,
+				Is.Not.EqualTo(_oneYearFromKeyDate.CompareTo(_twoYearsFromKeyDate) < 0));
+			Assert.That(_oneYearFromKeyDate > _twoYearsFromKeyDate, Is.False);
+
+			Assert.That(_oneYearFromKeyDate > _oneYearFromKeyDate,
+				Is.Not.EqualTo(_oneYearFromKeyDate.CompareTo(_oneYearFromKeyDate) == 0));
+			Assert.That(_oneYearFromKeyDate > _oneYearFromKeyDate, Is.False);
+		}
+
+		#endregion
+
+		#region goet
+
+		public void GreaterOrEqualThanOperator_EqualDates_SameAsTimeStamp()
+		{
+			DateTime oneYearBeforeKeyDate = _keyDateInHistory.AddYears(-1);
+			Age twoYearsBeforeKeyDate = new Age(oneYearBeforeKeyDate, oneYearBeforeKeyDate.AddYears(2));
+
+			Assert.That(_twoYearsFromKeyDate >= _twoYearsFromKeyDate, Is.True);
+			Assert.That(_twoYearsFromKeyDate >= twoYearsBeforeKeyDate, Is.True);
+			Assert.That(twoYearsBeforeKeyDate >= _twoYearsFromKeyDate, Is.True);
+
+			Assert.That(_twoYearsFromKeyDate.Elapsed >= _twoYearsFromKeyDate.Elapsed, Is.True);
+			Assert.That(_twoYearsFromKeyDate.Elapsed >= twoYearsBeforeKeyDate.Elapsed, Is.True);
+			Assert.That(twoYearsBeforeKeyDate.Elapsed >= _twoYearsFromKeyDate.Elapsed, Is.True);
+		}
+
+		[Test]
+		public void GreaterOrEqualThanOperator_NonEqualDates_SameAsTimeStamp()
+		{
+			Assert.That(_twoYearsFromKeyDate >= _oneYearFromKeyDate, Is.True);
+			Assert.That(_oneYearFromKeyDate >= _twoYearsFromKeyDate, Is.False);
+
+			Assert.That(_twoYearsFromKeyDate.Elapsed >= _oneYearFromKeyDate.Elapsed, Is.True);
+			Assert.That(_oneYearFromKeyDate.Elapsed >= _twoYearsFromKeyDate.Elapsed, Is.False);
+		}
+
+		[Test]
+		public void GreaterOrEqualThanOperator_ConsistentBehaviorWithCompareTo()
+		{
+			Assert.That(_twoYearsFromKeyDate >= _oneYearFromKeyDate, Is.True);
+			Assert.That(_twoYearsFromKeyDate >= _oneYearFromKeyDate,
+				Is.EqualTo(_twoYearsFromKeyDate.CompareTo(_oneYearFromKeyDate) > 0));
+
+			Assert.That(_oneYearFromKeyDate >= _twoYearsFromKeyDate, Is.False);
+			Assert.That(_oneYearFromKeyDate >= _twoYearsFromKeyDate,
+				Is.Not.EqualTo(_oneYearFromKeyDate.CompareTo(_twoYearsFromKeyDate) < 0));
+
+			Assert.That(_oneYearFromKeyDate >= _oneYearFromKeyDate, Is.True);
+			Assert.That(_oneYearFromKeyDate >= _oneYearFromKeyDate,
+				Is.EqualTo(_oneYearFromKeyDate.CompareTo(_oneYearFromKeyDate) == 0));
+		}
+
+		#endregion
+
+		#region lt
+
+		public void LessThanOperator_EqualDates_SameAsTimeStamp()
+		{
+			DateTime oneYearBeforeKeyDate = _keyDateInHistory.AddYears(-1);
+			Age twoYearsBeforeKeyDate = new Age(oneYearBeforeKeyDate, oneYearBeforeKeyDate.AddYears(2));
+
+			Assert.That(_twoYearsFromKeyDate < _twoYearsFromKeyDate, Is.False);
+			Assert.That(_twoYearsFromKeyDate < twoYearsBeforeKeyDate, Is.False);
+			Assert.That(twoYearsBeforeKeyDate < _twoYearsFromKeyDate, Is.False);
+
+			Assert.That(_twoYearsFromKeyDate.Elapsed < _twoYearsFromKeyDate.Elapsed, Is.False);
+			Assert.That(_twoYearsFromKeyDate.Elapsed < twoYearsBeforeKeyDate.Elapsed, Is.False);
+			Assert.That(twoYearsBeforeKeyDate.Elapsed < _twoYearsFromKeyDate.Elapsed, Is.False);
+		}
+
+		[Test]
+		public void LessThanOperator_NonEqualDates_SameAsTimeStamp()
+		{
+			Assert.That(_twoYearsFromKeyDate < _oneYearFromKeyDate, Is.False);
+			Assert.That(_oneYearFromKeyDate < _twoYearsFromKeyDate, Is.True);
+
+			Assert.That(_twoYearsFromKeyDate.Elapsed < _oneYearFromKeyDate.Elapsed, Is.False);
+			Assert.That(_oneYearFromKeyDate.Elapsed < _twoYearsFromKeyDate.Elapsed, Is.True);
+		}
+
+		[Test]
+		public void LessThanOperator_ConsistentBehaviorWithCompareTo()
+		{
+			Assert.That(_twoYearsFromKeyDate < _oneYearFromKeyDate, Is.False);
+			Assert.That(_twoYearsFromKeyDate < _oneYearFromKeyDate,
+				Is.EqualTo(_twoYearsFromKeyDate.CompareTo(_oneYearFromKeyDate) < 0));
+
+			Assert.That(_oneYearFromKeyDate < _twoYearsFromKeyDate,
+				Is.EqualTo(_oneYearFromKeyDate.CompareTo(_twoYearsFromKeyDate) < 0));
+			Assert.That(_oneYearFromKeyDate < _twoYearsFromKeyDate, Is.True);
+
+			Assert.That(_oneYearFromKeyDate < _oneYearFromKeyDate,
+				Is.Not.EqualTo(_oneYearFromKeyDate.CompareTo(_oneYearFromKeyDate) == 0));
+			Assert.That(_oneYearFromKeyDate < _oneYearFromKeyDate, Is.False);
+		}
+
+		#endregion
+
+		#region loet
+
+		public void LessOrEqualThanOperator_EqualDates_SameAsTimeStamp()
+		{
+			DateTime oneYearBeforeKeyDate = _keyDateInHistory.AddYears(-1);
+			Age twoYearsBeforeKeyDate = new Age(oneYearBeforeKeyDate, oneYearBeforeKeyDate.AddYears(2));
+
+			Assert.That(_twoYearsFromKeyDate <= _twoYearsFromKeyDate, Is.True);
+			Assert.That(_twoYearsFromKeyDate <= twoYearsBeforeKeyDate, Is.True);
+			Assert.That(twoYearsBeforeKeyDate <= _twoYearsFromKeyDate, Is.True);
+
+			Assert.That(_twoYearsFromKeyDate.Elapsed <= _twoYearsFromKeyDate.Elapsed, Is.True);
+			Assert.That(_twoYearsFromKeyDate.Elapsed <= twoYearsBeforeKeyDate.Elapsed, Is.True);
+			Assert.That(twoYearsBeforeKeyDate.Elapsed <= _twoYearsFromKeyDate.Elapsed, Is.True);
+		}
+
+		[Test]
+		public void LessOrEqualThanOperator_NonEqualDates_SameAsTimeStamp()
+		{
+			Assert.That(_twoYearsFromKeyDate <= _oneYearFromKeyDate, Is.False);
+			Assert.That(_oneYearFromKeyDate <= _twoYearsFromKeyDate, Is.True);
+
+			Assert.That(_twoYearsFromKeyDate.Elapsed <= _oneYearFromKeyDate.Elapsed, Is.False);
+			Assert.That(_oneYearFromKeyDate.Elapsed <= _twoYearsFromKeyDate.Elapsed, Is.True);
+		}
+
+		[Test]
+		public void LessOrEqualThanOperator_ConsistentBehaviorWithCompareTo()
+		{
+			Assert.That(_twoYearsFromKeyDate <= _oneYearFromKeyDate, Is.False);
+			Assert.That(_twoYearsFromKeyDate <= _oneYearFromKeyDate,
+				Is.EqualTo(_twoYearsFromKeyDate.CompareTo(_oneYearFromKeyDate) < 0));
+
+			Assert.That(_oneYearFromKeyDate <= _twoYearsFromKeyDate,
+				Is.EqualTo(_oneYearFromKeyDate.CompareTo(_twoYearsFromKeyDate) < 0));
+			Assert.That(_oneYearFromKeyDate <= _twoYearsFromKeyDate, Is.True);
+
+			Assert.That(_oneYearFromKeyDate <= _oneYearFromKeyDate,
+				Is.EqualTo(_oneYearFromKeyDate.CompareTo(_oneYearFromKeyDate) == 0));
+			Assert.That(_oneYearFromKeyDate <= _oneYearFromKeyDate, Is.True);
+		}
+
+		#endregion
+
 		#endregion
 	}
 }

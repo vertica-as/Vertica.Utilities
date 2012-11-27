@@ -315,6 +315,26 @@ namespace Vertica.Utilities_v4
 			return Elapsed.CompareTo(other);
 		}
 
+		public static bool operator >(Age x, Age y)
+		{
+			return x.Elapsed > y.Elapsed;
+		}
+
+		public static bool operator <(Age x, Age y)
+		{
+			return x.Elapsed < y.Elapsed;
+		}
+
+		public static bool operator >=(Age x, Age y)
+		{
+			return x.Elapsed >= y.Elapsed;
+		}
+
+		public static bool operator <=(Age x, Age y)
+		{
+			return x.Elapsed <= y.Elapsed;
+		}
+
 		#endregion
 	}
 }
