@@ -77,6 +77,30 @@ namespace Vertica.Utilities_v4.Tests
 			}
 		}
 
+		[Test]
+		public void Empty_ReturnsEmptyDate()
+		{
+			Age empty = Age.Empty;
+			Assert.That(empty, Must.Be.Age()
+					.WithBounds(DateTime.MinValue, DateTime.MinValue)
+					.Elapsed(TimeSpan.Zero)
+					.WithComponents(days: 0, weeks: 0, months: 0, years: 0));
+
+			Assert.That(empty.IsEmpty, Is.True);
+		}
+
+		[Test]
+		public void Default_IsAlsoEmpty()
+		{
+			Age @default = new Age();
+			Assert.That(@default, Must.Be.Age()
+					.WithBounds(DateTime.MinValue, DateTime.MinValue)
+					.Elapsed(TimeSpan.Zero)
+					.WithComponents(days: 0, weeks: 0, months: 0, years: 0));
+
+			Assert.That(@default.IsEmpty, Is.True);
+		}
+
 		#endregion
 
 	}

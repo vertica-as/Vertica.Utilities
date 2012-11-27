@@ -5,7 +5,9 @@ namespace Vertica.Utilities_v4
 	/* based on: http://www.singular.co.nz/blog/archive/2007/05/01/building-an-age-class-in-csharp.aspx */
 	public struct Age
 	{
-		#region Constructors
+		#region construction
+
+		public static readonly Age Empty = new Age(DateTime.MinValue, DateTime.MinValue);
 
 		/// <summary>
 		/// Creates a new instance of Age starting from the given date until now
