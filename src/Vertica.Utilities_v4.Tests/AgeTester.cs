@@ -103,5 +103,54 @@ namespace Vertica.Utilities_v4.Tests
 
 		#endregion
 
+		#region ToString
+
+		[Test]
+		public void ToString_OneYearAndTwoWeeks_EnglishText()
+		{
+			DateTime oneYearAndTwoWeeks = _keyDateInHistory.AddYears(1).AddDays(14);
+			Age subject = new Age(_keyDateInHistory, oneYearAndTwoWeeks);
+			Assert.That(subject.ToString(), Is.EqualTo("1 year 2 weeks"));
+		}
+
+		[Test]
+		public void ToString_3PartAgeVariousSignificances_LowerLevelTrimmed()
+		{
+			DateTime terminus = _keyDateInHistory;
+			DateTime advent = terminus.AddYears(-300).AddDays(-1).AddHours(-3);
+			Age subject = new Age(advent, terminus);
+			Assert.That(subject.ToString(3), Is.EqualTo(subject.ToString()));
+			Assert.That(subject.ToString(2), Is.EqualTo("300 years 1 day"));
+			Assert.That(subject.ToString(1), Is.EqualTo("300 years"));
+		}
+
+		[Test]
+		public void ToString_NegativeSignificance_NoTrim()
+		{
+			DateTime advent = _keyDateInHistory;
+			DateTime terminus = advent.Add(new TimeSpan(367, 13, 12, 2, 300));
+
+			Age subject = new Age(advent, terminus);
+			Assert.That(subject.ToString(-1), Is.EqualTo(subject.ToString()));
+		}
+
+		[Test]
+		public void ToString_DoNotIncludeTime_NoHoursMinutesOrSeconds()
+		{
+			DateTime advent = _keyDateInHistory;
+			DateTime terminus = advent.Add(new TimeSpan(367, 13, 12, 2, 300));
+
+			Age subject = new Age(advent, terminus);
+			Assert.That(subject.ToString(20, true), Is.EqualTo("1 year 2 days 13 hours 12 minutes 2 seconds"));
+			Assert.That(subject.ToString(20, false), Is.EqualTo("1 year 2 days"));
+		}
+
+		#endregion
+
+		#region IFormattable
+
+
+
+		#endregion
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Vertica.Utilities_v4
 {
@@ -147,6 +148,82 @@ namespace Vertica.Utilities_v4
 				return _advent == DateTime.MinValue
 					   && _terminus == DateTime.MinValue;
 			}
+		}
+
+		#endregion
+
+		#region ToString
+
+		public override string ToString()
+		{
+			return ToString(0, true);
+		}
+
+		public string ToString(int significantPlaces)
+		{
+			return ToString(significantPlaces, true);
+		}
+
+		public string ToString(int significantPlaces, bool includeTime)
+		{
+			if (IsEmpty)
+			{
+				return string.Empty;
+			}
+
+			int max = significantPlaces < 1 ? 10 : significantPlaces;
+			int parts = 0;
+
+			var result = new StringBuilder();
+			if (_years > 0 && parts < max)
+			{
+				result.AppendFormat(" {0} year{1}", _years, plural(_years));
+				++parts;
+			}
+			if (_months > 0 && parts < max)
+			{
+				result.AppendFormat(" {0} month{1}", _months, plural(_months));
+				++parts;
+			}
+			if (_weeks > 0 && parts < max)
+			{
+				result.AppendFormat(" {0} week{1}", _weeks, plural(_weeks));
+				++parts;
+			}
+			if (_days > 0 && parts < max)
+			{
+				result.AppendFormat(" {0} day{1}", _days, plural(_days));
+				++parts;
+			}
+
+			if (includeTime)
+			{
+				TimeSpan time = Elapsed;
+				if (time.Hours != 0 && parts < max)
+				{
+					result.AppendFormat(" {0} hour{1}", time.Hours, plural(time.Hours));
+					++parts;
+				}
+				if (time.Minutes != 0 && parts < max)
+				{
+					result.AppendFormat(" {0} minute{1}", time.Minutes, plural(time.Minutes));
+					++parts;
+				}
+				if (time.Seconds != 0 && parts < max)
+				{
+					result.AppendFormat(" {0} second{1}", time.Seconds, plural(time.Seconds));
+					++parts;
+				}
+			}
+
+			return result.Length == 0 ? 
+				includeTime ? "less than a second" : "less than a day"
+				: result.ToString().Trim();
+		}
+
+		private static string plural(int number)
+		{
+			return number == 1 ? string.Empty : "s";
 		}
 
 		#endregion
