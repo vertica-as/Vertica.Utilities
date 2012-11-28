@@ -646,7 +646,7 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(Enumeration.Cast<StringComparison>(4), Is.EqualTo(StringComparison.Ordinal));
 			Assert.That(Enum.ToObject(typeof(StringComparison), 4), Is.EqualTo(StringComparison.Ordinal));
 
-			Assert.That(()=>Enumeration.Cast<StringComparison>(100), Throws.InstanceOf<InvalidEnumArgumentException>());
+			Assert.That(() => Enumeration.Cast<StringComparison>(100), Throws.InstanceOf<InvalidEnumArgumentException>());
 			Assert.That(Enum.ToObject(typeof(StringComparison), 100), Is.EqualTo((StringComparison)100));
 
 			Assert.That(() => Enumeration.Cast<StringComparison>(4L), Throws.ArgumentException);
@@ -679,6 +679,13 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		[Test]
+		public void Parse_Empty_Exception()
+		{
+			Assert.That(() => Enumeration.Parse<PlatformID>(string.Empty), Throws.InstanceOf<InvalidEnumArgumentException>());
+			Assert.That(() => Enumeration.Parse<PlatformID>(null), Throws.InstanceOf<InvalidEnumArgumentException>());
+		}
+
+		[Test]
 		public void Parse_UndefinedNumericValue_Exception()
 		{
 			Assert.That(() => Enumeration.Parse<PlatformID>("100"), Throws.InstanceOf<InvalidEnumArgumentException>());
@@ -690,7 +697,7 @@ namespace Vertica.Utilities_v4.Tests
 			PlatformID? parsed;
 			Assert.That(Enumeration.TryParse("Unix", out parsed), Is.True);
 			Assert.That(parsed, Is.EqualTo(PlatformID.Unix));
-			
+
 			Assert.That(Enumeration.TryParse("unIx", true, out parsed), Is.True);
 			Assert.That(parsed, Is.EqualTo(PlatformID.Unix));
 		}
@@ -716,7 +723,16 @@ namespace Vertica.Utilities_v4.Tests
 		public void TryParse_UndefinedNumericValue_False()
 		{
 			PlatformID? parsed;
-			Assert.That(() => Enumeration.TryParse<PlatformID>("100", out parsed), Is.False);
+			Assert.That(() => Enumeration.TryParse("100", out parsed), Is.False);
+		}
+
+		[Test]
+		public void TryParse_Empty_False()
+		{
+			PlatformID? nonExisting;
+
+			Assert.That(Enumeration.TryParse(string.Empty, out nonExisting), Is.False);
+			Assert.That(Enumeration.TryParse(null, out nonExisting), Is.False);
 		}
 
 		#endregion
