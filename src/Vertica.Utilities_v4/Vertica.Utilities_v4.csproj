@@ -39,6 +39,7 @@
     <Compile Include="DisposableAction.cs" />
     <Compile Include="DomainOf.cs" />
     <Compile Include="DomainOfValues.cs" />
+    <Compile Include="Enumerated.cs" />
     <Compile Include="Eventing\CancelEventArgs.cs" />
     <Compile Include="Eventing\EventArgs.cs" />
     <Compile Include="Eventing\EventHelper.cs" />
