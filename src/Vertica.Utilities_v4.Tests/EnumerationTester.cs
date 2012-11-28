@@ -641,10 +641,82 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		[Test]
-		public void Cast_VsToObject_ToObjectAllowsUndefined()
+		public void Cast_Vs_ToObject()
 		{
 			Assert.That(Enumeration.Cast<StringComparison>(4), Is.EqualTo(StringComparison.Ordinal));
 			Assert.That(Enum.ToObject(typeof(StringComparison), 4), Is.EqualTo(StringComparison.Ordinal));
+
+			Assert.That(()=>Enumeration.Cast<StringComparison>(100), Throws.InstanceOf<InvalidEnumArgumentException>());
+			Assert.That(Enum.ToObject(typeof(StringComparison), 100), Is.EqualTo((StringComparison)100));
+
+			Assert.That(() => Enumeration.Cast<StringComparison>(4L), Throws.ArgumentException);
+			Assert.That(Enum.ToObject(typeof(StringComparison), 4L), Is.EqualTo(StringComparison.Ordinal));
+		}
+
+		#endregion
+
+		#region parse
+
+		[Test]
+		public void Parse_DefinedValue_Value()
+		{
+			Assert.That(Enumeration.Parse<PlatformID>("Unix"), Is.EqualTo(PlatformID.Unix));
+			Assert.That(Enumeration.Parse<PlatformID>("unIx", true), Is.EqualTo(PlatformID.Unix));
+		}
+
+		[Test]
+		public void Parse_UndefinedValue_Exception()
+		{
+			Assert.That(() => Enumeration.Parse<PlatformID>("nonExisting"), Throws.InstanceOf<InvalidEnumArgumentException>());
+			Assert.That(() => Enumeration.Parse<PlatformID>("UniX"), Throws.InstanceOf<InvalidEnumArgumentException>());
+			Assert.That(() => Enumeration.Parse<PlatformID>("UNIx", false), Throws.InstanceOf<InvalidEnumArgumentException>());
+		}
+
+		[Test]
+		public void Parse_DefinedNumericValue_Value()
+		{
+			Assert.That(Enumeration.Parse<StringComparison>("4"), Is.EqualTo(StringComparison.Ordinal));
+		}
+
+		[Test]
+		public void Parse_UndefinedNumericValue_Exception()
+		{
+			Assert.That(() => Enumeration.Parse<PlatformID>("100"), Throws.InstanceOf<InvalidEnumArgumentException>());
+		}
+
+		[Test]
+		public void TryParse_DefinedValue_True()
+		{
+			PlatformID? parsed;
+			Assert.That(Enumeration.TryParse("Unix", out parsed), Is.True);
+			Assert.That(parsed, Is.EqualTo(PlatformID.Unix));
+			
+			Assert.That(Enumeration.TryParse("unIx", true, out parsed), Is.True);
+			Assert.That(parsed, Is.EqualTo(PlatformID.Unix));
+		}
+
+		[Test]
+		public void TryParse_UndefinedValue_False()
+		{
+			PlatformID? parsed;
+			Assert.That(() => Enumeration.TryParse("nonExisting", out parsed), Is.False);
+			Assert.That(() => Enumeration.TryParse("UniX", out parsed), Is.False);
+			Assert.That(() => Enumeration.TryParse("UNIx", false, out parsed), Is.False);
+		}
+
+		[Test]
+		public void TryParse_DefinedNumericValue_True()
+		{
+			StringComparison? parsed;
+			Assert.That(Enumeration.TryParse("4", out parsed), Is.True);
+			Assert.That(parsed, Is.EqualTo(StringComparison.Ordinal));
+		}
+
+		[Test]
+		public void TryParse_UndefinedNumericValue_False()
+		{
+			PlatformID? parsed;
+			Assert.That(() => Enumeration.TryParse<PlatformID>("100", out parsed), Is.False);
 		}
 
 		#endregion

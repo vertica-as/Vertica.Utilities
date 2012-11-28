@@ -409,16 +409,18 @@ namespace Vertica.Utilities_v4
 		public static IEnumerable<TEnum> GetValues<TEnum>() where TEnum : struct, IComparable, IFormattable, IConvertible
 		{
 			AssertEnum<TEnum>();
-			return Enum.GetValues(typeof (TEnum)).Cast<TEnum>();
+			return Enum.GetValues(typeof(TEnum)).Cast<TEnum>();
 		}
 
 		/// <summary>
 		///  Gets the numeric value of an enumeration
 		/// </summary>
-		public static TNumeric GetValue<TEnum, TNumeric>(TEnum value) where TEnum : struct, IComparable, IFormattable, IConvertible where TNumeric : struct, IComparable, IFormattable, IConvertible, IComparable<TNumeric>, IEquatable<TNumeric>
+		public static TNumeric GetValue<TEnum, TNumeric>(TEnum value)
+			where TEnum : struct, IComparable, IFormattable, IConvertible
+			where TNumeric : struct, IComparable, IFormattable, IConvertible, IComparable<TNumeric>, IEquatable<TNumeric>
 		{
 			AssertDefined(value);
-			return (TNumeric) Convert.ChangeType(value, typeof (TNumeric));
+			return (TNumeric)Convert.ChangeType(value, typeof(TNumeric));
 		}
 
 		/// <summary>
@@ -435,12 +437,12 @@ namespace Vertica.Utilities_v4
 			{
 				try
 				{
-					numericValue = (TNumeric) Convert.ChangeType(value, typeof (TNumeric));
+					numericValue = (TNumeric)Convert.ChangeType(value, typeof(TNumeric));
 					result = true;
 				}
-					// there is no Convert.CanChangeType :-(
-				catch (InvalidCastException) {}
-				catch (OverflowException) {}
+				// there is no Convert.CanChangeType :-(
+				catch (InvalidCastException) { }
+				catch (OverflowException) { }
 			}
 			return result;
 		}
@@ -459,7 +461,7 @@ namespace Vertica.Utilities_v4
 			}
 			return casted.Value;
 		}
-		
+
 		public static bool TryCast<TEnum>(byte value, out TEnum? casted) where TEnum : struct, IComparable, IFormattable, IConvertible
 		{
 			casted = null;
@@ -598,6 +600,50 @@ namespace Vertica.Utilities_v4
 			casted = null;
 			bool success = IsDefined<TEnum>(value);
 			if (success) casted = (TEnum)Enum.ToObject(typeof(TEnum), value);
+			return success;
+		}
+
+		#endregion
+
+		#region parsing
+
+		public static TEnum Parse<TEnum>(string value, bool ignoreCase = false) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			TEnum? casted;
+			bool result = TryParse(value, ignoreCase, out casted);
+			if (!result) throwNotDefined<TEnum, string>(value);
+			return casted.Value;
+		}
+
+		public static bool TryParse<TEnum>(string value, out TEnum? parsed) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			parsed = null;
+			Type enumType = typeof(TEnum);
+			AssertEnum<TEnum>();
+			bool success = false;
+			TEnum p;
+			if (Enum.TryParse(value, out p))
+			{
+				success = Enum.IsDefined(enumType, p);
+				parsed = p;
+			}
+
+			return success;
+		}
+
+		public static bool TryParse<TEnum>(string value, bool ignoreCase, out TEnum? parsed) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			parsed = null;
+			Type enumType = typeof(TEnum);
+			AssertEnum<TEnum>();
+			bool success = false;
+			TEnum p;
+			if (Enum.TryParse(value, ignoreCase, out p))
+			{
+				success = Enum.IsDefined(enumType, p);
+				parsed = p;
+			}
+
 			return success;
 		}
 
