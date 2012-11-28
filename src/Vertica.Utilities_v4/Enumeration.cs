@@ -1,4 +1,5 @@
 ﻿using System;
+using Vertica.Utilities_v4.Resources;
 
 namespace Vertica.Utilities_v4
 {
@@ -15,6 +16,19 @@ namespace Vertica.Utilities_v4
 		public static bool IsEnum(Type type)
 		{
 			return type.IsEnum;
+		}
+
+		public static void AssertEnum<TEnum>() where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			AssertEnum(typeof(TEnum));
+		}
+
+		public static void AssertEnum(Type type)
+		{
+			if (!IsEnum(type))
+			{
+				ExceptionHelper.Throw<ArgumentException>(Exceptions.Enumeration_NotEnum, type.ToString());
+			}
 		}
 	}
 }
