@@ -52,6 +52,8 @@ namespace Vertica.Utilities_v4.Tests
 
 		#region definition
 
+		#region IsDefined
+
 		[Test]
 		public void IsDefined_DefinedEnumValue_True()
 		{
@@ -62,7 +64,7 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void IsDefined_UndefinedEnumValue_False()
 		{
-			var undefined = (StringComparison)100;
+			var undefined = (StringComparison) 100;
 			Assert.That(Enumeration.IsDefined(undefined), Is.False);
 		}
 
@@ -150,6 +152,11 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(() => Enumeration.IsDefined<int>(1), Throws.InstanceOf<ArgumentException>());
 		}
 
+		#endregion
+
+
+		#region AssertDefined
+
 		[Test]
 		public void AssertDefined_DefinedEnumValue_NoException()
 		{
@@ -160,10 +167,8 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void AssertDefined_UndefinedEnumValue_Exception()
 		{
-			var undefined = (StringComparison)100;
-			Assert.That(() => Enumeration.AssertDefined(undefined), Throws.InstanceOf<InvalidEnumArgumentException>()
-				.With.Message.StringContaining("100")
-				.And.With.Message.StringContaining("StringComparison"));
+			var undefined = (StringComparison) 100;
+			Assert.That(() => Enumeration.AssertDefined(undefined), Throws.InstanceOf<InvalidEnumArgumentException>().With.Message.StringContaining("100").And.With.Message.StringContaining("StringComparison"));
 		}
 
 		[Test]
@@ -252,6 +257,8 @@ namespace Vertica.Utilities_v4.Tests
 
 		#endregion
 
+		#endregion
+
 		#region names
 
 		[Test]
@@ -266,18 +273,20 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(() => Enumeration.GetNames<int>(), Throws.InstanceOf<ArgumentException>());
 		}
 
+		#region GetName
+
 		[Test]
 		public void GetName_DefinedEnumValue_Name()
 		{
 			Assert.That(Enumeration.GetName(StringComparison.Ordinal), Is.EqualTo("Ordinal"));
-			Assert.That(Enum.GetName(typeof(StringComparison), StringComparison.Ordinal), Is.EqualTo("Ordinal"));
+			Assert.That(Enum.GetName(typeof (StringComparison), StringComparison.Ordinal), Is.EqualTo("Ordinal"));
 		}
 
 		[Test]
 		public void GetName_UndefinedEnumValue_Exception()
 		{
-			StringComparison undefined = (StringComparison)100;
-			Assert.That(Enum.GetName(typeof(StringComparison), undefined), Is.Null);
+			StringComparison undefined = (StringComparison) 100;
+			Assert.That(Enum.GetName(typeof (StringComparison), undefined), Is.Null);
 			Assert.That(() => Enumeration.GetName(undefined), Throws.InstanceOf<InvalidEnumArgumentException>());
 		}
 
@@ -328,6 +337,91 @@ namespace Vertica.Utilities_v4.Tests
 		{
 			Assert.That(() => Enumeration.GetName<int>(1), Throws.InstanceOf<ArgumentException>());
 		}
+
+		#endregion
+
+		#region TryGetName
+
+		[Test]
+		public void TryGetName_DefinedEnumValue_Name()
+		{
+			string name;
+			Assert.That(Enumeration.TryGetName(StringComparison.Ordinal, out name), Is.True);
+			Assert.That(name, Is.EqualTo("Ordinal"));
+		}
+
+		[Test]
+		public void TryGetName_UndefinedEnumValue_False()
+		{
+			string name;
+			StringComparison undefined = (StringComparison)100;
+			Assert.That(() => Enumeration.TryGetName(undefined, out name), Is.False);
+		}
+
+		[Test]
+		public void TryGetName_DefinedNumericValue_True()
+		{
+			string name = null;
+
+			byte bValue = 1;
+			Assert.That(Enumeration.TryGetName<ByteEnum>(bValue, out name), Is.True);
+			Assert.That(name, Is.EqualTo("Two"));
+			sbyte sbValue = 1;
+			Assert.That(Enumeration.TryGetName<SByteEnum>(sbValue, out name), Is.True);
+			Assert.That(name, Is.EqualTo("Two"));
+			short sValue = 1;
+			Assert.That(Enumeration.TryGetName<ShortEnum>(sValue, out name), Is.True);
+			Assert.That(name, Is.EqualTo("Two"));
+			ushort usValue = 1;
+			Assert.That(Enumeration.TryGetName<UShortEnum>(usValue, out name), Is.True);
+			Assert.That(name, Is.EqualTo("Two"));
+			int iValue = 1;
+			Assert.That(Enumeration.TryGetName<IntEnum>(iValue, out name), Is.True);
+			Assert.That(name, Is.EqualTo("Two"));
+			uint uiValue = 1;
+			Assert.That(Enumeration.TryGetName<UIntEnum>(uiValue, out name), Is.True);
+			Assert.That(name, Is.EqualTo("Two"));
+			long lValue = 1;
+			Assert.That(Enumeration.TryGetName<LongEnum>(lValue, out name), Is.True);
+			Assert.That(name, Is.EqualTo("Two"));
+			ulong ulValue = 1;
+			Assert.That(Enumeration.TryGetName<ULongEnum>(ulValue, out name), Is.True);
+			Assert.That(name, Is.EqualTo("Two"));
+		}
+
+		[Test]
+		public void TryGetName_UndefinedNumericValue_False()
+		{
+			string name;
+
+			byte bValue = 100;
+			Assert.That(() => Enumeration.TryGetName<ByteEnum>(bValue, out name), Is.False);
+			sbyte sbValue = 100;
+			Assert.That(() => Enumeration.TryGetName<SByteEnum>(sbValue, out name), Is.False);
+			short sValue = 100;
+			Assert.That(() => Enumeration.TryGetName<ShortEnum>(sValue, out name), Is.False);
+			ushort usValue = 100;
+			Assert.That(() => Enumeration.TryGetName<UShortEnum>(usValue, out name), Is.False);
+			int iValue = 100;
+			Assert.That(() => Enumeration.TryGetName<IntEnum>(iValue, out name), Is.False);
+			uint uiValue = 100;
+			Assert.That(() => Enumeration.TryGetName<UIntEnum>(uiValue, out name), Is.False);
+			long lValue = 100;
+			Assert.That(() => Enumeration.TryGetName<LongEnum>(lValue, out name), Is.False);
+			ulong ulValue = 100;
+			Assert.That(() => Enumeration.TryGetName<ULongEnum>(ulValue, out name), Is.False);
+		}
+
+		[Test]
+		public void TryGetName_NotEnumType_Exception()
+		{
+			string name;
+
+			Assert.That(() => Enumeration.TryGetName<int>(1, out name), Throws.InstanceOf<ArgumentException>());
+		}
+
+		#endregion
+
 
 		#endregion
 

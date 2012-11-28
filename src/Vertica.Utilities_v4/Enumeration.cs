@@ -309,7 +309,86 @@ namespace Vertica.Utilities_v4
 			return Enum.GetName(typeof(TEnum), value);
 		}
 
+		/// <summary>
+		/// Retrieves the name of the constant in the specified enumeration that has the specified value. A return value indicates whether the conversion succeeded.
+		/// </summary>
+		public static bool TryGetName<TEnum>(TEnum value, out string name) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			name = getName<TEnum, TEnum>(value);
+			return name != null;
+		}
 
+		/// <summary>
+		/// Retrieves the name of the constant in the specified enumeration that has the specified value. A return value indicates whether the conversion succeeded.
+		/// </summary>
+		public static bool TryGetName<TEnum>(byte value, out string name) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			name = getName<TEnum, byte>(value);
+			return name != null;
+		}
+
+		/// <summary>
+		/// Retrieves the name of the constant in the specified enumeration that has the specified value. A return value indicates whether the conversion succeeded.
+		/// </summary>
+		public static bool TryGetName<TEnum>(sbyte value, out string name) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			name = getName<TEnum, sbyte>(value);
+			return name != null;
+		}
+
+		/// <summary>
+		/// Retrieves the name of the constant in the specified enumeration that has the specified value. A return value indicates whether the conversion succeeded.
+		/// </summary>
+		public static bool TryGetName<TEnum>(short value, out string name) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			name = getName<TEnum, short>(value);
+			return name != null;
+		}
+
+		/// <summary>
+		/// Retrieves the name of the constant in the specified enumeration that has the specified value. A return value indicates whether the conversion succeeded.
+		/// </summary>
+		public static bool TryGetName<TEnum>(ushort value, out string name) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			name = getName<TEnum, ushort>(value);
+			return name != null;
+		}
+
+		/// <summary>
+		/// Retrieves the name of the constant in the specified enumeration that has the specified value. A return value indicates whether the conversion succeeded.
+		/// </summary>
+		public static bool TryGetName<TEnum>(int value, out string name) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			name = getName<TEnum, int>(value);
+			return name != null;
+		}
+
+		/// <summary>
+		/// Retrieves the name of the constant in the specified enumeration that has the specified value. A return value indicates whether the conversion succeeded.
+		/// </summary>
+		public static bool TryGetName<TEnum>(uint value, out string name) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			name = getName<TEnum, uint>(value);
+			return name != null;
+		}
+
+		/// <summary>
+		/// Retrieves the name of the constant in the specified enumeration that has the specified value. A return value indicates whether the conversion succeeded.
+		/// </summary>
+		public static bool TryGetName<TEnum>(long value, out string name) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			name = getName<TEnum, long>(value);
+			return name != null;
+		}
+
+		/// <summary>
+		/// Retrieves the name of the constant in the specified enumeration that has the specified value. A return value indicates whether the conversion succeeded.
+		/// </summary>
+		public static bool TryGetName<TEnum>(ulong value, out string name) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			name = getName<TEnum, ulong>(value);
+			return name != null;
+		}
 
 		#endregion
 
