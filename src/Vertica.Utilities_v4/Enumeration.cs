@@ -392,5 +392,10 @@ namespace Vertica.Utilities_v4
 
 		#endregion
 
+		public static Type GetUnderlyingType<TEnum>() where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			AssertEnum<TEnum>();
+			return Enum.GetUnderlyingType(typeof(TEnum));
+		}
 	}
 }

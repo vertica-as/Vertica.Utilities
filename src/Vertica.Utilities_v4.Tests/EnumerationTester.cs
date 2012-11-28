@@ -153,8 +153,7 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		#endregion
-
-
+		
 		#region AssertDefined
 
 		[Test]
@@ -422,8 +421,26 @@ namespace Vertica.Utilities_v4.Tests
 
 		#endregion
 
-
 		#endregion
+
+		[Test]
+		public void GetUnderlyingType_CorrectType()
+		{
+			Assert.That(Enumeration.GetUnderlyingType<ByteEnum>(), Is.EqualTo(typeof(byte)));
+			Assert.That(Enumeration.GetUnderlyingType<SByteEnum>(), Is.EqualTo(typeof(sbyte)));
+			Assert.That(Enumeration.GetUnderlyingType<ShortEnum>(), Is.EqualTo(typeof(short)));
+			Assert.That(Enumeration.GetUnderlyingType<UShortEnum>(), Is.EqualTo(typeof(ushort)));
+			Assert.That(Enumeration.GetUnderlyingType<IntEnum>(), Is.EqualTo(typeof(int)));
+			Assert.That(Enumeration.GetUnderlyingType<UIntEnum>(), Is.EqualTo(typeof(uint)));
+			Assert.That(Enumeration.GetUnderlyingType<LongEnum>(), Is.EqualTo(typeof(long)));
+			Assert.That(Enumeration.GetUnderlyingType<ULongEnum>(), Is.EqualTo(typeof(ulong)));
+		}
+
+		[Test]
+		public void GetUnderlyingType_NotAnEnum_Exception()
+		{
+			Assert.That(()=>Enumeration.GetUnderlyingType<int>(), Throws.ArgumentException);			
+		}
 
 	}
 }
