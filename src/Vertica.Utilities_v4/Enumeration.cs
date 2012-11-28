@@ -15,7 +15,7 @@ namespace Vertica.Utilities_v4
 
 		public static bool IsEnum<TEnum>() where TEnum : struct, IComparable, IFormattable, IConvertible
 		{
-			return typeof (TEnum).IsEnum;
+			return typeof(TEnum).IsEnum;
 		}
 
 		public static void AssertEnum<TEnum>() where TEnum : struct, IComparable, IFormattable, IConvertible
@@ -117,8 +117,8 @@ namespace Vertica.Utilities_v4
 		public static bool IsDefined<TEnum>(string name, bool ignoreCase = false) where TEnum : struct, IComparable, IFormattable, IConvertible
 		{
 			AssertEnum<TEnum>();
-			return !ignoreCase ? 
-				Enum.IsDefined(typeof (TEnum), name) :
+			return !ignoreCase ?
+				Enum.IsDefined(typeof(TEnum), name) :
 				GetNames<TEnum>().Contains(name, StringComparer.OrdinalIgnoreCase);
 		}
 
@@ -205,7 +205,7 @@ namespace Vertica.Utilities_v4
 		private static void throwNotDefined<TEnum, U>(U valueOrName)
 		{
 			throw new InvalidEnumArgumentException(string.Format(Exceptions.Enumeration_ValueNotDefinedTemplate,
-				valueOrName, typeof (TEnum).Name));
+				valueOrName, typeof(TEnum).Name));
 		}
 
 		#endregion
@@ -392,10 +392,57 @@ namespace Vertica.Utilities_v4
 
 		#endregion
 
+		/// <summary>
+		/// Returns the underlying type of the specified enumeration.
+		/// </summary>
 		public static Type GetUnderlyingType<TEnum>() where TEnum : struct, IComparable, IFormattable, IConvertible
 		{
 			AssertEnum<TEnum>();
 			return Enum.GetUnderlyingType(typeof(TEnum));
+		}
+
+		/// <summary>
+		/// Retrieves an enumerable of the values of the constants in a specified enumeration.
+		/// </summary>
+		public static IEnumerable<TEnum> GetValues<TEnum>() where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			AssertEnum<TEnum>();
+			return Enum.GetValues(typeof(TEnum)).Cast<TEnum>();
+		}
+
+		/// <summary>
+		///  Gets the numeric value of an enumeration
+		/// </summary>
+		public static TNumeric GetValue<TEnum, TNumeric>(TEnum value)
+			where TEnum : struct, IComparable, IFormattable, IConvertible
+			where TNumeric : struct, IComparable, IFormattable, IConvertible, IComparable<TNumeric>, IEquatable<TNumeric>
+		{
+			AssertDefined(value);
+			return (TNumeric)Convert.ChangeType(value, typeof(TNumeric));
+		}
+
+		/// <summary>
+		/// GEts the numeric value of an enumeration. A return value indicates whether the conversion succeeded.
+		/// </summary>
+		public static bool TryGetValue<TEnum, TNumeric>(TEnum value, out TNumeric? numericValue)
+			where TEnum : struct, IComparable, IFormattable, IConvertible
+			where TNumeric : struct, IComparable, IFormattable, IConvertible, IComparable<TNumeric>, IEquatable<TNumeric>
+		{
+			bool result = false;
+			numericValue = null;
+
+			if (IsDefined(value))
+			{
+				try
+				{
+					numericValue = (TNumeric)Convert.ChangeType(value, typeof(TNumeric));
+					result = true;
+				}
+				// there is no Convert.CanChangeType :-(
+				catch (InvalidCastException) { }
+				catch (OverflowException) { }
+			}
+			return result;
 		}
 	}
 }

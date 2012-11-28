@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using NUnit.Framework;
 
@@ -18,6 +19,8 @@ namespace Vertica.Utilities_v4.Tests
 		enum UIntEnum : uint { One, Two }
 		enum LongEnum : long { One, Two }
 		enum ULongEnum : ulong { One, Two }
+
+		enum MaxEnum :  ulong { Max = ulong.MaxValue }
 		// ReSharper restore UnusedMember.Local
 
 		#endregion
@@ -64,7 +67,7 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void IsDefined_UndefinedEnumValue_False()
 		{
-			var undefined = (StringComparison) 100;
+			var undefined = (StringComparison)100;
 			Assert.That(Enumeration.IsDefined(undefined), Is.False);
 		}
 
@@ -153,7 +156,7 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		#endregion
-		
+
 		#region AssertDefined
 
 		[Test]
@@ -166,7 +169,7 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void AssertDefined_UndefinedEnumValue_Exception()
 		{
-			var undefined = (StringComparison) 100;
+			var undefined = (StringComparison)100;
 			Assert.That(() => Enumeration.AssertDefined(undefined), Throws.InstanceOf<InvalidEnumArgumentException>().With.Message.StringContaining("100").And.With.Message.StringContaining("StringComparison"));
 		}
 
@@ -278,14 +281,14 @@ namespace Vertica.Utilities_v4.Tests
 		public void GetName_DefinedEnumValue_Name()
 		{
 			Assert.That(Enumeration.GetName(StringComparison.Ordinal), Is.EqualTo("Ordinal"));
-			Assert.That(Enum.GetName(typeof (StringComparison), StringComparison.Ordinal), Is.EqualTo("Ordinal"));
+			Assert.That(Enum.GetName(typeof(StringComparison), StringComparison.Ordinal), Is.EqualTo("Ordinal"));
 		}
 
 		[Test]
 		public void GetName_UndefinedEnumValue_Exception()
 		{
-			StringComparison undefined = (StringComparison) 100;
-			Assert.That(Enum.GetName(typeof (StringComparison), undefined), Is.Null);
+			StringComparison undefined = (StringComparison)100;
+			Assert.That(Enum.GetName(typeof(StringComparison), undefined), Is.Null);
 			Assert.That(() => Enumeration.GetName(undefined), Throws.InstanceOf<InvalidEnumArgumentException>());
 		}
 
@@ -439,8 +442,133 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void GetUnderlyingType_NotAnEnum_Exception()
 		{
-			Assert.That(()=>Enumeration.GetUnderlyingType<int>(), Throws.ArgumentException);			
+			Assert.That(() => Enumeration.GetUnderlyingType<int>(), Throws.ArgumentException);
 		}
+
+		#region values
+
+		[Test]
+		public void GetValues_GetsAllValuesAsTyped()
+		{
+			IEnumerable<StringSplitOptions> values = Enumeration.GetValues<StringSplitOptions>();
+			Assert.That(values, Is.EquivalentTo(new[] {StringSplitOptions.None, StringSplitOptions.RemoveEmptyEntries}));
+		}
+
+		[Test]
+		public void GetValues_NotAnEnum_Exception()
+		{
+			Assert.That(() => Enumeration.GetValues<int>(), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void GetValue_DefinedUnderlying_NumericValue()
+		{
+			byte bValue = Enumeration.GetValue<ByteEnum, byte>(ByteEnum.Two);
+			Assert.That(bValue, Is.EqualTo(1));
+			sbyte sbValue = Enumeration.GetValue<SByteEnum, sbyte>(SByteEnum.Two);
+			Assert.That(sbValue, Is.EqualTo(1));
+			short sValue = Enumeration.GetValue<ShortEnum, short>(ShortEnum.Two);
+			Assert.That(sValue, Is.EqualTo(1));
+			ushort usValue = Enumeration.GetValue<UShortEnum, ushort>(UShortEnum.Two);
+			Assert.That(usValue, Is.EqualTo(1));
+			int iValue = Enumeration.GetValue<IntEnum, int>(IntEnum.Two);
+			Assert.That(iValue, Is.EqualTo(1));
+			uint uiValue = Enumeration.GetValue<UIntEnum, uint>(UIntEnum.Two);
+			Assert.That(uiValue, Is.EqualTo(1));
+			long lValue = Enumeration.GetValue<LongEnum, long>(LongEnum.Two);
+			Assert.That(lValue, Is.EqualTo(1));
+			ulong ulValue = Enumeration.GetValue<ULongEnum, ulong>(ULongEnum.Two);
+			Assert.That(ulValue, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void GetValue_FittingNotUnderlying_NumericValue()
+		{
+			byte bValue = Enumeration.GetValue<LongEnum, byte>(LongEnum.Two);
+			Assert.That(bValue, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void GetValue_OverflowingNotUnderlying_Exception()
+		{
+			Assert.That(()=>Enumeration.GetValue<MaxEnum, byte>(MaxEnum.Max), Throws.InstanceOf<OverflowException>());
+		}
+
+		[Test]
+		public void GetValue_Undefined_Exception()
+		{
+			StringComparison undefined = (StringComparison) 100;
+			Assert.That(() => Enumeration.GetValue<StringComparison, int>(undefined), Throws.InstanceOf<InvalidEnumArgumentException>());
+		}
+
+		[Test]
+		public void GetValue_NotAnEnum_Exception()
+		{
+			Assert.That(()=> Enumeration.GetValue<int, byte>(2), Throws.ArgumentException);
+			
+		}
+
+		[Test]
+		public void TryGetValue_DefinedUnderlying_True()
+		{
+			byte? bValue;
+			Assert.That(Enumeration.TryGetValue(ByteEnum.Two, out bValue), Is.True);
+			Assert.That(bValue, Is.EqualTo(1));
+			sbyte? sbValue;
+			Assert.That(Enumeration.TryGetValue(SByteEnum.Two, out sbValue), Is.True);
+			Assert.That(sbValue, Is.EqualTo(1));
+			short? sValue;
+			Assert.That(Enumeration.TryGetValue(ShortEnum.Two, out sValue), Is.True);
+			Assert.That(sValue, Is.EqualTo(1));
+			ushort? usValue;
+			Assert.That(Enumeration.TryGetValue(UShortEnum.Two, out usValue), Is.True);
+			Assert.That(usValue, Is.EqualTo(1));
+			int? iValue;
+			Assert.That(Enumeration.TryGetValue(IntEnum.Two, out iValue), Is.True);
+			Assert.That(iValue, Is.EqualTo(1));
+			uint? uiValue;
+			Assert.That(Enumeration.TryGetValue(UIntEnum.Two, out uiValue), Is.True);
+			Assert.That(uiValue, Is.EqualTo(1));
+			long? lValue;
+			Assert.That(Enumeration.TryGetValue(LongEnum.Two, out lValue), Is.True);
+			Assert.That(lValue, Is.EqualTo(1));
+			ulong? ulValue;
+			Assert.That(Enumeration.TryGetValue(ULongEnum.Two, out ulValue), Is.True);
+			Assert.That(ulValue, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void TryGetValue_FittingNotUnderlying_True()
+		{
+			byte? bValue;
+			Assert.That(Enumeration.TryGetValue(LongEnum.Two, out bValue), Is.True);
+			Assert.That(bValue, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void TryGetValue_OverflowingNotUnderlying_False()
+		{
+			byte? bValue;
+			Assert.That(Enumeration.TryGetValue(MaxEnum.Max, out bValue), Is.False);
+		}
+
+		[Test]
+		public void TryGetValue_Undefined_False()
+		{
+			var undefined = (StringComparison)100;
+			int? iValue;
+			Assert.That(Enumeration.TryGetValue(undefined, out iValue), Is.False);
+		}
+
+		[Test]
+		public void TryGetValue_NotAnEnum_Exception()
+		{
+			byte? bValue;
+			Assert.That(() => Enumeration.TryGetValue(2, out bValue), Throws.ArgumentException);
+
+		}
+
+		#endregion
 
 	}
 }
