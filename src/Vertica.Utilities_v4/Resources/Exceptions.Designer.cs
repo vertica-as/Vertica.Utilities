@@ -81,9 +81,18 @@ namespace Vertica.Utilities_v4.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Type &apos;{0}&apos; is not an enum..
         /// </summary>
-        internal static string Enumeration_NotEnum {
+        internal static string Enumeration_NotEnumTemplate {
             get {
-                return ResourceManager.GetString("Enumeration_NotEnum", resourceCulture);
+                return ResourceManager.GetString("Enumeration_NotEnumTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value &quot;{0}&quot; is not defined within type &apos;{1}&apos;..
+        /// </summary>
+        internal static string Enumeration_ValueNotDefinedTemplate {
+            get {
+                return ResourceManager.GetString("Enumeration_ValueNotDefinedTemplate", resourceCulture);
             }
         }
         

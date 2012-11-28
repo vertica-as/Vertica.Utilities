@@ -123,8 +123,11 @@
   <data name="Enumerated_NotFoundTemplate" xml:space="preserve">
     <value>Cannot find enum with name '{0}'.</value>
   </data>
-  <data name="Enumeration_NotEnum" xml:space="preserve">
+  <data name="Enumeration_NotEnumTemplate" xml:space="preserve">
     <value>Type '{0}' is not an enum.</value>
+  </data>
+  <data name="Enumeration_ValueNotDefinedTemplate" xml:space="preserve">
+    <value>Value "{0}" is not defined within type '{1}'.</value>
   </data>
   <data name="InvalidDomainException_MessageTemplate" xml:space="preserve">
     <value>'{0}' is not part of the expected domain: '[{1}]'.</value>
