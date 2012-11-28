@@ -401,28 +401,28 @@ namespace Vertica.Utilities_v4
 			return Enum.GetUnderlyingType(typeof(TEnum));
 		}
 
+		#region values
+
 		/// <summary>
 		/// Retrieves an enumerable of the values of the constants in a specified enumeration.
 		/// </summary>
 		public static IEnumerable<TEnum> GetValues<TEnum>() where TEnum : struct, IComparable, IFormattable, IConvertible
 		{
 			AssertEnum<TEnum>();
-			return Enum.GetValues(typeof(TEnum)).Cast<TEnum>();
+			return Enum.GetValues(typeof (TEnum)).Cast<TEnum>();
 		}
 
 		/// <summary>
 		///  Gets the numeric value of an enumeration
 		/// </summary>
-		public static TNumeric GetValue<TEnum, TNumeric>(TEnum value)
-			where TEnum : struct, IComparable, IFormattable, IConvertible
-			where TNumeric : struct, IComparable, IFormattable, IConvertible, IComparable<TNumeric>, IEquatable<TNumeric>
+		public static TNumeric GetValue<TEnum, TNumeric>(TEnum value) where TEnum : struct, IComparable, IFormattable, IConvertible where TNumeric : struct, IComparable, IFormattable, IConvertible, IComparable<TNumeric>, IEquatable<TNumeric>
 		{
 			AssertDefined(value);
-			return (TNumeric)Convert.ChangeType(value, typeof(TNumeric));
+			return (TNumeric) Convert.ChangeType(value, typeof (TNumeric));
 		}
 
 		/// <summary>
-		/// GEts the numeric value of an enumeration. A return value indicates whether the conversion succeeded.
+		/// Gets the numeric value of an enumeration. A return value indicates whether the conversion succeeded.
 		/// </summary>
 		public static bool TryGetValue<TEnum, TNumeric>(TEnum value, out TNumeric? numericValue)
 			where TEnum : struct, IComparable, IFormattable, IConvertible
@@ -435,14 +435,173 @@ namespace Vertica.Utilities_v4
 			{
 				try
 				{
-					numericValue = (TNumeric)Convert.ChangeType(value, typeof(TNumeric));
+					numericValue = (TNumeric) Convert.ChangeType(value, typeof (TNumeric));
 					result = true;
 				}
-				// there is no Convert.CanChangeType :-(
-				catch (InvalidCastException) { }
-				catch (OverflowException) { }
+					// there is no Convert.CanChangeType :-(
+				catch (InvalidCastException) {}
+				catch (OverflowException) {}
 			}
 			return result;
 		}
+
+		#endregion
+
+		#region casting
+
+		public static TEnum Cast<TEnum>(byte value) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			TEnum? casted;
+			bool result = TryCast(value, out casted);
+			if (!result)
+			{
+				throwNotDefined<TEnum, byte>(value);
+			}
+			return casted.Value;
+		}
+		
+		public static bool TryCast<TEnum>(byte value, out TEnum? casted) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			casted = null;
+			bool success = IsDefined<TEnum>(value);
+			if (success) casted = (TEnum)Enum.ToObject(typeof(TEnum), value);
+			return success;
+		}
+
+		public static TEnum Cast<TEnum>(sbyte value) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			TEnum? casted;
+			bool result = TryCast(value, out casted);
+			if (!result)
+			{
+				throwNotDefined<TEnum, sbyte>(value);
+			}
+			return casted.Value;
+		}
+
+		public static bool TryCast<TEnum>(sbyte value, out TEnum? casted) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			casted = null;
+			bool success = IsDefined<TEnum>(value);
+			if (success) casted = (TEnum)Enum.ToObject(typeof(TEnum), value);
+			return success;
+		}
+
+		public static TEnum Cast<TEnum>(short value) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			TEnum? casted;
+			bool result = TryCast(value, out casted);
+			if (!result)
+			{
+				throwNotDefined<TEnum, short>(value);
+			}
+			return casted.Value;
+		}
+
+		public static bool TryCast<TEnum>(short value, out TEnum? casted) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			casted = null;
+			bool success = IsDefined<TEnum>(value);
+			if (success) casted = (TEnum)Enum.ToObject(typeof(TEnum), value);
+			return success;
+		}
+
+		public static TEnum Cast<TEnum>(ushort value) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			TEnum? casted;
+			bool result = TryCast(value, out casted);
+			if (!result)
+			{
+				throwNotDefined<TEnum, ushort>(value);
+			}
+			return casted.Value;
+		}
+
+		public static bool TryCast<TEnum>(ushort value, out TEnum? casted) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			casted = null;
+			bool success = IsDefined<TEnum>(value);
+			if (success) casted = (TEnum)Enum.ToObject(typeof(TEnum), value);
+			return success;
+		}
+
+		public static TEnum Cast<TEnum>(int value) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			TEnum? casted;
+			bool result = TryCast(value, out casted);
+			if (!result)
+			{
+				throwNotDefined<TEnum, int>(value);
+			}
+			return casted.Value;
+		}
+
+		public static bool TryCast<TEnum>(int value, out TEnum? casted) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			casted = null;
+			bool success = IsDefined<TEnum>(value);
+			if (success) casted = (TEnum)Enum.ToObject(typeof(TEnum), value);
+			return success;
+		}
+
+		public static TEnum Cast<TEnum>(uint value) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			TEnum? casted;
+			bool result = TryCast(value, out casted);
+			if (!result)
+			{
+				throwNotDefined<TEnum, uint>(value);
+			}
+			return casted.Value;
+		}
+
+		public static bool TryCast<TEnum>(uint value, out TEnum? casted) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			casted = null;
+			bool success = IsDefined<TEnum>(value);
+			if (success) casted = (TEnum)Enum.ToObject(typeof(TEnum), value);
+			return success;
+		}
+
+		public static TEnum Cast<TEnum>(long value) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			TEnum? casted;
+			bool result = TryCast(value, out casted);
+			if (!result)
+			{
+				throwNotDefined<TEnum, long>(value);
+			}
+			return casted.Value;
+		}
+
+		public static bool TryCast<TEnum>(long value, out TEnum? casted) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			casted = null;
+			bool success = IsDefined<TEnum>(value);
+			if (success) casted = (TEnum)Enum.ToObject(typeof(TEnum), value);
+			return success;
+		}
+
+		public static TEnum Cast<TEnum>(ulong value) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			TEnum? casted;
+			bool result = TryCast(value, out casted);
+			if (!result)
+			{
+				throwNotDefined<TEnum, ulong>(value);
+			}
+			return casted.Value;
+		}
+
+		public static bool TryCast<TEnum>(ulong value, out TEnum? casted) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			casted = null;
+			bool success = IsDefined<TEnum>(value);
+			if (success) casted = (TEnum)Enum.ToObject(typeof(TEnum), value);
+			return success;
+		}
+
+		#endregion
+
 	}
 }
