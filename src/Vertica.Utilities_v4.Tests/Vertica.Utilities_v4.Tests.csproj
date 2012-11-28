@@ -46,6 +46,7 @@
     <Compile Include="DisposableActionTester.cs" />
     <Compile Include="DomainOfValuesTester.cs" />
     <Compile Include="EnumeratedTester.cs" />
+    <Compile Include="EnumerationTester.cs" />
     <Compile Include="Eventing\EventArgsTester.cs" />
     <Compile Include="Eventing\EventHelperTester.cs" />
     <Compile Include="Eventing\Support\NotifySubject.cs" />
