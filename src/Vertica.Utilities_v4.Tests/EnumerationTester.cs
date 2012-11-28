@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using NUnit.Framework;
 
 namespace Vertica.Utilities_v4.Tests
@@ -733,6 +734,32 @@ namespace Vertica.Utilities_v4.Tests
 
 			Assert.That(Enumeration.TryParse(string.Empty, out nonExisting), Is.False);
 			Assert.That(Enumeration.TryParse(null, out nonExisting), Is.False);
+		}
+
+		#endregion
+
+		#region Invert
+
+		[Test]
+		public void Invert_NullOrEmpty_OriginalValues()
+		{
+			var values = Enumeration.GetValues<StringSplitOptions>();
+			Assert.That(Enumeration.Invert<StringSplitOptions>(), Is.EqualTo(values));
+			Assert.That(Enumeration.Invert((IEnumerable<StringSplitOptions>)null), Is.EqualTo(values));
+			Assert.That(Enumeration.Invert(Enumerable.Empty<StringSplitOptions>()), Is.EqualTo(values));
+		}
+
+		[Test]
+		public void Invert_AllValues_Empty()
+		{
+			Assert.That(Enumeration.Invert(Enumeration.GetValues<StringSplitOptions>()), Is.Empty);
+		}
+
+		[Test]
+		public void Invert_SomeValues_RemainingValues()
+		{
+			Assert.That(Enumeration.Invert(StringSplitOptions.None), Is.EquivalentTo(new[] { StringSplitOptions.RemoveEmptyEntries }));
+			Assert.That(Enumeration.Invert(new[] { StringSplitOptions.None }), Is.EquivalentTo(new[] { StringSplitOptions.RemoveEmptyEntries }));
 		}
 
 		#endregion

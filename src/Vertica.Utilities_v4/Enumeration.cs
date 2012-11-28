@@ -649,5 +649,17 @@ namespace Vertica.Utilities_v4
 
 		#endregion
 
+		public static IEnumerable<TEnum> Invert<TEnum>(IEnumerable<TEnum> valuesToRemove) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			AssertEnum<TEnum>();
+			var values = GetValues<TEnum>();
+			return valuesToRemove != null ? values.Except(valuesToRemove) : values;
+		}
+
+		public static IEnumerable<TEnum> Invert<TEnum>(params TEnum[] valuesToRemove) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			return Invert((IEnumerable<TEnum>)valuesToRemove);
+		}
+
 	}
 }
