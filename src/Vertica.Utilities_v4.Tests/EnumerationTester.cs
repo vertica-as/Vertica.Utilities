@@ -800,7 +800,26 @@ namespace Vertica.Utilities_v4.Tests
 
 		#endregion
 
-		#region GetAttrbute
+		#region attributes
+
+		[Test]
+		public void HasAttribute_ExistingAttribute_True()
+		{
+			Assert.That(Enumeration.HasAttribute<Attributed, Desc>(Attributed.SubZero), Is.True);
+		}
+
+		[Test]
+		public void HasAttributeGetAttribute_NonExistingAttribute_False()
+		{
+			Assert.That(Enumeration.HasAttribute<Attributed, TestAttribute>(Attributed.SubZero), Is.False);
+		}
+
+		[Test]
+		public void HAsAttribute_NotAnEnum_Exception()
+		{
+			Assert.That(() => Enumeration.HasAttribute<decimal, TestAttribute>(1m), Throws.ArgumentException);
+		}
+
 
 		[Test]
 		public void GetAttribute_ExistingAttribute_InstanceObtained()
