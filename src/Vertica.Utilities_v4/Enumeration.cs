@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using Vertica.Utilities_v4.Resources;
 
 namespace Vertica.Utilities_v4
@@ -660,6 +662,16 @@ namespace Vertica.Utilities_v4
 		{
 			return Invert((IEnumerable<TEnum>)valuesToRemove);
 		}
+
+		#region reflection
+
+		public static FieldInfo GetField<TEnum>(TEnum value) where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			AssertEnum<TEnum>();
+			return typeof(TEnum).GetField(value.ToString(CultureInfo.InvariantCulture));
+		}
+
+		#endregion
 
 	}
 }

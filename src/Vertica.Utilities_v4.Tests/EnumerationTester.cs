@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 
 namespace Vertica.Utilities_v4.Tests
@@ -760,6 +761,30 @@ namespace Vertica.Utilities_v4.Tests
 		{
 			Assert.That(Enumeration.Invert(StringSplitOptions.None), Is.EquivalentTo(new[] { StringSplitOptions.RemoveEmptyEntries }));
 			Assert.That(Enumeration.Invert(new[] { StringSplitOptions.None }), Is.EquivalentTo(new[] { StringSplitOptions.RemoveEmptyEntries }));
+		}
+
+		#endregion
+
+		#region reflection
+
+		[Test]
+		public void GetField_Defined_FieldInfo()
+		{
+			FieldInfo field = Enumeration.GetField(StringSplitOptions.RemoveEmptyEntries);
+			Assert.That(field.Name, Is.EqualTo("RemoveEmptyEntries"));
+		}
+
+		[Test]
+		public void GetField_Undefined_Null()
+		{
+			var undefined = (StringSplitOptions)100;
+			Assert.That(Enumeration.GetField(undefined), Is.Null);
+		}
+
+		[Test]
+		public void GetField_NotAnEnum_Exception()
+		{
+			Assert.That(() => Enumeration.GetField(2m), Throws.ArgumentException);
 		}
 
 		#endregion
