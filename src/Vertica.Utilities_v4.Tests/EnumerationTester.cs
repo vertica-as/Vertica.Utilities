@@ -922,10 +922,10 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(()=>Enumeration.AssertFlags<decimal>(), Throws.ArgumentException);
 		}
 
-		#region Set
+		#region SetFlag
 
 		[Test]
-		public void Set_NotSetValue_ValueSet()
+		public void SetFlag_NotSetValue_ValueSet()
 		{
 			var fourNotSet = NoZeroFlags.Three;
 
@@ -968,6 +968,59 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(twoAndThree.ToString(), Is.EqualTo("Two, Three"));
 			var noneExtra = twoAndThree.SetFlag(ZeroFlags.Zero);
 			Assert.That(noneExtra.ToString(), Is.EqualTo("Two, Three"));
+		}
+
+		#endregion
+
+		#region UnsetFlag
+
+		[Test]
+		public void Unset_AlreadySetValue_RemovesItFromSetValues()
+		{
+			NoZeroFlags fourAlreadySet = NoZeroFlags.Three | NoZeroFlags.Four;
+
+			Assert.That(fourAlreadySet.HasFlag(NoZeroFlags.Four), Is.True);
+
+			var fourUnset = fourAlreadySet.UnsetFlag(NoZeroFlags.Four);
+
+			Assert.That(fourUnset.HasFlag(NoZeroFlags.Four), Is.False);
+			Assert.That(fourUnset.HasFlag(NoZeroFlags.Three), Is.True);
+		}
+
+		[Test]
+		public void Unset_NotSetValue_LeavesItUnset()
+		{
+			NoZeroFlags fourNotSet = NoZeroFlags.Three;
+
+			Assert.That(fourNotSet.HasFlag(NoZeroFlags.Four), Is.False);
+
+			var fourUnset = fourNotSet.UnsetFlag(NoZeroFlags.Four);
+
+			Assert.That(fourUnset.HasFlag(NoZeroFlags.Four), Is.False);
+			Assert.That(fourUnset.HasFlag(NoZeroFlags.Three), Is.True);
+		}
+
+		[Test]
+		public void Unset_DoesNotMutateArgument()
+		{
+			NoZeroFlags fourAlreadySet = NoZeroFlags.Three | NoZeroFlags.Four;
+
+			Assert.That(fourAlreadySet.HasFlag(NoZeroFlags.Four), Is.True);
+
+			fourAlreadySet.UnsetFlag(NoZeroFlags.Four);
+
+			Assert.That(fourAlreadySet.HasFlag(NoZeroFlags.Four), Is.True);
+		}
+
+		[Test]
+		public void Unset_Zero_NoChange()
+		{
+			ZeroFlags twoAndThree = ZeroFlags.Two | ZeroFlags.Three;
+
+			Assert.That(twoAndThree.ToString(), Is.EqualTo("Two, Three"));
+
+			var unsetNone = twoAndThree.UnsetFlag(ZeroFlags.Zero);
+			Assert.That(unsetNone.ToString(), Is.EqualTo("Two, Three"));
 		}
 
 		#endregion
