@@ -696,5 +696,26 @@ namespace Vertica.Utilities_v4
 
 		#endregion
 
+		#region flags
+
+		public static class Flags
+		{
+			public static bool IsFlags<TFlags>() where TFlags : struct, IComparable, IFormattable, IConvertible
+			{
+				return IsEnum<TFlags>() && typeof(TFlags).IsDefined(typeof(FlagsAttribute), false);
+			}
+
+			public static void AssertFlags<TFlags>() where TFlags : struct, IComparable, IFormattable, IConvertible
+			{
+				AssertEnum<TFlags>();
+				if (!IsFlags<TFlags>())
+				{
+					ExceptionHelper.Throw<ArgumentException>(Exceptions.Enumeration_NoFlagsTemplate, typeof(TFlags).Name);
+				}
+			}
+		}
+
+		#endregion
+
 	}
 }

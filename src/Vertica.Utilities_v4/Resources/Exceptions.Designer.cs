@@ -79,6 +79,15 @@ namespace Vertica.Utilities_v4.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enum &apos;{0}&apos; must have System.FlagsAttribute applied to it..
+        /// </summary>
+        internal static string Enumeration_NoFlagsTemplate {
+            get {
+                return ResourceManager.GetString("Enumeration_NoFlagsTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Type &apos;{0}&apos; is not an enum..
         /// </summary>
         internal static string Enumeration_NotEnumTemplate {

@@ -32,6 +32,25 @@ namespace Vertica.Utilities_v4.Tests
 			[Desc("Sub-Zero")]
 			SubZero = -1,
 		}
+
+		[Flags]
+		public enum NoZeroFlags : byte
+		{
+			One = 1,
+			Two = 2,
+			Three = 4,
+			Four = 8
+		}
+
+		[Flags]
+		public enum ZeroFlags : byte
+		{
+			Zero = 0,
+			One = 1,
+			Two = 2,
+			Three = 4,
+			Four = 8
+		}
 		// ReSharper restore UnusedMember.Local
 
 		#endregion
@@ -788,7 +807,7 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void GetField_Undefined_Null()
 		{
-			var undefined = (StringSplitOptions) 100;
+			var undefined = (StringSplitOptions)100;
 			Assert.That(Enumeration.GetField(undefined), Is.Null);
 		}
 
@@ -861,6 +880,47 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		#endregion
+
+		#endregion
+
+		#region flags
+
+		[Test]
+		public void IsFlags_Flagged_True()
+		{
+			Assert.That(Enumeration.Flags.IsFlags<ZeroFlags>(), Is.True);
+		}
+
+		[Test]
+		public void IsFlags_NotFlagged_False()
+		{
+			Assert.That(Enumeration.Flags.IsFlags<IntEnum>(), Is.False);
+		}
+
+		[Test]
+		public void IsFlags_NotEnum_False()
+		{
+			Assert.That(Enumeration.Flags.IsFlags<decimal>(), Is.False);
+		}
+
+		[Test]
+		public void AssertFlags_Flagged_NoException()
+		{
+			Assert.That(() => Enumeration.Flags.AssertFlags<ZeroFlags>(), Throws.Nothing);
+		}
+
+		[Test]
+		public void AssertFlags_NotFlagged_Exception()
+		{
+			Assert.That(() => Enumeration.Flags.AssertFlags<IntEnum>(), Throws.ArgumentException
+				.With.Message.StringContaining("IntEnum"));
+		}
+
+		[Test]
+		public void AssertFlags_NotEnum_Exception()
+		{
+			Assert.That(()=>Enumeration.Flags.AssertFlags<decimal>(), Throws.ArgumentException);
+		}
 
 		#endregion
 
