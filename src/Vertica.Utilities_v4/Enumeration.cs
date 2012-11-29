@@ -715,7 +715,8 @@ namespace Vertica.Utilities_v4
 
 		static class Flags<TFlags> where TFlags : struct, IComparable, IFormattable, IConvertible
 		{
-			internal static readonly Func<TFlags, TFlags, TFlags> bitwiseOr;
+			internal static readonly Func<TFlags, TFlags, TFlags> bitwiseOr, bitwiseAnd;
+			internal static readonly Func<TFlags, TFlags> not;
 			static Flags()
 			{
 				Type underlying = GetUnderlyingType<TFlags>();
@@ -727,6 +728,12 @@ namespace Vertica.Utilities_v4
 
 				bitwiseOr = Expression.Lambda<Func<TFlags, TFlags, TFlags>>(
 					Expression.Convert(Expression.Or(convertedParam1, convertedParam2), tFlags), param1, param2)
+					.Compile();
+				bitwiseAnd = Expression.Lambda<Func<TFlags, TFlags, TFlags>>(
+					Expression.Convert(Expression.And(convertedParam1, convertedParam2), tFlags), param1, param2)
+					.Compile();
+				not = Expression.Lambda<Func<TFlags, TFlags>>(
+					Expression.Convert(Expression.Not(convertedParam1), tFlags), param1)
 					.Compile();
 			}
 		}
@@ -740,103 +747,7 @@ namespace Vertica.Utilities_v4
 		public static TFlags UnsetFlag<TFlags>(this TFlags flags, TFlags flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
 		{
 			AssertFlags<TFlags>();
-			TypeCode code = Type.GetTypeCode(typeof(TFlags));
-			IFormatProvider format = CultureInfo.CurrentCulture;
-			TFlags afterSet;
-			switch (code)
-			{
-				case TypeCode.SByte:
-					afterSet = unset<TFlags>(Convert.ToSByte(flags, format), Convert.ToSByte(flagToSet, format));
-					break;
-				case TypeCode.Byte:
-					afterSet = unset<TFlags>(Convert.ToByte(flags, format), Convert.ToByte(flagToSet, format));
-					break;
-				case TypeCode.Int16:
-					afterSet = unset<TFlags>(Convert.ToInt16(flags, format), Convert.ToInt16(flagToSet, format));
-					break;
-				case TypeCode.UInt16:
-					afterSet = unset<TFlags>(Convert.ToUInt16(flags, format), Convert.ToUInt16(flagToSet, format));
-					break;
-				case TypeCode.Int32:
-					afterSet = unset<TFlags>(Convert.ToInt32(flags, format), Convert.ToInt32(flagToSet, format));
-					break;
-				case TypeCode.UInt32:
-					afterSet = unset<TFlags>(Convert.ToUInt32(flags, format), Convert.ToUInt32(flagToSet, format));
-					break;
-				case TypeCode.Int64:
-					afterSet = unset<TFlags>(Convert.ToInt64(flags, format), Convert.ToInt64(flagToSet, format));
-					break;
-				case TypeCode.UInt64:
-					afterSet = unset<TFlags>(Convert.ToUInt64(flags, format), Convert.ToUInt64(flagToSet, format));
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
-			return afterSet;
-		}
-
-		private static TFlags unset<TFlags>(byte flags, byte flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
-		{
-			AssertFlags<TFlags>();
-			flags &= (byte)~flagToSet;
-
-			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
-		}
-
-		private static TFlags unset<TFlags>(sbyte flags, sbyte flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
-		{
-			AssertFlags<TFlags>();
-			flags &= (sbyte)~flagToSet;
-
-			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
-		}
-
-		private static TFlags unset<TFlags>(short flags, short flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
-		{
-			AssertFlags<TFlags>();
-			flags &= (short)~flagToSet;
-
-			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
-		}
-
-		private static TFlags unset<TFlags>(ushort flags, ushort flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
-		{
-			AssertFlags<TFlags>();
-			flags &= (ushort)~flagToSet;
-
-			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
-		}
-
-		private static TFlags unset<TFlags>(int flags, int flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
-		{
-			AssertFlags<TFlags>();
-			flags &= ~flagToSet;
-
-			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
-		}
-
-		private static TFlags unset<TFlags>(uint flags, uint flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
-		{
-			AssertFlags<TFlags>();
-			flags &= ~flagToSet;
-
-			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
-		}
-
-		private static TFlags unset<TFlags>(long flags, long flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
-		{
-			AssertFlags<TFlags>();
-			flags &= ~flagToSet;
-
-			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
-		}
-
-		private static TFlags unset<TFlags>(ulong flags, ulong flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
-		{
-			AssertFlags<TFlags>();
-			flags &= ~flagToSet;
-
-			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
+			return Flags<TFlags>.bitwiseAnd(flags, Flags<TFlags>.not(flagToSet));
 		}
 
 		#endregion

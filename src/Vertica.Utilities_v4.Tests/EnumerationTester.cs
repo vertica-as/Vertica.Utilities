@@ -919,7 +919,7 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void AssertFlags_NotEnum_Exception()
 		{
-			Assert.That(()=>Enumeration.AssertFlags<decimal>(), Throws.ArgumentException);
+			Assert.That(() => Enumeration.AssertFlags<decimal>(), Throws.ArgumentException);
 		}
 
 		#region SetFlag
@@ -970,12 +970,24 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(noneExtra.ToString(), Is.EqualTo("Two, Three"));
 		}
 
+		[Test]
+		public void SetFlag_NoFlags_Exception()
+		{
+			Assert.That(() => IntEnum.One.SetFlag(IntEnum.Two), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void SetFlag_NotEnum_Exception()
+		{
+			Assert.That(() => 2m.SetFlag(1m), Throws.ArgumentException);
+		}
+
 		#endregion
 
 		#region UnsetFlag
 
 		[Test]
-		public void Unset_AlreadySetValue_RemovesItFromSetValues()
+		public void UnsetFlag_AlreadySetValue_RemovesItFromSetValues()
 		{
 			NoZeroFlags fourAlreadySet = NoZeroFlags.Three | NoZeroFlags.Four;
 
@@ -988,7 +1000,7 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		[Test]
-		public void Unset_NotSetValue_LeavesItUnset()
+		public void UnsetFlag_NotSetValue_LeavesItUnset()
 		{
 			NoZeroFlags fourNotSet = NoZeroFlags.Three;
 
@@ -1001,7 +1013,7 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		[Test]
-		public void Unset_DoesNotMutateArgument()
+		public void UnsetFlag_DoesNotMutateArgument()
 		{
 			NoZeroFlags fourAlreadySet = NoZeroFlags.Three | NoZeroFlags.Four;
 
@@ -1013,7 +1025,7 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		[Test]
-		public void Unset_Zero_NoChange()
+		public void UnsetFlag_Zero_NoChange()
 		{
 			ZeroFlags twoAndThree = ZeroFlags.Two | ZeroFlags.Three;
 
@@ -1021,6 +1033,18 @@ namespace Vertica.Utilities_v4.Tests
 
 			var unsetNone = twoAndThree.UnsetFlag(ZeroFlags.Zero);
 			Assert.That(unsetNone.ToString(), Is.EqualTo("Two, Three"));
+		}
+
+		[Test]
+		public void UnsetFlag_NoFlags_Exception()
+		{
+			Assert.That(() => IntEnum.One.UnsetFlag(IntEnum.Two), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void UnsetFlag_NotEnum_Exception()
+		{
+			Assert.That(() => 2m.UnsetFlag(1m), Throws.ArgumentException);
 		}
 
 		#endregion
