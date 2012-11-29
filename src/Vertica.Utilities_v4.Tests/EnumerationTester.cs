@@ -888,39 +888,89 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void IsFlags_Flagged_True()
 		{
-			Assert.That(Enumeration.Flags.IsFlags<ZeroFlags>(), Is.True);
+			Assert.That(Enumeration.IsFlags<ZeroFlags>(), Is.True);
 		}
 
 		[Test]
 		public void IsFlags_NotFlagged_False()
 		{
-			Assert.That(Enumeration.Flags.IsFlags<IntEnum>(), Is.False);
+			Assert.That(Enumeration.IsFlags<IntEnum>(), Is.False);
 		}
 
 		[Test]
 		public void IsFlags_NotEnum_False()
 		{
-			Assert.That(Enumeration.Flags.IsFlags<decimal>(), Is.False);
+			Assert.That(Enumeration.IsFlags<decimal>(), Is.False);
 		}
 
 		[Test]
 		public void AssertFlags_Flagged_NoException()
 		{
-			Assert.That(() => Enumeration.Flags.AssertFlags<ZeroFlags>(), Throws.Nothing);
+			Assert.That(() => Enumeration.AssertFlags<ZeroFlags>(), Throws.Nothing);
 		}
 
 		[Test]
 		public void AssertFlags_NotFlagged_Exception()
 		{
-			Assert.That(() => Enumeration.Flags.AssertFlags<IntEnum>(), Throws.ArgumentException
+			Assert.That(() => Enumeration.AssertFlags<IntEnum>(), Throws.ArgumentException
 				.With.Message.StringContaining("IntEnum"));
 		}
 
 		[Test]
 		public void AssertFlags_NotEnum_Exception()
 		{
-			Assert.That(()=>Enumeration.Flags.AssertFlags<decimal>(), Throws.ArgumentException);
+			Assert.That(()=>Enumeration.AssertFlags<decimal>(), Throws.ArgumentException);
 		}
+
+		#region Set
+
+		[Test]
+		public void Set_NotSetValue_ValueSet()
+		{
+			var fourNotSet = NoZeroFlags.Three;
+
+			Assert.That(fourNotSet.HasFlag(NoZeroFlags.Four), Is.False, "does not contain four initially");
+
+			NoZeroFlags fourSet = fourNotSet.SetFlag(NoZeroFlags.Four);
+
+			Assert.That(fourSet.HasFlag(NoZeroFlags.Four), Is.True, "later it does contain four");
+		}
+
+		[Test]
+		public void SetFlag_AlreadySetValue_ValueLeftAsSet()
+		{
+			NoZeroFlags fourAlreadySet = NoZeroFlags.Three | NoZeroFlags.Four;
+
+			Assert.That(fourAlreadySet.HasFlag(NoZeroFlags.Four), Is.True, "contains four initially");
+
+			fourAlreadySet = fourAlreadySet.SetFlag(NoZeroFlags.Four);
+
+			Assert.That(fourAlreadySet.HasFlag(NoZeroFlags.Four), Is.True, "still contains four");
+		}
+
+		[Test]
+		public void SetFlag_DoesNotMutateArgument()
+		{
+			NoZeroFlags fourNotSet = NoZeroFlags.Three;
+
+			Assert.That(fourNotSet.HasFlag(NoZeroFlags.Four), Is.False, "does not contain four initially");
+
+			fourNotSet.SetFlag(NoZeroFlags.Four); // no assignation
+
+			Assert.That(fourNotSet.HasFlag(NoZeroFlags.Four), Is.False, "no mutation");
+		}
+
+		[Test]
+		public void SetFlag_Zero_NoChange()
+		{
+			ZeroFlags twoAndThree = ZeroFlags.Two | ZeroFlags.Three;
+
+			Assert.That(twoAndThree.ToString(), Is.EqualTo("Two, Three"));
+			var noneExtra = twoAndThree.SetFlag(ZeroFlags.Zero);
+			Assert.That(noneExtra.ToString(), Is.EqualTo("Two, Three"));
+		}
+
+		#endregion
 
 		#endregion
 

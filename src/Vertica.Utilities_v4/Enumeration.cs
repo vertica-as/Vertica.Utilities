@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Vertica.Utilities_v4.Resources;
 
@@ -206,7 +207,7 @@ namespace Vertica.Utilities_v4
 
 		private static void throwNotDefined<TEnum, U>(U valueOrName)
 		{
-			throw new InvalidEnumArgumentException(string.Format(Exceptions.Enumeration_ValueNotDefinedTemplate,
+			throw new InvalidEnumArgumentException(String.Format(Exceptions.Enumeration_ValueNotDefinedTemplate,
 				valueOrName, typeof(TEnum).Name));
 		}
 
@@ -698,24 +699,114 @@ namespace Vertica.Utilities_v4
 
 		#region flags
 
-		public static class Flags
+		public static bool IsFlags<TFlags>() where TFlags : struct, IComparable, IFormattable, IConvertible
 		{
-			public static bool IsFlags<TFlags>() where TFlags : struct, IComparable, IFormattable, IConvertible
-			{
-				return IsEnum<TFlags>() && typeof(TFlags).IsDefined(typeof(FlagsAttribute), false);
-			}
+			return IsEnum<TFlags>() && typeof(TFlags).IsDefined(typeof(FlagsAttribute), false);
+		}
 
-			public static void AssertFlags<TFlags>() where TFlags : struct, IComparable, IFormattable, IConvertible
+		public static void AssertFlags<TFlags>() where TFlags : struct, IComparable, IFormattable, IConvertible
+		{
+			AssertEnum<TFlags>();
+			if (!IsFlags<TFlags>())
 			{
-				AssertEnum<TFlags>();
-				if (!IsFlags<TFlags>())
-				{
-					ExceptionHelper.Throw<ArgumentException>(Exceptions.Enumeration_NoFlagsTemplate, typeof(TFlags).Name);
-				}
+				ExceptionHelper.Throw<ArgumentException>(Exceptions.Enumeration_NoFlagsTemplate, typeof(TFlags).Name);
 			}
+		}
+		
+		public static TFlags SetFlag<TFlags>(this TFlags flags, TFlags flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
+		{
+			AssertFlags<TFlags>();
+			TypeCode code = Type.GetTypeCode(typeof(TFlags));
+			IFormatProvider format = CultureInfo.CurrentCulture;
+			TFlags afterSet;
+			switch (code)
+			{
+				case TypeCode.SByte:
+					afterSet = set<TFlags>(Convert.ToSByte(flags, format), Convert.ToSByte(flagToSet, format));
+					break;
+				case TypeCode.Byte:
+					afterSet = set<TFlags>(Convert.ToByte(flags, format), Convert.ToByte(flagToSet, format));
+					break;
+				case TypeCode.Int16:
+					afterSet = set<TFlags>(Convert.ToInt16(flags, format), Convert.ToInt16(flagToSet, format));
+					break;
+				case TypeCode.UInt16:
+					afterSet = set<TFlags>(Convert.ToUInt16(flags, format), Convert.ToUInt16(flagToSet, format));
+					break;
+				case TypeCode.Int32:
+					afterSet = set<TFlags>(Convert.ToInt32(flags, format), Convert.ToInt32(flagToSet, format));
+					break;
+				case TypeCode.UInt32:
+					afterSet = set<TFlags>(Convert.ToUInt32(flags, format), Convert.ToUInt32(flagToSet, format));
+					break;
+				case TypeCode.Int64:
+					afterSet = set<TFlags>(Convert.ToInt64(flags, format), Convert.ToInt64(flagToSet, format));
+					break;
+				case TypeCode.UInt64:
+					afterSet = set<TFlags>(Convert.ToUInt64(flags, format), Convert.ToUInt64(flagToSet, format));
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+			return afterSet;
+		}
+
+		private static TFlags set<TFlags>(byte flags, byte flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
+		{
+			flags |= flagToSet;
+
+			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
+		}
+
+		private static TFlags set<TFlags>(sbyte flags, sbyte flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
+		{
+			flags |= flagToSet;
+
+			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
+		}
+
+		private static TFlags set<TFlags>(short flags, short flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
+		{
+			flags |= flagToSet;
+
+			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
+		}
+
+		private static TFlags set<TFlags>(ushort flags, ushort flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
+		{
+			flags |= flagToSet;
+
+			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
+		}
+
+		private static TFlags set<TFlags>(int flags, int flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
+		{
+			flags |= flagToSet;
+
+			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
+		}
+
+		private static TFlags set<TFlags>(uint flags, uint flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
+		{
+			flags |= flagToSet;
+
+			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
+		}
+
+		private static TFlags set<TFlags>(long flags, long flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
+		{
+			flags |= flagToSet;
+
+			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
+		}
+
+		private static TFlags set<TFlags>(ulong flags, ulong flagToSet) where TFlags : struct, IComparable, IFormattable, IConvertible
+		{
+			flags |= flagToSet;
+
+			return (TFlags)Enum.ToObject(typeof(TFlags), flags);
 		}
 
 		#endregion
-
 	}
 }
