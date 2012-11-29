@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
+using Desc = System.ComponentModel.DescriptionAttribute;
+
 namespace Vertica.Utilities_v4.Tests
 {
 	[TestFixture]
@@ -23,6 +25,13 @@ namespace Vertica.Utilities_v4.Tests
 		enum ULongEnum : ulong { One, Two }
 
 		enum MaxEnum : ulong { Max = ulong.MaxValue }
+
+		enum Attributed
+		{
+			Zero = 0,
+			[Desc("Sub-Zero")]
+			SubZero = -1,
+		}
 		// ReSharper restore UnusedMember.Local
 
 		#endregion
@@ -767,6 +776,8 @@ namespace Vertica.Utilities_v4.Tests
 
 		#region reflection
 
+		#region GetField
+
 		[Test]
 		public void GetField_Defined_FieldInfo()
 		{
@@ -777,7 +788,7 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void GetField_Undefined_Null()
 		{
-			var undefined = (StringSplitOptions)100;
+			var undefined = (StringSplitOptions) 100;
 			Assert.That(Enumeration.GetField(undefined), Is.Null);
 		}
 
@@ -786,6 +797,51 @@ namespace Vertica.Utilities_v4.Tests
 		{
 			Assert.That(() => Enumeration.GetField(2m), Throws.ArgumentException);
 		}
+
+		#endregion
+
+		#region GetAttrbute
+
+		[Test]
+		public void GetAttribute_ExistingAttribute_InstanceObtained()
+		{
+			var existing = Enumeration.GetAttribute<Attributed, Desc>(Attributed.SubZero);
+			Assert.That(existing, Is.Not.Null);
+			Assert.That(existing.Description, Is.EqualTo("Sub-Zero"));
+		}
+
+		[Test]
+		public void GetAttribute_NonExistingAttribute_Null()
+		{
+			var nonExisting = Enumeration.GetAttribute<Attributed, TestAttribute>(Attributed.SubZero);
+			Assert.That(nonExisting, Is.Null);
+		}
+
+		[Test]
+		public void GetAttribute_NotAnEnum_Exception()
+		{
+			Assert.That(() => Enumeration.GetAttribute<decimal, TestAttribute>(1m), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void GetDescription_ExistingAttribute_Description()
+		{
+			Assert.That(Enumeration.GetDescription(Attributed.SubZero), Is.EqualTo("Sub-Zero"));
+		}
+
+		[Test]
+		public void GetDescription_NonExistingAttribute_Null()
+		{
+			Assert.That(Enumeration.GetDescription(Attributed.Zero), Is.Null);
+		}
+
+		[Test]
+		public void GetDescription_NotAnEnum_Exception()
+		{
+			Assert.That(() => Enumeration.GetDescription(1m), Throws.ArgumentException);
+		}
+
+		#endregion
 
 		#endregion
 

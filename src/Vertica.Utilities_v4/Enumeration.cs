@@ -671,6 +671,22 @@ namespace Vertica.Utilities_v4
 			return typeof(TEnum).GetField(value.ToString(CultureInfo.InvariantCulture));
 		}
 
+		public static U GetAttribute<TEnum, U>(TEnum value)
+			where TEnum : struct, IComparable, IFormattable, IConvertible
+			where U : Attribute
+		{
+			AssertEnum<TEnum>();
+			return (U) Attribute.GetCustomAttribute(GetField(value), typeof(U), false);
+		}
+
+		public static string GetDescription<TEnum>(TEnum value)
+			where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			DescriptionAttribute description = GetAttribute<TEnum, DescriptionAttribute>(value);
+
+			return description != null ? description.Description : null;
+		}
+
 		#endregion
 
 	}
