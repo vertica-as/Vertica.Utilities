@@ -683,6 +683,12 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(Enum.ToObject(typeof(StringComparison), 4L), Is.EqualTo(StringComparison.Ordinal));
 		}
 
+		[Test]
+		public void AsEnum_BEHAVIOR_EXPECTATION()
+		{
+			
+		}
+
 		#endregion
 
 		#region parse
@@ -1045,6 +1051,58 @@ namespace Vertica.Utilities_v4.Tests
 		public void UnsetFlag_NotEnum_Exception()
 		{
 			Assert.That(() => 2m.UnsetFlag(1m), Throws.ArgumentException);
+		}
+
+		#endregion
+
+		#region ToggleFlag
+
+		[Test]
+		public void ToggleFlag_NotSetValue_ValueSet()
+		{
+			var fourNotSet = NoZeroFlags.Three;
+
+			Assert.That(fourNotSet.HasFlag(NoZeroFlags.Four), Is.False);
+
+			var fourToggleFlagd = fourNotSet.ToggleFlag(NoZeroFlags.Four);
+
+			Assert.That(fourToggleFlagd.HasFlag(NoZeroFlags.Four), Is.True);
+		}
+
+		[Test]
+		public void ToggleFlag_AlreadySetValue_ValueUnset()
+		{
+			NoZeroFlags fourAlreadySet = NoZeroFlags.Three | NoZeroFlags.Four;
+
+			Assert.That(fourAlreadySet.HasFlag(NoZeroFlags.Four), Is.True);
+
+			var fourToggleFlag = fourAlreadySet.ToggleFlag(NoZeroFlags.Four);
+
+			Assert.That(fourToggleFlag.HasFlag(NoZeroFlags.Four), Is.False);
+		}
+
+		[Test]
+		public void ToggleFlag_DoesNotMutateArgument()
+		{
+			NoZeroFlags fourNotSet = NoZeroFlags.Three;
+
+			Assert.That(fourNotSet.HasFlag(NoZeroFlags.Four), Is.False);
+
+			fourNotSet.ToggleFlag(NoZeroFlags.Four);
+
+			Assert.That(fourNotSet.HasFlag(NoZeroFlags.Four), Is.False);
+		}
+
+		[Test]
+		public void ToggleFlag_Zero_NoChange()
+		{
+			ZeroFlags twoAndThree = ZeroFlags.Two | ZeroFlags.Three;
+
+			Assert.That(twoAndThree.ToString(), Is.EqualTo("Two, Three"));
+
+			var toggleFlagNone = twoAndThree.ToggleFlag(ZeroFlags.Zero);
+
+			Assert.That(toggleFlagNone.ToString(), Is.EqualTo("Two, Three"));
 		}
 
 		#endregion

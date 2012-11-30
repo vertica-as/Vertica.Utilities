@@ -684,7 +684,7 @@ namespace Vertica.Utilities_v4
 			where U : Attribute
 		{
 			AssertEnum<TEnum>();
-			return (U) Attribute.GetCustomAttribute(GetField(value), typeof(U), false);
+			return (U)Attribute.GetCustomAttribute(GetField(value), typeof(U), false);
 		}
 
 		public static string GetDescription<TEnum>(TEnum value)
@@ -713,14 +713,14 @@ namespace Vertica.Utilities_v4
 			}
 		}
 
-		static class Flags<TFlags> where TFlags : struct, IComparable, IFormattable, IConvertible
+		private static class Flags<TFlags> where TFlags : struct, IComparable, IFormattable, IConvertible
 		{
 			internal static readonly Func<TFlags, TFlags, TFlags> bitwiseOr, bitwiseAnd;
 			internal static readonly Func<TFlags, TFlags> not;
 			static Flags()
 			{
 				Type underlying = GetUnderlyingType<TFlags>();
-				Type tFlags = typeof (TFlags);
+				Type tFlags = typeof(TFlags);
 				ParameterExpression param1 = Expression.Parameter(tFlags, "x");
 				ParameterExpression param2 = Expression.Parameter(tFlags, "y");
 				Expression convertedParam1 = Expression.Convert(param1, underlying);
@@ -748,6 +748,16 @@ namespace Vertica.Utilities_v4
 		{
 			AssertFlags<TFlags>();
 			return Flags<TFlags>.bitwiseAnd(flags, Flags<TFlags>.not(flagToSet));
+		}
+
+		public static TFlags ToggleFlag<TFlags>(this TFlags flags, TFlags flagToToggle) where TFlags : struct, IComparable, IFormattable, IConvertible
+		{
+			AssertFlags<TFlags>();
+			// since HasFlags incurs in boxing, I do not care one more boxing
+			Func<TFlags, Enum> asEnum = f => (Enum)((object)f);
+			return asEnum(flags).HasFlag(asEnum(flagToToggle)) ?
+				UnsetFlag(flags, flagToToggle) :
+				SetFlag(flags, flagToToggle);
 		}
 
 		#endregion
