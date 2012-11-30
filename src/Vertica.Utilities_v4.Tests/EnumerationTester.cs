@@ -683,12 +683,6 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(Enum.ToObject(typeof(StringComparison), 4L), Is.EqualTo(StringComparison.Ordinal));
 		}
 
-		[Test]
-		public void AsEnum_BEHAVIOR_EXPECTATION()
-		{
-			
-		}
-
 		#endregion
 
 		#region parse
@@ -1103,6 +1097,47 @@ namespace Vertica.Utilities_v4.Tests
 			var toggleFlagNone = twoAndThree.ToggleFlag(ZeroFlags.Zero);
 
 			Assert.That(toggleFlagNone.ToString(), Is.EqualTo("Two, Three"));
+		}
+
+		#endregion
+
+		#region FindAllSetFor
+
+		[Test]
+		public void FindAllSetFor_ReturnsSetFieldsInOrderOfDefinition()
+		{
+			NoZeroFlags nzf = NoZeroFlags.One | NoZeroFlags.Three;
+			Assert.That(nzf.GetFlags(true), Is.EquivalentTo(new[] { NoZeroFlags.One, NoZeroFlags.Three }));
+			Assert.That(nzf.GetFlags(false), Is.EquivalentTo(new[] { NoZeroFlags.One, NoZeroFlags.Three }));
+
+			nzf = NoZeroFlags.Four | NoZeroFlags.One;
+			Assert.That(nzf.GetFlags(true), Is.EquivalentTo(new[] { NoZeroFlags.One, NoZeroFlags.Four }));
+			Assert.That(nzf.GetFlags(false), Is.EquivalentTo(new[] { NoZeroFlags.One, NoZeroFlags.Four }));
+
+			ZeroFlags zf = ZeroFlags.One | ZeroFlags.Three;
+			Assert.That(zf.GetFlags(true), Is.EquivalentTo(new[] { ZeroFlags.One, ZeroFlags.Three }));
+			Assert.That(zf.GetFlags(false), Is.EquivalentTo(new[] { ZeroFlags.Zero, ZeroFlags.One, ZeroFlags.Three }));
+			Assert.That(zf.GetFlags(), Is.EquivalentTo(new[] { ZeroFlags.Zero, ZeroFlags.One, ZeroFlags.Three }));
+
+			zf = ZeroFlags.Four | ZeroFlags.One;
+			Assert.That(zf.GetFlags(true), Is.EquivalentTo(new[] { ZeroFlags.One, ZeroFlags.Four }));
+			Assert.That(zf.GetFlags(false), Is.EquivalentTo(new[] { ZeroFlags.Zero, ZeroFlags.One, ZeroFlags.Four }));
+			Assert.That(zf.GetFlags(), Is.EquivalentTo(new[] { ZeroFlags.Zero, ZeroFlags.One, ZeroFlags.Four }));
+		}
+
+		[Test]
+		public void FindAllSetFor_DoesNotReturnUnsetFields()
+		{
+			NoZeroFlags nzf = NoZeroFlags.One | NoZeroFlags.Three;
+			Assert.That(nzf.GetFlags(),
+				Has.No.Member(NoZeroFlags.Two)
+				.And.No.Member(NoZeroFlags.Four));
+
+			ZeroFlags zf = ZeroFlags.One | ZeroFlags.Three;
+			Assert.That(zf.GetFlags(), Has
+				.No.Member(ZeroFlags.Two)
+				.And.No.Member(ZeroFlags.Four)
+				.And.Member(ZeroFlags.Zero));
 		}
 
 		#endregion

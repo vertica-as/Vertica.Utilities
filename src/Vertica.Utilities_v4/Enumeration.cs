@@ -754,10 +754,25 @@ namespace Vertica.Utilities_v4
 		{
 			AssertFlags<TFlags>();
 			// since HasFlags incurs in boxing, I do not care one more boxing
-			Func<TFlags, Enum> asEnum = f => (Enum)((object)f);
 			return asEnum(flags).HasFlag(asEnum(flagToToggle)) ?
 				UnsetFlag(flags, flagToToggle) :
 				SetFlag(flags, flagToToggle);
+		}
+
+		private static Enum asEnum<T>(T t)
+		{
+			return (Enum)((object)t);
+		}
+
+		public static IEnumerable<TFlags> GetFlags<TFlags>(this TFlags flag, bool ignoreZeroValue = false) where TFlags : struct, IComparable, IFormattable, IConvertible
+		{
+			AssertFlags<TFlags>();
+			// flags always have the default as the option with value zero (regardless of whether is defined or not)
+			// so ignoring the zero value means leaving out the default value altogether from the list of values
+			return GetValues<TFlags>()
+				// boxing, again
+				.Where(t => !(ignoreZeroValue && Equals(t, default(TFlags))))
+				.Where(t => asEnum(flag).HasFlag(asEnum(t)));
 		}
 
 		#endregion
