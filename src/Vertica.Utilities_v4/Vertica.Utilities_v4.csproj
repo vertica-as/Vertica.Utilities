@@ -40,6 +40,7 @@
     <Compile Include="DomainOf.cs" />
     <Compile Include="DomainOfValues.cs" />
     <Compile Include="Eventing\CancelEventArgs.cs" />
+    <Compile Include="Eventing\ChainedEventArgs.cs" />
     <Compile Include="Eventing\EventArgs.cs" />
     <Compile Include="Eventing\EventHelper.cs" />
     <Compile Include="Eventing\MultiEventArgs.cs" />

@@ -16,6 +16,8 @@
 
 	public interface IMutableValueEventArgs<T> { T Value { get; set; } }
 
+	public interface IChainedEventArgs { bool Handled { get; set; } }
+
 	/// <summary>
 	/// Creation methods that leverage type inference
 	/// </summary>
