@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Vertica.Utilities_v4
 {
@@ -52,6 +49,14 @@ namespace Vertica.Utilities_v4
 
 		#endregion
 
+		public double Apply(long given)
+		{
+			return Fraction * given;
+		}
 
+		public double Apply(double given)
+		{
+			return Fraction * given;
+		}
 	}
 }

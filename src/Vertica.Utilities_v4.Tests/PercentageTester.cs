@@ -93,5 +93,13 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		#endregion
+
+		[Test]
+		public void Apply_AppliesThePercentageToTheAmountGiven()
+		{
+			var fiftyPercent = new Percentage(50);
+			Assert.That(fiftyPercent.Apply(100L), Is.EqualTo(50d));
+			Assert.That(fiftyPercent.Apply(100d), Is.EqualTo(50d));
+		}
 	}
 }
