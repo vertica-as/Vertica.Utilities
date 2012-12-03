@@ -11,5 +11,15 @@
 		{
 			return Percentage.FromAmounts(given, total);
 		}
+
+		public static DecimalPercentage Percent(this decimal value)
+		{
+			return new DecimalPercentage(value);
+		}
+
+		public static DecimalPercentage AsPercentOf(this decimal given, decimal total)
+		{
+			return DecimalPercentage.FromAmounts(given, total);
+		}
 	}
 }

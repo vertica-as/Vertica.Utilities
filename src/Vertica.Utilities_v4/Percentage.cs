@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 
 namespace Vertica.Utilities_v4
 {
@@ -8,6 +7,17 @@ namespace Vertica.Utilities_v4
 		public double Value { get; private set; }
 		public double Fraction { get; private set; }
 
+		// structs have a default constructor, therefore, _formattable can be null
+		private FormattablePercentage<double>? _formattable;
+		private FormattablePercentage<double> Formattable
+		{
+			get
+			{
+				_formattable = _formattable ?? new FormattablePercentage<double>(Value);
+				return _formattable.Value;
+			}
+		}
+
 		#region construction
 
 		public Percentage(double value)
@@ -15,6 +25,7 @@ namespace Vertica.Utilities_v4
 		{
 			Value = value;
 			Fraction = value / 100d;
+			_formattable = new FormattablePercentage<double>(value);
 		}
 
 		public static Percentage FromFraction(double fraction)
@@ -22,29 +33,27 @@ namespace Vertica.Utilities_v4
 			return new Percentage(fraction * 100d);
 		}
 
-		internal static readonly string _divideByZeroMessage = new DivideByZeroException().Message;
-
 		public static Percentage FromAmounts(long given, long total)
 		{
-			Guard.AgainstArgument("total", total == 0, _divideByZeroMessage);
+			Guard.AgainstArgument("total", total == 0L, FormattablePercentage<double>.DivideByZeroMessage);
 			return new Percentage(given / (double)total * 100d);
 		}
 
 		public static Percentage FromAmounts(double given, double total)
 		{
-			Guard.AgainstArgument("total", total == 0d, _divideByZeroMessage);
+			Guard.AgainstArgument("total", total == 0d, FormattablePercentage<double>.DivideByZeroMessage);
 			return new Percentage(given / total * 100d);
 		}
 
 		public static Percentage FromDifference(long total, long given)
 		{
-			Guard.AgainstArgument("total", total == 0L, _divideByZeroMessage);
+			Guard.AgainstArgument("total", total == 0L, FormattablePercentage<double>.DivideByZeroMessage);
 			return new Percentage(((total - given) / (double)total) * 100d);
 		}
 
 		public static Percentage FromDifference(double total, double given)
 		{
-			Guard.AgainstArgument("total", total == 0d, _divideByZeroMessage);
+			Guard.AgainstArgument("total", total == 0d, FormattablePercentage<double>.DivideByZeroMessage);
 			return new Percentage(((total - given) / total) * 100d);
 		}
 
@@ -62,22 +71,17 @@ namespace Vertica.Utilities_v4
 
 		public override string ToString()
 		{
-			return ToString("{0}", CultureInfo.InvariantCulture);
+			return Formattable.ToString();
 		}
 
 		public string ToString(string numberFormat)
 		{
-			return doFormat(Value, numberFormat + " %", CultureInfo.InvariantCulture);
+			return Formattable.ToString(numberFormat);
 		}
 
 		public string ToString(string format, IFormatProvider formatProvider)
 		{
-			return doFormat(Value, format + " %", formatProvider);
-		}
-
-		private string doFormat(double percentage, string numberFormat, IFormatProvider provider)
-		{
-			return string.Format(provider, numberFormat, percentage);
+			return Formattable.ToString(format, formatProvider);
 		}
 	}
 }
