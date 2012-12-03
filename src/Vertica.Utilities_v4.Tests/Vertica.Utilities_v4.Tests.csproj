@@ -38,6 +38,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web" />
     <Reference Include="Testing.Commons">
       <HintPath>..\..\packages\Testing.Commons.1.3.0.0\lib\net40\Testing.Commons.dll</HintPath>
     </Reference>

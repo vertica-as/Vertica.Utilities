@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Web.UI;
 using NUnit.Framework;
 
 using Desc = System.ComponentModel.DescriptionAttribute;
@@ -54,6 +55,71 @@ namespace Vertica.Utilities_v4.Tests
 		// ReSharper restore UnusedMember.Local
 
 		#endregion
+
+		[Test, NUnit.Framework.Category("Exploratory")]
+		public void Explore()
+		{
+			Assert.That(Enumeration.IsEnum<PlatformID>(), Is.True);
+			Assert.That(Enumeration.IsEnum<int>(), Is.False);
+			Assert.That(() => Enumeration.AssertEnum<PlatformID>(), Throws.Nothing);
+			Assert.That(() => Enumeration.AssertEnum<int>(), Throws
+				.InstanceOf<ArgumentException>()
+				.With.Message.StringContaining("Int32"));
+			Assert.That(Enumeration.IsFlags<ZeroFlags>(), Is.True);
+			Assert.That(Enumeration.IsFlags<IntEnum>(), Is.False);
+			Assert.That(() => Enumeration.AssertFlags<ZeroFlags>(), Throws.Nothing);
+			Assert.That(() => Enumeration.AssertFlags<IntEnum>(), Throws
+				.ArgumentException
+				.With.Message.StringContaining("IntEnum"));
+
+			Assert.That(Enumeration.IsDefined(StringComparison.Ordinal), Is.True);
+			Assert.That(Enumeration.IsDefined((StringComparison)100), Is.False);
+			Assert.That(Enumeration.IsDefined<LongEnum>(1L), Is.True);
+			Assert.That(Enumeration.IsDefined<StringComparison>("undefined"), Is.False);
+			Assert.That(Enumeration.IsDefined<StringComparison>("oRDinaL", ignoreCase: true), Is.True);
+
+			Assert.That(() => Enumeration.AssertDefined(StringComparison.Ordinal), Throws.Nothing);
+			Assert.That(() => Enumeration.AssertDefined<StringComparison>("ordinal"), Throws
+				.InstanceOf<InvalidEnumArgumentException>()
+				.With.Message.StringContaining("ordinal")
+				.And.With.Message.StringContaining("StringComparison"));
+
+			Assert.That(Enumeration.GetName(StringComparison.Ordinal), Is.EqualTo("Ordinal"));
+			Assert.That(Enumeration.GetName<ULongEnum>(1UL), Is.EqualTo("Two"));
+			Assert.That(() => Enumeration.GetName<IntEnum>(100), Throws.InstanceOf<InvalidEnumArgumentException>());
+
+			Assert.That(Enumeration.GetValues<StringSplitOptions>(), Is.EquivalentTo(
+				new[] { StringSplitOptions.None, StringSplitOptions.RemoveEmptyEntries }));
+			Assert.That(Enumeration.GetValue<ULongEnum, ulong>(ULongEnum.Two), Is.EqualTo(1UL));
+
+			Assert.That(Enumeration.Cast<ByteEnum>((byte)1), Is.EqualTo(ByteEnum.Two));
+			StringComparison? value;
+			Assert.That(Enumeration.TryCast(100, out value), Is.False);
+
+			Assert.That(Enumeration.Parse<PlatformID>("Unix"), Is.EqualTo(PlatformID.Unix));
+			Assert.That(() => Enumeration.Parse<PlatformID>("UNIx", ignoreCase: false),
+				Throws.InstanceOf<InvalidEnumArgumentException>());
+			Assert.That(Enumeration.Parse<StringComparison>("4"), Is.EqualTo(StringComparison.Ordinal));
+			PlatformID? parsed;
+			Assert.That(() => Enumeration.TryParse("100", out parsed), Is.False);
+			Assert.That(Enumeration.TryParse("unIx", true, out parsed), Is.True);
+
+			var fourNotSet = NoZeroFlags.Three;
+			NoZeroFlags fourSet = fourNotSet.SetFlag(NoZeroFlags.Four);
+			Assert.That(fourSet.HasFlag(NoZeroFlags.Four), Is.True);
+
+			NoZeroFlags fourUnset = fourSet.UnsetFlag(NoZeroFlags.Four);
+			Assert.That(fourUnset.HasFlag(NoZeroFlags.Four), Is.False);
+
+			fourSet = fourUnset.ToggleFlag(NoZeroFlags.Four);
+			Assert.That(fourSet.HasFlag(NoZeroFlags.Four), Is.True);
+			fourNotSet = fourSet.ToggleFlag(NoZeroFlags.Four);
+			Assert.That(fourNotSet.HasFlag(NoZeroFlags.Four), Is.False);
+
+			Assert.That(fourSet.GetFlags(), Is.EquivalentTo(new[] { NoZeroFlags.Three, NoZeroFlags.Four }));
+
+
+		}
 
 		#region checking
 
@@ -200,7 +266,9 @@ namespace Vertica.Utilities_v4.Tests
 		public void AssertDefined_UndefinedEnumValue_Exception()
 		{
 			var undefined = (StringComparison)100;
-			Assert.That(() => Enumeration.AssertDefined(undefined), Throws.InstanceOf<InvalidEnumArgumentException>().With.Message.StringContaining("100").And.With.Message.StringContaining("StringComparison"));
+			Assert.That(() => Enumeration.AssertDefined(undefined), Throws.InstanceOf<InvalidEnumArgumentException>()
+				.With.Message.StringContaining("100")
+				.And.With.Message.StringContaining("StringComparison"));
 		}
 
 		[Test]
@@ -456,6 +524,8 @@ namespace Vertica.Utilities_v4.Tests
 
 		#endregion
 
+		#region values
+
 		[Test]
 		public void GetUnderlyingType_CorrectType()
 		{
@@ -474,8 +544,6 @@ namespace Vertica.Utilities_v4.Tests
 		{
 			Assert.That(() => Enumeration.GetUnderlyingType<int>(), Throws.ArgumentException);
 		}
-
-		#region values
 
 		[Test]
 		public void GetValues_GetsAllValuesAsTyped()
@@ -595,6 +663,32 @@ namespace Vertica.Utilities_v4.Tests
 			byte? bValue;
 			Assert.That(() => Enumeration.TryGetValue(2, out bValue), Throws.ArgumentException);
 		}
+
+		#region Invert
+
+		[Test]
+		public void Invert_NullOrEmpty_OriginalValues()
+		{
+			var values = Enumeration.GetValues<StringSplitOptions>();
+			Assert.That(Enumeration.Invert<StringSplitOptions>(), Is.EqualTo(values));
+			Assert.That(Enumeration.Invert((IEnumerable<StringSplitOptions>)null), Is.EqualTo(values));
+			Assert.That(Enumeration.Invert(Enumerable.Empty<StringSplitOptions>()), Is.EqualTo(values));
+		}
+
+		[Test]
+		public void Invert_AllValues_Empty()
+		{
+			Assert.That(Enumeration.Invert(Enumeration.GetValues<StringSplitOptions>()), Is.Empty);
+		}
+
+		[Test]
+		public void Invert_SomeValues_RemainingValues()
+		{
+			Assert.That(Enumeration.Invert(StringSplitOptions.None), Is.EquivalentTo(new[] { StringSplitOptions.RemoveEmptyEntries }));
+			Assert.That(Enumeration.Invert(new[] { StringSplitOptions.None }), Is.EquivalentTo(new[] { StringSplitOptions.RemoveEmptyEntries }));
+		}
+
+		#endregion
 
 		#endregion
 
@@ -763,32 +857,6 @@ namespace Vertica.Utilities_v4.Tests
 
 			Assert.That(Enumeration.TryParse(string.Empty, out nonExisting), Is.False);
 			Assert.That(Enumeration.TryParse(null, out nonExisting), Is.False);
-		}
-
-		#endregion
-
-		#region Invert
-
-		[Test]
-		public void Invert_NullOrEmpty_OriginalValues()
-		{
-			var values = Enumeration.GetValues<StringSplitOptions>();
-			Assert.That(Enumeration.Invert<StringSplitOptions>(), Is.EqualTo(values));
-			Assert.That(Enumeration.Invert((IEnumerable<StringSplitOptions>)null), Is.EqualTo(values));
-			Assert.That(Enumeration.Invert(Enumerable.Empty<StringSplitOptions>()), Is.EqualTo(values));
-		}
-
-		[Test]
-		public void Invert_AllValues_Empty()
-		{
-			Assert.That(Enumeration.Invert(Enumeration.GetValues<StringSplitOptions>()), Is.Empty);
-		}
-
-		[Test]
-		public void Invert_SomeValues_RemainingValues()
-		{
-			Assert.That(Enumeration.Invert(StringSplitOptions.None), Is.EquivalentTo(new[] { StringSplitOptions.RemoveEmptyEntries }));
-			Assert.That(Enumeration.Invert(new[] { StringSplitOptions.None }), Is.EquivalentTo(new[] { StringSplitOptions.RemoveEmptyEntries }));
 		}
 
 		#endregion
@@ -1101,10 +1169,10 @@ namespace Vertica.Utilities_v4.Tests
 
 		#endregion
 
-		#region FindAllSetFor
+		#region GetFlags
 
 		[Test]
-		public void FindAllSetFor_ReturnsSetFieldsInOrderOfDefinition()
+		public void GetFlags_ReturnsSetFieldsInOrderOfDefinition()
 		{
 			NoZeroFlags nzf = NoZeroFlags.One | NoZeroFlags.Three;
 			Assert.That(nzf.GetFlags(true), Is.EquivalentTo(new[] { NoZeroFlags.One, NoZeroFlags.Three }));
@@ -1126,7 +1194,7 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		[Test]
-		public void FindAllSetFor_DoesNotReturnUnsetFields()
+		public void GetFlags_DoesNotReturnUnsetFields()
 		{
 			NoZeroFlags nzf = NoZeroFlags.One | NoZeroFlags.Three;
 			Assert.That(nzf.GetFlags(),
@@ -1141,6 +1209,28 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		#endregion
+
+		#endregion
+
+		#region comparison
+
+		[Test]
+		public void Comparer_Equal_True()
+		{
+			Assert.That(Enumeration.GetComparer<ByteEnum>().Equals(ByteEnum.One, ByteEnum.One), Is.True);
+		}
+
+		[Test]
+		public void Comparer_NotEqual_False()
+		{
+			Assert.That(Enumeration.GetComparer<ByteEnum>().Equals(ByteEnum.One, ByteEnum.Two), Is.False);
+		}
+
+		[Test]
+		public void Comparer_NotEnum_Throws()
+		{
+			Assert.That(() => Enumeration.GetComparer<decimal>(), Throws.ArgumentException);
+		}
 
 		#endregion
 

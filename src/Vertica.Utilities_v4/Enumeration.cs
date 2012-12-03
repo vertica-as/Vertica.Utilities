@@ -776,5 +776,90 @@ namespace Vertica.Utilities_v4
 		}
 
 		#endregion
+
+		#region fast comparison
+
+		/* based on: http://www.codeproject.com/KB/cs/EnumComparer.aspx */
+		internal class FastEnumComparer<TEnum> : IEqualityComparer<TEnum> where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			public static readonly IEqualityComparer<TEnum> Instance;
+
+			private static readonly Func<TEnum, TEnum, bool> equals;
+			private static readonly Func<TEnum, int> getHashCode;
+
+			static FastEnumComparer()
+			{
+				getHashCode = generateGetHashCode();
+				equals = generateEquals();
+				Instance = new FastEnumComparer<TEnum>();
+			}
+			/// <summary>
+			/// A private constructor to prevent user instantiation.
+			/// </summary>
+			private FastEnumComparer()
+			{
+				assertUnderlyingTypeIsSupported();
+			}
+
+			public bool Equals(TEnum x, TEnum y)
+			{
+				// call the generated method
+				return equals(x, y);
+			}
+
+			public int GetHashCode(TEnum obj)
+			{
+				// call the generated method
+				return getHashCode(obj);
+			}
+
+			private static void assertUnderlyingTypeIsSupported()
+			{
+				var underlyingType = Enum.GetUnderlyingType(typeof(TEnum));
+				ICollection<Type> supportedTypes = new[]
+				{
+					typeof (byte), typeof (sbyte),
+					typeof (short), typeof (ushort),
+					typeof (int), typeof (uint),
+					typeof (long), typeof (ulong)
+				};
+
+				if (!supportedTypes.Contains(underlyingType))
+				{
+					string typeNames = string.Join(", ", supportedTypes.Select(t => t.Name));
+					ExceptionHelper.Throw<NotSupportedException>(
+						Exceptions.Enumeration_NotSupportedUnderlyingTypeTemplate,
+						typeof(TEnum).Name,
+						underlyingType.Name,
+						typeNames);
+				}
+			}
+
+			private static Func<TEnum, TEnum, bool> generateEquals()
+			{
+				var xParam = Expression.Parameter(typeof(TEnum), "x");
+				var yParam = Expression.Parameter(typeof(TEnum), "y");
+				var equalExpression = Expression.Equal(xParam, yParam);
+				return Expression.Lambda<Func<TEnum, TEnum, bool>>(equalExpression, new[] { xParam, yParam }).Compile();
+			}
+
+			private static Func<TEnum, int> generateGetHashCode()
+			{
+				var objParam = Expression.Parameter(typeof(TEnum), "obj");
+				var underlyingType = Enum.GetUnderlyingType(typeof(TEnum));
+				var convertExpression = Expression.Convert(objParam, underlyingType);
+				var getHashCodeMethod = underlyingType.GetMethod("GetHashCode");
+				var getHashCodeExpression = Expression.Call(convertExpression, getHashCodeMethod);
+				return Expression.Lambda<Func<TEnum, int>>(getHashCodeExpression, new[] { objParam }).Compile();
+			}
+		}
+
+		public static IEqualityComparer<TEnum> GetComparer<TEnum>() where TEnum : struct, IComparable, IFormattable, IConvertible
+		{
+			AssertEnum<TEnum>();
+			return FastEnumComparer<TEnum>.Instance;
+		}
+
+		#endregion
 	}
 }

@@ -97,6 +97,15 @@ namespace Vertica.Utilities_v4.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The underlying type of &apos;{0}&apos; is {1}. Only enums with underlying type of [{2}] are supported..
+        /// </summary>
+        internal static string Enumeration_NotSupportedUnderlyingTypeTemplate {
+            get {
+                return ResourceManager.GetString("Enumeration_NotSupportedUnderlyingTypeTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value &quot;{0}&quot; is not defined within type &apos;{1}&apos;..
         /// </summary>
         internal static string Enumeration_ValueNotDefinedTemplate {
