@@ -80,6 +80,18 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(hundredPercentMore.Fraction, Is.EqualTo(1d));
 		}
 
+		[Test]
+		public void ExtensionMethods_LikeConstructionCounterParts()
+		{
+			Percentage sixtyPercent = 60d.Percent();
+			Assert.That(sixtyPercent.Value, Is.EqualTo(60d));
+			Assert.That(sixtyPercent.Fraction, Is.EqualTo(.6d));
+
+			Percentage tenPercent = 10d.AsPercentOf(100d);
+			Assert.That(tenPercent.Value, Is.EqualTo(10d));
+			Assert.That(tenPercent.Fraction, Is.EqualTo(0.1d));
+		}
+
 		#endregion
 	}
 }
