@@ -43,6 +43,12 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		[Test]
+		public void FromAmount_ZeroTotal_Exception()
+		{
+			Assert.That(()=>Percentage.FromAmounts(10, 0), Throws.ArgumentException);
+		}
+
+		[Test]
 		public void FromDifference_TotalBigger_PositivePercentage()
 		{
 			Percentage fiftyPercentBigger = Percentage.FromDifference(20L, 10L);
@@ -60,6 +66,18 @@ namespace Vertica.Utilities_v4.Tests
 
 			twiceAsSmall = Percentage.FromDifference(10d, 20d);
 			Assert.That(twiceAsSmall.Value, Is.EqualTo(-100d));
+		}
+
+		[Test]
+		public void FromDifference_ZeroTotal_HundredPercent()
+		{
+			Percentage hundredPercentMore = Percentage.FromDifference(15, 0);
+			Assert.That(hundredPercentMore.Value, Is.EqualTo(100d));
+			Assert.That(hundredPercentMore.Fraction, Is.EqualTo(1d));
+
+			hundredPercentMore = Percentage.FromDifference(long.MaxValue, 0);
+			Assert.That(hundredPercentMore.Value, Is.EqualTo(100d));
+			Assert.That(hundredPercentMore.Fraction, Is.EqualTo(1d));
 		}
 
 		#endregion
