@@ -42,6 +42,26 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(thousandPercent.Fraction, Is.EqualTo(10d));
 		}
 
+		[Test]
+		public void FromDifference_TotalBigger_PositivePercentage()
+		{
+			Percentage fiftyPercentBigger = Percentage.FromDifference(20L, 10L);
+			Assert.That(fiftyPercentBigger.Value, Is.EqualTo(50d));
+
+			fiftyPercentBigger = Percentage.FromDifference(20d, 10d);
+			Assert.That(fiftyPercentBigger.Value, Is.EqualTo(50d));
+		}
+
+		[Test]
+		public void FromDifference_TotalSmaller_NegativePercentage()
+		{
+			Percentage twiceAsSmall = Percentage.FromDifference(10L, 20L);
+			Assert.That(twiceAsSmall.Value, Is.EqualTo(-100d));
+
+			twiceAsSmall = Percentage.FromDifference(10d, 20d);
+			Assert.That(twiceAsSmall.Value, Is.EqualTo(-100d));
+		}
+
 		#endregion
 	}
 }

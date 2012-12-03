@@ -12,15 +12,16 @@ namespace Vertica.Utilities_v4
 
 		#region construction
 
-		public Percentage(double value) : this()
+		public Percentage(double value)
+			: this()
 		{
 			Value = value;
-			Fraction = value/100d;
+			Fraction = value / 100d;
 		}
 
 		public static Percentage FromFraction(double fraction)
 		{
-			return new Percentage(fraction*100d);
+			return new Percentage(fraction * 100d);
 		}
 
 		internal static readonly string _divideByZeroMessage = new DivideByZeroException().Message;
@@ -35,6 +36,18 @@ namespace Vertica.Utilities_v4
 		{
 			Guard.AgainstArgument("total", total == 0d, _divideByZeroMessage);
 			return new Percentage(given / total * 100d);
+		}
+
+		public static Percentage FromDifference(long total, long given)
+		{
+			Guard.AgainstArgument("total", total == 0L, _divideByZeroMessage);
+			return new Percentage(((total - given) / (double)total) * 100d);
+		}
+
+		public static Percentage FromDifference(double total, double given)
+		{
+			Guard.AgainstArgument("total", total == 0d, _divideByZeroMessage);
+			return new Percentage(((total - given) / total) * 100d);
 		}
 
 		#endregion
