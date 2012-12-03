@@ -127,7 +127,7 @@ namespace Vertica.Utilities_v4.Eventing
 			return handled;
 		}
 
-		public static bool RaiseUntil<T, K>(ValueEventHandler<T, K> delegates, object sender, T args, Predicate<K> predicate) where T : ValueEventArgs<K>
+		public static bool RaiseUntil<T, K>(this ChainedEventHandler<T, K> delegates, object sender, T args, Predicate<K> predicate) where T : IMutableValueEventArgs<K>
 		{
 			bool handled = false;
 
@@ -136,7 +136,7 @@ namespace Vertica.Utilities_v4.Eventing
 				Delegate[] invocationList = delegates.GetInvocationList();
 				for (int i = 0; i < invocationList.Length && !handled; i++)
 				{
-					K result = ((ValueEventHandler<T, K>)invocationList[i])(sender, args);
+					K result = ((ChainedEventHandler<T, K>)invocationList[i])(sender, args);
 					handled = predicate(result);
 				}
 			}
