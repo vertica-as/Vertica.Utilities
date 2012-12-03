@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Globalization;
+using NUnit.Framework;
+using Testing.Commons.Globalization;
 
 namespace Vertica.Utilities_v4.Tests
 {
@@ -101,5 +103,44 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(fiftyPercent.Apply(100L), Is.EqualTo(50d));
 			Assert.That(fiftyPercent.Apply(100d), Is.EqualTo(50d));
 		}
+
+		#region representation
+
+		[Test]
+		public void ToString_CultureIndependent()
+		{
+			using (CultureReseter.Set("es-ES"))
+			{
+				Assert.That(new Percentage(33.343d).ToString(), Is.EqualTo("33.343 %"));
+			}
+
+			using (CultureReseter.Set("en-US"))
+			{
+				Assert.That(new Percentage(33.3112d).ToString(), Is.EqualTo("33.3112 %"));
+			}
+		}
+
+		[Test]
+		public void ToString_FormattedNumber_HonorsFormatBeingCultureIndependent()
+		{
+			using (CultureReseter.Set("es-ES"))
+			{
+				Assert.That(new Percentage(33.3d).ToString("{0:000.0000}"), Is.EqualTo("033.3000 %"));
+			}
+
+			using (CultureReseter.Set("en-US"))
+			{
+				Assert.That(new Percentage(33.3d).ToString("{0:000.0000}"), Is.EqualTo("033.3000 %"));
+			}
+		}
+
+		[Test]
+		public void ToString_Formattable_UsesProvider()
+		{
+			var info = new NumberFormatInfo { NumberDecimalSeparator = "¤", PercentSymbol = "ignored"};
+			Assert.That(new Percentage(33.3d).ToString("{0:000.0000}", info), Is.EqualTo("033¤3000 %"));
+		}
+
+		#endregion
 	}
 }
