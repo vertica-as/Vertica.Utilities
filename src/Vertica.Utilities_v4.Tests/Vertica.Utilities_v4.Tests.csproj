@@ -43,6 +43,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgeTester.cs" />
     <Compile Include="DisposableActionTester.cs" />
     <Compile Include="DomainOfValuesTester.cs" />
     <Compile Include="Eventing\EventArgsTester.cs" />
@@ -83,6 +84,8 @@
     <Compile Include="Extensions\TimeExtensionsTester.cs" />
     <Compile Include="Reflection\NameAndValueTester.cs" />
     <Compile Include="Reflection\Support\StaticReflectionSubjects.cs" />
+    <Compile Include="Support\AgeConstraint.cs" />
+    <Compile Include="Support\MustExtensions.cs" />
     <Compile Include="Testing\TimeReseterTester.cs" />
     <Compile Include="TimeTester.cs" />
   </ItemGroup>
