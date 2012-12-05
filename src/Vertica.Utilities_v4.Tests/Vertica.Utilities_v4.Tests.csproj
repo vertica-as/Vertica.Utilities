@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgeTester.cs" />
+    <Compile Include="CombTester.cs" />
     <Compile Include="DisposableActionTester.cs" />
     <Compile Include="DomainOfValuesTester.cs" />
     <Compile Include="Eventing\EventArgsTester.cs" />
