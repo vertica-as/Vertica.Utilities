@@ -53,6 +53,19 @@ namespace Vertica.Utilities_v4.Tests.Eventing
 
 		public event EventHandler<ValueEventArgs<string>> NoAccessorEvent;
 
+		private static event ChainedEventHandler<ChainedEventArgs> _chained;
+
+		internal class EventChainSubject
+		{
+			internal event ChainedEventHandler<ChainedEventArgs> Event;
+			internal bool OnChainedEvent(ChainedEventArgs args)
+			{
+				return Event.Raise(this, args);
+			}
+		}
+
+		private static event ChainedEventHandler<MutableValueEventArgs<string>, string> _abortable;
+
 		#endregion
 
 		#region Raise
@@ -252,6 +265,134 @@ namespace Vertica.Utilities_v4.Tests.Eventing
 			subject.I = 2;
 
 			Assert.That(propertyChangingName, Is.EqualTo("S"));
+		}
+
+		#endregion
+
+		#region chains
+
+		[Test]
+		public void Raise_OwnEvent_HandledBySecond_NoFurtherCallbackExecuted()
+		{
+			string lastHandler = string.Empty;
+			int numberOfHandlersExecuted = 0;
+
+			_chained += (handler, e) =>
+			{ 
+				numberOfHandlersExecuted++;
+				lastHandler = "one";
+			};
+			_chained += (handler, e) =>
+			{
+				numberOfHandlersExecuted++;
+				lastHandler = "two";
+				e.Handled = true;
+			};
+			_chained += (handler, e) =>
+			{
+				numberOfHandlersExecuted++;
+				lastHandler = "three";
+			};
+
+			var args = new ChainedEventArgs();
+
+			bool result = _chained.Raise(this, args);
+
+			Assert.That(result, Is.True);
+			Assert.That(args.Handled, Is.True);
+			Assert.That(numberOfHandlersExecuted, Is.EqualTo(2));
+			Assert.That(lastHandler, Is.EqualTo("two"));
+		}
+
+		[Test]
+		public void Raise_ExternalClassEvent_HandledBySecond_NoFurtherCallbackExecuted()
+		{
+			int numberOfHandlersExecuted = 0;
+
+			var subject = new EventChainSubject();
+			subject.Event += (sender, e) => numberOfHandlersExecuted++;
+			subject.Event += (sender, e) =>
+			{
+				numberOfHandlersExecuted++;
+				e.Handled = true;
+			};
+			subject.Event += (sender, e) => numberOfHandlersExecuted++;
+
+			var args = new ChainedEventArgs();
+			bool result = subject.OnChainedEvent(args);
+
+			Assert.That(result, Is.True);
+			Assert.That(args.Handled, Is.True);
+			Assert.That(numberOfHandlersExecuted, Is.EqualTo(2));
+		}
+
+		[Test]
+		public void Raise_EmptyRegistratinList_NoHandling()
+		{
+			var subject = new EventChainSubject();
+			var args = new ChainedEventArgs();
+			bool result = subject.OnChainedEvent(args);
+
+			Assert.That(result, Is.False);
+			Assert.That(args.Handled, Is.False);
+		}
+
+		[Test]
+		public void RaiseUntil_AbortableChain_HandledWhenValueIs2_NoFurtherCallbacksExecuted()
+		{
+			int numberOfHandlersExecuted = 0;
+			_abortable += (handler, e) =>
+			{
+				numberOfHandlersExecuted++;
+				return e.Value = "1";
+			};
+			_abortable += (handler, e) =>
+			{
+				numberOfHandlersExecuted++;
+				return e.Value = "2";
+			};
+			_abortable += (handler, e) =>
+			{
+				numberOfHandlersExecuted++;
+				return e.Value = "3";
+			};
+			
+			var args = new MutableValueEventArgs<string>();
+
+			bool result = _abortable.RaiseUntil(this, args, e => e.Equals("2", StringComparison.OrdinalIgnoreCase));
+
+			Assert.That(result, Is.True);
+			Assert.That(args.Value, Is.EqualTo("2"));
+			Assert.That(numberOfHandlersExecuted, Is.EqualTo(2));
+		}
+
+		[Test]
+		public void RaiseUntil_AbortableChain_NotHandled_AllCallbacksExecuted()
+		{
+			int numberOfHandlersExecuted = 0;
+			_abortable += (handler, e) =>
+			{
+				numberOfHandlersExecuted++;
+				return e.Value = "1";
+			};
+			_abortable += (handler, e) =>
+			{
+				numberOfHandlersExecuted++;
+				return e.Value = "2";
+			};
+			_abortable += (handler, e) =>
+			{
+				numberOfHandlersExecuted++;
+				return e.Value = "3";
+			};
+
+			var args = new MutableValueEventArgs<string>();
+
+			bool result = _abortable.RaiseUntil(this, args, e => e.Equals("5", StringComparison.OrdinalIgnoreCase));
+
+			Assert.That(result, Is.False);
+			Assert.That(args.Value, Is.EqualTo("3"), "value of the last callback");
+			Assert.That(numberOfHandlersExecuted, Is.EqualTo(3));
 		}
 
 		#endregion
