@@ -44,6 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgeTester.cs" />
+    <Compile Include="Comparisons\ChainableComparerTester.cs" />
+    <Compile Include="Comparisons\Support\ComparisonSubject.cs" />
+    <Compile Include="Comparisons\Support\MustExtensions.cs" />
+    <Compile Include="Comparisons\Support\Property2ChainableComparer.cs" />
+    <Compile Include="Comparisons\Support\StringRepresentationConstraint.cs" />
     <Compile Include="DisposableActionTester.cs" />
     <Compile Include="DomainOfValuesTester.cs" />
     <Compile Include="Eventing\EventArgsTester.cs" />

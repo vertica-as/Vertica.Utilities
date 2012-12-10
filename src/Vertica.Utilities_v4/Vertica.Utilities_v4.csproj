@@ -37,6 +37,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Age.cs" />
+    <Compile Include="Comparisons\ChainableComparer.cs" />
+    <Compile Include="Comparisons\Direction.cs" />
     <Compile Include="DisposableAction.cs" />
     <Compile Include="DomainOf.cs" />
     <Compile Include="DomainOfValues.cs" />
