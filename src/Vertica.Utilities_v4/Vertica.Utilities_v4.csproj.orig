@@ -37,9 +37,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Age.cs" />
+<<<<<<< HEAD
+    <Compile Include="UniqueIdentifier.cs" />
+=======
     <Compile Include="DecimalPercentage.cs">
       <DependentUpon>Percentage.cs</DependentUpon>
     </Compile>
+>>>>>>> master
     <Compile Include="DisposableAction.cs" />
     <Compile Include="DomainOf.cs" />
     <Compile Include="DomainOfValues.cs" />
@@ -68,9 +72,9 @@
     <Compile Include="Extensions\Range.Extensions.cs" />
     <Compile Include="Extensions\Time.Extensions.cs" />
     <Compile Include="FormattablePercentage.cs">
-      <DependentUpon>Percentage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Guard.cs" />
+		<DependentUpon>Percentage.cs</DependentUpon>
+	</Compile>
+	  <Compile Include="Guard.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Option.Factory.cs" />
     <Compile Include="Percentage.cs" />
@@ -91,7 +95,6 @@
     </Compile>
     <Compile Include="Time.cs" />
     <Compile Include="Testing\TimeReseter.cs" />
-    <Compile Include="UniqueIdentifier.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Exceptions.resx">
