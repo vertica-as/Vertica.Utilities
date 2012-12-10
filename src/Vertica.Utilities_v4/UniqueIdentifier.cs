@@ -41,7 +41,7 @@ namespace Vertica.Utilities_v4
         // Used to sort the bytes of the Guid according to Alberto Ferrari article (http://sqlblog.com/blogs/alberto_ferrari/archive/2007/08/31/how-are-guids-sorted-by-sql-server.aspx)
         private static readonly int[] _sqlOrderMap = new[] {3, 2, 1, 0, 5, 4, 7, 6, 9, 8, 15, 14, 13, 12, 11, 10}; 
 
-		public static Guid Guessable()
+		public static Guid Sequential()
 		{
 			Guid guid = generateSequentialGuid();
 			return setSortOrder(guid); 

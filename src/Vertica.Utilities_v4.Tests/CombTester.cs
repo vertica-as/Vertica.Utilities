@@ -8,13 +8,13 @@ namespace Vertica.Utilities_v4.Tests
 	public class UniqueIdentifierTester
 	{
 		[Test]
-		public void Guessable_IdsThatGrow()
+		public void Sequential_IdsThatGrow()
 		{
 			IComparer<string> comparer = StringComparer.OrdinalIgnoreCase;
 			var combRepresentations = new string[10];
 			for (int i = 0; i < 10; i++)
 			{
-				combRepresentations[i] = UniqueIdentifier.Guessable().ToString("N");
+				combRepresentations[i] = UniqueIdentifier.Sequential().ToString("N");
 				if (i > 0)
 				{
 					// compare with previous
