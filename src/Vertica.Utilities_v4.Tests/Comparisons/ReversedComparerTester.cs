@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Vertica.Utilities_v4.Comparisons;
 using Vertica.Utilities_v4.Tests.Comparisons.Support;
