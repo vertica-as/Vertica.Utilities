@@ -80,5 +80,15 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 
 			Assert.That(list, Must.Be.RepresentableAs("B, A, C"));
 		}
+
+		[Test]
+		public void Adapts_ComparisonDelegates_ToIComparable()
+		{
+			Comparison<ComparisonSubject> comparison = (x, y) => x.Property2.CompareTo(y.Property2);
+			IComparer<ComparisonSubject> comparer = new ComparisonComparer<ComparisonSubject>(comparison);
+
+			Assert.That(comparer.Compare(ComparisonSubject.One, ComparisonSubject.Two), Is.LessThan(0));
+			Assert.That(comparison(ComparisonSubject.One, ComparisonSubject.Two), Is.LessThan(0));
+		}
 	}
 }

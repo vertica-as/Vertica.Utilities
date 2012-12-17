@@ -101,19 +101,30 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 			Assert.That(_subjects, Must.Be.RepresentableAs("B, D, E, A, C"));
 		}
 
-		/*[Test]
+		[Test]
+		public void ChainableComparer_By3Then2_FactoredWithSelectors()
+		{
+			_subjects.Sort(Cmp<ComparisonSubject>.By(c => c.Property3)
+				.Then(c => c.Property2, Direction.Ascending));
+			Assert.That(_subjects, Must.Be.RepresentableAs("B, D, E, C, A"));
+
+			_subjects.Sort(Cmp<ComparisonSubject>.By(c => c.Property3)
+				.Then(c => c.Property2, Direction.Descending));
+			Assert.That(_subjects, Must.Be.RepresentableAs("B, D, E, A, C"));
+		}
+
+		[Test]
 		public void ChaineableComparer_CanBeUsedWithLinq()
 		{
-			assertSubject(_subjects.OrderBy(s => s,
-											ChainableComparer<ComparisonSubject>
-												.By(s => s.Property3)
-												.Then(s => s.Property2)),
-						  "B, D, E, C, A");
+			Assert.That(_subjects.OrderBy(s => s, Cmp<ComparisonSubject>
+					.By(s => s.Property3)
+					.Then(s => s.Property2)),
+				Must.Be.RepresentableAs("B, D, E, C, A"));
 
-			assertSubject(_subjects.SortBy(ChainableComparer<ComparisonSubject>
-											.By(s => s.Property3)
-											.Then(s => s.Property2, Direction.Descending)),
-						  "B, D, E, A, C");
-		}*/
+			Assert.That(_subjects.OrderBy(s => s, Cmp<ComparisonSubject>
+					.By(s => s.Property3)
+					.Then(s => s.Property2, Direction.Descending)),
+				Must.Be.RepresentableAs("B, D, E, A, C"));
+		}
 	}
 }

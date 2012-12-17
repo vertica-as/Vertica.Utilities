@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Vertica.Utilities_v4.Comparisons
 {
@@ -7,30 +8,6 @@ namespace Vertica.Utilities_v4.Comparisons
 		private readonly Direction _direction;
 		public Direction SortDirection { get { return _direction; } }
 		protected abstract int DoCompare(T x, T y);
-
-		#region Factory Methods
-
-		/*public static ChainableComparer<T> By(Comparison<T> next)
-		{
-			return new ComparisonComparer<T>(next);
-		}
-
-		public static ChainableComparer<T> By(Comparison<T> next, Direction sortDirection)
-		{
-			return new ComparisonComparer<T>(next, sortDirection);
-		}
-
-		public static ChainableComparer<T> By<K>(Func<T, K> keySelector)
-		{
-			return new DynamicComparer<T, K>(keySelector);
-		}
-
-		public static ChainableComparer<T> By<K>(Func<T, K> keySelector, Direction sortDirection)
-		{
-			return new DynamicComparer<T, K>(keySelector, sortDirection);
-		}*/
-
-		#endregion
 
 		protected ChainableComparer() : this(Direction.Ascending) { }
 
@@ -87,25 +64,5 @@ namespace Vertica.Utilities_v4.Comparisons
 			_lastComparer = comparer;
 			return this;
 		}
-
-		/*public ChainableComparer<T> Then(Comparison<T> next)
-		{
-			return Then(new ComparisonComparer<T>(next));
-		}
-
-		public ChainableComparer<T> Then(Comparison<T> next, Direction sortDirection)
-		{
-			return Then(new ComparisonComparer<T>(next, sortDirection));
-		}
-
-		public ChainableComparer<T> Then<U>(Func<T, U> keySelector)
-		{
-			return Then(new DynamicComparer<T, U>(keySelector));
-		}
-
-		public ChainableComparer<T> Then<U>(Func<T, U> keySelector, Direction sortDirection)
-		{
-			return Then(new DynamicComparer<T, U>(keySelector, sortDirection));
-		}*/
 	}
 }

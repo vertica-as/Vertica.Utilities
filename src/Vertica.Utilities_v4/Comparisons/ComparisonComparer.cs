@@ -22,4 +22,17 @@ namespace Vertica.Utilities_v4.Comparisons
 
 		public Comparison<T> Comparison { get { return Compare; } }
 	}
+
+	public static partial class ChainableExtensions
+	{
+		public static ChainableComparer<T> Then<T>(this ChainableComparer<T> chainable, Comparison<T> next)
+		{
+			return chainable.Then(new ComparisonComparer<T>(next));
+		}
+
+		public static ChainableComparer<T> Then<T>(this ChainableComparer<T> chainable, Comparison<T> next, Direction sortDirection)
+		{
+			return chainable.Then(new ComparisonComparer<T>(next, sortDirection));
+		}
+	}
 }
