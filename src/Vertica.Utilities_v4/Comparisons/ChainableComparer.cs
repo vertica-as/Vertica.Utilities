@@ -6,7 +6,7 @@ namespace Vertica.Utilities_v4.Comparisons
 	{
 		private readonly Direction _direction;
 		public Direction SortDirection { get { return _direction; } }
-		public abstract int DoCompare(T x, T y);
+		protected abstract int DoCompare(T x, T y);
 
 		#region Factory Methods
 

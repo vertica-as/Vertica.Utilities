@@ -8,7 +8,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons.Support
 
 		public Property3ChainableComparer(Direction sortDirection) : base(sortDirection) { }
 
-		public override int DoCompare(ComparisonSubject x, ComparisonSubject y)
+		protected override int DoCompare(ComparisonSubject x, ComparisonSubject y)
 		{
 			return x.Property3.CompareTo(y.Property3);
 		}
