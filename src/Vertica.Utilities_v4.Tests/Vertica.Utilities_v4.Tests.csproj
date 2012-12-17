@@ -46,6 +46,7 @@
     <Compile Include="AgeTester.cs" />
     <Compile Include="Comparisons\ChainableComparerTester.cs" />
     <Compile Include="Comparisons\ComparisonComparerTester.cs" />
+    <Compile Include="Comparisons\ReversedComparerTester.cs" />
     <Compile Include="Comparisons\SelectorComparerTester.cs" />
     <Compile Include="Comparisons\Support\ComparisonSubject.cs" />
     <Compile Include="Comparisons\Support\MustExtensions.cs" />

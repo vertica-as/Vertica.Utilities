@@ -41,6 +41,7 @@
     <Compile Include="Comparisons\Cmp.cs" />
     <Compile Include="Comparisons\ComparisonComparer.cs" />
     <Compile Include="Comparisons\Direction.cs" />
+    <Compile Include="Comparisons\ReverseComparer.cs" />
     <Compile Include="Comparisons\SelectorComparer.cs" />
     <Compile Include="DisposableAction.cs" />
     <Compile Include="DomainOf.cs" />
