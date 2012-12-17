@@ -10,6 +10,16 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 	[TestFixture]
 	public class ChainableComparerTester
 	{
+		#region documentation
+
+		[Test, Category("Exploratory")]
+		public void Explore()
+		{
+			
+		}
+
+		#endregion
+
 		#region subjects
 
 		private static readonly ComparisonSubject _a = new ComparisonSubject("A", 4, 7.60m);
@@ -26,6 +36,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 		}
 
 		#endregion
+
 		[Test(Description = "Exploratory")]
 		public void Exploring_SortWithLinq()
 		{
@@ -33,17 +44,6 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 				.OrderBy(s => s.Property3)
 				.ThenBy(s => s.Property2),
 				Must.Be.RepresentableAs("B, D, E, C, A"));
-
-			/*
-
-			assertSubject(_subjects
-							.SortBy(s => s.Property3, s => s.Property2),
-						  "B, D, E, C, A");
-
-			assertSubject(_subjects
-							.OrderBy(s => s.Property3)
-							.ThenByDescending(s => s.Property2),
-						  "B, D, E, A, C");*/
 		}
 
 		[Test(Description = "Exploratory")]

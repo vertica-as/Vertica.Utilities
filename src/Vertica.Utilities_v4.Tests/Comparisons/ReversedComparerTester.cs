@@ -9,6 +9,22 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 	[TestFixture]
 	public class ReversedComparerTester
 	{
+		#region documentation
+
+		[Test, Category("Exploratory")]
+		public void Explore()
+		{
+			string a = "a", b = "b";
+
+			IComparer<string> normalComparison = StringComparer.OrdinalIgnoreCase;
+			Assert.That(a, Is.LessThan(b).Using(normalComparison));
+
+			IComparer<string> reversedComparer = new ReversedComparer<string>(normalComparison);
+			Assert.That(a, Is.GreaterThan(b).Using(reversedComparer));
+		}
+
+		#endregion
+
 		private static readonly IComparer<ComparisonSubject> _toBeReversed =
 			   new ComparisonComparer<ComparisonSubject>((x, y) => x.Property2.CompareTo(y.Property2));
 

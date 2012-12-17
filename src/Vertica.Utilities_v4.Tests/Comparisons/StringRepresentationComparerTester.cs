@@ -1,14 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using NUnit.Framework;
 using Vertica.Utilities_v4.Comparisons;
-using Vertica.Utilities_v4.Tests.Comparisons.Support;
 
 namespace Vertica.Utilities_v4.Tests.Comparisons
 {
 	[TestFixture]
 	public class StringRepresentationComparerTester
 	{
+		#region documentation
+
+		[Test, Category("Exploratory")]
+		public void Explore()
+		{
+			string eleven = "11", two = "2";
+			
+			IComparer<string> normalComparison = StringComparer.OrdinalIgnoreCase;
+			Assert.That(eleven, Is.LessThan(two).Using(normalComparison));
+
+			IComparer<string> representationComparison = new StringRepresentationComparer<int>(int.Parse);
+			Assert.That(eleven, Is.GreaterThan(two).Using(representationComparison));
+		}
+
+		#endregion
+
 		[Test]
 		public void Ctor_DefaultsToAscending()
 		{
