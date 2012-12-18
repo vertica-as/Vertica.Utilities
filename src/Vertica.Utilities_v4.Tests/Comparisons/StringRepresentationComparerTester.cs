@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using NUnit.Framework;
 using Vertica.Utilities_v4.Comparisons;
+using Vertica.Utilities_v4.Tests.Comparisons.Support;
 
 namespace Vertica.Utilities_v4.Tests.Comparisons
 {
@@ -81,6 +82,17 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 
 			subject = new StringRepresentationComparer<int>(converter, Direction.Descending);
 			Assert.That(subject.Compare("1", "2"), Is.GreaterThan(0));
+		}
+
+		[Test]
+		public void Clients_DoNotHaveToCareAboutNulls()
+		{
+			var notNull = "1";
+			var chainable = new StringRepresentationComparer<int>(int.Parse);
+
+			Assert.That(chainable.Compare(notNull, null), Is.GreaterThan(0));
+			Assert.That(chainable.Compare(null, notNull), Is.LessThan(0));
+			Assert.That(chainable.Compare(null, null), Is.EqualTo(0));
 		}
 	}
 }

@@ -52,5 +52,16 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 			subject = new ReversedComparer<ComparisonSubject>(_toBeReversed, Direction.Descending);
 			Assert.That(subject.Compare(ComparisonSubject.One, ComparisonSubject.Two), Is.LessThan(0));
 		}
+
+		[Test]
+		public void Clients_DoNotHaveToCareAboutNulls()
+		{
+			var notNull = new ComparisonSubject("a", 1, 1m);
+			var chainable = new ReversedComparer<ComparisonSubject>(new Property2Comparer());
+
+			Assert.That(chainable.Compare(notNull, null), Is.GreaterThan(0));
+			Assert.That(chainable.Compare(null, notNull), Is.LessThan(0));
+			Assert.That(chainable.Compare(null, null), Is.EqualTo(0));
+		}
 	}
 }

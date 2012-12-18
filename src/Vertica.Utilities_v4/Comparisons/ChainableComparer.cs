@@ -18,12 +18,37 @@ namespace Vertica.Utilities_v4.Comparisons
 
 		public int Compare(T x, T y)
 		{
+			int? shortCircuit = handleNulls(x, y);
+			if (shortCircuit.HasValue) return shortCircuit.Value;
+
 			int result = DoCompare(x, y);
-			if (needsToEvaluateNext(result)) result = _nextComparer.Compare(x, y);
+			if (needsToEvaluateNext(result))
+			{
+				result = _nextComparer.Compare(x, y);
+			}
 
 			if (_direction == Direction.Descending) invert(ref result);
 
 			return result;
+		}
+
+		private static int? handleNulls(T x, T y)
+		{
+			int? shortCircuit = null;
+			if (!typeof(T).IsValueType)
+			{
+				// ReSharper disable CompareNonConstrainedGenericWithNull
+				if (x == null)
+				{
+					shortCircuit = y == null ? 0 : -1;
+				}
+				else if (y == null)
+				{
+					shortCircuit = 1;
+				}
+				// ReSharper restore CompareNonConstrainedGenericWithNull
+			}
+			return shortCircuit;
 		}
 
 		private bool needsToEvaluateNext(int ret)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Testing.Commons;
@@ -125,6 +126,19 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 					.By(s => s.Property3)
 					.Then(s => s.Property2, Direction.Descending)),
 				Must.Be.RepresentableAs("B, D, E, A, C"));
+		}
+
+		[Test]
+		public void Inheritors_DoNotHaveToCareAboutNulls()
+		{
+			var notNull = new ComparisonSubject("a", 1, 1m);
+			var comparer = new Property2Comparer();
+			Assert.That(()=>comparer.Compare(notNull, null), Throws.InstanceOf<NullReferenceException>());
+
+			var chainable = new Property2ChainableComparer();
+			Assert.That(chainable.Compare(notNull, null), Is.GreaterThan(0));
+			Assert.That(chainable.Compare(null, notNull), Is.LessThan(0));
+			Assert.That(chainable.Compare(null, null), Is.EqualTo(0));
 		}
 	}
 }

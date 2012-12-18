@@ -90,5 +90,16 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 			Assert.That(comparer.Compare(ComparisonSubject.One, ComparisonSubject.Two), Is.LessThan(0));
 			Assert.That(comparison(ComparisonSubject.One, ComparisonSubject.Two), Is.LessThan(0));
 		}
+
+		[Test]
+		public void Clients_DoNotHaveToCareAboutNulls()
+		{
+			var notNull = new ComparisonSubject("a", 1, 1m);
+			var chainable = new ComparisonComparer<ComparisonSubject>((x, y) => x.Property2.CompareTo(y.Property2));
+			
+			Assert.That(chainable.Compare(notNull, null), Is.GreaterThan(0));
+			Assert.That(chainable.Compare(null, notNull), Is.LessThan(0));
+			Assert.That(chainable.Compare(null, null), Is.EqualTo(0));
+		}
 	}
 }
