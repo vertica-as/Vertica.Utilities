@@ -7,9 +7,7 @@ namespace Vertica.Utilities_v4.Comparisons
 	{
 		private readonly Func<T, K> _keySelector;
 
-		public SelectorComparer(Func<T, K> keySelector) : this(keySelector, Direction.Ascending) { }
-
-		public SelectorComparer(Func<T, K> keySelector, Direction sortDirection)
+		public SelectorComparer(Func<T, K> keySelector, Direction sortDirection = Direction.Ascending)
 			: base(sortDirection)
 		{
 			_keySelector = keySelector;

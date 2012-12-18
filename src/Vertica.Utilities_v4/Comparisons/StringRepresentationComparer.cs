@@ -7,9 +7,8 @@ namespace Vertica.Utilities_v4.Comparisons
 	{
 		private readonly Func<string, T> _converter;
 		private readonly Comparer<T> _comparer;
-		public StringRepresentationComparer(Func<string, T> converter) : this(converter, Direction.Ascending) { }
 
-		public StringRepresentationComparer(Func<string, T> converter, Direction direction)
+		public StringRepresentationComparer(Func<string, T> converter, Direction direction = Direction.Ascending)
 			: base(direction)
 		{
 			_converter = converter;

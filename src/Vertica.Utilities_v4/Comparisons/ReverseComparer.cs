@@ -6,9 +6,7 @@ namespace Vertica.Utilities_v4.Comparisons
 	{
 		private readonly IComparer<T> _inner;
 
-		public ReversedComparer(IComparer<T> inner) : this(inner, Direction.Ascending) { }
-
-		public ReversedComparer(IComparer<T> inner, Direction direction) : base(direction)
+		public ReversedComparer(IComparer<T> inner, Direction direction = Direction.Ascending) : base(direction)
 		{
 			Guard.AgainstNullArgument("inner", inner);
 			_inner = inner;
