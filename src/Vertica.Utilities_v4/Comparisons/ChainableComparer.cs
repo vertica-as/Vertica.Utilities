@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Vertica.Utilities_v4.Comparisons
 {
@@ -9,9 +8,7 @@ namespace Vertica.Utilities_v4.Comparisons
 		public Direction SortDirection { get { return _direction; } }
 		protected abstract int DoCompare(T x, T y);
 
-		protected ChainableComparer() : this(Direction.Ascending) { }
-
-		protected ChainableComparer(Direction sortDirection)
+		protected ChainableComparer(Direction sortDirection = Direction.Ascending)
 		{
 			_direction = sortDirection;
 		}

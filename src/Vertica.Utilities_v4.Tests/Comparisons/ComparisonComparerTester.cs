@@ -10,6 +10,23 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 	[TestFixture]
 	public class ComparisonComparerTester
 	{
+		[Test, Category("Exploratory")]
+		public void Explore()
+		{
+			Comparison<ComparisonSubject> compare2 = (x, y) => x.Property2.CompareTo(y.Property2);
+			var subject = new ComparisonComparer<ComparisonSubject>(compare2, Direction.Ascending);
+			Assert.That(subject.Compare(ComparisonSubject.One, ComparisonSubject.Two), Is.LessThan(0));
+			Assert.That(subject, Is.InstanceOf<IComparer<ComparisonSubject>>());
+			Assert.That(subject.Comparison, Is.InstanceOf<Comparison<ComparisonSubject>>());
+
+			IComparer<ComparisonSubject> by3Then2Desc = new ComparisonComparer<ComparisonSubject>((x, y) => x.Property3.CompareTo(y.Property3))
+				.Then(new ComparisonComparer<ComparisonSubject>((x, y) => x.Property2.CompareTo(y.Property2), Direction.Descending));
+			by3Then2Desc = new ComparisonComparer<ComparisonSubject>((x, y) => x.Property3.CompareTo(y.Property3))
+				.Then((x, y) => x.Property2.CompareTo(y.Property2), Direction.Descending);
+			by3Then2Desc = Cmp<ComparisonSubject>.By((x, y) => x.Property3.CompareTo(y.Property3))
+				.Then((x, y) => x.Property2.CompareTo(y.Property2), Direction.Descending);
+		}
+
 		[Test]
 		public void Ctor_DefaultsToAscending()
 		{

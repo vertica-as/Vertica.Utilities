@@ -16,7 +16,23 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 		[Test, Category("Exploratory")]
 		public void Explore()
 		{
-			
+			Property2ChainableComparer inheritor = new Property2ChainableComparer();
+			Assert.That(inheritor, Is.InstanceOf<IComparer<ComparisonSubject>>(), "is a proper comparer");
+
+			ComparisonSubject x = new ComparisonSubject("x", 1, 1m), y = new ComparisonSubject("y", 1, 2m);
+			Assert.That(inheritor.Compare(x, y), Is.EqualTo(0), "x.Property2 == y.Property2");
+
+			ChainableComparer<ComparisonSubject> asc = inheritor.Then(new Property3ChainableComparer());
+			Assert.That(x, Is.LessThan(y).Using(asc), "x.Properyty3 < y.Property2");
+
+			ChainableComparer<ComparisonSubject> desc = new Property2ChainableComparer()
+				.Then(new Property3ChainableComparer(Direction.Descending));
+			Assert.That(x, Is.GreaterThan(y).Using(desc), "x.Properyty3 > y.Property2");
+
+			var chainable = new Property2ChainableComparer();
+			Assert.That(chainable.Compare(x, null), Is.GreaterThan(0));
+			Assert.That(chainable.Compare(null, y), Is.LessThan(0));
+			Assert.That(chainable.Compare(null, null), Is.EqualTo(0));
 		}
 
 		#endregion

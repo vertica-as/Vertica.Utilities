@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Vertica.Utilities_v4.Comparisons;
 using Vertica.Utilities_v4.Tests.Comparisons.Support;
@@ -8,6 +9,18 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 	[TestFixture]
 	public class SelectorComparerTester
 	{
+		[Test, Category("Exploratory")]
+		public void Explore()
+		{
+			IComparer<ComparisonSubject> subject = new SelectorComparer<ComparisonSubject, int>(s => s.Property2, Direction.Descending);
+			Assert.That(subject.Compare(ComparisonSubject.One, ComparisonSubject.Two), Is.GreaterThan(0));
+			
+			IComparer<ComparisonSubject> by3Then2Desc = new SelectorComparer<ComparisonSubject, decimal>(s => s.Property3)
+				.Then(s => s.Property2, Direction.Descending);
+			by3Then2Desc = Cmp<ComparisonSubject>.By(s => s.Property3)
+				.Then(s => s.Property2, Direction.Descending);
+		}
+
 		[Test]
 		public void Ctor_DefaultsToAscending()
 		{

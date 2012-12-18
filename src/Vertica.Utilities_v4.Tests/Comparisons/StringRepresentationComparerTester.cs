@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using NUnit.Framework;
 using Vertica.Utilities_v4.Comparisons;
-using Vertica.Utilities_v4.Tests.Comparisons.Support;
 
 namespace Vertica.Utilities_v4.Tests.Comparisons
 {
