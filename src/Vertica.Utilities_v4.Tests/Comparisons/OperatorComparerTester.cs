@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using NUnit.Framework;
 using Vertica.Utilities_v4.Comparisons;
+using Vertica.Utilities_v4.Tests.Comparisons.Support;
 
 namespace Vertica.Utilities_v4.Tests.Comparisons
 {
 	[TestFixture]
 	public class OperatorComparerTester
 	{
+		[Test, Category("Exploratory")]
+		public void Explore()
+		{
+			IComparer<OperatorsOnly> subject = new OperatorComparer<OperatorsOnly>(Direction.Descending);
+			Assert.That(subject.Compare(new OperatorsOnly(1), new OperatorsOnly(2)), Is.GreaterThan(0));
+			Assert.That(subject.Compare(new OperatorsOnly(2), new OperatorsOnly(1)), Is.LessThan(0));
+			Assert.That(subject.Compare(new OperatorsOnly(2), new OperatorsOnly(2)), Is.EqualTo(0));
+		}
+
 		#region subjects
 
 		class OperatorsOnly
@@ -65,10 +72,18 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 			Assert.That(subject.Compare(new OperatorsOnly(2), new OperatorsOnly(1)), Is.GreaterThan(0));
 			Assert.That(subject.Compare(new OperatorsOnly(2), new OperatorsOnly(2)), Is.EqualTo(0));
 
-			subject = new  OperatorComparer<OperatorsOnly>(Direction.Descending);
+			subject = new OperatorComparer<OperatorsOnly>(Direction.Descending);
 			Assert.That(subject.Compare(new OperatorsOnly(1), new OperatorsOnly(2)), Is.GreaterThan(0));
 			Assert.That(subject.Compare(new OperatorsOnly(2), new OperatorsOnly(1)), Is.LessThan(0));
 			Assert.That(subject.Compare(new OperatorsOnly(2), new OperatorsOnly(2)), Is.EqualTo(0));
+		}
+
+		[Test]
+		public void TypesWithoutOperators_Throw()
+		{
+			var subject = new OperatorComparer<ComparisonSubject>();
+			Assert.That(() => subject.Compare(ComparisonSubject.One, ComparisonSubject.Two),
+				Throws.InstanceOf<InvalidOperationException>());
 		}
 
 		[Test]

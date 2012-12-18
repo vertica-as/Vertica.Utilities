@@ -28,9 +28,27 @@ namespace Vertica.Utilities_v4.Comparisons
 
 		protected override int DoCompare(T x, T y)
 		{
-			if (Operations.gt(x, y)) return 1;
-			if (Operations.lt(x, y)) return -1;
-			return 0;
+			return throwingMeaningfulException(() =>
+			{
+				if (Operations.gt(x, y)) return 1;
+				if (Operations.lt(x, y)) return -1;
+				return 0;
+			});
+			
+		}
+
+		private int throwingMeaningfulException(Func<int> comparison)
+		{
+			try
+			{
+				return comparison();
+			}
+			catch (TypeInitializationException ex)
+			{
+				// throw the more expressive exception of the static constructor
+				if (ex.InnerException != null) throw ex.InnerException;
+				else throw;
+			}
 		}
 	}
 }
