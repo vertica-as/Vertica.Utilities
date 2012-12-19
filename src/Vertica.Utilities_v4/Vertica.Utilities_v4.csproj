@@ -41,6 +41,7 @@
     <Compile Include="Comparisons\ChainableEqualizer.cs" />
     <Compile Include="Comparisons\Cmp.cs" />
     <Compile Include="Comparisons\ComparisonComparer.cs" />
+    <Compile Include="Comparisons\DelegatedEqualizer.cs" />
     <Compile Include="Comparisons\Eq.cs" />
     <Compile Include="Comparisons\OperatorComparer.cs" />
     <Compile Include="Comparisons\SelectorEqualizer.cs" />

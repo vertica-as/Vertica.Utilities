@@ -48,6 +48,7 @@
     <Compile Include="Comparisons\ChainableComparerTester.cs" />
     <Compile Include="Comparisons\ChainableEqualizerTester.cs" />
     <Compile Include="Comparisons\ComparisonComparerTester.cs" />
+    <Compile Include="Comparisons\DelegatedEqualizerTester.cs" />
     <Compile Include="Comparisons\OperatorComparerTester.cs" />
     <Compile Include="Comparisons\ReversedComparerTester.cs" />
     <Compile Include="Comparisons\SelectorComparerTester.cs" />
