@@ -75,43 +75,5 @@ namespace Vertica.Utilities_v4.Comparisons
 			_lastEqualizer = equalizer;
 			return this;
 		}
-
-		/*public ChainableEqualizer<T> Then(Func<T, T, bool> equals)
-		{
-			return Then(new DelegatedEqualizer<T>(equals));
-		}
-
-		public ChainableEqualizer<T> Then(Comparison<T> equals)
-		{
-			return Then(new DelegatedEqualizer<T>(equals));
-		}
-
-		public ChainableEqualizer<T> Then(IComparer<T> equals)
-		{
-			return Then(new DelegatedEqualizer<T>(equals));
-		}
-
-		public ChainableEqualizer<T> Then<TResult>(Func<T, TResult> selector)
-		{
-			return Then(new DelegatedEqualizer<T, TResult>(selector));
-		}*/
-
-		public static ChainableEqualizer<T> New()
-		{
-			return new NewEqualizer();
-		}
-
-		private class NewEqualizer : ChainableEqualizer<T>
-		{
-			public override bool DoEquals(T x, T y)
-			{
-				return true;
-			}
-
-			public override int DoGetHashCode(T obj)
-			{
-				return obj.GetHashCode();
-			}
-		}
 	}
 }

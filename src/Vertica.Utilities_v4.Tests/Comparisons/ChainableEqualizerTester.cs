@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Vertica.Utilities_v4.Comparisons;
 using Vertica.Utilities_v4.Tests.Comparisons.Support;
 
@@ -31,6 +30,4 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 			Assert.That(chainable.Equals(null, null), Is.True);
 		}
 	}
-
-	
 }
