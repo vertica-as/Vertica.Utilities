@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Collections.Generic;
+using NUnit.Framework;
 using Vertica.Utilities_v4.Comparisons;
 using Vertica.Utilities_v4.Tests.Comparisons.Support;
 
@@ -100,6 +102,57 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 			Assert.That(DelegatedEqualizer<EqualitySpy>.ZeroHasher(spy), Is.EqualTo(0));
 
 			Assert.That(spy.GetHashCodeCalled, Is.False);
+		}
+
+		[Test]
+		public void Equals_BothNull_True()
+		{
+			var subject = new DelegatedEqualizer<string>((x, y) => false);
+
+			Assert.That(subject.Equals(null, null), Is.True);
+		}
+
+		[Test]
+		public void Equals_BothNull_EqualsPredicateInvocationNotNeeded()
+		{
+			var spy = new EqualitySpy();
+			Func<string, string, bool> notEqual = spy.GetEquals<string>(false);
+			IEqualityComparer<string> subject = new DelegatedEqualizer<string>(notEqual);
+
+			subject.Equals(null, null);
+
+			Assert.That(spy.EqualsCalled, Is.False);
+		}
+
+		[TestCase(null, "notNull")]
+		[TestCase("notNull", null)]
+		public void Equals_OneNullArgument_False(string first, string second)
+		{
+			var subject = new DelegatedEqualizer<string>((x, y) => true);
+
+			Assert.That(subject.Equals(first, second), Is.False);
+		}
+
+		[TestCase(null, "notNull")]
+		[TestCase("notNull", null)]
+		public void Equals_OneNullArgument_EqualsPredicateInvocationNotNeeded(string first, string second)
+		{
+			var spy = new EqualitySpy();
+			Func<string, string, bool> equal = spy.GetEquals<string>(true);
+			IEqualityComparer<string> subject = new DelegatedEqualizer<string>(equal);
+
+			subject.Equals(first, second);
+
+			Assert.That(spy.EqualsCalled, Is.False);
+		}
+
+		[TestCase("Daniel", "David", true)]
+		[TestCase("Daniel", "Manolo", false)]
+		public void Equals_NotNullArguments_EqualsPredicateInvoked(string first, string second, bool startWithSameLetter)
+		{
+			IEqualityComparer<string> subject = new DelegatedEqualizer<string>((x, y) => x[0].Equals(y[0]));
+
+			Assert.That(subject.Equals(first, second), Is.EqualTo(startWithSameLetter));
 		}
 
 		[Test]
