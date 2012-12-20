@@ -9,19 +9,40 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 	[TestFixture]
 	public class DelegatedEqualizerTester
 	{
-		[Test]
-		public void Ctor_Equals_FuncAndDefaultUsed()
+		[Test, Category("Exploratory")]
+		public void Explore()
 		{
-			var spy = new EqualitySpy();
-			var subject = new DelegatedEqualizer<int>(spy.GetEquals<int>(false));
+			Func<EqualitySubject, EqualitySubject, bool> compareI = (x, y) => x.I.Equals(y.I);
+			var subject = new DelegatedEqualizer<EqualitySubject>(compareI, s => s.I.GetHashCode());
+			var x1 = new EqualitySubject("x", 1, 1m);
+			Assert.That(subject.Equals(x1, new EqualitySubject("y", 1, 2m)), Is.True);
+			
+			var custom = new DelegatedEqualizer<EqualitySubject>((x, y) => x.I.Equals(y.I), s => s.I.GetHashCode());
+			Assert.That(custom.GetHashCode(x1), Is.EqualTo(x1.I.GetHashCode()));
+			custom = new DelegatedEqualizer<EqualitySubject>((x, y) => x.I.Equals(y.I), s => Hasher.Default(s.I));
+			Assert.That(custom.GetHashCode(x1), Is.EqualTo(x1.I.GetHashCode()));
+			var @default = new DelegatedEqualizer<EqualitySubject>((x, y) => x.I.Equals(y.I), Hasher.Default);
+			Assert.That(@default.GetHashCode(x1), Is.EqualTo(x1.GetHashCode()));
+			var zero = new DelegatedEqualizer<EqualitySubject>((x, y) => x.I.Equals(y.I), Hasher.Zero);
+			Assert.That(zero.GetHashCode(x1), Is.EqualTo(0));
 
-			Assert.That(subject.Equals(1, 1), Is.False);
-			Assert.That(spy.EqualsCalled, Is.True);
-			Assert.That(subject.GetHashCode(1), Is.EqualTo(1.GetHashCode()));
+
+			IEqualityComparer<EqualitySubject> bySAndI = new DelegatedEqualizer<EqualitySubject>((x, y) => x.S.Equals(y.S), Hasher.Zero)
+				.Then(new DelegatedEqualizer<EqualitySubject>((x, y) => x.I.Equals(y.I), Hasher.Default));
+			bySAndI = new DelegatedEqualizer<EqualitySubject>((x, y) => x.S.Equals(y.S), Hasher.Zero)
+				.Then((x, y) => x.I == y.I, Hasher.Default);
+			bySAndI = Eq<EqualitySubject>.By((x, y) => x.S.Equals(y.S), Hasher.Zero)
+				.Then((x, y) => x == y, Hasher.Default);
+
+			IComparer<EqualitySubject> comparer = Cmp<EqualitySubject>.By(x => x.I);
+			IEqualityComparer<EqualitySubject> eq = new DelegatedEqualizer<EqualitySubject>(comparer, Hasher.Zero);
+			Comparison<EqualitySubject> comparison = (x, y) => x.D.CompareTo(y.D);
+			eq = new DelegatedEqualizer<EqualitySubject>(comparison, Hasher.Zero);
 		}
 
+
 		[Test]
-		public void Ctor_Both_BothUsed()
+		public void Ctor()
 		{
 			var spy = new EqualitySpy();
 			var subject = new DelegatedEqualizer<int>(
@@ -35,18 +56,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 		}
 
 		[Test]
-		public void Ctor_Comparison_DelegateAndDefaultUsed()
-		{
-			var spy = new EqualitySpy();
-			var subject = new DelegatedEqualizer<int>(spy.GetComparison<int>(1977));
-
-			Assert.That(subject.Equals(1, 1), Is.False);
-			Assert.That(spy.EqualsCalled, Is.True);
-			Assert.That(subject.GetHashCode(1), Is.EqualTo(1.GetHashCode()));
-		}
-
-		[Test]
-		public void Ctor_ComparisonBoth_BothUsed()
+		public void Ctor_Comparison()
 		{
 			var spy = new EqualitySpy();
 			var subject = new DelegatedEqualizer<int>(
@@ -60,18 +70,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 		}
 
 		[Test]
-		public void Ctor_SelectorComparer_DelegateAndDefaultUsed()
-		{
-			var spy = new EqualitySpy();
-			var subject = new DelegatedEqualizer<int>(spy.GetComparer<int>(1));
-
-			Assert.That(subject.Equals(1, 1), Is.False);
-			Assert.That(spy.EqualsCalled, Is.True);
-			Assert.That(subject.GetHashCode(1), Is.EqualTo(1.GetHashCode()));
-		}
-
-		[Test]
-		public void Ctor_ComparerBoth_BothUsed()
+		public void Ctor_Comparer()
 		{
 			var spy = new EqualitySpy();
 			var subject = new DelegatedEqualizer<int>(
@@ -85,29 +84,9 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 		}
 
 		[Test]
-		public void DefaultHasher_InvokedGetHashCodeOnObject()
-		{
-			var spy = new EqualitySpy();
-
-			DelegatedEqualizer<EqualitySpy>.DefaultHasher(spy);
-			
-			Assert.That(spy.GetHashCodeCalled, Is.True);
-		}
-
-		[Test]
-		public void ZeroHasher_ReturnsZero()
-		{
-			var spy = new EqualitySpy();
-
-			Assert.That(DelegatedEqualizer<EqualitySpy>.ZeroHasher(spy), Is.EqualTo(0));
-
-			Assert.That(spy.GetHashCodeCalled, Is.False);
-		}
-
-		[Test]
 		public void Equals_BothNull_True()
 		{
-			var subject = new DelegatedEqualizer<string>((x, y) => false);
+			var subject = new DelegatedEqualizer<string>((x, y) => false, Hasher.Zero);
 
 			Assert.That(subject.Equals(null, null), Is.True);
 		}
@@ -117,7 +96,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 		{
 			var spy = new EqualitySpy();
 			Func<string, string, bool> notEqual = spy.GetEquals<string>(false);
-			IEqualityComparer<string> subject = new DelegatedEqualizer<string>(notEqual);
+			IEqualityComparer<string> subject = new DelegatedEqualizer<string>(notEqual, Hasher.Zero);
 
 			subject.Equals(null, null);
 
@@ -128,7 +107,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 		[TestCase("notNull", null)]
 		public void Equals_OneNullArgument_False(string first, string second)
 		{
-			var subject = new DelegatedEqualizer<string>((x, y) => true);
+			var subject = new DelegatedEqualizer<string>((x, y) => true, Hasher.Zero);
 
 			Assert.That(subject.Equals(first, second), Is.False);
 		}
@@ -139,7 +118,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 		{
 			var spy = new EqualitySpy();
 			Func<string, string, bool> equal = spy.GetEquals<string>(true);
-			IEqualityComparer<string> subject = new DelegatedEqualizer<string>(equal);
+			IEqualityComparer<string> subject = new DelegatedEqualizer<string>(equal, Hasher.Zero);
 
 			subject.Equals(first, second);
 
@@ -150,7 +129,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 		[TestCase("Daniel", "Manolo", false)]
 		public void Equals_NotNullArguments_EqualsPredicateInvoked(string first, string second, bool startWithSameLetter)
 		{
-			IEqualityComparer<string> subject = new DelegatedEqualizer<string>((x, y) => x[0].Equals(y[0]));
+			IEqualityComparer<string> subject = new DelegatedEqualizer<string>((x, y) => x[0].Equals(y[0]), Hasher.Zero);
 
 			Assert.That(subject.Equals(first, second), Is.EqualTo(startWithSameLetter));
 		}
@@ -160,12 +139,12 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 		{
 			EqualitySubject x1 = new EqualitySubject("x", 1, 1m), x2 = new EqualitySubject("x", 1, 2m);
 
-			ChainableEqualizer<EqualitySubject> sAndI = new DelegatedEqualizer<EqualitySubject>((x, y) => x.S.Equals(y.S))
-				.Then((x, y) => x.I.Equals(y.I));
+			ChainableEqualizer<EqualitySubject> sAndI = new DelegatedEqualizer<EqualitySubject>((x, y) => x.S.Equals(y.S), Hasher.Zero)
+				.Then((x, y) => x.I.Equals(y.I), Hasher.Zero);
 
 			Assert.That(sAndI.Equals(x1, x2), Is.True);
 
-			var allProp = sAndI.Then(Eq<EqualitySubject>.By((x, y) => x.D.Equals(y.D)));
+			var allProp = sAndI.Then(Eq<EqualitySubject>.By((x, y) => x.D.Equals(y.D), x => x.D.GetHashCode()));
 			Assert.That(allProp.Equals(x1, x2), Is.False);
 			Assert.That(sAndI.Equals(x1, x2), Is.False);
 		}
@@ -174,7 +153,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 		public void Clients_DoNotHaveToCareAboutNulls()
 		{
 			var notNull = new EqualitySubject("a", 1, 1m);
-			var chainable = new DelegatedEqualizer<EqualitySubject>((x, y) => x.I.Equals(x.I));
+			var chainable = new DelegatedEqualizer<EqualitySubject>((x, y) => x.I.Equals(x.I), x => x.I.GetHashCode());
 
 			Assert.That(chainable.Equals(notNull, null), Is.False);
 			Assert.That(chainable.Equals(null, notNull), Is.False);

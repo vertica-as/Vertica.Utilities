@@ -49,11 +49,13 @@
     <Compile Include="Comparisons\ChainableEqualizerTester.cs" />
     <Compile Include="Comparisons\ComparisonComparerTester.cs" />
     <Compile Include="Comparisons\DelegatedEqualizerTester.cs" />
+    <Compile Include="Comparisons\HasherTester.cs" />
     <Compile Include="Comparisons\OperatorComparerTester.cs" />
     <Compile Include="Comparisons\ReversedComparerTester.cs" />
     <Compile Include="Comparisons\SelectorComparerTester.cs" />
     <Compile Include="Comparisons\Support\EqualitySpy.cs" />
     <Compile Include="Comparisons\Support\EqualitySubject.cs" />
+    <Compile Include="Comparisons\Support\PropertyIEqualizer.cs" />
     <Compile Include="Comparisons\Support\PropertySEqualizer.cs" />
     <Compile Include="Comparisons\SelectorEqualizerTester.cs" />
     <Compile Include="UniqueIdentifierTester.cs" />

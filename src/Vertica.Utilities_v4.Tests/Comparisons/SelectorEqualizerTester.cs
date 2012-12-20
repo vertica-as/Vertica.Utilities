@@ -8,6 +8,20 @@ namespace Vertica.Utilities_v4.Tests.Comparisons.Support
 	[TestFixture]
 	public class SelectorEqualizerTester
 	{
+		[Test, Category("Exploratory")]
+		public void Explore()
+		{
+			IEqualityComparer<EqualitySubject> subject = new SelectorEqualizer<EqualitySubject, int>(s => s.I);
+			Assert.That(subject.Equals(new EqualitySubject { I = 1 }, new EqualitySubject { I = 2 }), Is.False);
+			Assert.That(subject.GetHashCode(new EqualitySubject { I = 1 }), Is.EqualTo(1.GetHashCode()));
+
+			IEqualityComparer<EqualitySubject> byDAndI = new SelectorEqualizer<EqualitySubject, decimal>(s => s.D)
+				.Then(s => s.I);
+			byDAndI = Eq<EqualitySubject>.By(s => s.D)
+				.Then(s => s.I);
+		}
+
+
 		#region GetHashCode
 
 		[Test]

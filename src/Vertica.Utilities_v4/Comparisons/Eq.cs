@@ -9,11 +9,6 @@ namespace Vertica.Utilities_v4.Comparisons
 			return new SelectorEqualizer<T, K>(keySelector);
 		}
 
-		public static ChainableEqualizer<T> By(Func<T, T, bool> equals)
-		{
-			return new DelegatedEqualizer<T>(equals);
-		}
-
 		public static ChainableEqualizer<T> By(Func<T, T, bool> equals, Func<T, int> hasher)
 		{
 			return new DelegatedEqualizer<T>(equals, hasher);
