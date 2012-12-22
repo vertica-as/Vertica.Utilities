@@ -37,9 +37,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Age.cs" />
+    <Compile Include="Comparisons\ChainableComparer.cs" />
+    <Compile Include="Comparisons\ChainableEqualizer.cs" />
+    <Compile Include="Comparisons\Cmp.cs" />
+    <Compile Include="Comparisons\ComparisonComparer.cs" />
+    <Compile Include="Comparisons\DelegatedEqualizer.cs" />
+    <Compile Include="Comparisons\Eq.cs" />
+    <Compile Include="Comparisons\Hasher.cs" />
+    <Compile Include="Comparisons\OperatorComparer.cs" />
+    <Compile Include="Comparisons\SelectorEqualizer.cs" />
     <Compile Include="DecimalPercentage.cs">
       <DependentUpon>Percentage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Comparisons\Direction.cs" />
+    <Compile Include="Comparisons\ReverseComparer.cs" />
+    <Compile Include="Comparisons\SelectorComparer.cs" />
+    <Compile Include="Comparisons\StringRepresentationComparer.cs" />
     <Compile Include="DisposableAction.cs" />
     <Compile Include="DomainOf.cs" />
     <Compile Include="DomainOfValues.cs" />

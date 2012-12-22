@@ -45,10 +45,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgeTester.cs" />
+    <Compile Include="Comparisons\ChainableComparerTester.cs" />
+    <Compile Include="Comparisons\ChainableEqualizerTester.cs" />
+    <Compile Include="Comparisons\ComparisonComparerTester.cs" />
+    <Compile Include="Comparisons\DelegatedEqualizerTester.cs" />
+    <Compile Include="Comparisons\HasherTester.cs" />
+    <Compile Include="Comparisons\OperatorComparerTester.cs" />
+    <Compile Include="Comparisons\ReversedComparerTester.cs" />
+    <Compile Include="Comparisons\SelectorComparerTester.cs" />
+    <Compile Include="Comparisons\Support\EqualitySpy.cs" />
+    <Compile Include="Comparisons\Support\EqualitySubject.cs" />
+    <Compile Include="Comparisons\Support\PropertyIEqualizer.cs" />
+    <Compile Include="Comparisons\Support\PropertySEqualizer.cs" />
+    <Compile Include="Comparisons\SelectorEqualizerTester.cs" />
     <Compile Include="UniqueIdentifierTester.cs" />
     <Compile Include="DecimalPercentageTester.cs">
       <DependentUpon>PercentageTester.cs</DependentUpon>
     </Compile>
+    <Compile Include="Comparisons\StringRepresentationComparerTester.cs" />
+    <Compile Include="Comparisons\Support\ComparisonSubject.cs" />
+    <Compile Include="Comparisons\Support\MustExtensions.cs" />
+    <Compile Include="Comparisons\Support\Property2ChainableComparer.cs" />
+    <Compile Include="Comparisons\Support\Property2Comparer.cs" />
+    <Compile Include="Comparisons\Support\Property3ChainableComparer.cs" />
+    <Compile Include="Comparisons\Support\StringRepresentationConstraint.cs" />
     <Compile Include="DisposableActionTester.cs" />
     <Compile Include="DomainOfValuesTester.cs" />
     <Compile Include="EnumeratedTester.cs" />
