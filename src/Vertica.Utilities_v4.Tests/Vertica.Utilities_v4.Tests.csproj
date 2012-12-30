@@ -58,6 +58,7 @@
     <Compile Include="Comparisons\Support\PropertyIEqualizer.cs" />
     <Compile Include="Comparisons\Support\PropertySEqualizer.cs" />
     <Compile Include="Comparisons\SelectorEqualizerTester.cs" />
+    <Compile Include="ICloneableTester.cs" />
     <Compile Include="UniqueIdentifierTester.cs" />
     <Compile Include="DecimalPercentageTester.cs">
       <DependentUpon>PercentageTester.cs</DependentUpon>
