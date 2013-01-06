@@ -34,16 +34,17 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Age.cs" />
     <Compile Include="ClassMapper.Abstract.cs">
-		<DependentUpon>IMapper.cs</DependentUpon>
-	</Compile>
-	  <Compile Include="ClassMapper.Static.cs">
-		  <DependentUpon>IMapper.cs</DependentUpon>
-	  </Compile>
-	  <Compile Include="Comparisons\ChainableComparer.cs" />
+      <DependentUpon>IMapper.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ClassMapper.Static.cs">
+      <DependentUpon>IMapper.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Comparisons\ChainableComparer.cs" />
     <Compile Include="Comparisons\ChainableEqualizer.cs" />
     <Compile Include="Comparisons\Cmp.cs" />
     <Compile Include="Comparisons\ComparisonComparer.cs" />
@@ -52,6 +53,8 @@
     <Compile Include="Comparisons\Hasher.cs" />
     <Compile Include="Comparisons\OperatorComparer.cs" />
     <Compile Include="Comparisons\SelectorEqualizer.cs" />
+    <Compile Include="Data\IStorage.cs" />
+    <Compile Include="Data\Storage.cs" />
     <Compile Include="DecimalPercentage.cs">
       <DependentUpon>Percentage.cs</DependentUpon>
     </Compile>
