@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -8,7 +8,7 @@ using Testing.Commons.NUnit.Constraints;
 namespace Vertica.Utilities_v4.Tests
 {
 	[TestFixture]
-	public class InheritorClassMapperTester
+	public class AbstractClassMapperTester
 	{
 		#region subjects
 
@@ -21,6 +21,8 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		#endregion
+
+		#region single
 
 		[Test]
 		public void Map_SingleNotNull_Transformation()
@@ -69,20 +71,18 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(to, Is.SameAs(@default));
 		}
 
+		#endregion
+
+		#region collection
+
 		[Test]
 		public void Map_SeveralNotNull_Transformation()
 		{
-			var from = new[]
-			{
-				new InvalidOperationException("1"),
-				new InvalidOperationException("2")
-			};
+			var from = new[] {new InvalidOperationException("1"), new InvalidOperationException("2")};
 			var subject = new InvalidToArgument();
 			IEnumerable<ArgumentException> to = subject.Map(from);
 
-			Assert.That(to, Must.Be.Constrained(
-				Has.Message.EqualTo("1"),
-				Has.Message.EqualTo("2")));
+			Assert.That(to, Must.Be.Constrained(Has.Message.EqualTo("1"), Has.Message.EqualTo("2")));
 		}
 
 		[Test]
@@ -92,8 +92,7 @@ namespace Vertica.Utilities_v4.Tests
 			var subject = new InvalidToArgument();
 			IEnumerable<ArgumentException> to = subject.Map(from);
 
-			Assert.That(to, Is.InstanceOf<IEnumerable<ArgumentException>>()
-				.And.Empty);
+			Assert.That(to, Is.InstanceOf<IEnumerable<ArgumentException>>().And.Empty);
 		}
 
 		[Test]
@@ -103,40 +102,19 @@ namespace Vertica.Utilities_v4.Tests
 			var subject = new InvalidToArgument();
 			IEnumerable<ArgumentException> to = subject.Map(from);
 
-			Assert.That(to, Is.InstanceOf<IEnumerable<ArgumentException>>()
-				.And.Empty);
+			Assert.That(to, Is.InstanceOf<IEnumerable<ArgumentException>>().And.Empty);
 		}
 
 		[Test]
 		public void Map_SeveralWithNulls_NullsIgnored()
 		{
-			var from = new[]
-			{
-				new InvalidOperationException("1"),
-				null,
-				new InvalidOperationException("2")
-			};
+			var from = new[] {new InvalidOperationException("1"), null, new InvalidOperationException("2")};
 			var subject = new InvalidToArgument();
 			IEnumerable<ArgumentException> to = subject.Map(from);
 
-			Assert.That(to, Must.Be.Constrained(
-				Has.Message.EqualTo("1"),
-				Has.Message.EqualTo("2")));
+			Assert.That(to, Must.Be.Constrained(Has.Message.EqualTo("1"), Has.Message.EqualTo("2")));
 		}
-	}
 
-	[TestFixture]
-	public class StaticClassMapperTester
-	{
-		[Test]
-		public void Map_SingleNotNull_Transformation()
-		{
-			string message = "message";
-			var notNull = new InvalidOperationException(message);
-			ArgumentException to = ClassMapper.MapIfNotNull(notNull,
-				() => new ArgumentException(notNull.Message));
-
-			Assert.That(to, Is.Not.Null.And.With.Message.EqualTo(message));
-		}
+		#endregion
 	}
 }

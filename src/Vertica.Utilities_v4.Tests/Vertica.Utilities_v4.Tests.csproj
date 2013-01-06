@@ -50,7 +50,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AgeTester.cs" />
+    <Compile Include="AbstractClassMapperTester.cs">
+		<DependentUpon>IMapperTester.cs</DependentUpon>
+	</Compile>
+	  <Compile Include="AgeTester.cs" />
     <Compile Include="Comparisons\ChainableComparerTester.cs" />
     <Compile Include="Comparisons\ChainableEqualizerTester.cs" />
     <Compile Include="Comparisons\ComparisonComparerTester.cs" />
@@ -66,8 +69,11 @@
     <Compile Include="Comparisons\SelectorEqualizerTester.cs" />
     <Compile Include="ICloneableTester.cs" />
     <Compile Include="IInitializableTester.cs" />
-    <Compile Include="MapperTester.cs" />
-    <Compile Include="UniqueIdentifierTester.cs" />
+    <Compile Include="IMapperTester.cs" />
+    <Compile Include="StaticClassMapperTester.cs">
+		<DependentUpon>IMapperTester.cs</DependentUpon>
+	</Compile>
+	  <Compile Include="UniqueIdentifierTester.cs" />
     <Compile Include="DecimalPercentageTester.cs">
       <DependentUpon>PercentageTester.cs</DependentUpon>
     </Compile>
