@@ -9,7 +9,7 @@ namespace Vertica.Utilities_v4.Data
 	{
 		private static readonly IStorage _current = new StorageData();
 
-		internal static readonly object LocalStorageKey = new object();
+		public static readonly object LocalStorageKey = new object();
 
 		private class StorageData : IStorage
 		{
