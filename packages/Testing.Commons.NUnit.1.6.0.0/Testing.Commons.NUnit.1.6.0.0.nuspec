@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Testing.Commons.NUnit</id>
+    <version>1.6.0.0</version>
+    <title>Testing Commons NUnit</title>
+    <authors>Daniel González García</authors>
+    <owners>Daniel González García</owners>
+    <licenseUrl>http://www.opensource.org/licenses/bsd-license.php</licenseUrl>
+    <projectUrl>http://www.assembla.com/spaces/testing-commons</projectUrl>
+    <iconUrl>https://nugetgallery.blob.core.windows.net/icons/Testing.Commons.NUnit.1.1.0.0.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Utility classes and extensions to facilitate common testing operations when using NUnit.</description>
+    <summary>Testing.Commons.NUnit contains diverse addons used when testing using NUnit.</summary>
+    <tags>.net C# testing NUnit</tags>
+    <dependencies>
+      <dependency id="testing.commons" version="1.1.0.0" />
+      <dependency id="ExpectedObjects" version="1.0.0.2" />
+      <dependency id="NUnit" version="2.6.2" />
+    </dependencies>
+    <references>
+      <reference file="Testing.Commons.NUnit.dll" />
+    </references>
+  </metadata>
+</package>

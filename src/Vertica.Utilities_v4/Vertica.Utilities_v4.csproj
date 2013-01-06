@@ -86,6 +86,7 @@
     <Compile Include="Guard.cs" />
     <Compile Include="ICloneable.cs" />
     <Compile Include="IInitializable.cs" />
+    <Compile Include="Mapper.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Option.Factory.cs" />
     <Compile Include="Percentage.cs" />
