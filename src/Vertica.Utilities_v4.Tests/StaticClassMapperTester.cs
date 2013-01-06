@@ -18,7 +18,7 @@ namespace Vertica.Utilities_v4.Tests
 			string message = "message";
 			var notNull = new InvalidOperationException(message);
 			ArgumentException to = ClassMapper.MapIfNotNull(notNull,
-				() => new ArgumentException(notNull.Message));
+				from => new ArgumentException(from.Message));
 
 			Assert.That(to, Is.Not.Null.And.With.Message.EqualTo(message));
 		}
@@ -31,7 +31,7 @@ namespace Vertica.Utilities_v4.Tests
 			var @default = new ArgumentException(string.Empty);
 
 			ArgumentException to = ClassMapper.MapIfNotNull(notNull,
-				() => new ArgumentException(notNull.Message),
+				from => new ArgumentException(from.Message),
 				@default);
 
 			Assert.That(to, Is.Not.Null.And.With.Message.EqualTo(message));
@@ -42,7 +42,7 @@ namespace Vertica.Utilities_v4.Tests
 		{
 			InvalidOperationException @null = null;
 			ArgumentException to = ClassMapper.MapIfNotNull(@null,
-				() => new ArgumentException(@null.Message));
+				from => new ArgumentException(from.Message));
 
 			Assert.That(to, Is.Null);
 		}
@@ -55,7 +55,7 @@ namespace Vertica.Utilities_v4.Tests
 			var @default = new ArgumentException(message);
 
 			ArgumentException to = ClassMapper.MapIfNotNull(@null,
-				() => new ArgumentException(@null.Message),
+				from => new ArgumentException(from.Message),
 				@default);
 
 			Assert.That(to, Is.SameAs(@default));

@@ -14,27 +14,27 @@ namespace Vertica.Utilities_v4
 				foreach (var item in from)
 				{
 					TFrom partialFrom = item;
-					TTo partial = MapIfNotNull(item, () => doMapping(partialFrom));
+					TTo partial = MapIfNotNull(item, doMapping);
 					if (partial != null) yield return partial;
 				}
 			}
 		}
 
-		public static TTo MapIfNotNull<TFrom, TTo>(TFrom from, Func<TTo> doMapping)
+		public static TTo MapIfNotNull<TFrom, TTo>(TFrom from, Func<TFrom, TTo> doMapping)
 			where TFrom : class
 			where TTo : class
 		{
 			return MapIfNotNull(from, doMapping, null);
 		}
 
-		public static TTo MapIfNotNull<TFrom, TTo>(TFrom from, Func<TTo> doMapping, TTo defaultTo)
+		public static TTo MapIfNotNull<TFrom, TTo>(TFrom from, Func<TFrom, TTo> doMapping, TTo defaultTo)
 			where TFrom : class
 			where TTo : class
 		{
 			TTo to = defaultTo;
 			if (from != null)
 			{
-				to = doMapping();
+				to = doMapping(from);
 			}
 			return to;
 		}

@@ -8,17 +8,17 @@ namespace Vertica.Utilities_v4
 	{
 		public TTo Map(TFrom from)
 		{
-			return ClassMapper.MapIfNotNull(from, () => MapOne(from));
+			return ClassMapper.MapIfNotNull(from, MapOne);
 		}
 
 		public TTo Map(TFrom from, TTo defaultTo)
 		{
-			return ClassMapper.MapIfNotNull(from, () => MapOne(from), defaultTo);
+			return ClassMapper.MapIfNotNull(from, MapOne, defaultTo);
 		}
 
 		public IEnumerable<TTo> Map(IEnumerable<TFrom> from)
 		{
-			return ClassMapper.MapIfNotNull(from, partialFrom => ClassMapper.MapIfNotNull(partialFrom, () => Map(partialFrom)));
+			return ClassMapper.MapIfNotNull(from, partialFrom => ClassMapper.MapIfNotNull(partialFrom, Map));
 		}
 
 		public abstract TTo MapOne(TFrom from);
