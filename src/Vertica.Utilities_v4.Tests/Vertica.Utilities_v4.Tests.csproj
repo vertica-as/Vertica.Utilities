@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="Testing.Commons">
       <HintPath>..\..\packages\Testing.Commons.1.3.0.0\lib\net40\Testing.Commons.dll</HintPath>
@@ -67,13 +68,15 @@
     <Compile Include="Comparisons\Support\PropertyIEqualizer.cs" />
     <Compile Include="Comparisons\Support\PropertySEqualizer.cs" />
     <Compile Include="Comparisons\SelectorEqualizerTester.cs" />
-    <Compile Include="Data\StorageTester.cs" />
+    <Compile Include="Extensions\DbCommandExtensionsTester.cs" />
+    <Compile Include="Extensions\Support\DbParameterValueConstraint.cs" />
     <Compile Include="ICloneableTester.cs" />
     <Compile Include="IInitializableTester.cs" />
     <Compile Include="IMapperTester.cs" />
     <Compile Include="StaticClassMapperTester.cs">
       <DependentUpon>IMapperTester.cs</DependentUpon>
     </Compile>
+    <Compile Include="StorageTester.cs" />
     <Compile Include="UniqueIdentifierTester.cs" />
     <Compile Include="DecimalPercentageTester.cs">
       <DependentUpon>PercentageTester.cs</DependentUpon>

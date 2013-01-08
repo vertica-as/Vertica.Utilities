@@ -34,6 +34,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
@@ -53,8 +54,6 @@
     <Compile Include="Comparisons\Hasher.cs" />
     <Compile Include="Comparisons\OperatorComparer.cs" />
     <Compile Include="Comparisons\SelectorEqualizer.cs" />
-    <Compile Include="Data\IStorage.cs" />
-    <Compile Include="Data\Storage.cs" />
     <Compile Include="DecimalPercentage.cs">
       <DependentUpon>Percentage.cs</DependentUpon>
     </Compile>
@@ -86,6 +85,7 @@
     <Compile Include="Eventing\ValueIndexEventArgs.cs" />
     <Compile Include="ExceptionHelper.cs" />
     <Compile Include="Extensions\Comparable.Extensions.cs" />
+    <Compile Include="Extensions\DbCommand.Extensions.cs" />
     <Compile Include="Extensions\DomainOfValues.Extensions.cs" />
     <Compile Include="Extensions\Range.Extensions.cs" />
     <Compile Include="Extensions\Time.Extensions.cs" />
@@ -114,6 +114,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="Storage.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Testing\TimeReseter.cs" />
     <Compile Include="UniqueIdentifier.cs" />

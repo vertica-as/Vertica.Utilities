@@ -5,10 +5,9 @@ using System.Threading;
 using System.Web;
 using NUnit.Framework;
 using Testing.Commons.Time;
-using Vertica.Utilities_v4.Data;
 using Testing.Commons.Web;
 
-namespace Vertica.Utilities_v4.Tests.Data
+namespace Vertica.Utilities_v4.Tests
 {
 	[TestFixture]
 	public class StorageTester

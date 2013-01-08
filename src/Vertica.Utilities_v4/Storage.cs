@@ -2,9 +2,25 @@
 using System.Collections;
 using System.Web;
 
-namespace Vertica.Utilities_v4.Data
+namespace Vertica.Utilities_v4
 {
 	/* based on RhinoCommon's LocalData */
+	public interface IStorage
+	{
+		/// <summary>
+		/// Gets or sets the <see cref="System.Object"/> with the specified key.
+		/// </summary>
+		/// <value></value>
+		object this[object key] { get; set; }
+
+		/// <summary>
+		/// Clears this instance.
+		/// </summary>
+		void Clear();
+
+		int Count { get; }
+	}
+
 	public static class Storage
 	{
 		private static readonly IStorage _current = new StorageData();
