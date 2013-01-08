@@ -1,44 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Vertica.Utilities_v4
 {
-	public static class ClassMapper
+	public abstract class ClassMapper<TFrom, TTo> : IMapper<TFrom, TTo>
+		where TFrom : class
+		where TTo : class
 	{
-		public static IEnumerable<TTo> MapIfNotNull<TFrom, TTo>(IEnumerable<TFrom> from, Func<TFrom, TTo> doMapping)
-			where TFrom : class
-			where TTo : class
+		public TTo Map(TFrom from)
 		{
-			if (from != null)
-			{
-				foreach (var item in from)
-				{
-					TFrom partialFrom = item;
-					TTo partial = MapIfNotNull(item, doMapping);
-					if (partial != null) yield return partial;
-				}
-			}
+			return ClassMapper.MapIfNotNull(from, MapOne);
 		}
 
-		public static TTo MapIfNotNull<TFrom, TTo>(TFrom from, Func<TFrom, TTo> doMapping)
-			where TFrom : class
-			where TTo : class
+		public TTo Map(TFrom from, TTo defaultTo)
 		{
-			return MapIfNotNull(from, doMapping, null);
+			return ClassMapper.MapIfNotNull(from, MapOne, defaultTo);
 		}
 
-		public static TTo MapIfNotNull<TFrom, TTo>(TFrom from, Func<TFrom, TTo> doMapping, TTo defaultTo)
-			where TFrom : class
-			where TTo : class
+		public IEnumerable<TTo> Map(IEnumerable<TFrom> from)
 		{
-			TTo to = defaultTo;
-			if (from != null)
-			{
-				to = doMapping(from);
-			}
-			return to;
+			return ClassMapper.MapIfNotNull(from, partialFrom => ClassMapper.MapIfNotNull(partialFrom, Map));
 		}
+
+		public abstract TTo MapOne(TFrom from);
 	}
-
-	
 }
