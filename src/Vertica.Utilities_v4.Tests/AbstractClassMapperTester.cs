@@ -22,6 +22,38 @@ namespace Vertica.Utilities_v4.Tests
 
 		#endregion
 
+		[Test, Category("Exploratory")]
+		public void Explore()
+		{
+			var subject = new InvalidToArgument();
+			Assert.That(subject.Map(new InvalidOperationException("message")),
+				Is.Not.Null.And.With.Message.EqualTo("message"));
+
+			InvalidOperationException @null = null;
+			Assert.That(subject.Map(@null), Is.Null);
+
+			var @default = new ArgumentException("message");
+			Assert.That(subject.Map(@null, @default), Is.SameAs(@default));
+
+			var from = new[] { new InvalidOperationException("1"), new InvalidOperationException("2") };
+			Assert.That(subject.Map(from), Must.Be.Constrained(
+				Has.Message.EqualTo("1"),
+				Has.Message.EqualTo("2")));
+
+			ArgumentException to = ClassMapper.MapIfNotNull(
+				new InvalidOperationException("message"),
+				f => new ArgumentException(f.Message));
+			Assert.That(to, Is.Not.Null.And.With.Message.EqualTo("message"));
+
+			to = ClassMapper.MapIfNotNull(@null,
+				f => new ArgumentException(f.Message),
+				@default);
+			Assert.That(to, Is.SameAs(@default));
+
+			Assert.That(ClassMapper.MapIfNotNull(from, each => new ArgumentException(each.Message)),
+				Must.Be.Constrained(Has.Message.EqualTo("1"), Has.Message.EqualTo("2")));
+		}
+
 		#region single
 
 		[Test]
