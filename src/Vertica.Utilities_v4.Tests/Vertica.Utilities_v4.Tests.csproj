@@ -135,6 +135,7 @@
     <Compile Include="Support\MustExtensions.cs" />
     <Compile Include="Testing\TimeReseterTester.cs" />
     <Compile Include="TimeTester.cs" />
+    <Compile Include="Web\CompactGuidTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

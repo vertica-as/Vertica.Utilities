@@ -118,6 +118,7 @@
     <Compile Include="Time.cs" />
     <Compile Include="Testing\TimeReseter.cs" />
     <Compile Include="UniqueIdentifier.cs" />
+    <Compile Include="Web\CompactGuid.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Exceptions.resx">
