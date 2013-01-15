@@ -120,6 +120,10 @@
     <Compile Include="UniqueIdentifier.cs" />
     <Compile Include="Web\CompactGuid.cs" />
     <Compile Include="Web\Html.cs" />
+    <Compile Include="Web\SomeWellKnownPorts.cs">
+      <DependentUpon>TcpPort.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Web\TcpPort.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Exceptions.resx">

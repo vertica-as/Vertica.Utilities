@@ -137,6 +137,7 @@
     <Compile Include="TimeTester.cs" />
     <Compile Include="Web\CompactGuidTester.cs" />
     <Compile Include="Web\HtmlTester.cs" />
+    <Compile Include="Web\TcpPortTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
