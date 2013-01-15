@@ -43,6 +43,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Testing.Commons">
       <HintPath>..\..\packages\Testing.Commons.1.3.0.0\lib\net40\Testing.Commons.dll</HintPath>
     </Reference>
@@ -137,6 +139,10 @@
     <Compile Include="TimeTester.cs" />
     <Compile Include="Web\CompactGuidTester.cs" />
     <Compile Include="Web\HtmlTester.cs" />
+    <Compile Include="Web\SiteMapBuilderTester.cs" />
+    <Compile Include="Web\Support\EquivalentSiteMapConstraint.cs" />
+    <Compile Include="Web\Support\MustExtensions.cs" />
+    <Compile Include="Web\Support\PersistentSitemap.cs" />
     <Compile Include="Web\TcpPortTester.cs" />
   </ItemGroup>
   <ItemGroup>

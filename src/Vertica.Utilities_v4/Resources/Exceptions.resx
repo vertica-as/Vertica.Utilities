@@ -147,6 +147,12 @@
   <data name="Range_UnorderedBounds_Template" xml:space="preserve">
     <value>The start value of the range ({0}) must not be greater than its end value ({1}).</value>
   </data>
+  <data name="SiteMapBuilder_NoContextParentTemplate" xml:space="preserve">
+    <value>Parent MapNode has to be constructed within a '{0}' context.</value>
+  </data>
+  <data name="SiteMapBuilder_SaveBeforeCreate" xml:space="preserve">
+    <value>Save() cannot be called before Create().</value>
+  </data>
   <data name="Time_AverageAction_OneIteration" xml:space="preserve">
     <value>At least one iteration is needed. Increase the targetRuntime value.</value>
   </data>
