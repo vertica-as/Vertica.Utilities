@@ -1,9 +1,11 @@
-﻿using System.Xml;
+﻿using System.ComponentModel;
+using System.Dynamic;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace Vertica.Utilities_v4.Web
 {
-	public class MapNode
+	public class MapNode : DynamicObject
 	{
 		public MapNode(string url, string title)
 		{
@@ -52,6 +54,23 @@ namespace Vertica.Utilities_v4.Web
 				new XAttribute(SiteMapBuilder.Url, url ?? ""),
 				new XAttribute(SiteMapBuilder.Title, title ?? ""),
 				nodes);
+		}
+
+		public static XElement Build(string url, string title, object extraAttributes, params XElement[] nodes)
+		{
+			var ele = new XElement(SiteMapBuilder.Ns + SiteMapBuilder.SiteMapNode,
+				new XAttribute(SiteMapBuilder.Url, url ?? ""),
+				new XAttribute(SiteMapBuilder.Title, title ?? ""),
+				nodes);
+			if (extraAttributes != null)
+			{
+				foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(extraAttributes))
+				{
+					ele.SetAttributeValue(property.Name, property.GetValue(extraAttributes));
+				}
+			}
+
+			return ele;
 		}
 	}
 }

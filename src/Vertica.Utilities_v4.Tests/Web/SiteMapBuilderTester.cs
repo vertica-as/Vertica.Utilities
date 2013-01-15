@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 using NUnit.Framework;
 using Testing.Commons;
 using Vertica.Utilities_v4.Tests.Web.Support;
@@ -204,5 +205,21 @@ namespace Vertica.Utilities_v4.Tests.Web
 		}
 
 		#endregion
+
+		[Test]
+		public void AppendNode_WithAppendAttribute_AttributeWrittenToNodeXml()
+		{
+			var subject = new SiteMapBuilder();
+
+			MapNode root = subject.Create(String.Empty, String.Empty);
+
+			MapNode node = subject.AppendNode(root, "url1", "title1");
+			node.AppendAttribute("extraAttribute", "attributeValue");
+
+			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
+				MapNode.Build(null, null,
+					MapNode.Build("url1", "title1", new { extraAttribute = "attributeValue" }))
+					)));
+		}
 	}
 }
