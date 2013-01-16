@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Xml;
 using NUnit.Framework;
 using Testing.Commons;
@@ -113,10 +114,13 @@ namespace Vertica.Utilities_v4.Tests.Web
 			Assert.That(node.Url, Is.EqualTo(url));
 			Assert.That(node.InnerNode, Is.Not.Null);
 
-			subject.Save(PersistentSitemap.FilePath);
+			PersistentSitemap.SelfCleaning(m =>
+			{
+				subject.Save(m.Path);
 
-			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-					MapNode.Build(url, title))));
+				Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
+						MapNode.Build(url, title))));	
+			});
 		}
 
 		#endregion
@@ -221,5 +225,158 @@ namespace Vertica.Utilities_v4.Tests.Web
 					MapNode.Build("url1", "title1", new { extraAttribute = "attributeValue" }))
 					)));
 		}
+
+		#region Save
+
+		[Test]
+		public void Save_BeforeCreating_Exception()
+		{
+			Assert.Throws<NotSupportedException>(() => new SiteMapBuilder().Save(""));
+		}
+
+		[Test]
+		public void Save_NonExisting_CorrectXmlWritten()
+		{
+			string url = string.Empty, title = "title";
+
+			var subject = new SiteMapBuilder();
+			subject.Create(url, title);
+
+			PersistentSitemap.SelfCleaning(m =>
+			{
+				subject.Save(m.Path);
+				Assert.That(m.GetXml(), Must.Be.EquivalentTo(
+					SiteMapBuilder.Build(
+						MapNode.Build(url, title))));
+			});
+		}
+
+		[Test]
+		public void Save_NonExisting_SameXmlAsRawXml()
+		{
+			string url = string.Empty, title = "title";
+
+			var subject = new SiteMapBuilder();
+			subject.Create(url, title);
+
+			PersistentSitemap.SelfCleaning(m =>
+			{
+				subject.Save(m.Path);
+				Assert.That(m.GetXml(), Is.EqualTo(subject.RawXml));
+			});
+		}
+
+		[Test]
+		public void Save_NonExisting_FileCreated()
+		{
+			var subject = new SiteMapBuilder();
+			subject.Create(null, null);
+
+			PersistentSitemap.SelfCleaning(m =>
+			{
+				subject.Save(m.Path);
+				Assert.That(File.Exists(m.Path), Is.True);
+				File.Delete(m.Path);
+			});
+		}
+
+		[Test]
+		public void Save_PreviousExisting_FileNotEmpty()
+		{
+			var subject = new SiteMapBuilder();
+			subject.Create(null, null);
+
+			PersistentSitemap.SelfCleaning(m =>
+			{
+				m.CreateEmptyFile();
+				subject.Save(m.Path);
+				Assert.That(File.Exists(m.Path), Is.True);
+				Assert.That(new FileInfo(m.Path).Length, Is.GreaterThan(0));
+			});
+		}
+
+
+		[Test]
+		public void Save_BackupPreviousExisting_BackupCreated()
+		{
+			var subject = new SiteMapBuilder();
+			subject.Create(null, null);
+
+			PersistentSitemap.SelfCleaning(m =>
+			{
+				m.CreateEmptyFile();
+
+				subject.Save(m.Path, true);
+				Assert.That(File.Exists(m.Path), Is.True);
+				Assert.That(File.Exists(m.Path + SiteMapBuilder.DefaultBackupExtension), Is.True);
+			},
+			m => File.Delete(m.Path + SiteMapBuilder.DefaultBackupExtension));
+		}
+
+		[Test]
+		public void Save_NoBackupPreviousExisting_BackupNotCreated()
+		{
+			var subject = new SiteMapBuilder();
+			subject.Create(null, null);
+
+			PersistentSitemap.SelfCleaning(m =>
+			{
+				m.CreateEmptyFile();
+				subject.Save(m.Path, false);
+				Assert.That(File.Exists(m.Path), Is.True);
+				Assert.That(File.Exists(m.Path + SiteMapBuilder.DefaultBackupExtension), Is.False);
+			});
+		}
+
+		[Test]
+		public void Save_ExtensionBackupPreviousExisting_BackupCreated()
+		{
+			string extension = ".bak";
+			var subject = new SiteMapBuilder();
+			subject.Create(null, null);
+
+			PersistentSitemap.SelfCleaning(m =>
+			{
+				m.CreateEmptyFile();
+				subject.Save(m.Path, true, extension);
+				Assert.That(File.Exists(m.Path), Is.True);
+				Assert.That(File.Exists(m.Path + extension), Is.True);
+			},
+			m => File.Delete(m.Path + extension));
+		}
+
+		[Test]
+		public void Save_ExtensionNoBackupPreviousExisting_BackupNotCreated()
+		{
+			string extension = ".bak";
+			var subject = new SiteMapBuilder();
+			subject.Create(null, null);
+
+			PersistentSitemap.SelfCleaning(m =>
+			{
+				m.CreateEmptyFile();
+				subject.Save(m.Path, false, extension);
+				Assert.That(File.Exists(m.Path), Is.True);
+				Assert.That(File.Exists(m.Path + extension), Is.False);
+			});
+		}
+
+		[Test]
+		public void Save_ExtensionBackupNoPreviousExisting_BackupNotCreated()
+		{
+			var subject = new SiteMapBuilder();
+			subject.Create(null, null);
+
+			string extension = ".bak";
+
+			PersistentSitemap.SelfCleaning(m =>
+			{
+				subject.Save(m.Path, true, extension);
+				Assert.That(File.Exists(m.Path), Is.True);
+				Assert.That(File.Exists(m.Path + extension), Is.False);
+			});
+		}
+
+		#endregion
 	}
 }
