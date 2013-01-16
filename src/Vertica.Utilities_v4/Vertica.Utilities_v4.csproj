@@ -123,6 +123,7 @@
     <Compile Include="Web\CompactGuid.cs" />
     <Compile Include="Web\Html.cs" />
     <Compile Include="Web\MapNode.cs" />
+    <Compile Include="Web\QueryStringHelper.cs" />
     <Compile Include="Web\SiteMapBuilder.cs" />
     <Compile Include="Web\SomeWellKnownPorts.cs">
       <DependentUpon>TcpPort.cs</DependentUpon>
