@@ -137,8 +137,6 @@ namespace Vertica.Utilities_v4.Tests.Web
 
 		#region AppendNode
 
-		private static readonly Uri _noUri = new Uri("#", UriKind.Relative);
-
 		[Test]
 		public void AppendNode_NodeNotInContext_Exception()
 		{
@@ -158,7 +156,7 @@ namespace Vertica.Utilities_v4.Tests.Web
 			string title = "title";
 			Uri uri = url("url");
 			var subject = new SiteMapBuilder();
-			MapNode root = subject.Create(_noUri, string.Empty);
+			MapNode root = subject.Create(url("#"), string.Empty);
 
 			MapNode node = subject.AppendNode(root, uri, title);
 
@@ -167,7 +165,7 @@ namespace Vertica.Utilities_v4.Tests.Web
 			Assert.That(node.InnerNode, Is.Not.Null);
 
 			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-					MapNode.Build(_noUri, string.Empty,
+					MapNode.Build(url("#"), string.Empty,
 						MapNode.Build(uri, title))
 				)));
 		}
@@ -176,13 +174,13 @@ namespace Vertica.Utilities_v4.Tests.Web
 		public void AppendNode_TwoNodesToRoot_AddedNodeToRoot()
 		{
 			var subject = new SiteMapBuilder();
-			MapNode root = subject.Create(_noUri, string.Empty);
+			MapNode root = subject.Create(url("#"), string.Empty);
 
 			subject.AppendNode(root, url("url1"), "title1");
 			subject.AppendNode(root, url("url2"), "title2");
 
 			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-				MapNode.Build(_noUri, null,
+				MapNode.Build(url("#"), null,
 					MapNode.Build(url("url1"), "title1"),
 					MapNode.Build(url("url2"), "title2"))
 				)));
@@ -192,13 +190,13 @@ namespace Vertica.Utilities_v4.Tests.Web
 		public void AppendNode_OneToRootOtherToAppended_AddedNodeToRoot()
 		{
 			var subject = new SiteMapBuilder();
-			MapNode root = subject.Create(_noUri, string.Empty);
+			MapNode root = subject.Create(url("#"), string.Empty);
 
 			MapNode node = subject.AppendNode(root, url("url1"), "title1");
 			subject.AppendNode(node, url("url2"), "title2");
 
 			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-				MapNode.Build(_noUri, null,
+				MapNode.Build(url("#"), null,
 					MapNode.Build(url("url1"), "title1",
 						MapNode.Build(url("url2"), "title2")))
 				)));
@@ -208,14 +206,14 @@ namespace Vertica.Utilities_v4.Tests.Web
 		public void AppendNode_OneToRootOtherToAppendedAnotherToRoot_AddedNodeToRoot()
 		{
 			var subject = new SiteMapBuilder();
-			MapNode root = subject.Create(_noUri, string.Empty);
+			MapNode root = subject.Create(url("#"), string.Empty);
 
 			MapNode node = subject.AppendNode(root, url("url1"), "title1");
 			subject.AppendNode(node, url("url2"), "title2");
 			subject.AppendNode(root, url("url3"), "title3");
 
 			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-				MapNode.Build(_noUri, null,
+				MapNode.Build(url("#"), null,
 					MapNode.Build(url("url1"), "title1",
 						MapNode.Build(url("url2"), "title2")),
 					MapNode.Build(url("url3"), "title3"))
@@ -229,13 +227,13 @@ namespace Vertica.Utilities_v4.Tests.Web
 		{
 			var subject = new SiteMapBuilder();
 
-			MapNode root = subject.Create(_noUri, String.Empty);
+			MapNode root = subject.Create(url("#"), String.Empty);
 
 			MapNode node = subject.AppendNode(root, url("url1"), "title1");
 			node.AppendAttribute("extraAttribute", "attributeValue");
 
 			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-				MapNode.Build(_noUri, null,
+				MapNode.Build(url("#"), null,
 					MapNode.Build(url("url1"), "title1", new { extraAttribute = "attributeValue" }))
 					)));
 		}
