@@ -36,6 +36,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Age.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Extensions\Comparable.Extensions.cs" />
     <Compile Include="Extensions\DbCommand.Extensions.cs" />
     <Compile Include="Extensions\DomainOfValues.Extensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\Range.Extensions.cs" />
     <Compile Include="Extensions\Time.Extensions.cs" />
     <Compile Include="FormattablePercentage.cs">
@@ -118,6 +121,15 @@
     <Compile Include="Time.cs" />
     <Compile Include="Testing\TimeReseter.cs" />
     <Compile Include="UniqueIdentifier.cs" />
+    <Compile Include="Web\CompactGuid.cs" />
+    <Compile Include="Web\Html.cs" />
+    <Compile Include="Web\MapNode.cs" />
+    <Compile Include="Web\QueryStringHelper.cs" />
+    <Compile Include="Web\SiteMapBuilder.cs" />
+    <Compile Include="Web\SomeWellKnownPorts.cs">
+      <DependentUpon>TcpPort.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Web\TcpPort.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Exceptions.resx">

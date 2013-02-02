@@ -91,7 +91,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 		public void Property3ChainedComparer_ByProperty3Asc()
 		{
 			_subjects.Sort(new Property3ChainableComparer());
-			Assert.That(_subjects, Must.Be.RepresentableAs("B, D, E, C, A"));
+			Assert.That(_subjects, Must.Be.RepresentableAs("B, D, E, A, C"));
 
 			_subjects.Sort(new Property3ChainableComparer(Direction.Ascending));
 			Assert.That(_subjects, Must.Be.RepresentableAs("B, D, E, C, A"));
