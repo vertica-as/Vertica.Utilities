@@ -11,13 +11,18 @@ namespace Vertica.Utilities_v4.Tests.Web
 	[TestFixture]
 	public class SiteMapBuilderTester
 	{
+		private Uri url(string url)
+		{
+			return new Uri(url, UriKind.RelativeOrAbsolute);
+		}
+
 		#region MapNode
 
 		[Test]
 		public void MapNode_ExternalCreation_PropertiesSetAndNullInnerNode()
 		{
-			var subject = new MapNode("url", "title");
-			Assert.That(subject.Url, Is.EqualTo("url"));
+			var subject = new MapNode(url("url"), "title");
+			Assert.That(subject.Url, Is.EqualTo(url("url")));
 			Assert.That(subject.Title, Is.EqualTo("title"));
 			Assert.That(subject.InnerNode, Is.Null);
 		}
@@ -28,8 +33,8 @@ namespace Vertica.Utilities_v4.Tests.Web
 			var dom = new XmlDocument();
 			XmlNode xmlNode = dom.CreateElement("name");
 
-			var node = new MapNode("url", "title", xmlNode);
-			Assert.That(node.Url, Is.EqualTo("url"));
+			var node = new MapNode(url("url"), "title", xmlNode);
+			Assert.That(node.Url, Is.EqualTo(url("url")));
 			Assert.That(node.Title, Is.EqualTo("title"));
 			Assert.That(node.InnerNode, Is.Not.Null);
 		}
@@ -41,77 +46,82 @@ namespace Vertica.Utilities_v4.Tests.Web
 		[Test]
 		public void Create_BothValued_RootNodeCreated()
 		{
-			string url = "url", title = "title";
+			string title = "title";
+			Uri uri = url("url");
 
 			var subject = new SiteMapBuilder();
-			MapNode node = subject.Create(url, title);
+			MapNode node = subject.Create(uri, title);
 
 			Assert.That(node.Title, Is.EqualTo(title));
-			Assert.That(node.Url, Is.EqualTo(url));
+			Assert.That(node.Url, Is.EqualTo(uri));
 			Assert.That(node.InnerNode, Is.Not.Null);
 
 			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-					MapNode.Build(url, title))));
+					MapNode.Build(uri, title))));
 		}
 
 		[Test]
 		public void Create_EmptyUrl_RootNodeWithEmptyUrl()
 		{
-			string url = string.Empty, title = "title";
+			string title = "title";
+			Uri uri = url("");
 
 			var subject = new SiteMapBuilder();
-			MapNode node = subject.Create(url, title);
+			MapNode node = subject.Create(uri, title);
 
 			Assert.That(node.Title, Is.EqualTo(title));
-			Assert.That(node.Url, Is.Empty);
+			Assert.That(node.Url, Is.EqualTo(uri));
 			Assert.That(node.InnerNode, Is.Not.Null);
 
 			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-					MapNode.Build(url, title))));
+					MapNode.Build(uri, title))));
 		}
 
 		[Test]
 		public void Create_EmptyTitle_RootNodeWithEmptyTitle()
 		{
-			string url = "url", title = string.Empty;
+			string title = string.Empty;
+			Uri uri = url("url");
 
 			var subject = new SiteMapBuilder();
-			MapNode node = subject.Create(url, title);
+			MapNode node = subject.Create(uri, title);
 
 			Assert.That(node.Title, Is.Empty);
-			Assert.That(node.Url, Is.EqualTo(url));
+			Assert.That(node.Url, Is.EqualTo(uri));
 			Assert.That(node.InnerNode, Is.Not.Null);
 
 			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-					MapNode.Build(url, title))));
+					MapNode.Build(uri, title))));
 		}
 
 		[Test]
 		public void Create_NullUrl_RootNodeWithNullUrl()
 		{
-			string url = null, title = "title";
+			string title = "title";
+			Uri uri = null;
 
 			var subject = new SiteMapBuilder();
-			MapNode node = subject.Create(url, title);
+			MapNode node = subject.Create(uri, title);
 
 			Assert.That(node.Title, Is.EqualTo(title));
 			Assert.That(node.Url, Is.Null);
 			Assert.That(node.InnerNode, Is.Not.Null);
 
 			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-					MapNode.Build(url, title))));
+					MapNode.Build(uri, title))));
 		}
 
 		[Test]
 		public void Create_NullTitle_RootNodeWithNullTitle()
 		{
-			string url = "url", title = null;
+			string title = null;
+			Uri uri = url("url");
 
 			var subject = new SiteMapBuilder();
-			MapNode node = subject.Create(url, title);
+			MapNode node = subject.Create(uri, title);
 
 			Assert.That(node.Title, Is.Null);
-			Assert.That(node.Url, Is.EqualTo(url));
+			Assert.That(node.Url, Is.EqualTo(uri));
 			Assert.That(node.InnerNode, Is.Not.Null);
 
 			PersistentSitemap.SelfCleaning(m =>
@@ -119,7 +129,7 @@ namespace Vertica.Utilities_v4.Tests.Web
 				subject.Save(m.Path);
 
 				Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-						MapNode.Build(url, title))));	
+						MapNode.Build(uri, title))));	
 			});
 		}
 
@@ -127,34 +137,38 @@ namespace Vertica.Utilities_v4.Tests.Web
 
 		#region AppendNode
 
+		private static readonly Uri _noUri = new Uri("#", UriKind.Relative);
+
 		[Test]
 		public void AppendNode_NodeNotInContext_Exception()
 		{
-			string url = "url", title = "title";
+			string title = "title";
+			Uri uri = url("url");
 
-			var outOfContext = new MapNode(url, title);
+			var outOfContext = new MapNode(uri, title);
 
 			var subject = new SiteMapBuilder();
-			subject.Create(url, title);
-			Assert.That(() => subject.AppendNode(outOfContext, url, title), Throws.ArgumentException);
+			subject.Create(uri, title);
+			Assert.That(() => subject.AppendNode(outOfContext, uri, title), Throws.ArgumentException);
 		}
 
 		[Test]
 		public void AppendNode_ToRoot_AddedNodeToRoot()
 		{
-			string url = "url", title = "title";
+			string title = "title";
+			Uri uri = url("url");
 			var subject = new SiteMapBuilder();
-			MapNode root = subject.Create(string.Empty, string.Empty);
+			MapNode root = subject.Create(_noUri, string.Empty);
 
-			MapNode node = subject.AppendNode(root, url, title);
+			MapNode node = subject.AppendNode(root, uri, title);
 
 			Assert.That(node.Title, Is.EqualTo(title));
-			Assert.That(node.Url, Is.EqualTo(url));
+			Assert.That(node.Url, Is.EqualTo(uri));
 			Assert.That(node.InnerNode, Is.Not.Null);
 
 			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-					MapNode.Build(string.Empty, string.Empty,
-						MapNode.Build(url, title))
+					MapNode.Build(_noUri, string.Empty,
+						MapNode.Build(uri, title))
 				)));
 		}
 
@@ -162,15 +176,15 @@ namespace Vertica.Utilities_v4.Tests.Web
 		public void AppendNode_TwoNodesToRoot_AddedNodeToRoot()
 		{
 			var subject = new SiteMapBuilder();
-			MapNode root = subject.Create(string.Empty, string.Empty);
+			MapNode root = subject.Create(_noUri, string.Empty);
 
-			subject.AppendNode(root, "url1", "title1");
-			subject.AppendNode(root, "url2", "title2");
+			subject.AppendNode(root, url("url1"), "title1");
+			subject.AppendNode(root, url("url2"), "title2");
 
 			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-				MapNode.Build(null, null,
-					MapNode.Build("url1", "title1"),
-					MapNode.Build("url2", "title2"))
+				MapNode.Build(_noUri, null,
+					MapNode.Build(url("url1"), "title1"),
+					MapNode.Build(url("url2"), "title2"))
 				)));
 		}
 
@@ -178,15 +192,15 @@ namespace Vertica.Utilities_v4.Tests.Web
 		public void AppendNode_OneToRootOtherToAppended_AddedNodeToRoot()
 		{
 			var subject = new SiteMapBuilder();
-			MapNode root = subject.Create(string.Empty, string.Empty);
+			MapNode root = subject.Create(_noUri, string.Empty);
 
-			MapNode node = subject.AppendNode(root, "url1", "title1");
-			subject.AppendNode(node, "url2", "title2");
+			MapNode node = subject.AppendNode(root, url("url1"), "title1");
+			subject.AppendNode(node, url("url2"), "title2");
 
 			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-				MapNode.Build(null, null,
-					MapNode.Build("url1", "title1",
-						MapNode.Build("url2", "title2")))
+				MapNode.Build(_noUri, null,
+					MapNode.Build(url("url1"), "title1",
+						MapNode.Build(url("url2"), "title2")))
 				)));
 		}
 
@@ -194,17 +208,17 @@ namespace Vertica.Utilities_v4.Tests.Web
 		public void AppendNode_OneToRootOtherToAppendedAnotherToRoot_AddedNodeToRoot()
 		{
 			var subject = new SiteMapBuilder();
-			MapNode root = subject.Create(string.Empty, string.Empty);
+			MapNode root = subject.Create(_noUri, string.Empty);
 
-			MapNode node = subject.AppendNode(root, "url1", "title1");
-			subject.AppendNode(node, "url2", "title2");
-			subject.AppendNode(root, "url3", "title3");
+			MapNode node = subject.AppendNode(root, url("url1"), "title1");
+			subject.AppendNode(node, url("url2"), "title2");
+			subject.AppendNode(root, url("url3"), "title3");
 
 			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-				MapNode.Build(null, null,
-					MapNode.Build("url1", "title1",
-						MapNode.Build("url2", "title2")),
-					MapNode.Build("url3", "title3"))
+				MapNode.Build(_noUri, null,
+					MapNode.Build(url("url1"), "title1",
+						MapNode.Build(url("url2"), "title2")),
+					MapNode.Build(url("url3"), "title3"))
 				)));
 		}
 
@@ -215,14 +229,14 @@ namespace Vertica.Utilities_v4.Tests.Web
 		{
 			var subject = new SiteMapBuilder();
 
-			MapNode root = subject.Create(String.Empty, String.Empty);
+			MapNode root = subject.Create(_noUri, String.Empty);
 
-			MapNode node = subject.AppendNode(root, "url1", "title1");
+			MapNode node = subject.AppendNode(root, url("url1"), "title1");
 			node.AppendAttribute("extraAttribute", "attributeValue");
 
 			Assert.That(subject, Must.Be.EquivalentTo(SiteMapBuilder.Build(
-				MapNode.Build(null, null,
-					MapNode.Build("url1", "title1", new { extraAttribute = "attributeValue" }))
+				MapNode.Build(_noUri, null,
+					MapNode.Build(url("url1"), "title1", new { extraAttribute = "attributeValue" }))
 					)));
 		}
 
@@ -237,27 +251,28 @@ namespace Vertica.Utilities_v4.Tests.Web
 		[Test]
 		public void Save_NonExisting_CorrectXmlWritten()
 		{
-			string url = string.Empty, title = "title";
-
+			string title = "title";
+			Uri uri = url("url");
 			var subject = new SiteMapBuilder();
-			subject.Create(url, title);
+			subject.Create(uri, title);
 
 			PersistentSitemap.SelfCleaning(m =>
 			{
 				subject.Save(m.Path);
 				Assert.That(m.GetXml(), Must.Be.EquivalentTo(
 					SiteMapBuilder.Build(
-						MapNode.Build(url, title))));
+						MapNode.Build(uri, title))));
 			});
 		}
 
 		[Test]
 		public void Save_NonExisting_SameXmlAsRawXml()
 		{
-			string url = string.Empty, title = "title";
+			string title = "title";
+			Uri uri = url("url");
 
 			var subject = new SiteMapBuilder();
-			subject.Create(url, title);
+			subject.Create(uri, title);
 
 			PersistentSitemap.SelfCleaning(m =>
 			{

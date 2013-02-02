@@ -4,6 +4,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Vertica.Utilities_v4.Extensions.ObjectExt;
 
 namespace Vertica.Utilities_v4.Web
 {
@@ -26,7 +27,7 @@ namespace Vertica.Utilities_v4.Web
 
 		public string RawXml { get { return _dom.OuterXml; } }
 		
-		public MapNode Create(string rootUrl, string rootTitle)
+		public MapNode Create(Uri rootUrl, string rootTitle)
 		{
 			setRoot();
 
@@ -36,7 +37,7 @@ namespace Vertica.Utilities_v4.Web
 			return rootNode;
 		}
 
-		public MapNode AppendNode(MapNode parent, string url, string title)
+		public MapNode AppendNode(MapNode parent, Uri url, string title)
 		{
 			if (parent.InnerNode == null)
 			{
@@ -98,17 +99,17 @@ namespace Vertica.Utilities_v4.Web
 			_nsManager.AddNamespace("s", SiteMapSchema);
 		}
 
-		private XmlNode setRootNode(string url, string title)
+		private XmlNode setRootNode(Uri url, string title)
 		{
 			XmlNode rootNode = createNode(url, title);
 			_dom.DocumentElement.AppendChild(rootNode);
 			return rootNode;
 		}
 
-		private XmlElement createNode(string url, string title)
+		private XmlElement createNode(Uri url, string title)
 		{
 			XmlElement node = _dom.CreateElement(SiteMapNode, SiteMapSchema);
-			appendAttribute(node, Url, url);
+			appendAttribute(node, Url, url.SafeToString());
 			appendAttribute(node, Title, title);
 			return node;
 		}

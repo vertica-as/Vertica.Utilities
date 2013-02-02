@@ -89,6 +89,7 @@
     <Compile Include="Extensions\Comparable.Extensions.cs" />
     <Compile Include="Extensions\DbCommand.Extensions.cs" />
     <Compile Include="Extensions\DomainOfValues.Extensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\Range.Extensions.cs" />
     <Compile Include="Extensions\Time.Extensions.cs" />
     <Compile Include="FormattablePercentage.cs">
