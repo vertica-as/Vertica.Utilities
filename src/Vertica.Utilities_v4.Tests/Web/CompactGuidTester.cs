@@ -8,6 +8,28 @@ namespace Vertica.Utilities_v4.Tests.Web
 	[TestFixture]
 	public class CompactGuidTester
 	{
+		[Test, Category("Exploratory")]
+		public void Explore()
+		{
+			var subject = new CompactGuid(Guid.Empty);
+			subject = new CompactGuid("EREREREREREREREREREREQ");
+
+			Guid ones = GuidBuilder.Build(1);
+			subject = new CompactGuid(ones);
+			Assert.That(subject.Value, Is.EqualTo("EREREREREREREREREREREQ"));
+
+			subject = new CompactGuid(ones);
+			Assert.That(subject.Value, Is.EqualTo("EREREREREREREREREREREQ"));
+
+			subject = new CompactGuid("EREREREREREREREREREREQ");
+			Assert.That(subject.Guid, Is.EqualTo(ones));
+
+			string representation = CompactGuid.Encode(ones);
+			Assert.That(representation, Is.EqualTo("EREREREREREREREREREREQ"));
+			Assert.That(CompactGuid.Decode(representation), Is.EqualTo(ones));
+		}
+
+
 		private string shortestRepresentation(Guid id)
 		{
 			return id.ToString("N");

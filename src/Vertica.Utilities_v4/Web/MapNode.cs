@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel;
-using System.Dynamic;
 using System.Xml;
 using System.Xml.Linq;
 
 namespace Vertica.Utilities_v4.Web
 {
-	public class MapNode : DynamicObject
+	public class MapNode
 	{
 		public MapNode(string url, string title)
 		{

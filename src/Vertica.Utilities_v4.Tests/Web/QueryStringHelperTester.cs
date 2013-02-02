@@ -397,6 +397,5 @@ namespace Vertica.Utilities_v4.Tests.Web
 		}
 
 		#endregion
-
 	}
 }
