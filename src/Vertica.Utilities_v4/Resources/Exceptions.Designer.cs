@@ -151,6 +151,24 @@ namespace Vertica.Utilities_v4.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parent MapNode has to be constructed within a &apos;{0}&apos; context..
+        /// </summary>
+        internal static string SiteMapBuilder_NoContextParentTemplate {
+            get {
+                return ResourceManager.GetString("SiteMapBuilder_NoContextParentTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save() cannot be called before Create()..
+        /// </summary>
+        internal static string SiteMapBuilder_SaveBeforeCreate {
+            get {
+                return ResourceManager.GetString("SiteMapBuilder_SaveBeforeCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to At least one iteration is needed. Increase the targetRuntime value..
         /// </summary>
         internal static string Time_AverageAction_OneIteration {
