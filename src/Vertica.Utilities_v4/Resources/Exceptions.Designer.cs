@@ -61,6 +61,15 @@ namespace Vertica.Utilities_v4.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The credential must have a non-empty user name and domain..
+        /// </summary>
+        internal static string Credential_NoDomainOrUser {
+            get {
+                return ResourceManager.GetString("Credential_NoDomainOrUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The enum with name &apos;{0}&apos; is already used..
         /// </summary>
         internal static string Enumerated_DuplicatedTemplate {
@@ -120,6 +129,15 @@ namespace Vertica.Utilities_v4.Resources {
         internal static string InvalidDomainException_MessageTemplate {
             get {
                 return ResourceManager.GetString("InvalidDomainException_MessageTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LogonUser for user &apos;{0}&apos; failed with error {1}..
+        /// </summary>
+        internal static string LogonUserIdentityProvider_LogonUserErrorTemplate {
+            get {
+                return ResourceManager.GetString("LogonUserIdentityProvider_LogonUserErrorTemplate", resourceCulture);
             }
         }
         
