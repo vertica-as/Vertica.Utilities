@@ -3,8 +3,10 @@ using System.Threading;
 
 namespace Vertica.Utilities_v4.Security
 {
-	public class CurrentThreadIdentityProvider : IWindowsIdentityProvider
+	public class CurrentThreadSecurityProvider : IWindowsIdentityProvider, IPrincipalProvider
 	{
+		public void Dispose() { }
+
 		public IIdentity GetIdentity()
 		{
 			return Thread.CurrentPrincipal.Identity;
@@ -15,6 +17,9 @@ namespace Vertica.Utilities_v4.Security
 			return (WindowsIdentity)GetIdentity();
 		}
 
-		public void Dispose() { }
+		public IPrincipal GetPrincipal()
+		{
+			return Thread.CurrentPrincipal;
+		}
 	}
 }

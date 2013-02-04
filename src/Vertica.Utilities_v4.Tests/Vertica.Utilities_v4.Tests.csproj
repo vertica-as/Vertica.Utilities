@@ -81,7 +81,7 @@
     <Compile Include="Security\BCryptHasherTester.cs" />
     <Compile Include="Security\BCryptTester.cs" />
     <Compile Include="Security\CredentialTester.cs" />
-    <Compile Include="Security\HttpContextIdentityProviderTester.cs" />
+    <Compile Include="Security\HttpContextSecurityProviderTester.cs" />
     <Compile Include="Security\HttpRequestIdentityProviderTester.cs" />
     <Compile Include="Security\SimplePasswordGeneratorTester.cs" />
     <Compile Include="Security\SimplePasswordHasherTester.cs" />

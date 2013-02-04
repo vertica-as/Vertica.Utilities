@@ -125,7 +125,7 @@
     <Compile Include="Security\BCryptHasher.cs" />
     <Compile Include="Security\Credential.cs" />
     <Compile Include="Security\CurrentIdentityProvider.cs" />
-    <Compile Include="Security\CurrentThreadIdentityProvider.cs" />
+    <Compile Include="Security\CurrentThreadSecurityProvider.cs" />
     <Compile Include="Security\HttpContextIdentityProvider.cs" />
     <Compile Include="Security\HttpRequestIdentityProvider.cs" />
     <Compile Include="Security\HttpIdentityReseter.cs" />
@@ -134,6 +134,7 @@
     <Compile Include="Security\Impersonate.cs" />
     <Compile Include="Security\IPasswordGenerator.cs" />
     <Compile Include="Security\IPasswordHasher.cs" />
+    <Compile Include="Security\IPrincipalProvider.cs" />
     <Compile Include="Security\IWindowsIdentityProvider.cs" />
     <Compile Include="Security\LogonUserIdentityProvider.cs" />
     <Compile Include="Security\ProtocolTransitioningIdentityProvider.cs" />

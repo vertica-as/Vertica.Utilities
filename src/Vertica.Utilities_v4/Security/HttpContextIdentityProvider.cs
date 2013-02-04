@@ -3,13 +3,13 @@ using System.Web;
 
 namespace Vertica.Utilities_v4.Security
 {
-	public class HttpContextIdentityProvider : IIdentityProvider
+	public class HttpContextSecurityProvider : IIdentityProvider, IPrincipalProvider
 	{
 		private readonly HttpContextBase _context;
-		public HttpContextIdentityProvider()
+		public HttpContextSecurityProvider()
 			: this(new HttpContextWrapper(HttpContext.Current)) { }
 
-		public HttpContextIdentityProvider(HttpContextBase context)
+		public HttpContextSecurityProvider(HttpContextBase context)
 		{
 			_context = context;
 		}
@@ -17,6 +17,13 @@ namespace Vertica.Utilities_v4.Security
 		public IIdentity GetIdentity()
 		{
 			return _context.User.Identity;
+		}
+
+		public void Dispose() { }
+
+		public IPrincipal GetPrincipal()
+		{
+			return _context.User;
 		}
 	}
 }
