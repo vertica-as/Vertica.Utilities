@@ -128,7 +128,9 @@
     <Compile Include="Security\CurrentThreadIdentityProvider.cs" />
     <Compile Include="Security\HttpContextIdentityProvider.cs" />
     <Compile Include="Security\HttpRequestIdentityProvider.cs" />
+    <Compile Include="Security\HttpIdentityReseter.cs" />
     <Compile Include="Security\IIdentityProvider.cs" />
+    <Compile Include="Security\IIdentityReseter.cs" />
     <Compile Include="Security\IPasswordGenerator.cs" />
     <Compile Include="Security\IPasswordHasher.cs" />
     <Compile Include="Security\IWindowsIdentityProvider.cs" />
@@ -136,6 +138,7 @@
     <Compile Include="Security\ProtocolTransitioningIdentityProvider.cs" />
     <Compile Include="Security\SimplePasswordHasher.cs" />
     <Compile Include="Security\SimplePasswordGenerator.cs" />
+    <Compile Include="Security\ThreadIdentityReseter.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Testing\TimeReseter.cs" />
