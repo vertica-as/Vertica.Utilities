@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Vertica.Utilities_v4.Security
 {
-	public class PasswordHasher : IPasswordHasher
+	public class SimplePasswordHasher : IPasswordHasher
 	{
 		private readonly string _userName;
 
-		public PasswordHasher(string userName)
+		public SimplePasswordHasher(string userName)
 		{
 			_userName = userName;
 		}

@@ -122,8 +122,10 @@
     </Compile>
     <Compile Include="Security\BCrypt.cs" />
     <Compile Include="Security\BCryptHasher.cs" />
+    <Compile Include="Security\IPasswordGenerator.cs" />
     <Compile Include="Security\IPasswordHasher.cs" />
-    <Compile Include="Security\PasswordHasher.cs" />
+    <Compile Include="Security\SimplePasswordHasher.cs" />
+    <Compile Include="Security\SimplePasswordGenerator.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Testing\TimeReseter.cs" />

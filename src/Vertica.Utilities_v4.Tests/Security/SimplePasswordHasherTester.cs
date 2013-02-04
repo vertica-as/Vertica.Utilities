@@ -4,13 +4,13 @@ using Vertica.Utilities_v4.Security;
 namespace Vertica.Utilities_v4.Tests.Security
 {
 	[TestFixture]
-	public class PasswordHasherTester
+	public class SimplePasswordHasherTester
 	{
 		[Test]
 		public void HashPassword_GeneratesSaltedPassword()
 		{
 			string password = "password";
-			IPasswordHasher subject = new PasswordHasher("userName");
+			IPasswordHasher subject = new SimplePasswordHasher("userName");
 
 			Assert.That(subject.HashPassword(password), Is.Not.EqualTo(password));
 		}
@@ -19,7 +19,7 @@ namespace Vertica.Utilities_v4.Tests.Security
 		public void CheckPassword_UnsaltedPassword_False()
 		{
 			string password = "password";
-			IPasswordHasher subject = new PasswordHasher("userName");
+			IPasswordHasher subject = new SimplePasswordHasher("userName");
 
 			Assert.That(subject.CheckPassword(password, password), Is.False);
 		}
@@ -29,7 +29,7 @@ namespace Vertica.Utilities_v4.Tests.Security
 		{
 			string password = "password";
 
-			IPasswordHasher subject = new PasswordHasher("userName");
+			IPasswordHasher subject = new SimplePasswordHasher("userName");
 			string hashed = subject.HashPassword(password);
 
 			Assert.That(subject.CheckPassword(password, hashed), Is.True);
@@ -40,8 +40,8 @@ namespace Vertica.Utilities_v4.Tests.Security
 		{
 			string password = "password";
 
-			IPasswordHasher oneHasher = new PasswordHasher("user1"), 
-				twoHasher = new PasswordHasher("user2");
+			IPasswordHasher oneHasher = new SimplePasswordHasher("user1"), 
+				twoHasher = new SimplePasswordHasher("user2");
 			string hashedWithOne = oneHasher.HashPassword(password);
 
 			Assert.That(twoHasher.CheckPassword(password, hashedWithOne), Is.False);
@@ -51,7 +51,7 @@ namespace Vertica.Utilities_v4.Tests.Security
 		public void CheckPassword_AnotherSaltedPassword_False()
 		{
 			string password = "password";
-			IPasswordHasher subject = new PasswordHasher("userName");
+			IPasswordHasher subject = new SimplePasswordHasher("userName");
 			string hashed = subject.HashPassword("anotherPassword");
 
 			Assert.That(subject.CheckPassword(password, hashed), Is.False);

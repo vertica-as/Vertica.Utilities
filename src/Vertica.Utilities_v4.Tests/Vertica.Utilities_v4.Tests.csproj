@@ -77,7 +77,8 @@
     <Compile Include="IMapperTester.cs" />
     <Compile Include="Security\BCryptHasherTester.cs" />
     <Compile Include="Security\BCryptTester.cs" />
-    <Compile Include="Security\PasswordHasherTester.cs" />
+    <Compile Include="Security\SimplePasswordGeneratorTester.cs" />
+    <Compile Include="Security\SimplePasswordHasherTester.cs" />
     <Compile Include="StaticClassMapperTester.cs">
       <DependentUpon>IMapperTester.cs</DependentUpon>
     </Compile>
