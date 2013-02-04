@@ -131,6 +131,7 @@
     <Compile Include="Security\HttpIdentityReseter.cs" />
     <Compile Include="Security\IIdentityProvider.cs" />
     <Compile Include="Security\IIdentityReseter.cs" />
+    <Compile Include="Security\Impersonate.cs" />
     <Compile Include="Security\IPasswordGenerator.cs" />
     <Compile Include="Security\IPasswordHasher.cs" />
     <Compile Include="Security\IWindowsIdentityProvider.cs" />
