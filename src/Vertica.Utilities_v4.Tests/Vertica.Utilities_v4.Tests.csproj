@@ -75,6 +75,7 @@
     <Compile Include="ICloneableTester.cs" />
     <Compile Include="IInitializableTester.cs" />
     <Compile Include="IMapperTester.cs" />
+    <Compile Include="Security\BCryptTester.cs" />
     <Compile Include="StaticClassMapperTester.cs">
       <DependentUpon>IMapperTester.cs</DependentUpon>
     </Compile>
