@@ -118,9 +118,12 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Security\Base64.cs">
-		<DependentUpon>BCrypt.cs</DependentUpon>
-	</Compile>
-	  <Compile Include="Security\BCrypt.cs" />
+      <DependentUpon>BCrypt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Security\BCrypt.cs" />
+    <Compile Include="Security\BCryptHasher.cs" />
+    <Compile Include="Security\IPasswordHasher.cs" />
+    <Compile Include="Security\PasswordHasher.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Testing\TimeReseter.cs" />

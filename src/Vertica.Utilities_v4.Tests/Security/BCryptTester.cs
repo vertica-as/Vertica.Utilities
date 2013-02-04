@@ -33,7 +33,7 @@ namespace Vertica.Utilities_v4.Tests.Security
 		}
 
 		[Test]
-		public void ValidatePassword_UnsaltedPassword_Exception()
+		public void CheckPassword_UnsaltedPassword_Exception()
 		{
 			string password = "password";
 
@@ -41,17 +41,16 @@ namespace Vertica.Utilities_v4.Tests.Security
 		}
 
 		[Test]
-		public void ValidatePassword_SameSaltedPassword_True()
+		public void CheckPassword_SameSaltedPassword_True()
 		{
 			string password = "password";
 			string hashed = BCrypt.HashPassword(password, BCrypt.GenerateSalt(6));
 
 			Assert.That(BCrypt.CheckPassword(password, hashed), Is.True);
-			
 		}
 
 		[Test]
-		public void ValidatePassword_AnotherSaltedPassword_False()
+		public void CheckPassword_AnotherSaltedPassword_False()
 		{
 			string password = "password";
 			string hashed = BCrypt.HashPassword("anotherPassword", BCrypt.GenerateSalt(6));

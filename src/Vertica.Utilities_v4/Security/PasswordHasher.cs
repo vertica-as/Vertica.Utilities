@@ -1,0 +1,34 @@
+﻿using System;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace Vertica.Utilities_v4.Security
+{
+	public class PasswordHasher : IPasswordHasher
+	{
+		private readonly string _userName;
+
+		public PasswordHasher(string userName)
+		{
+			_userName = userName;
+		}
+
+		private string generateSalt()
+		{
+			var hasher = new Rfc2898DeriveBytes(_userName, Encoding.UTF8.GetBytes("thisisasalt"), 10000);
+			return Convert.ToBase64String(hasher.GetBytes(25));
+		}
+
+		public string HashPassword(string password)
+		{
+			string salt = generateSalt();
+			var hasher = new Rfc2898DeriveBytes(password, Encoding.UTF8.GetBytes(salt), 10000);
+			return Convert.ToBase64String(hasher.GetBytes(25));
+		}
+
+		public bool CheckPassword(string password, string hashed)
+		{
+			return StringComparer.Ordinal.Equals(hashed, HashPassword(password));
+		}
+	}
+}
