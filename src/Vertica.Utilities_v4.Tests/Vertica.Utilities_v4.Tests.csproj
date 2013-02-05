@@ -82,6 +82,7 @@
     <Compile Include="Patterns\GenericCommandTester.cs" />
     <Compile Include="Patterns\GenericVisitorTester.cs" />
     <Compile Include="Patterns\InMemoryRepositoryTester.cs" />
+    <Compile Include="Patterns\PipesAndFiltersTester.cs" />
     <Compile Include="Patterns\PredicateSpecificationTester.cs" />
     <Compile Include="Patterns\SpecificationTester.cs" />
     <Compile Include="Patterns\Support\ComplexContainer.cs" />

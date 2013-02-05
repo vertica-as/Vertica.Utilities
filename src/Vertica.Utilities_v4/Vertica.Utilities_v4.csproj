@@ -91,6 +91,7 @@
     <Compile Include="Extensions\DbCommand.Extensions.cs" />
     <Compile Include="Extensions\Delegate.Extensions.cs" />
     <Compile Include="Extensions\DomainOfValues.Extensions.cs" />
+    <Compile Include="Extensions\Enumerable.Extensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\Range.Extensions.cs" />
     <Compile Include="Extensions\Time.Extensions.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Patterns\ISpecification.cs">
       <DependentUpon>Specification.cs</DependentUpon>
     </Compile>
+    <Compile Include="Patterns\PipesAndFilters.cs" />
     <Compile Include="Patterns\PredicateSpecification.cs">
       <DependentUpon>Specification.cs</DependentUpon>
     </Compile>
