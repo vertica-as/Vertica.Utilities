@@ -103,10 +103,14 @@
     <Compile Include="IMapper.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Option.Factory.cs" />
+    <Compile Include="Patterns\Command.cs" />
     <Compile Include="Patterns\ExpressionSpecification.cs">
       <DependentUpon>Specification.cs</DependentUpon>
     </Compile>
-    <Compile Include="Patterns\IIdentifiable.cs">
+    <Compile Include="Patterns\GenericCommand.cs">
+		<DependentUpon>Command.cs</DependentUpon>
+	</Compile>
+	  <Compile Include="Patterns\IIdentifiable.cs">
       <DependentUpon>Repository.cs</DependentUpon>
     </Compile>
     <Compile Include="Patterns\InMemoryRepository.cs">
