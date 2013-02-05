@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using Testing.Commons;
+using Testing.Commons.NUnit.Constraints;
 using Vertica.Utilities_v4.Patterns;
 using Vertica.Utilities_v4.Tests.Patterns.Support;
 
@@ -17,9 +19,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		{
 			ISpecification<string> subject = new PredicateSpecification<string>(s => s.Length >= 5 && s.Length <= 10);
 
-			Assert.That(subject.IsSatisfiedBy("123456"), Is.True);
-			Assert.That(subject.IsSatisfiedBy("1234"), Is.False);
-			Assert.That(subject.IsSatisfiedBy("1234567890123"), Is.False);
+			Assert.That(subject, Must.Be.SatisfiedBy("123456"));
+			Assert.That(subject, Must.Not.Be.SatisfiedBy("1234").Or("1234567890123"));
 		}
 
 		[Test]
@@ -28,9 +29,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			ISpecification<string> lengthBetween5And10 = new PredicateSpecification<string>(s => s.Length >= 5 && s.Length <= 10);
 			ISpecification<string> subject = lengthBetween5And10.Not();
 
-			Assert.That(subject.IsSatisfiedBy("123456"), Is.False);
-			Assert.That(subject.IsSatisfiedBy("1234"), Is.True);
-			Assert.That(subject.IsSatisfiedBy("1234567890123"), Is.True);
+			Assert.That(subject, Must.Not.Be.SatisfiedBy("123456"));
+			Assert.That(subject, Must.Be.SatisfiedBy("1234").And("1234567890123"));
 		}
 
 		[Test]
@@ -40,9 +40,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			ISpecification<int> moreThan5 = new PredicateSpecification<int>(i => i > 5);
 			ISpecification<int> subject = lessThan10.And(moreThan5);
 
-			Assert.That(subject.IsSatisfiedBy(7), Is.EqualTo(true));
-			Assert.That(subject.IsSatisfiedBy(3), Is.EqualTo(false));
-			Assert.That(subject.IsSatisfiedBy(13), Is.EqualTo(false));
+			Assert.That(subject, Must.Be.SatisfiedBy(7));
+			Assert.That(subject, Must.Not.Be.SatisfiedBy(3).Or(13));
 		}
 
 		[Test]
@@ -52,9 +51,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			ISpecification<int> lessThan5 = new PredicateSpecification<int>(i => i < 5);
 			ISpecification<int> subject = lessThan5.Or(moreThan10);
 
-			Assert.That(!subject.IsSatisfiedBy(7));
-			Assert.That(subject.IsSatisfiedBy(3));
-			Assert.That(subject.IsSatisfiedBy(13));
+			Assert.That(subject, Must.Not.Be.SatisfiedBy(7));
+			Assert.That(subject, Must.Be.SatisfiedBy(3).And(13));
 		}
 
 		#endregion
@@ -67,9 +65,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			var lengthBetween5And10 = new PredicateSpecification<string>(s => s.Length >= 5 && s.Length <= 10);
 			PredicateSpecification<string> subject = !lengthBetween5And10;
 
-			Assert.That(subject.IsSatisfiedBy("123456"), Is.False);
-			Assert.That(subject.IsSatisfiedBy("1234"), Is.True);
-			Assert.That(subject.IsSatisfiedBy("1234567890123"), Is.True);
+			Assert.That(subject, Must.Not.Be.SatisfiedBy("123456"));
+			Assert.That(subject, Must.Be.SatisfiedBy("1234").And("1234567890123"));
 		}
 
 		[Test]
@@ -79,9 +76,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			var moreThan5 = new PredicateSpecification<int>(i => i > 5);
 			PredicateSpecification<int> subject = lessThan10 && moreThan5;
 
-			Assert.IsTrue(subject.IsSatisfiedBy(7));
-			Assert.IsFalse(subject.IsSatisfiedBy(3));
-			Assert.IsFalse(subject.IsSatisfiedBy(13));
+			Assert.That(subject, Must.Be.SatisfiedBy(7));
+			Assert.That(subject, Must.Not.Be.SatisfiedBy(3).Or(13));
 		}
 
 		[Test]
@@ -91,9 +87,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			var lessThan5 = new PredicateSpecification<int>(i => i < 5);
 			PredicateSpecification<int> subject = lessThan5 || moreThan10;
 
-			Assert.IsFalse(subject.IsSatisfiedBy(7));
-			Assert.IsTrue(subject.IsSatisfiedBy(3));
-			Assert.IsTrue(subject.IsSatisfiedBy(13));
+			Assert.That(subject, Must.Not.Be.SatisfiedBy(7));
+			Assert.That(subject, Must.Be.SatisfiedBy(3).And(13));
 		}
 
 		[Test]
@@ -102,7 +97,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			var lessThan5 = new PredicateSpecification<int>(i => i < 5);
 			var l = new List<int>(new[] { 2, 4, 6, 8, 10 });
 			Predicate<int> p = lessThan5;
-			Assert.That(l.FindAll(p).Count, Is.EqualTo(2));
+			Assert.That(l.FindAll(p), Has.Count.EqualTo(2));
 		}
 
 		#endregion
@@ -134,8 +129,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		{
 			var subject = new LessThan10SpecSubject();
 
-			Assert.That(subject.IsSatisfiedBy(5), Is.True);
-			Assert.That(subject.IsSatisfiedBy(11), Is.False);
+			Assert.That(subject, Must.Be.SatisfiedBy(5));
+			Assert.That(subject, Must.Not.Be.SatisfiedBy(11));
 		}
 
 		[Test]
@@ -143,8 +138,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		{
 			var subject = new MoreThan5SpecSubject().Not();
 
-			Assert.That(subject.IsSatisfiedBy(6), Is.False);
-			Assert.That(subject.IsSatisfiedBy(3), Is.True);
+			Assert.That(subject, Must.Not.Be.SatisfiedBy(6));
+			Assert.That(subject, Must.Be.SatisfiedBy(3));
 		}
 
 		[Test]
@@ -154,14 +149,12 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			var moreThan5 = new MoreThan5SpecSubject();
 
 			var subject = lessThan10.And(moreThan5);
-			Assert.IsTrue(subject.IsSatisfiedBy(7));
-			Assert.IsFalse(subject.IsSatisfiedBy(3));
-			Assert.IsFalse(subject.IsSatisfiedBy(13));
+			Assert.That(subject, Must.Be.SatisfiedBy(7));
+			Assert.That(subject, Must.Not.Be.SatisfiedBy(3).Or(13));
 
 			subject = lessThan10.And(moreThan5);
-			Assert.IsTrue(subject.IsSatisfiedBy(7));
-			Assert.IsFalse(subject.IsSatisfiedBy(3));
-			Assert.IsFalse(subject.IsSatisfiedBy(13));
+			Assert.That(subject, Must.Be.SatisfiedBy(7));
+			Assert.That(subject, Must.Not.Be.SatisfiedBy(3).Or(13));
 		}
 
 		[Test]
@@ -172,13 +165,11 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 
 			ISpecification<int> subject = lessThan5.Or(moreThan10);
 			Assert.IsFalse(subject.IsSatisfiedBy(7));
-			Assert.IsTrue(subject.IsSatisfiedBy(3));
-			Assert.IsTrue(subject.IsSatisfiedBy(13));
+			Assert.That(subject, Must.Be.SatisfiedBy(3).And(13));
 
 			subject = lessThan5.Or(moreThan10);
-			Assert.IsFalse(subject.IsSatisfiedBy(7));
-			Assert.IsTrue(subject.IsSatisfiedBy(3));
-			Assert.IsTrue(subject.IsSatisfiedBy(13));
+			Assert.That(subject, Must.Not.Be.SatisfiedBy(7));
+			Assert.That(subject, Must.Be.SatisfiedBy(3).And(13));
 		}
 
 		#endregion
@@ -209,7 +200,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 
 			Specification<ComplexType> enabled = new ComplexTypeEnabled(), barEven = new BarEven();
 			Predicate<ComplexType> enabledOrDisabledAndBarEven = c => enabled.IsSatisfiedBy(c) || (!enabled.IsSatisfiedBy(c) && barEven.IsSatisfiedBy(c));
-			Assert.That(data.FindAll(enabledOrDisabledAndBarEven).Count, Is.EqualTo(6));
+			Assert.That(data.FindAll(enabledOrDisabledAndBarEven), Has.Count.EqualTo(6));
 		}
 
 		[Test]
@@ -226,7 +217,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			Specification<ComplexType> enabled = new ComplexTypeEnabled(), barEven = new BarEven();
 			Func<ComplexType, bool> enabledOrDisabledAndBarEven = c => enabled.IsSatisfiedBy(c) || (!enabled.IsSatisfiedBy(c) && barEven.IsSatisfiedBy(c));
 			var q3 = from c in data where enabledOrDisabledAndBarEven(c) select c;
-			Assert.That(q3.Count(), Is.EqualTo(6));
+			Assert.That(q3, Must.Have.Count(Is.EqualTo(6)));
 		}
 
 		#endregion
