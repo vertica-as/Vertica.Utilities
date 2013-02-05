@@ -108,9 +108,10 @@
       <DependentUpon>Specification.cs</DependentUpon>
     </Compile>
     <Compile Include="Patterns\GenericCommand.cs">
-		<DependentUpon>Command.cs</DependentUpon>
-	</Compile>
-	  <Compile Include="Patterns\IIdentifiable.cs">
+      <DependentUpon>Command.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patterns\GenericVisitor.cs" />
+    <Compile Include="Patterns\IIdentifiable.cs">
       <DependentUpon>Repository.cs</DependentUpon>
     </Compile>
     <Compile Include="Patterns\InMemoryRepository.cs">

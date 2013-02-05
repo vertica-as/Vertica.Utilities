@@ -80,6 +80,7 @@
     <Compile Include="IMapperTester.cs" />
     <Compile Include="Patterns\ExpressionSpecificationTester.cs" />
     <Compile Include="Patterns\GenericCommandTester.cs" />
+    <Compile Include="Patterns\GenericVisitorTester.cs" />
     <Compile Include="Patterns\InMemoryRepositoryTester.cs" />
     <Compile Include="Patterns\PredicateSpecificationTester.cs" />
     <Compile Include="Patterns\SpecificationTester.cs" />
@@ -88,6 +89,9 @@
     <Compile Include="Patterns\Support\MustExtensions.cs" />
     <Compile Include="Patterns\Support\RepositorySubject.cs" />
     <Compile Include="Patterns\Support\SpecificationConstraint.cs" />
+    <Compile Include="Patterns\Support\VisitableBase.cs" />
+    <Compile Include="Patterns\Support\Visitable_1.cs" />
+    <Compile Include="Patterns\Support\Visitable_2.cs" />
     <Compile Include="StaticClassMapperTester.cs">
       <DependentUpon>IMapperTester.cs</DependentUpon>
     </Compile>
