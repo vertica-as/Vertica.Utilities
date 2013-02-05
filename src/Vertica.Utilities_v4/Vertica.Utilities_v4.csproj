@@ -47,6 +47,7 @@
     <Compile Include="ClassMapper.Static.cs">
       <DependentUpon>IMapper.cs</DependentUpon>
     </Compile>
+    <Compile Include="Collections\IReadOnlyList.cs" />
     <Compile Include="Comparisons\ChainableComparer.cs" />
     <Compile Include="Comparisons\ChainableEqualizer.cs" />
     <Compile Include="Comparisons\Cmp.cs" />
@@ -105,17 +106,24 @@
     <Compile Include="Patterns\ExpressionSpecification.cs">
       <DependentUpon>Specification.cs</DependentUpon>
     </Compile>
+    <Compile Include="Patterns\IIdentifiable.cs">
+      <DependentUpon>Repository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patterns\InMemoryRepository.cs">
+      <DependentUpon>Repository.cs</DependentUpon>
+    </Compile>
     <Compile Include="Patterns\ISpecification.cs">
       <DependentUpon>Specification.cs</DependentUpon>
     </Compile>
     <Compile Include="Patterns\PredicateSpecification.cs">
       <DependentUpon>Specification.cs</DependentUpon>
     </Compile>
+    <Compile Include="Patterns\Repository.cs" />
     <Compile Include="Patterns\Specification.cs" />
     <Compile Include="Patterns\Specification.Inference.cs">
-		<DependentUpon>Specification.cs</DependentUpon>
-	</Compile>
-	  <Compile Include="Percentage.cs" />
+      <DependentUpon>Specification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Percentage.cs" />
     <Compile Include="PercentageBuilder.cs">
       <DependentUpon>Percentage.cs</DependentUpon>
     </Compile>

@@ -6,5 +6,22 @@
 		{
 			return instance == null ? @default : instance.ToString();
 		}
+
+		public static bool IsNotDefault<T>(this T instance)
+		{
+			return !IsDefault(instance);
+		}
+
+		// ReSharper disable RedundantCast
+		public static bool IsDefault<T>(this T instance)
+		{
+			bool result = true;
+
+			if ((object)instance != null)
+			{
+				result = instance.Equals(default(T));
+			}
+			return result;
+		}
 	}
 }
