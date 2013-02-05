@@ -36,7 +36,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		[Test]
 		public void MoreThan5_And_LessThan10()
 		{
-			ISpecification<int> lessThan10 = PredicateSpecification<int>.CreateFor(i => i < 10);
+			ISpecification<int> lessThan10 = PredicateSpecification.For<int>(i => i < 10);
 			ISpecification<int> moreThan5 = new PredicateSpecification<int>(i => i > 5);
 			ISpecification<int> subject = lessThan10.And(moreThan5);
 
@@ -47,7 +47,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		[Test]
 		public void MoreThan10_Or_LessThan5()
 		{
-			ISpecification<int> moreThan10 = PredicateSpecification<int>.CreateFor(i => i > 10);
+			ISpecification<int> moreThan10 = PredicateSpecification.For<int>(i => i > 10);
 			ISpecification<int> lessThan5 = new PredicateSpecification<int>(i => i < 5);
 			ISpecification<int> subject = lessThan5.Or(moreThan10);
 
@@ -72,7 +72,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		[Test]
 		public void MoreThan5_AndOp_LessThan10()
 		{
-			PredicateSpecification<int> lessThan10 = PredicateSpecification<int>.CreateFor(i => i < 10);
+			PredicateSpecification<int> lessThan10 = PredicateSpecification.For<int>(i => i < 10);
 			var moreThan5 = new PredicateSpecification<int>(i => i > 5);
 			PredicateSpecification<int> subject = lessThan10 && moreThan5;
 
@@ -83,7 +83,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		[Test]
 		public void MoreThan10_OrOp_LessThan5()
 		{
-			PredicateSpecification<int> moreThan10 = PredicateSpecification<int>.CreateFor(i => i > 10);
+			PredicateSpecification<int> moreThan10 = PredicateSpecification.For<int>(i => i > 10);
 			var lessThan5 = new PredicateSpecification<int>(i => i < 5);
 			PredicateSpecification<int> subject = lessThan5 || moreThan10;
 

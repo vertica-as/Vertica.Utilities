@@ -102,11 +102,20 @@
     <Compile Include="IMapper.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Option.Factory.cs" />
-    <Compile Include="Patterns\ExpressionSpecification.cs" />
-    <Compile Include="Patterns\ISpecification.cs" />
-    <Compile Include="Patterns\PredicateSpecification.cs" />
+    <Compile Include="Patterns\ExpressionSpecification.cs">
+      <DependentUpon>Specification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patterns\ISpecification.cs">
+      <DependentUpon>Specification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patterns\PredicateSpecification.cs">
+      <DependentUpon>Specification.cs</DependentUpon>
+    </Compile>
     <Compile Include="Patterns\Specification.cs" />
-    <Compile Include="Percentage.cs" />
+    <Compile Include="Patterns\Specification.Inference.cs">
+		<DependentUpon>Specification.cs</DependentUpon>
+	</Compile>
+	  <Compile Include="Percentage.cs" />
     <Compile Include="PercentageBuilder.cs">
       <DependentUpon>Percentage.cs</DependentUpon>
     </Compile>

@@ -6,11 +6,6 @@ namespace Vertica.Utilities_v4.Patterns
 {
 	public class ExpressionSpecification<T> : Specification<T>
 	{
-		public static ExpressionSpecification<T> CreateFor(Expression<Func<T, bool>> expression)
-		{
-			return new ExpressionSpecification<T>(expression);
-		}
-
 		private readonly Expression<Func<T, bool>> _predicateExpression;
 		public ExpressionSpecification(Expression<Func<T, bool>> expression)
 		{

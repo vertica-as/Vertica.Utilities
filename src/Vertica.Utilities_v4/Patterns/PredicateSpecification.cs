@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Linq;
 using Vertica.Utilities_v4.Extensions.DelegateExt;
 
 namespace Vertica.Utilities_v4.Patterns
 {
 	public class PredicateSpecification<T> : Specification<T>
 	{
-		public static PredicateSpecification<T> CreateFor(Predicate<T> predicate)
-		{
-			return new PredicateSpecification<T>(predicate);
-		}
-
 		private readonly Predicate<T> _predicate;
 		public PredicateSpecification(Predicate<T> predicate)
 		{
