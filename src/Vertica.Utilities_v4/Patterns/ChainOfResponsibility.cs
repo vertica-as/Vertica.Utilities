@@ -46,7 +46,7 @@ namespace Vertica.Utilities_v4.Patterns
 
 		public abstract bool CanHandle(T context);
 		protected abstract void DoHandle(T context);
-		public ChainOfResponsibilityLink<T> Chain(ChainOfResponsibilityLink<T> lastHandler)
+		private void chain(ChainOfResponsibilityLink<T> lastHandler)
 		{
 			if (_nextLink == null)
 			{
@@ -54,9 +54,25 @@ namespace Vertica.Utilities_v4.Patterns
 			}
 			else
 			{
-				_nextLink.Chain(lastHandler);
+				_nextLink.chain(lastHandler);
 			}
-			return lastHandler;
+			//return lastHandler;
+		}
+
+		private ChainOfResponsibilityLink<T> _lastLink;
+		public ChainOfResponsibilityLink<T> Chain(ChainOfResponsibilityLink<T> lastHandler)
+		{
+
+			if (_nextLink == null)
+			{
+				_nextLink = lastHandler;
+			}
+			else
+			{
+				_lastLink.chain(lastHandler);
+			}
+			_lastLink = lastHandler;
+			return this;
 		}
 
 		public ChainOfResponsibilityLink<T> Chain(params ChainOfResponsibilityLink<T>[] handlers)
@@ -66,41 +82,10 @@ namespace Vertica.Utilities_v4.Patterns
 
 		public ChainOfResponsibilityLink<T> Chain(IEnumerable<ChainOfResponsibilityLink<T>> handlers)
 		{
-			var last = default(ChainOfResponsibilityLink<T>);
-			foreach (var link in handlers)
-			{
-				last = Chain(link);
-			}
-			return last;
-		}
-
-		private ChainOfResponsibilityLink<T> _lastLink;
-		public ChainOfResponsibilityLink<T> FluentChain(ChainOfResponsibilityLink<T> lastHandler)
-		{
-
-			if (_nextLink == null)
-			{
-				_nextLink = lastHandler;
-			}
-			else
-			{
-				_lastLink.Chain(lastHandler);
-			}
-			_lastLink = lastHandler;
-			return this;
-		}
-
-		public ChainOfResponsibilityLink<T> FluentChain(params ChainOfResponsibilityLink<T>[] handlers)
-		{
-			return FluentChain((IEnumerable<ChainOfResponsibilityLink<T>>)handlers);
-		}
-
-		public ChainOfResponsibilityLink<T> FluentChain(IEnumerable<ChainOfResponsibilityLink<T>> handlers)
-		{
 			var first = default(ChainOfResponsibilityLink<T>);
 			foreach (var link in handlers)
 			{
-				first = FluentChain(link);
+				first = Chain(link);
 			}
 			return first;
 		}

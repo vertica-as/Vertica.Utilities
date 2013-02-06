@@ -15,9 +15,9 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		{
 			var chain = ChainOfResponsibilityLink<Context>
 				.Empty()
-				.FluentChain(new ToUpperIfStartsWith("1"))
-				.FluentChain(new ToUpperIfStartsWith("2"))
-				.FluentChain(new ToUpperIfStartsWith("3"));
+				.Chain(new ToUpperIfStartsWith("1"))
+				.Chain(new ToUpperIfStartsWith("2"))
+				.Chain(new ToUpperIfStartsWith("3"));
 
 			var context = new Context("2_a");
 			chain.Handle(context);
@@ -29,9 +29,9 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		{
 			var chain = ChainOfResponsibilityLink<Context>
 				.Empty()
-				.FluentChain(new ToUpperIfStartsWith("1"))
-				.FluentChain(new ToUpperIfStartsWith("2"))
-				.FluentChain(new ToUpperIfStartsWith("3"));
+				.Chain(new ToUpperIfStartsWith("1"))
+				.Chain(new ToUpperIfStartsWith("2"))
+				.Chain(new ToUpperIfStartsWith("3"));
 
 			var context = new Context("5_a");
 			chain.Handle(context);
@@ -43,9 +43,9 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		{
 			var chain = ChainOfResponsibilityLink<Context>
 				.Empty()
-				.FluentChain(new ToUpperIfStartsWith("1"))
-				.FluentChain(new ToUpperIfStartsWith("2"))
-				.FluentChain(new ToUpperIfStartsWith("3"));
+				.Chain(new ToUpperIfStartsWith("1"))
+				.Chain(new ToUpperIfStartsWith("2"))
+				.Chain(new ToUpperIfStartsWith("3"));
 
 			var context = new Context("2_a");
 			Assert.That(chain.TryHandle(context), Is.True);
@@ -57,9 +57,9 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		{
 			var chain = ChainOfResponsibilityLink<Context>
 				.Empty()
-				.FluentChain(new ToUpperIfStartsWith("1"))
-				.FluentChain(new ToUpperIfStartsWith("2"))
-				.FluentChain(new ToUpperIfStartsWith("3"));
+				.Chain(new ToUpperIfStartsWith("1"))
+				.Chain(new ToUpperIfStartsWith("2"))
+				.Chain(new ToUpperIfStartsWith("3"));
 
 			var context = new Context("5_a");
 			Assert.That(chain.TryHandle(context), Is.False);
@@ -71,25 +71,25 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		#region Chain
 
 		[Test]
-		public void Chain_NotSoFluentLinkingTwo_InnerChaining()
+		public void Chain_LinkingTwo_InnerChaining()
 		{
 			var l1 = new ToUpperIfStartsWith("1");
 			var l2 = new ToUpperIfStartsWith("2");
 
-			Assert.That(l1.Chain(l2), Is.SameAs(l2));
+			Assert.That(l1.Chain(l2), Is.SameAs(l1));
 
 			Assert.That(l1.Next, Is.SameAs(l2));
 			Assert.That(l2.Next, Is.Null);
 		}
 
 		[Test]
-		public void Chain_NotSoFluentLinkingThree_InnerChaining()
+		public void Chain_LinkingThree_InnerChaining()
 		{
 			ToUpperIfStartsWith l1 = new ToUpperIfStartsWith("1"),
 				l2 = new ToUpperIfStartsWith("2"),
 				l3 = new ToUpperIfStartsWith("3");
 
-			Assert.That(l1.Chain(l2).Chain(l3), Is.SameAs(l3));
+			Assert.That(l1.Chain(l2).Chain(l3), Is.SameAs(l1));
 
 			Assert.That(l1.Next, Is.SameAs(l2));
 			Assert.That(l2.Next, Is.SameAs(l3));
@@ -97,13 +97,13 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		}
 
 		[Test]
-		public void Chain_Params_NotSoFluentLinkingThree_InnerChaining()
+		public void Chain_Params_LinkingThree_InnerChaining()
 		{
 			ToUpperIfStartsWith l1 = new ToUpperIfStartsWith("1"),
 				l2 = new ToUpperIfStartsWith("2"),
 				l3 = new ToUpperIfStartsWith("3");
 
-			Assert.That(l1.Chain(l2, l3), Is.SameAs(l3));
+			Assert.That(l1.Chain(l2, l3), Is.SameAs(l1));
 
 			Assert.That(l1.Next, Is.SameAs(l2));
 			Assert.That(l2.Next, Is.SameAs(l3));
@@ -111,13 +111,13 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		}
 
 		[Test]
-		public void Chain_Enumerable_NotSoFluentLinkingThree_InnerChaining()
+		public void Chain_Enumerable_LinkingThree_InnerChaining()
 		{
 			ToUpperIfStartsWith l1 = new ToUpperIfStartsWith("1"),
 				l2 = new ToUpperIfStartsWith("2"),
 				l3 = new ToUpperIfStartsWith("3");
 
-			Assert.That(l1.Chain(new[] { l2, l3 }), Is.SameAs(l3));
+			Assert.That(l1.Chain(new[] { l2, l3 }), Is.SameAs(l1));
 
 			Assert.That(l1.Next, Is.SameAs(l2));
 			Assert.That(l2.Next, Is.SameAs(l3));
@@ -244,64 +244,6 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 
 		#endregion
 
-		#region FluentChain
-
-		[Test]
-		public void FluentChain_FluentLinkingTwo_InnerChaining()
-		{
-			var l1 = new ToUpperIfStartsWith("1");
-			var l2 = new ToUpperIfStartsWith("2");
-
-			Assert.That(l1.FluentChain(l2), Is.SameAs(l1));
-
-			Assert.That(l1.Next, Is.SameAs(l2));
-			Assert.That(l2.Next, Is.Null);
-		}
-
-		[Test]
-		public void FluentChain_FluentLinkingThree_InnerChaining()
-		{
-			ToUpperIfStartsWith l1 = new ToUpperIfStartsWith("1"),
-				l2 = new ToUpperIfStartsWith("2"),
-				l3 = new ToUpperIfStartsWith("3");
-
-			Assert.That(l1.FluentChain(l2).FluentChain(l3), Is.SameAs(l1));
-
-			Assert.That(l1.Next, Is.SameAs(l2));
-			Assert.That(l2.Next, Is.SameAs(l3));
-			Assert.That(l3.Next, Is.Null);
-		}
-
-		[Test]
-		public void FluentChain_Params_FluentLinkingThree_InnerChaining()
-		{
-			ToUpperIfStartsWith l1 = new ToUpperIfStartsWith("1"),
-				l2 = new ToUpperIfStartsWith("2"),
-				l3 = new ToUpperIfStartsWith("3");
-
-			Assert.That(l1.FluentChain(l2, l3), Is.SameAs(l1));
-
-			Assert.That(l1.Next, Is.SameAs(l2));
-			Assert.That(l2.Next, Is.SameAs(l3));
-			Assert.That(l3.Next, Is.Null);
-		}
-
-		[Test]
-		public void FluentChain_Enumerable_FluentLinkingThree_InnerChaining()
-		{
-			ToUpperIfStartsWith l1 = new ToUpperIfStartsWith("1"),
-				l2 = new ToUpperIfStartsWith("2"),
-				l3 = new ToUpperIfStartsWith("3");
-
-			Assert.That(l1.FluentChain(new[] { l2, l3 }), Is.SameAs(l1));
-
-			Assert.That(l1.Next, Is.SameAs(l2));
-			Assert.That(l2.Next, Is.SameAs(l3));
-			Assert.That(l3.Next, Is.Null);
-		}
-
-		#endregion
-
 		private ChainOfResponsibilityLink<string> initChainOfSubstitutes(
 			out ChainOfResponsibilityLink<string> first,
 			out ChainOfResponsibilityLink<string> second,
@@ -314,9 +256,9 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 
 			var chain = ChainOfResponsibilityLink<string>
 				.Empty()
-				.FluentChain(first)
-				.FluentChain(second)
-				.FluentChain(third);
+				.Chain(first)
+				.Chain(second)
+				.Chain(third);
 
 			return chain;
 		}
