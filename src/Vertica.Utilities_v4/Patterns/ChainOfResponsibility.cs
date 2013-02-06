@@ -46,30 +46,17 @@ namespace Vertica.Utilities_v4.Patterns
 
 		public abstract bool CanHandle(T context);
 		protected abstract void DoHandle(T context);
-		private void chain(ChainOfResponsibilityLink<T> lastHandler)
-		{
-			if (_nextLink == null)
-			{
-				_nextLink = lastHandler;
-			}
-			else
-			{
-				_nextLink.chain(lastHandler);
-			}
-			//return lastHandler;
-		}
 
 		private ChainOfResponsibilityLink<T> _lastLink;
 		public ChainOfResponsibilityLink<T> Chain(ChainOfResponsibilityLink<T> lastHandler)
 		{
-
 			if (_nextLink == null)
 			{
 				_nextLink = lastHandler;
 			}
 			else
 			{
-				_lastLink.chain(lastHandler);
+				_lastLink.Chain(lastHandler);
 			}
 			_lastLink = lastHandler;
 			return this;
