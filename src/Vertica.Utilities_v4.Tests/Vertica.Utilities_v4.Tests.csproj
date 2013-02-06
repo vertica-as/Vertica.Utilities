@@ -78,6 +78,7 @@
     <Compile Include="ICloneableTester.cs" />
     <Compile Include="IInitializableTester.cs" />
     <Compile Include="IMapperTester.cs" />
+    <Compile Include="Patterns\ChainOfResponsibilityTester.cs" />
     <Compile Include="Patterns\ExpressionSpecificationTester.cs" />
     <Compile Include="Patterns\GenericCommandTester.cs" />
     <Compile Include="Patterns\GenericVisitorTester.cs" />
@@ -87,9 +88,11 @@
     <Compile Include="Patterns\SpecificationTester.cs" />
     <Compile Include="Patterns\Support\ComplexContainer.cs" />
     <Compile Include="Patterns\Support\ComplexType.cs" />
+    <Compile Include="Patterns\Support\Context.cs" />
     <Compile Include="Patterns\Support\MustExtensions.cs" />
     <Compile Include="Patterns\Support\RepositorySubject.cs" />
     <Compile Include="Patterns\Support\SpecificationConstraint.cs" />
+    <Compile Include="Patterns\Support\ToUpperIfStartsWith.cs" />
     <Compile Include="Patterns\Support\VisitableBase.cs" />
     <Compile Include="Patterns\Support\Visitable_1.cs" />
     <Compile Include="Patterns\Support\Visitable_2.cs" />

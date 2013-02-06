@@ -104,6 +104,7 @@
     <Compile Include="IMapper.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Option.Factory.cs" />
+    <Compile Include="Patterns\ChainOfResponsibility.cs" />
     <Compile Include="Patterns\Command.cs" />
     <Compile Include="Patterns\ExpressionSpecification.cs">
       <DependentUpon>Specification.cs</DependentUpon>
