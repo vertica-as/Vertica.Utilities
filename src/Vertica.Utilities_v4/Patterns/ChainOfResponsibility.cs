@@ -5,11 +5,7 @@ namespace Vertica.Utilities_v4.Patterns
 {
 	public abstract class ChainOfResponsibilityLink<T>
 	{
-		private ChainOfResponsibilityLink<T> _nextLink;
-		public ChainOfResponsibilityLink<T> Next
-		{
-			get { return _nextLink; }
-		}
+		public ChainOfResponsibilityLink<T> Next { get; private set; }
 
 		public void Handle(T context)
 		{
@@ -19,9 +15,9 @@ namespace Vertica.Utilities_v4.Patterns
 			}
 			else
 			{
-				if (_nextLink != null)
+				if (Next != null)
 				{
-					_nextLink.Handle(context);
+					Next.Handle(context);
 				}
 			}
 		}
@@ -36,9 +32,9 @@ namespace Vertica.Utilities_v4.Patterns
 			}
 			else
 			{
-				if (_nextLink != null)
+				if (Next != null)
 				{
-					handled = _nextLink.TryHandle(context);
+					handled = Next.TryHandle(context);
 				}
 			}
 			return handled;
@@ -50,9 +46,9 @@ namespace Vertica.Utilities_v4.Patterns
 		private ChainOfResponsibilityLink<T> _lastLink;
 		public ChainOfResponsibilityLink<T> Chain(ChainOfResponsibilityLink<T> lastHandler)
 		{
-			if (_nextLink == null)
+			if (Next == null)
 			{
-				_nextLink = lastHandler;
+				Next = lastHandler;
 			}
 			else
 			{
@@ -80,11 +76,7 @@ namespace Vertica.Utilities_v4.Patterns
 
 	public abstract class ChainOfResponsibilityLink<T, TResult>
 	{
-		private ChainOfResponsibilityLink<T, TResult> _nextLink;
-		public ChainOfResponsibilityLink<T, TResult> Next
-		{
-			get { return _nextLink; }
-		}
+		public ChainOfResponsibilityLink<T, TResult> Next { get; private set; }
 
 		public TResult Handle(T context)
 		{
@@ -95,9 +87,9 @@ namespace Vertica.Utilities_v4.Patterns
 			}
 			else
 			{
-				if (_nextLink != null)
+				if (Next != null)
 				{
-					result = _nextLink.Handle(context);
+					result = Next.Handle(context);
 				}
 			}
 			return result;
@@ -114,9 +106,9 @@ namespace Vertica.Utilities_v4.Patterns
 			}
 			else
 			{
-				if (_nextLink != null)
+				if (Next != null)
 				{
-					handled = _nextLink.TryHandle(context, out result);
+					handled = Next.TryHandle(context, out result);
 				}
 			}
 			return handled;
@@ -129,9 +121,9 @@ namespace Vertica.Utilities_v4.Patterns
 		public ChainOfResponsibilityLink<T, TResult> Chain(ChainOfResponsibilityLink<T, TResult> lastHandler)
 		{
 
-			if (_nextLink == null)
+			if (Next == null)
 			{
-				_nextLink = lastHandler;
+				Next = lastHandler;
 			}
 			else
 			{
@@ -155,24 +147,6 @@ namespace Vertica.Utilities_v4.Patterns
 			}
 			return first;
 		}
-
-		public static ChainOfResponsibilityLink<T, TResult> Empty()
-		{
-			return new EmptyLink();
-		}
-
-		private class EmptyLink : ChainOfResponsibilityLink<T, TResult>
-		{
-			public override bool CanHandle(T context)
-			{
-				return false;
-			}
-
-			protected override TResult DoHandle(T context)
-			{
-				return default(TResult);
-			}
-		}
 	}
 
 	public static class ChainOfResponsibility
@@ -190,6 +164,24 @@ namespace Vertica.Utilities_v4.Patterns
 		public static ChainOfResponsibilityLink<T> Empty<T>()
 		{
 			return new EmptyLink<T>();	
-		} 
+		}
+
+		public static ChainOfResponsibilityLink<T, TResult> Empty<T, TResult>()
+		{
+			return new EmptyLink<T, TResult>();
+		}
+
+		private class EmptyLink<T, TResult> : ChainOfResponsibilityLink<T, TResult>
+		{
+			public override bool CanHandle(T context)
+			{
+				return false;
+			}
+
+			protected override TResult DoHandle(T context)
+			{
+				return default(TResult);
+			}
+		}
 	}
 }

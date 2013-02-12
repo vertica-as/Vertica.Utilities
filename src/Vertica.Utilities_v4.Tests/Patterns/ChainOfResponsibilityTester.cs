@@ -267,6 +267,63 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 	[TestFixture]
 	public class ReturningChainOfResponsibilityTester
 	{
+		#region documentation
+
+		[Test, Category("Exploratory")]
+		public void Handled_HandlerReturnsValue()
+		{
+			var chain = ChainOfResponsibility
+				.Empty<int, string>()
+				.Chain(new IntToStringLink(1))
+				.Chain(new IntToStringLink(2))
+				.Chain(new IntToStringLink(3));
+
+			Assert.That(chain.Handle(2), Is.EqualTo("2"));
+		}
+
+		[Test, Category("Exploratory")]
+		public void NotHandled_DefaultReturned()
+		{
+			var chain = ChainOfResponsibility
+				.Empty<int, string>()
+				.Chain(new IntToStringLink(1))
+				.Chain(new IntToStringLink(2))
+				.Chain(new IntToStringLink(3));
+
+			Assert.That(chain.Handle(5), Is.Null);
+		}
+
+		[Test, Category("Exploratory")]
+		public void TryHandle_True_AndHandlerReturnsValue()
+		{
+			var chain = ChainOfResponsibility
+				.Empty<int, string>()
+				.Chain(new IntToStringLink(1))
+				.Chain(new IntToStringLink(2))
+				.Chain(new IntToStringLink(3));
+
+			string result;
+			Assert.That(chain.TryHandle(2, out result), Is.True);
+			Assert.That(result, Is.EqualTo("2"));
+		}
+
+		[Test, Category("Exploratory")]
+		public void TryNotHandled_False_AndDefaultReturned()
+		{
+			var chain = ChainOfResponsibility
+				.Empty<int, string>()
+				.Chain(new IntToStringLink(1))
+				.Chain(new IntToStringLink(2))
+				.Chain(new IntToStringLink(3));
+
+			string result;
+			Assert.That(chain.TryHandle(5, out result), Is.False);
+			Assert.That(result, Is.Null);
+		}
+
+		#endregion
+
+
 		#region Chain
 
 		[Test]
@@ -315,18 +372,6 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			Assert.That(l1.Next, Is.SameAs(l2));
 			Assert.That(l2.Next, Is.SameAs(l3));
 			Assert.That(l3.Next, Is.Null);
-		}
-
-		[Test]
-		public void Chain_SampleScenario()
-		{
-			var chain = ChainOfResponsibilityLink<int, string>
-				.Empty()
-				.Chain(new IntToStringLink(1))
-				.Chain(new IntToStringLink(2))
-				.Chain(new IntToStringLink(3));
-
-			Assert.That(chain.Handle(2), Is.EqualTo("2"));
 		}
 
 		#endregion
@@ -483,8 +528,6 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		}
 
 		#endregion
-		
-		
 
 		private ChainOfResponsibilityLink<int, string> initChainOfSubstitutes(
 			out ChainOfResponsibilityLink<int, string> first,
@@ -496,8 +539,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			second = Substitute.For<ChainOfResponsibilityLink<int, string>>();
 			third = Substitute.For<ChainOfResponsibilityLink<int, string>>();
 
-			var chain = ChainOfResponsibilityLink<int, string>
-				.Empty()
+			var chain = ChainOfResponsibility
+				.Empty<int, string>()
 				.Chain(first)
 				.Chain(second)
 				.Chain(third);
