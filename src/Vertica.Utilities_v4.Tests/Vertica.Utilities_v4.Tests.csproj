@@ -89,6 +89,7 @@
     <Compile Include="Patterns\Support\ComplexContainer.cs" />
     <Compile Include="Patterns\Support\ComplexType.cs" />
     <Compile Include="Patterns\Support\Context.cs" />
+    <Compile Include="Patterns\Support\IntToStringLink.cs" />
     <Compile Include="Patterns\Support\MustExtensions.cs" />
     <Compile Include="Patterns\Support\RepositorySubject.cs" />
     <Compile Include="Patterns\Support\SpecificationConstraint.cs" />

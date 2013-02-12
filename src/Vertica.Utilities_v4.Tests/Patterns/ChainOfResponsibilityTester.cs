@@ -13,8 +13,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		[Test, Category("Exploratory")]
 		public void Handled_ContextModifed()
 		{
-			var chain = ChainOfResponsibilityLink<Context>
-				.Empty()
+			var chain = ChainOfResponsibility
+				.Empty<Context>()
 				.Chain(new ToUpperIfStartsWith("1"))
 				.Chain(new ToUpperIfStartsWith("2"))
 				.Chain(new ToUpperIfStartsWith("3"));
@@ -27,8 +27,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		[Test, Category("Exploratory")]
 		public void NotHandled_ContextNotModified()
 		{
-			var chain = ChainOfResponsibilityLink<Context>
-				.Empty()
+			var chain = ChainOfResponsibility
+				.Empty<Context>()
 				.Chain(new ToUpperIfStartsWith("1"))
 				.Chain(new ToUpperIfStartsWith("2"))
 				.Chain(new ToUpperIfStartsWith("3"));
@@ -41,8 +41,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		[Test, Category("Exploratory")]
 		public void TryHandled_ContextModified()
 		{
-			var chain = ChainOfResponsibilityLink<Context>
-				.Empty()
+			var chain = ChainOfResponsibility
+				.Empty<Context>()
 				.Chain(new ToUpperIfStartsWith("1"))
 				.Chain(new ToUpperIfStartsWith("2"))
 				.Chain(new ToUpperIfStartsWith("3"));
@@ -55,8 +55,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		[Test, Category("Exploratory")]
 		public void TryNotHandled_ContextNotModified()
 		{
-			var chain = ChainOfResponsibilityLink<Context>
-				.Empty()
+			var chain = ChainOfResponsibility
+				.Empty<Context>()
 				.Chain(new ToUpperIfStartsWith("1"))
 				.Chain(new ToUpperIfStartsWith("2"))
 				.Chain(new ToUpperIfStartsWith("3"));
@@ -254,11 +254,303 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			second = Substitute.For<ChainOfResponsibilityLink<string>>();
 			third = Substitute.For<ChainOfResponsibilityLink<string>>();
 
-			var chain = ChainOfResponsibilityLink<string>
-				.Empty()
+			var chain = ChainOfResponsibility
+				.Empty<string>()
 				.Chain(first)
 				.Chain(second)
 				.Chain(third);
+
+			return chain;
+		}
+	}
+
+	[TestFixture]
+	public class ReturningChainOfResponsibilityTester
+	{
+		#region Chain
+
+		[Test]
+		public void Chain_NotSoFluentLinkingTwo_InnerChaining()
+		{
+			var l1 = new IntToStringLink(1);
+			var l2 = new IntToStringLink(2);
+
+			Assert.That(l1.Chain(l2), Is.SameAs(l2));
+
+			Assert.That(l1.Next, Is.SameAs(l2));
+			Assert.That(l2.Next, Is.Null);
+		}
+		
+		[Test]
+		public void Chain_NotSoFluentLinkingThree_InnerChaining()
+		{
+			IntToStringLink l1 = new IntToStringLink(1), l2 = new IntToStringLink(2), l3 = new IntToStringLink(3);
+
+			Assert.That(l1.Chain(l2).Chain(l3), Is.SameAs(l3));
+
+			Assert.That(l1.Next, Is.SameAs(l2));
+			Assert.That(l2.Next, Is.SameAs(l3));
+			Assert.That(l3.Next, Is.Null);
+		}
+
+		[Test]
+		public void Chain_Params_NotSoFluentLinkingThree_InnerChaining()
+		{
+			IntToStringLink l1 = new IntToStringLink(1), l2 = new IntToStringLink(2), l3 = new IntToStringLink(3);
+
+			Assert.That(l1.Chain(l2, l3), Is.SameAs(l3));
+
+			Assert.That(l1.Next, Is.SameAs(l2));
+			Assert.That(l2.Next, Is.SameAs(l3));
+			Assert.That(l3.Next, Is.Null);
+		}
+
+		[Test]
+		public void Chain_Enumerable_NotSoFluentLinkingThree_InnerChaining()
+		{
+			IntToStringLink l1 = new IntToStringLink(1), l2 = new IntToStringLink(2), l3 = new IntToStringLink(3);
+
+			Assert.That(l1.Chain(new[] { l2, l3 }), Is.SameAs(l3));
+
+			Assert.That(l1.Next, Is.SameAs(l2));
+			Assert.That(l2.Next, Is.SameAs(l3));
+			Assert.That(l3.Next, Is.Null);
+		}
+
+		#endregion
+		
+		#region Handle
+
+		[Test]
+		public void Handle_ContextHandledByFirstInChain_RestOfMembersNotEvenAsked()
+		{
+			ChainOfResponsibilityLink<int, string> first, second, third;
+			ChainOfResponsibilityLink<int, string> chain = initChainOfSubstitutes(out first, out second, out third);
+
+			first.CanHandle(1).Returns(true);
+
+			chain.Handle(1);
+
+			second.DidNotReceiveWithAnyArgs().CanHandle(0);
+			third.DidNotReceiveWithAnyArgs().CanHandle(0);
+		}
+		
+		[Test]
+		public void Handle_ContextHandledBySecondInChain_FirstAskedAndThirdNot()
+		{
+			ChainOfResponsibilityLink<int, string> first, second, third;
+			ChainOfResponsibilityLink<int, string> chain = initChainOfSubstitutes(out first, out second, out third);
+
+			second.CanHandle(1).Returns(true);
+
+			chain.Handle(1);
+
+			first.Received().CanHandle(1);
+			third.DidNotReceiveWithAnyArgs().CanHandle(0);
+		}
+
+		[Test]
+		public void Handle_ContextHandledByLastInChain_AllAskedAndLastHandles()
+		{
+			ChainOfResponsibilityLink<int, string> first, second, third;
+			ChainOfResponsibilityLink<int, string> chain = initChainOfSubstitutes(out first, out second, out third);
+
+			third.CanHandle(1).Returns(true);
+
+			chain.Handle(1);
+
+			first.Received().CanHandle(1);
+			second.Received().CanHandle(1);
+		}
+
+		[Test]
+		public void Handle_ContextHandled_ReturnValueComesFromHandler()
+		{
+			string returnValue = "handled by second";
+
+			ChainOfResponsibilityLink<int, string> first, second, third;
+			ChainOfResponsibilityLink<int, string> chain = initChainOfSubstitutes(out first, out second, out third);
+
+			second.CanHandle(1).Returns(true);
+			second.Handle(1).Returns(returnValue);
+
+			Assert.That(chain.Handle(1), Is.EqualTo(returnValue));
+		}
+		
+		[Test]
+		public void Handle_ContextNotHandled_AllAskedNoneHandled()
+		{
+			ChainOfResponsibilityLink<int, string> first, second, third;
+			ChainOfResponsibilityLink<int, string> chain = initChainOfSubstitutes(out first, out second, out third);
+
+			Assert.That(chain.Handle(1), Is.Null);
+
+			first.Received().CanHandle(1);
+			second.Received().CanHandle(1);
+			third.Received().CanHandle(1);
+		}
+
+		#endregion
+
+		#region TryHandle
+
+		[Test]
+		public void TryHandle_ContextHandledByFirstInChain_RestOfMembersNotEvenAsked()
+		{
+			ChainOfResponsibilityLink<int, string> first, second, third;
+			ChainOfResponsibilityLink<int, string> chain = initChainOfSubstitutes(out first, out second, out third);
+
+			first.CanHandle(1).Returns(true);
+
+			string result;
+			chain.TryHandle(1, out result);
+
+			second.DidNotReceiveWithAnyArgs().CanHandle(0);
+			third.DidNotReceiveWithAnyArgs().CanHandle(0);
+		}
+
+		[Test]
+		public void TryHandle_ContextHandledBySecondInChain_FirstAskedAndThirdNot()
+		{
+			ChainOfResponsibilityLink<int, string> first, second, third;
+			ChainOfResponsibilityLink<int, string> chain = initChainOfSubstitutes(out first, out second, out third);
+
+			second.CanHandle(1).Returns(true);
+
+			string result;
+			Assert.That(chain.TryHandle(1, out result), Is.True);
+
+			first.Received().CanHandle(1);
+			third.DidNotReceiveWithAnyArgs().CanHandle(0);
+		}
+
+		[Test]
+		public void TryHandle_ContextHandledByLastInChain_AllAskedAndLastHandles()
+		{
+			ChainOfResponsibilityLink<int, string> first, second, third;
+			ChainOfResponsibilityLink<int, string> chain = initChainOfSubstitutes(out first, out second, out third);
+
+			third.CanHandle(1).Returns(true);
+
+			string result;
+			Assert.That(chain.TryHandle(1, out result), Is.True);
+
+			first.Received().CanHandle(1);
+			second.Received().CanHandle(1);
+		}
+
+		[Test]
+		public void TryHandle_ContextHandled_ReturnValueComesFromHandler()
+		{
+			string returnValue = "handled by second";
+
+			ChainOfResponsibilityLink<int, string> first, second, third;
+			ChainOfResponsibilityLink<int, string> chain = initChainOfSubstitutes(out first, out second, out third);
+
+			second.CanHandle(1).Returns(true);
+			second.Handle(1).Returns(returnValue);
+
+			string result;
+			Assert.That(chain.TryHandle(1, out result), Is.True);
+			Assert.That(result, Is.EqualTo(returnValue));
+		}
+
+		[Test]
+		public void TryHandle_ContextNotHandled_AllAskedNoneHandled()
+		{
+			ChainOfResponsibilityLink<int, string> first, second, third;
+			ChainOfResponsibilityLink<int, string> chain = initChainOfSubstitutes(out first, out second, out third);
+
+			string result;
+			Assert.That(chain.TryHandle(1, out result), Is.False);
+			Assert.That(result, Is.Null);
+
+			first.Received().CanHandle(1);
+			second.Received().CanHandle(1);
+			third.Received().CanHandle(1);
+		}
+
+		#endregion
+		
+		#region FluentChain
+
+		[Test]
+		public void FluentChain_FluentLinkingTwo_InnerChaining()
+		{
+			var l1 = new IntToStringLink(1);
+			var l2 = new IntToStringLink(2);
+
+			Assert.That(l1.FluentChain(l2), Is.SameAs(l1));
+
+			Assert.That(l1.Next, Is.SameAs(l2));
+			Assert.That(l2.Next, Is.Null);
+		}
+
+		[Test]
+		public void FluentChain_FluentLinkingThree_InnerChaining()
+		{
+			IntToStringLink l1 = new IntToStringLink(1), l2 = new IntToStringLink(2), l3 = new IntToStringLink(3);
+
+			Assert.That(l1.FluentChain(l2).FluentChain(l3), Is.SameAs(l1));
+
+			Assert.That(l1.Next, Is.SameAs(l2));
+			Assert.That(l2.Next, Is.SameAs(l3));
+			Assert.That(l3.Next, Is.Null);
+		}
+
+		[Test]
+		public void FluentChain_Params_FluentLinkingThree_InnerChaining()
+		{
+			IntToStringLink l1 = new IntToStringLink(1), l2 = new IntToStringLink(2), l3 = new IntToStringLink(3);
+
+			Assert.That(l1.FluentChain(l2, l3), Is.SameAs(l1));
+
+			Assert.That(l1.Next, Is.SameAs(l2));
+			Assert.That(l2.Next, Is.SameAs(l3));
+			Assert.That(l3.Next, Is.Null);
+		}
+
+		[Test]
+		public void FluentChain_Enumerable_FluentLinkingThree_InnerChaining()
+		{
+			IntToStringLink l1 = new IntToStringLink(1), l2 = new IntToStringLink(2), l3 = new IntToStringLink(3);
+
+			Assert.That(l1.FluentChain(new[] { l2, l3 }), Is.SameAs(l1));
+
+			Assert.That(l1.Next, Is.SameAs(l2));
+			Assert.That(l2.Next, Is.SameAs(l3));
+			Assert.That(l3.Next, Is.Null);
+		}
+
+		[Test]
+		public void FluentChain_SampleScenario()
+		{
+			var chain = ChainOfResponsibilityLink<int, string>
+				.Empty()
+				.FluentChain(new IntToStringLink(1))
+				.FluentChain(new IntToStringLink(2))
+				.FluentChain(new IntToStringLink(3));
+
+			Assert.That(chain.Handle(2), Is.EqualTo("2"));
+		}
+
+		#endregion
+
+		private ChainOfResponsibilityLink<int, string> initChainOfSubstitutes(
+			out ChainOfResponsibilityLink<int, string> first,
+			out ChainOfResponsibilityLink<int, string> second,
+			out ChainOfResponsibilityLink<int, string> third
+			)
+		{
+			first = Substitute.For<ChainOfResponsibilityLink<int, string>>();
+			second = Substitute.For<ChainOfResponsibilityLink<int, string>>();
+			third = Substitute.For<ChainOfResponsibilityLink<int, string>>();
+
+			var chain = ChainOfResponsibilityLink<int, string>
+				.Empty()
+				.FluentChain(first)
+				.FluentChain(second)
+				.FluentChain(third);
 
 			return chain;
 		}
