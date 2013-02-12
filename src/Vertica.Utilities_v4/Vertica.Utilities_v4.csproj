@@ -106,9 +106,9 @@
     <Compile Include="Option.Factory.cs" />
     <Compile Include="Patterns\ChainOfResponsibility.cs" />
     <Compile Include="Patterns\ChainOfResponsibilityLink.cs">
-		<DependentUpon>ChainOfResponsibility.cs</DependentUpon>
-	</Compile>
-	  <Compile Include="Patterns\Command.cs" />
+      <DependentUpon>ChainOfResponsibility.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patterns\Command.cs" />
     <Compile Include="Patterns\ExpressionSpecification.cs">
       <DependentUpon>Specification.cs</DependentUpon>
     </Compile>
@@ -131,9 +131,9 @@
     </Compile>
     <Compile Include="Patterns\Repository.cs" />
     <Compile Include="Patterns\ChainOfResponsibilityLink.Returning.cs">
-		<DependentUpon>ChainOfResponsibility.cs</DependentUpon>
-	</Compile>
-	  <Compile Include="Patterns\Specification.cs" />
+      <DependentUpon>ChainOfResponsibility.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patterns\Specification.cs" />
     <Compile Include="Patterns\Specification.Inference.cs">
       <DependentUpon>Specification.cs</DependentUpon>
     </Compile>
