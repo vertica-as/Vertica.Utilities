@@ -13,6 +13,14 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 	[TestFixture]
 	public class ExpressionSpecificationTeste
 	{
+		class MoreThan10 : ExpressionSpecification<int>
+		{
+			public MoreThan10() : base(i => i > 10) { }
+		}
+
+		ISpecification<int> lessThanFive = new ExpressionSpecification<int>(i => i < 5);
+
+
 		#region interface operations
 
 		[Test]
@@ -27,7 +35,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		[Test]
 		public void Not_LengthBetween5And10()
 		{
-			ISpecification<string> lengthBetween5And10 = new ExpressionSpecification<string>(s => s.Length >= 5 && s.Length <= 10);
+			var lengthBetween5And10 = new ExpressionSpecification<string>(s => s.Length >= 5 && s.Length <= 10);
 			ISpecification<string> subject = lengthBetween5And10.Not();
 
 			Assert.That(subject, Must.Not.Be.SatisfiedBy("123456"));
@@ -37,8 +45,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		[Test]
 		public void MoreThan5_And_LessThan10()
 		{
-			ISpecification<int> lessThan10 = ExpressionSpecification.For<int>(i => i < 10);
-			ISpecification<int> moreThan5 = new ExpressionSpecification<int>(i => i > 5);
+			var lessThan10 = ExpressionSpecification.For<int>(i => i < 10);
+			var moreThan5 = new ExpressionSpecification<int>(i => i > 5);
 			ISpecification<int> subject = lessThan10.And(moreThan5);
 
 			Assert.That(subject, Must.Be.SatisfiedBy(7));
@@ -105,7 +113,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		public void Implicit_To_Func()
 		{
 			var lessThan5 = new ExpressionSpecification<int>(i => i < 5);
-			Func<int, bool> f = lessThan5;
+			Func<int, bool> f = lessThan5.Function;
+			f = lessThan5;
 			Assert.That(f(1), Is.True);
 			Assert.That(f(6), Is.False);
 		}
@@ -114,7 +123,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		public void Implicit_To_Expression()
 		{
 			var lessThan5 = new ExpressionSpecification<int>(i => i < 5);
-			Expression<Func<int, bool>> e = lessThan5;
+			Expression<Func<int, bool>> e = lessThan5.Expression;
+			e = lessThan5;
 			Assert.That(e.Compile().Invoke(1), Is.True);
 			Assert.That(e.Compile().Invoke(6), Is.False);
 		}

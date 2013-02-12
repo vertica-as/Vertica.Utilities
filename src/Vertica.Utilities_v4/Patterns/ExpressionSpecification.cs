@@ -12,14 +12,14 @@ namespace Vertica.Utilities_v4.Patterns
 			_predicateExpression = expression;
 		}
 
-		public Expression<Func<T, bool>> PredicateExpression { get { return _predicateExpression; } }
+		public Expression<Func<T, bool>> Expression { get { return _predicateExpression; } }
 
 		private Func<T, bool> _predicate;
-		public Func<T, bool> Predicate { get { return _predicate = _predicate ?? _predicateExpression.Compile(); } }
+		public Func<T, bool> Function { get { return _predicate = _predicate ?? _predicateExpression.Compile(); } }
 
 		public override bool IsSatisfiedBy(T entity)
 		{
-			return Predicate(entity);
+			return Function(entity);
 		}
 
 		#region operators
@@ -28,42 +28,42 @@ namespace Vertica.Utilities_v4.Patterns
 
 		public static implicit operator Func<T, bool>(ExpressionSpecification<T> specification)
 		{
-			return specification.Predicate;
+			return specification.Function;
 		}
 
 		public static implicit operator Expression<Func<T, bool>>(ExpressionSpecification<T> specification)
 		{
-			return specification.PredicateExpression;
+			return specification.Expression;
 		}
 
 		public static implicit operator Predicate<T>(ExpressionSpecification<T> spec)
 		{
-			return t => spec.Predicate(t);
+			return t => spec.Function(t);
 		}
 
 		#endregion
 
 		public static ExpressionSpecification<T> operator !(ExpressionSpecification<T> spec)
 		{
-			var newExpression = Expression.MakeUnary(ExpressionType.Not, spec.PredicateExpression.Body, typeof(bool));
+			var newExpression = System.Linq.Expressions.Expression.MakeUnary(ExpressionType.Not, spec.Expression.Body, typeof(bool));
 
-			return new ExpressionSpecification<T>(toLambda(newExpression, spec.PredicateExpression.Parameters));
+			return new ExpressionSpecification<T>(toLambda(newExpression, spec.Expression.Parameters));
 		}
 
 		public static ExpressionSpecification<T> operator &(ExpressionSpecification<T> leftSide, ExpressionSpecification<T> rightSide)
 		{
-			var newExpression = mergeIntoBinary(rightSide.PredicateExpression, leftSide.PredicateExpression,
+			var newExpression = mergeIntoBinary(rightSide.Expression, leftSide.Expression,
 				ExpressionType.AndAlso);
 
-			return new ExpressionSpecification<T>(toLambda(newExpression, leftSide.PredicateExpression.Parameters));
+			return new ExpressionSpecification<T>(toLambda(newExpression, leftSide.Expression.Parameters));
 		}
 
 		public static ExpressionSpecification<T> operator |(ExpressionSpecification<T> leftSide, ExpressionSpecification<T> rightSide)
 		{
-			var newExpression = mergeIntoBinary(rightSide.PredicateExpression, leftSide.PredicateExpression,
+			var newExpression = mergeIntoBinary(rightSide.Expression, leftSide.Expression,
 				ExpressionType.OrElse);
 
-			return new ExpressionSpecification<T>(toLambda(newExpression, leftSide.PredicateExpression.Parameters));
+			return new ExpressionSpecification<T>(toLambda(newExpression, leftSide.Expression.Parameters));
 		}
 
 		public static bool operator true(ExpressionSpecification<T> specification) { return false; }
@@ -93,14 +93,14 @@ namespace Vertica.Utilities_v4.Patterns
 
 		private static Expression<Func<T, bool>> toLambda(Expression expression, IEnumerable<ParameterExpression> parameters)
 		{
-			return Expression.Lambda<Func<T, bool>>(expression, parameters);
+			return System.Linq.Expressions.Expression.Lambda<Func<T, bool>>(expression, parameters);
 		}
 
 		private static BinaryExpression mergeIntoBinary(Expression<Func<T, bool>> right, Expression<Func<T, bool>> left, ExpressionType type)
 		{
-			InvocationExpression rightInvoke = Expression.Invoke(right, left.Parameters);
+			InvocationExpression rightInvoke = System.Linq.Expressions.Expression.Invoke(right, left.Parameters);
 
-			BinaryExpression mergedExpression = Expression.MakeBinary(type, left.Body, rightInvoke);
+			BinaryExpression mergedExpression = System.Linq.Expressions.Expression.MakeBinary(type, left.Body, rightInvoke);
 
 			return mergedExpression;
 		}

@@ -52,6 +52,26 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			}
 		}
 
+		#region documentation
+
+		[Test, Category("Exploratory")]
+		public void Satisfaction()
+		{
+			var spec = new LessThan10();
+			Assert.That(spec.IsSatisfiedBy(5), Is.True);
+			Assert.That(spec.IsSatisfiedBy(11), Is.False);
+		}
+
+		[Test, Category("Exploratory")]
+		public void Negation()
+		{
+			ISpecification<int> spec = new LessThan10().Not();
+			Assert.That(spec.IsSatisfiedBy(5), Is.False);
+			Assert.That(spec.IsSatisfiedBy(11), Is.True);
+		}
+
+		#endregion
+
 		#region interface operations
 
 		[Test]

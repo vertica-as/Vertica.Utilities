@@ -12,6 +12,13 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 	[TestFixture]
 	public class PredicateSpecificationTester
 	{
+		class MoreThan10 : PredicateSpecification<int>
+		{
+			public MoreThan10() : base(i => i > 10) { }
+		}
+
+		ISpecification<int> lessThanFive = new PredicateSpecification<int>(i => i < 5);
+
 		#region interface operations
 
 		[Test]
@@ -92,12 +99,39 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		}
 
 		[Test]
+		public void Explicit_To_Predicate()
+		{
+			var lessThan5 = new PredicateSpecification<int>(i => i < 5);
+			var l = new List<int>(new[] { 2, 4, 6, 8, 10 });
+			Predicate<int> p = lessThan5.Predicate;
+			Assert.That(l.FindAll(p), Has.Count.EqualTo(2));
+		}
+
+		[Test]
+		public void Explicit_To_Fucntion()
+		{
+			var lessThan5 = new PredicateSpecification<int>(i => i < 5);
+			var a = new[] { 2, 4, 6, 8, 10 };
+			Func<int, bool> p = lessThan5.Function;
+			Assert.That(a.Where(p), Must.Have.Count(Is.EqualTo(2)));
+		}
+
+		[Test]
 		public void Implicit_To_Predicate()
 		{
 			var lessThan5 = new PredicateSpecification<int>(i => i < 5);
 			var l = new List<int>(new[] { 2, 4, 6, 8, 10 });
 			Predicate<int> p = lessThan5;
 			Assert.That(l.FindAll(p), Has.Count.EqualTo(2));
+		}
+
+		[Test]
+		public void Implicit_To_Fucntion()
+		{
+			var lessThan5 = new PredicateSpecification<int>(i => i < 5);
+			var a = new[] { 2, 4, 6, 8, 10 };
+			Func<int, bool> p = lessThan5;
+			Assert.That(a.Where(p), Must.Have.Count(Is.EqualTo(2)));
 		}
 
 		#endregion
@@ -177,7 +211,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		#region complex composition
 
 		// ReSharper disable FieldCanBeMadeReadOnly.Local
-		private readonly Specification<ComplexType> FooLengthOf2 = new PredicateSpecification<ComplexType>(c => c.Foo.Length == 2);
+		private readonly PredicateSpecification<ComplexType> FooLengthOf2 = new PredicateSpecification<ComplexType>(c => c.Foo.Length == 2);
 		// ReSharper restore FieldCanBeMadeReadOnly.Local
 
 		class BarEven : PredicateSpecification<ComplexType>
@@ -194,9 +228,9 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		public void ComplexComposition_PredicateUsage_FoundMatchingElements()
 		{
 			var data = new List<ComplexType>(new ComplexContainer());
-			Assert.That(data.Find(FooLengthOf2.IsSatisfiedBy).Bar, Is.EqualTo(2));
+			Assert.That(data.Find(FooLengthOf2).Bar, Is.EqualTo(2));
 
-			Assert.That(data.FindIndex(new BarEven().Not().IsSatisfiedBy), Is.EqualTo(2));
+			Assert.That(data.FindIndex(!new BarEven()), Is.EqualTo(2));
 
 			Specification<ComplexType> enabled = new ComplexTypeEnabled(), barEven = new BarEven();
 			Predicate<ComplexType> enabledOrDisabledAndBarEven = c => enabled.IsSatisfiedBy(c) || (!enabled.IsSatisfiedBy(c) && barEven.IsSatisfiedBy(c));
@@ -210,8 +244,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			var q1 = from c in data where FooLengthOf2.IsSatisfiedBy(c) select c.Bar;
 			Assert.That(q1.First(), Is.EqualTo(2));
 
-			Func<ComplexType, bool> notEven = c => new BarEven().Not().IsSatisfiedBy(c);
-			var q2 = data.Where(notEven).Select(c => c.Foo);
+			var q2 = data.Where(!new BarEven()).Select(c => c.Foo);
 			Assert.That(q2.First(), Is.EqualTo("12"));
 
 			Specification<ComplexType> enabled = new ComplexTypeEnabled(), barEven = new BarEven();
