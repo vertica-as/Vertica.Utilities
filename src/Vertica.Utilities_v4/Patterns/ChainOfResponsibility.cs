@@ -125,36 +125,8 @@ namespace Vertica.Utilities_v4.Patterns
 		public abstract bool CanHandle(T context);
 		protected abstract TResult DoHandle(T context);
 
-		public ChainOfResponsibilityLink<T, TResult> Chain(ChainOfResponsibilityLink<T, TResult> lastHandler)
-		{
-			if (_nextLink == null)
-			{
-				_nextLink = lastHandler;
-			}
-			else
-			{
-				_nextLink.Chain(lastHandler);
-			}
-			return lastHandler;
-		}
-
-		public ChainOfResponsibilityLink<T, TResult> Chain(params ChainOfResponsibilityLink<T, TResult>[] handlers)
-		{
-			return Chain((IEnumerable<ChainOfResponsibilityLink<T, TResult>>)handlers);
-		}
-
-		public ChainOfResponsibilityLink<T, TResult> Chain(IEnumerable<ChainOfResponsibilityLink<T, TResult>> handlers)
-		{
-			var last = default(ChainOfResponsibilityLink<T, TResult>);
-			foreach (var link in handlers)
-			{
-				last = Chain(link);
-			}
-			return last;
-		}
-
 		private ChainOfResponsibilityLink<T, TResult> _lastLink;
-		public ChainOfResponsibilityLink<T, TResult> FluentChain(ChainOfResponsibilityLink<T, TResult> lastHandler)
+		public ChainOfResponsibilityLink<T, TResult> Chain(ChainOfResponsibilityLink<T, TResult> lastHandler)
 		{
 
 			if (_nextLink == null)
@@ -169,17 +141,17 @@ namespace Vertica.Utilities_v4.Patterns
 			return this;
 		}
 
-		public ChainOfResponsibilityLink<T, TResult> FluentChain(params ChainOfResponsibilityLink<T, TResult>[] handlers)
+		public ChainOfResponsibilityLink<T, TResult> Chain(params ChainOfResponsibilityLink<T, TResult>[] handlers)
 		{
-			return FluentChain((IEnumerable<ChainOfResponsibilityLink<T, TResult>>)handlers);
+			return Chain((IEnumerable<ChainOfResponsibilityLink<T, TResult>>)handlers);
 		}
 
-		public ChainOfResponsibilityLink<T, TResult> FluentChain(IEnumerable<ChainOfResponsibilityLink<T, TResult>> handlers)
+		public ChainOfResponsibilityLink<T, TResult> Chain(IEnumerable<ChainOfResponsibilityLink<T, TResult>> handlers)
 		{
 			var first = default(ChainOfResponsibilityLink<T, TResult>);
 			foreach (var link in handlers)
 			{
-				first = FluentChain(link);
+				first = Chain(link);
 			}
 			return first;
 		}

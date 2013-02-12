@@ -270,23 +270,23 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		#region Chain
 
 		[Test]
-		public void Chain_NotSoFluentLinkingTwo_InnerChaining()
+		public void Chain_FluentLinkingTwo_InnerChaining()
 		{
 			var l1 = new IntToStringLink(1);
 			var l2 = new IntToStringLink(2);
 
-			Assert.That(l1.Chain(l2), Is.SameAs(l2));
+			Assert.That(l1.Chain(l2), Is.SameAs(l1));
 
 			Assert.That(l1.Next, Is.SameAs(l2));
 			Assert.That(l2.Next, Is.Null);
 		}
-		
+
 		[Test]
-		public void Chain_NotSoFluentLinkingThree_InnerChaining()
+		public void Chain_FluentLinkingThree_InnerChaining()
 		{
 			IntToStringLink l1 = new IntToStringLink(1), l2 = new IntToStringLink(2), l3 = new IntToStringLink(3);
 
-			Assert.That(l1.Chain(l2).Chain(l3), Is.SameAs(l3));
+			Assert.That(l1.Chain(l2).Chain(l3), Is.SameAs(l1));
 
 			Assert.That(l1.Next, Is.SameAs(l2));
 			Assert.That(l2.Next, Is.SameAs(l3));
@@ -294,11 +294,11 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		}
 
 		[Test]
-		public void Chain_Params_NotSoFluentLinkingThree_InnerChaining()
+		public void Chain_Params_FluentLinkingThree_InnerChaining()
 		{
 			IntToStringLink l1 = new IntToStringLink(1), l2 = new IntToStringLink(2), l3 = new IntToStringLink(3);
 
-			Assert.That(l1.Chain(l2, l3), Is.SameAs(l3));
+			Assert.That(l1.Chain(l2, l3), Is.SameAs(l1));
 
 			Assert.That(l1.Next, Is.SameAs(l2));
 			Assert.That(l2.Next, Is.SameAs(l3));
@@ -306,19 +306,31 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		}
 
 		[Test]
-		public void Chain_Enumerable_NotSoFluentLinkingThree_InnerChaining()
+		public void Chain_Enumerable_FluentLinkingThree_InnerChaining()
 		{
 			IntToStringLink l1 = new IntToStringLink(1), l2 = new IntToStringLink(2), l3 = new IntToStringLink(3);
 
-			Assert.That(l1.Chain(new[] { l2, l3 }), Is.SameAs(l3));
+			Assert.That(l1.Chain(new[] { l2, l3 }), Is.SameAs(l1));
 
 			Assert.That(l1.Next, Is.SameAs(l2));
 			Assert.That(l2.Next, Is.SameAs(l3));
 			Assert.That(l3.Next, Is.Null);
+		}
+
+		[Test]
+		public void Chain_SampleScenario()
+		{
+			var chain = ChainOfResponsibilityLink<int, string>
+				.Empty()
+				.Chain(new IntToStringLink(1))
+				.Chain(new IntToStringLink(2))
+				.Chain(new IntToStringLink(3));
+
+			Assert.That(chain.Handle(2), Is.EqualTo("2"));
 		}
 
 		#endregion
-		
+
 		#region Handle
 
 		[Test]
@@ -472,69 +484,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 
 		#endregion
 		
-		#region FluentChain
-
-		[Test]
-		public void FluentChain_FluentLinkingTwo_InnerChaining()
-		{
-			var l1 = new IntToStringLink(1);
-			var l2 = new IntToStringLink(2);
-
-			Assert.That(l1.FluentChain(l2), Is.SameAs(l1));
-
-			Assert.That(l1.Next, Is.SameAs(l2));
-			Assert.That(l2.Next, Is.Null);
-		}
-
-		[Test]
-		public void FluentChain_FluentLinkingThree_InnerChaining()
-		{
-			IntToStringLink l1 = new IntToStringLink(1), l2 = new IntToStringLink(2), l3 = new IntToStringLink(3);
-
-			Assert.That(l1.FluentChain(l2).FluentChain(l3), Is.SameAs(l1));
-
-			Assert.That(l1.Next, Is.SameAs(l2));
-			Assert.That(l2.Next, Is.SameAs(l3));
-			Assert.That(l3.Next, Is.Null);
-		}
-
-		[Test]
-		public void FluentChain_Params_FluentLinkingThree_InnerChaining()
-		{
-			IntToStringLink l1 = new IntToStringLink(1), l2 = new IntToStringLink(2), l3 = new IntToStringLink(3);
-
-			Assert.That(l1.FluentChain(l2, l3), Is.SameAs(l1));
-
-			Assert.That(l1.Next, Is.SameAs(l2));
-			Assert.That(l2.Next, Is.SameAs(l3));
-			Assert.That(l3.Next, Is.Null);
-		}
-
-		[Test]
-		public void FluentChain_Enumerable_FluentLinkingThree_InnerChaining()
-		{
-			IntToStringLink l1 = new IntToStringLink(1), l2 = new IntToStringLink(2), l3 = new IntToStringLink(3);
-
-			Assert.That(l1.FluentChain(new[] { l2, l3 }), Is.SameAs(l1));
-
-			Assert.That(l1.Next, Is.SameAs(l2));
-			Assert.That(l2.Next, Is.SameAs(l3));
-			Assert.That(l3.Next, Is.Null);
-		}
-
-		[Test]
-		public void FluentChain_SampleScenario()
-		{
-			var chain = ChainOfResponsibilityLink<int, string>
-				.Empty()
-				.FluentChain(new IntToStringLink(1))
-				.FluentChain(new IntToStringLink(2))
-				.FluentChain(new IntToStringLink(3));
-
-			Assert.That(chain.Handle(2), Is.EqualTo("2"));
-		}
-
-		#endregion
+		
 
 		private ChainOfResponsibilityLink<int, string> initChainOfSubstitutes(
 			out ChainOfResponsibilityLink<int, string> first,
@@ -548,9 +498,9 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 
 			var chain = ChainOfResponsibilityLink<int, string>
 				.Empty()
-				.FluentChain(first)
-				.FluentChain(second)
-				.FluentChain(third);
+				.Chain(first)
+				.Chain(second)
+				.Chain(third);
 
 			return chain;
 		}
