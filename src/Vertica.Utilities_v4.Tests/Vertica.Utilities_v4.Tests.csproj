@@ -85,6 +85,7 @@
     <Compile Include="Patterns\InMemoryRepositoryTester.cs" />
     <Compile Include="Patterns\PipesAndFiltersTester.cs" />
     <Compile Include="Patterns\PredicateSpecificationTester.cs" />
+    <Compile Include="Patterns\ReturningChainOfResponsibilityTester.cs" />
     <Compile Include="Patterns\SpecificationTester.cs" />
     <Compile Include="Patterns\Support\ComplexContainer.cs" />
     <Compile Include="Patterns\Support\ComplexType.cs" />
