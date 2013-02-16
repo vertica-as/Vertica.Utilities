@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Credential_NoDomainOrUser" xml:space="preserve">
+    <value>The credential must have a non-empty user name and domain.</value>
+  </data>
   <data name="Enumerated_DuplicatedTemplate" xml:space="preserve">
     <value>The enum with name '{0}' is already used.</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="InvalidDomainException_MessageTemplate" xml:space="preserve">
     <value>'{0}' is not part of the expected domain: '[{1}]'.</value>
+  </data>
+  <data name="LogonUserIdentityProvider_LogonUserErrorTemplate" xml:space="preserve">
+    <value>LogonUser for user '{0}' failed with error {1}.</value>
   </data>
   <data name="Range_ArgumentAssertion_Template" xml:space="preserve">
     <value>The value must be between {0} and {1}. That is, contained within {2}.</value>
