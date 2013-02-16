@@ -9,16 +9,7 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 			return instance == null ? @default : instance.ToString();
 		}
 
-		public static T NullOrAction<T>(this T argument, Func<T> func) where T : class
-		{
-			T result = null;
-			if (argument != null)
-			{
-				result = func();
-			}
-			return result;
-		}
-
+<<<<<<< HEAD
 		public static bool IsNotDefault<T>(this T instance)
 		{
 			return !IsDefault(instance);
@@ -32,6 +23,14 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 			if ((object)instance != null)
 			{
 				result = instance.Equals(default(T));
+=======
+		public static T NullOrAction<T>(this T argument, Func<T> func) where T : class
+		{
+			T result = null;
+			if (argument != null)
+			{
+				result = func();
+>>>>>>> master
 			}
 			return result;
 		}
