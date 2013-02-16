@@ -47,6 +47,7 @@
     <Compile Include="ClassMapper.Static.cs">
       <DependentUpon>IMapper.cs</DependentUpon>
     </Compile>
+    <Compile Include="Collections\IReadOnlyList.cs" />
     <Compile Include="Comparisons\ChainableComparer.cs" />
     <Compile Include="Comparisons\ChainableEqualizer.cs" />
     <Compile Include="Comparisons\Cmp.cs" />
@@ -88,7 +89,9 @@
     <Compile Include="ExceptionHelper.cs" />
     <Compile Include="Extensions\Comparable.Extensions.cs" />
     <Compile Include="Extensions\DbCommand.Extensions.cs" />
+    <Compile Include="Extensions\Delegate.Extensions.cs" />
     <Compile Include="Extensions\DomainOfValues.Extensions.cs" />
+    <Compile Include="Extensions\Enumerable.Extensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\Range.Extensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -102,6 +105,39 @@
     <Compile Include="IMapper.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Option.Factory.cs" />
+    <Compile Include="Patterns\ChainOfResponsibility.cs" />
+    <Compile Include="Patterns\ChainOfResponsibilityLink.cs">
+      <DependentUpon>ChainOfResponsibility.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patterns\Command.cs" />
+    <Compile Include="Patterns\ExpressionSpecification.cs">
+      <DependentUpon>Specification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patterns\GenericCommand.cs">
+      <DependentUpon>Command.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patterns\GenericVisitor.cs" />
+    <Compile Include="Patterns\IIdentifiable.cs">
+      <DependentUpon>Repository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patterns\InMemoryRepository.cs">
+      <DependentUpon>Repository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patterns\ISpecification.cs">
+      <DependentUpon>Specification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patterns\PipesAndFilters.cs" />
+    <Compile Include="Patterns\PredicateSpecification.cs">
+      <DependentUpon>Specification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patterns\Repository.cs" />
+    <Compile Include="Patterns\ChainOfResponsibilityLink.Returning.cs">
+      <DependentUpon>ChainOfResponsibility.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patterns\Specification.cs" />
+    <Compile Include="Patterns\Specification.Inference.cs">
+      <DependentUpon>Specification.cs</DependentUpon>
+    </Compile>
     <Compile Include="Percentage.cs" />
     <Compile Include="PercentageBuilder.cs">
       <DependentUpon>Percentage.cs</DependentUpon>
