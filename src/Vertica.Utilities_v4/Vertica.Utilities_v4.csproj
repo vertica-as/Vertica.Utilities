@@ -185,6 +185,7 @@
     <Compile Include="Storage.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Testing\TimeReseter.cs" />
+    <Compile Include="Tuploids.cs" />
     <Compile Include="UniqueIdentifier.cs" />
     <Compile Include="Web\CompactGuid.cs" />
     <Compile Include="Web\Html.cs" />

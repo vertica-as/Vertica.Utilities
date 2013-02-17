@@ -114,6 +114,7 @@
       <DependentUpon>IMapperTester.cs</DependentUpon>
     </Compile>
     <Compile Include="StorageTester.cs" />
+    <Compile Include="TuploidsTester.cs" />
     <Compile Include="UniqueIdentifierTester.cs" />
     <Compile Include="DecimalPercentageTester.cs">
       <DependentUpon>PercentageTester.cs</DependentUpon>

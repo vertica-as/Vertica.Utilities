@@ -203,5 +203,14 @@ namespace Vertica.Utilities_v4.Resources {
                 return ResourceManager.GetString("Time_MustBeUtcTemplate", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The string must have exactly {0} parts when split using {1}..
+        /// </summary>
+        internal static string Tuploids_ParseTemplate {
+            get {
+                return ResourceManager.GetString("Tuploids_ParseTemplate", resourceCulture);
+            }
+        }
     }
 }
