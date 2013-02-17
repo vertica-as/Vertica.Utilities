@@ -60,6 +60,7 @@
       <DependentUpon>IMapperTester.cs</DependentUpon>
     </Compile>
     <Compile Include="AgeTester.cs" />
+    <Compile Include="Collections\ChainTester.cs" />
     <Compile Include="Collections\GenericDictionaryAdapterTester.cs" />
     <Compile Include="Collections\NotifyingListTester.cs" />
     <Compile Include="Collections\PaginatedCollectionTester.cs" />

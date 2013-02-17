@@ -47,6 +47,7 @@
     <Compile Include="ClassMapper.Static.cs">
       <DependentUpon>IMapper.cs</DependentUpon>
     </Compile>
+    <Compile Include="Collections\Chain.cs" />
     <Compile Include="Collections\GenericDictionaryAdapter.cs" />
     <Compile Include="Collections\IReadOnlyList.cs" />
     <Compile Include="Collections\KeyValueAdapter.cs" />
@@ -54,9 +55,9 @@
     <Compile Include="Collections\PaginatedCollection.cs" />
     <Compile Include="Collections\PriorityQueue.cs" />
     <Compile Include="Collections\SmartEntry.cs">
-		<DependentUpon>SmartEnumerable.cs</DependentUpon>
-	</Compile>
-	  <Compile Include="Collections\SmartEnumerable.cs" />
+      <DependentUpon>SmartEnumerable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Collections\SmartEnumerable.cs" />
     <Compile Include="Comparisons\ChainableComparer.cs" />
     <Compile Include="Comparisons\ChainableEqualizer.cs" />
     <Compile Include="Comparisons\Cmp.cs" />
