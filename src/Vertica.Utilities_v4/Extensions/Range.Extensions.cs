@@ -5,6 +5,16 @@ namespace Vertica.Utilities_v4.Extensions.RangeExt
 {
 	public static class RangeExtensions
 	{
+		public static IBound<T> Close<T>(this T value) where T : IComparable<T>
+		{
+			return new Closed<T>(value);
+		}
+
+		public static IBound<T> Open<T>(this T value) where T : IComparable<T>
+		{
+			return new Open<T>(value);
+		}
+
 		/// <summary>
 		/// Creates a closed range or an <see cref="Range{T}.Empty"/> if bounds not congruent.
 		/// </summary>

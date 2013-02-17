@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using Testing.Commons.Time;
+using Vertica.Utilities_v4.Extensions.RangeExt;
 
 namespace Vertica.Utilities_v4.Tests
 {

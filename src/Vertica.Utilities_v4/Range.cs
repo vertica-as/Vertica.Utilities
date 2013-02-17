@@ -32,8 +32,8 @@ namespace Vertica.Utilities_v4
 		{
 			AssertBounds(lowerBound, upperBound);
 
-			_lowerBound = lowerBound.Close();
-			_upperBound = upperBound.Close();
+			_lowerBound =  new Closed<T>(lowerBound);
+			_upperBound = new Closed<T>(upperBound);
 		}
 
 		public T LowerBound { get { return _lowerBound.Value; } }

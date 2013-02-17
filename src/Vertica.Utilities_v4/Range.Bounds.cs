@@ -6,14 +6,14 @@ namespace Vertica.Utilities_v4
 {
 	public static class Bound
 	{
-		public static IBound<T> Close<T>(this T value) where T : IComparable<T>
-		{
-			return new Closed<T>(value);
-		}
-
-		public static IBound<T> Open<T>(this T value) where T : IComparable<T>
+		public static IBound<T> Open<T>(T value) where T : IComparable<T>
 		{
 			return new Open<T>(value);
+		}
+
+		public static IBound<T> Closed<T>(T value) where T : IComparable<T>
+		{
+			return new Closed<T>(value);
 		}
 	}
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using Vertica.Utilities_v4.Extensions.RangeExt;
 
 namespace Vertica.Utilities_v4
 {
