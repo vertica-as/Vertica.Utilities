@@ -62,6 +62,7 @@
     <Compile Include="AgeTester.cs" />
     <Compile Include="Collections\PaginatedCollectionTester.cs" />
     <Compile Include="Collections\PaginationTester.cs" />
+    <Compile Include="Collections\PriorityQueueTester.cs" />
     <Compile Include="Comparisons\ChainableComparerTester.cs" />
     <Compile Include="Comparisons\ChainableEqualizerTester.cs" />
     <Compile Include="Comparisons\ComparisonComparerTester.cs" />
