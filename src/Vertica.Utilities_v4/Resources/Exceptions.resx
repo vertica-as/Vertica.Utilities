@@ -165,4 +165,7 @@
   <data name="Time_MustBeUtcTemplate" xml:space="preserve">
     <value>In order to set the UtcNow property, the DateTimeOffset must be UTC, but had an offset of {0} instead.</value>
   </data>
+  <data name="Tuploids_ParseTemplate" xml:space="preserve">
+    <value>The string must have exactly {0} parts when split using {1}.</value>
+  </data>
 </root>
