@@ -48,6 +48,7 @@
       <DependentUpon>IMapper.cs</DependentUpon>
     </Compile>
     <Compile Include="Collections\IReadOnlyList.cs" />
+    <Compile Include="Collections\PaginatedCollection.cs" />
     <Compile Include="Comparisons\ChainableComparer.cs" />
     <Compile Include="Comparisons\ChainableEqualizer.cs" />
     <Compile Include="Comparisons\Cmp.cs" />
