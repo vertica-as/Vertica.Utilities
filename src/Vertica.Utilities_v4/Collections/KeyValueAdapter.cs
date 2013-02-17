@@ -1,4 +1,4 @@
-﻿namespace Vertica.Utilities_v4.Tests.Collections
+﻿namespace Vertica.Utilities_v4.Collections
 {
 	/// <summary>
 	/// Initially to adapt the string indexer from IDictionary and NameValueCollection now adapts any indexer.

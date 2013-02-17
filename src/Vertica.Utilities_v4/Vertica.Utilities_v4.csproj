@@ -47,7 +47,9 @@
     <Compile Include="ClassMapper.Static.cs">
       <DependentUpon>IMapper.cs</DependentUpon>
     </Compile>
+    <Compile Include="Collections\GenericDictionaryAdapter.cs" />
     <Compile Include="Collections\IReadOnlyList.cs" />
+    <Compile Include="Collections\KeyValueAdapter.cs" />
     <Compile Include="Collections\NotifyingList.cs" />
     <Compile Include="Collections\PaginatedCollection.cs" />
     <Compile Include="Collections\PriorityQueue.cs" />
