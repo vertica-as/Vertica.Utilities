@@ -60,6 +60,15 @@
       <DependentUpon>IMapperTester.cs</DependentUpon>
     </Compile>
     <Compile Include="AgeTester.cs" />
+    <Compile Include="Collections\ChainTester.cs" />
+    <Compile Include="Collections\GenericDictionaryAdapterTester.cs" />
+    <Compile Include="Collections\NotifyingListTester.cs" />
+    <Compile Include="Collections\PaginatedCollectionTester.cs" />
+    <Compile Include="Collections\PaginationTester.cs" />
+    <Compile Include="Collections\PriorityQueueTester.cs" />
+    <Compile Include="Collections\SmartEnumerableTester.cs" />
+    <Compile Include="Collections\Support\MustExtensions.cs" />
+    <Compile Include="Collections\Support\SmartEntryConstraint.cs" />
     <Compile Include="Comparisons\ChainableComparerTester.cs" />
     <Compile Include="Comparisons\ChainableEqualizerTester.cs" />
     <Compile Include="Comparisons\ComparisonComparerTester.cs" />
@@ -109,6 +118,7 @@
       <DependentUpon>IMapperTester.cs</DependentUpon>
     </Compile>
     <Compile Include="StorageTester.cs" />
+    <Compile Include="TuploidsTester.cs" />
     <Compile Include="UniqueIdentifierTester.cs" />
     <Compile Include="DecimalPercentageTester.cs">
       <DependentUpon>PercentageTester.cs</DependentUpon>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Vertica.Utilities_v4.Extensions.ObjectExt;
 
 namespace Vertica.Utilities_v4.Extensions.StringExt
@@ -65,6 +66,17 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 					 -1;
 				 return indexOfSubstringEnd < 0 ? null : s.Right(s.Length - indexOfSubstringEnd);
 			 });
+		 }
+
+		 public static T Parse<T>(this string s)
+		 {
+			 T result = default(T);
+			 if (!String.IsNullOrEmpty(s))
+			 {
+				 TypeConverter tc = TypeDescriptor.GetConverter(typeof(T));
+				 result = (T)tc.ConvertFrom(s);
+			 }
+			 return result;
 		 }
 	}
 }
