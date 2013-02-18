@@ -42,6 +42,7 @@
       <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
@@ -82,6 +83,9 @@
     <Compile Include="Comparisons\Support\PropertyIEqualizer.cs" />
     <Compile Include="Comparisons\Support\PropertySEqualizer.cs" />
     <Compile Include="Comparisons\SelectorEqualizerTester.cs" />
+    <Compile Include="Configuration\CollectionCountValidatorTester.cs" />
+    <Compile Include="Configuration\Support\CollectionCountSubject.cs" />
+    <Compile Include="Configuration\Support\CollectionCountElementSubject.cs" />
     <Compile Include="Extensions\DbCommandExtensionsTester.cs" />
     <Compile Include="Extensions\Support\DbParameterValueConstraint.cs" />
     <Compile Include="ICloneableTester.cs" />

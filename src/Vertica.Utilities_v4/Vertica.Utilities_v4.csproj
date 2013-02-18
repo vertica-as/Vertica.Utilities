@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
@@ -68,6 +69,8 @@
     <Compile Include="Comparisons\Hasher.cs" />
     <Compile Include="Comparisons\OperatorComparer.cs" />
     <Compile Include="Comparisons\SelectorEqualizer.cs" />
+    <Compile Include="Configuration\CollectionCountValidator.cs" />
+    <Compile Include="Configuration\ConfigurationElementCollection.cs" />
     <Compile Include="DecimalPercentage.cs">
       <DependentUpon>Percentage.cs</DependentUpon>
     </Compile>

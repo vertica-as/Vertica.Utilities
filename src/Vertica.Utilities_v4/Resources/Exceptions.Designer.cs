@@ -61,6 +61,15 @@ namespace Vertica.Utilities_v4.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The collection of type &apos;{0}&apos; must contain at least {1} elements, but contained {2}..
+        /// </summary>
+        internal static string CollectionCountValidator_MessageTemplate {
+            get {
+                return ResourceManager.GetString("CollectionCountValidator_MessageTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The credential must have a non-empty user name and domain..
         /// </summary>
         internal static string Credential_NoDomainOrUser {
