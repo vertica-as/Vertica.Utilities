@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -74,6 +75,10 @@
     <Compile Include="Comparisons\ReverseComparer.cs" />
     <Compile Include="Comparisons\SelectorComparer.cs" />
     <Compile Include="Comparisons\StringRepresentationComparer.cs" />
+    <Compile Include="DirectoryServices\DirectoryEntry.Extensions.cs" />
+    <Compile Include="DirectoryServices\DirectoryEntryCollection.cs" />
+    <Compile Include="DirectoryServices\DirectorySearcher.Extensions.cs" />
+    <Compile Include="DirectoryServices\Enumerations.cs" />
     <Compile Include="DisposableAction.cs" />
     <Compile Include="DomainOf.cs" />
     <Compile Include="DomainOfValues.cs" />
