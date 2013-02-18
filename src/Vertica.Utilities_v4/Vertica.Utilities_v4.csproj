@@ -71,6 +71,7 @@
     <Compile Include="Comparisons\SelectorEqualizer.cs" />
     <Compile Include="Configuration\CollectionCountValidator.cs" />
     <Compile Include="Configuration\ConfigurationElementCollection.cs" />
+    <Compile Include="ConsoleFormatter.cs" />
     <Compile Include="DecimalPercentage.cs">
       <DependentUpon>Percentage.cs</DependentUpon>
     </Compile>
