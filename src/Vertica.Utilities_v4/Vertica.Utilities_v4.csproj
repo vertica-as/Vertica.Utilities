@@ -106,11 +106,14 @@
     <Compile Include="Eventing\ValueIndexChangingEventArgs.cs" />
     <Compile Include="Eventing\ValueIndexEventArgs.cs" />
     <Compile Include="ExceptionHelper.cs" />
+    <Compile Include="Extensions\Anonnymous.Extensions.cs" />
     <Compile Include="Extensions\Comparable.Extensions.cs" />
     <Compile Include="Extensions\DbCommand.Extensions.cs" />
     <Compile Include="Extensions\Delegate.Extensions.cs" />
     <Compile Include="Extensions\DomainOfValues.Extensions.cs" />
     <Compile Include="Extensions\Enumerable.Extensions.cs" />
+    <Compile Include="Extensions\Infrastructure\CastExtensionsPoints.cs" />
+    <Compile Include="Extensions\Infrastructure\EntryPoints.cs" />
     <Compile Include="Extensions\Infrastructure\ExtensionPoint.cs" />
     <Compile Include="Extensions\Infrastructure\IExtensionPoint.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
