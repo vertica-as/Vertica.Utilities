@@ -87,6 +87,10 @@
     <Compile Include="Configuration\Support\CollectionCountSubject.cs" />
     <Compile Include="Configuration\Support\CollectionCountElementSubject.cs" />
     <Compile Include="Extensions\DbCommandExtensionsTester.cs" />
+    <Compile Include="Extensions\Infrastructure\ExtensionPointsTester.cs" />
+    <Compile Include="Extensions\Infrastructure\Support\MyExtensionPointOnDecimals.cs" />
+    <Compile Include="Extensions\Infrastructure\Support\MyExtensions.cs" />
+    <Compile Include="Extensions\Infrastructure\Support\MyGenericExtensionPoint.cs" />
     <Compile Include="Extensions\Support\DbParameterValueConstraint.cs" />
     <Compile Include="ICloneableTester.cs" />
     <Compile Include="IInitializableTester.cs" />

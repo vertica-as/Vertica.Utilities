@@ -111,6 +111,8 @@
     <Compile Include="Extensions\Delegate.Extensions.cs" />
     <Compile Include="Extensions\DomainOfValues.Extensions.cs" />
     <Compile Include="Extensions\Enumerable.Extensions.cs" />
+    <Compile Include="Extensions\Infrastructure\ExtensionPoint.cs" />
+    <Compile Include="Extensions\Infrastructure\IExtensionPoint.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\Range.Extensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
