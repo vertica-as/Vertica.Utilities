@@ -6,7 +6,7 @@ using Vertica.Utilities_v4.Extensions.Infrastructure;
 
 namespace Vertica.Utilities_v4.Extensions.AnonymousExt
 {
-	public static class AnonnymousExtensions
+	public static class AnonymousExtensions
 	{
 		public static T ByExample<T>(this CastExtensionPoint<object> obj, T example) where T : class 
 		{
