@@ -22,7 +22,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[Test]
 		public void Cast_ByExample_OnObjects_CanStrongTypeSubsequentUses()
 		{
-			var example = new {P1 = default(string), P2 = default(int)};
+			var example = new { P1 = default(string), P2 = default(int) };
 
 			var typed = returnAnonymous("P1", 2).Cast().ByExample(example);
 
@@ -33,8 +33,8 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[Test]
 		public void Cast_ByExample_OnEnumerables_CanStrongTypeSubsequentUses()
 		{
-			var example = new {P1 = default(string), P2 = default(int)};
-			var enumerable = new[] {returnAnonymous("p1_1", 1), returnAnonymous("p1_2", 2)};
+			var example = new { P1 = default(string), P2 = default(int) };
+			var enumerable = new[] { returnAnonymous("p1_1", 1), returnAnonymous("p1_2", 2) };
 
 			var typed = enumerable.Select(a => a.Cast().ByExample(example));
 
@@ -51,7 +51,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[Test]
 		public void AsTuples_TuplesWithPropertyNamesAndValues()
 		{
-			var a = new {P1 = "1", P2 = 2};
+			var a = new { P1 = "1", P2 = 2 };
 
 			Assert.That(a.AsTuples(), Is.EquivalentTo(new[]
 			{
@@ -63,7 +63,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[Test]
 		public void AsTuples_NullProperties_AreSkipped()
 		{
-			var a = new {P1 = "1", P2 = (string) null, P3 = 0};
+			var a = new { P1 = "1", P2 = (string)null, P3 = 0 };
 
 			Assert.That(a.AsTuples(), Is.EquivalentTo(new[]
 			{
@@ -75,7 +75,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[Test]
 		public void AsTuples_DefaultValueType_NoValueSkipped()
 		{
-			var a = new {P1 = 1, P2 = default(int), P3 = 3};
+			var a = new { P1 = 1, P2 = default(int), P3 = 3 };
 
 			Assert.That(a.AsTuples(), Is.EquivalentTo(new[]
 			{
@@ -134,8 +134,8 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		public void AsDictionary_PairsWithPropertyNamesAndValues()
 		{
 			var a = new { P1 = "1", P2 = 2 };
-			
-			Assert.That(a.AsDictionary(), Is.EquivalentTo(new []
+
+			Assert.That(a.AsDictionary(), Is.EquivalentTo(new[]
 			{
 				new KeyValuePair<string, object>("P1", "1"),
 				new KeyValuePair<string, object>("P2", 2)
@@ -165,6 +165,37 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 				new KeyValuePair<string, object>("P2", 0), 
 				new KeyValuePair<string, object>("P3", 3)
 			}));
+		}
+
+		#endregion
+
+		#region AsAnonymous
+
+		[Test]
+		public void AsAnonymous_AnonymousAsPerPrototype()
+		{
+			var d = new Dictionary<string, object>
+			{
+				{ "P1", "1" },
+				{ "P2", 2 }
+			};
+
+			var prototype = new { P1 = default(string), P2 = default(int) };
+			Assert.That(d.AsAnonymous(prototype), Is.EqualTo(new { P1 = "1", P2 = 2 }));
+		}
+
+		[Test]
+		public void AsAnonymous_SkippedNullElements()
+		{
+			var d = new Dictionary<string, object>
+			{
+				{ "P1", "1" },
+				{ "P2", null },
+				{ "P3", 0 }
+			};
+
+			var prototype = new {P1 = default(string), P3 = default(int)};
+			Assert.That(d.AsAnonymous(prototype), Is.EqualTo(new { P1 = "1", P3 = 0 }));
 		}
 
 		#endregion

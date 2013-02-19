@@ -44,6 +44,26 @@ namespace Vertica.Utilities_v4.Extensions.AnonymousExt
 				}
 			}
 		}
+
+		public static T AsAnonymous<T>(this IDictionary<string, object> dict, T anonymousPrototype) where T : class
+		{
+			// get the sole constructor
+			var ctor = anonymousPrototype.GetType().GetConstructors().Single();
+			
+			Func<IDictionary<string, object>, string, object> getValueOrDefault = (d, key) =>
+			{
+				object val;
+				return d.TryGetValue(key, out val) ? val : null;
+			};
+
+			// conveniently named constructor parameters make this all possible...
+			var args = ctor.GetParameters()
+				.Select(p => new {p, val = getValueOrDefault(dict, p.Name)})
+				.Select(a => a.val != null && a.p.ParameterType.IsInstanceOfType(a.val) ?
+					a.val : null);
+
+			return (T)ctor.Invoke(args.ToArray());
+		}
 	}
 
 
