@@ -121,6 +121,7 @@
     <Compile Include="Extensions\Range.Extensions.cs" />
     <Compile Include="Extensions\String.Extensions.cs" />
     <Compile Include="Extensions\Time.Extensions.cs" />
+    <Compile Include="Extensions\Type.Extensions.cs" />
     <Compile Include="FormattablePercentage.cs">
       <DependentUpon>Percentage.cs</DependentUpon>
     </Compile>

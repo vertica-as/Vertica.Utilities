@@ -95,6 +95,7 @@
     <Compile Include="Extensions\Infrastructure\Support\MyGenericExtensionPoint.cs" />
     <Compile Include="Extensions\Support\AttributeSubjects.cs" />
     <Compile Include="Extensions\Support\DbParameterValueConstraint.cs" />
+    <Compile Include="Extensions\TypeExtensionsTester.cs" />
     <Compile Include="ICloneableTester.cs" />
     <Compile Include="IInitializableTester.cs" />
     <Compile Include="IMapperTester.cs" />
@@ -206,7 +207,9 @@
       <Name>Vertica.Utilities_v4</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
