@@ -6,10 +6,19 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 {
 	public static class EnumerableExtensions
 	{
+		#region nullability
+
 		public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T> source)
 		{
 			return source ?? Enumerable.Empty<T>();
 		}
+
+		public static IEnumerable<T> NullIfEmpty<T>(this IEnumerable<T> source)
+		{
+			return source == null || !source.Any() ? null : source;
+		}
+
+		#endregion
 
 		public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
 		{
