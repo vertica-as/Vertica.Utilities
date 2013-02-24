@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework;
+using Testing.Commons;
+using Testing.Commons.NUnit.Constraints;
 using Vertica.Utilities_v4.Extensions.AttributeExt;
 using Vertica.Utilities_v4.Tests.Extensions.Support;
 
@@ -97,6 +99,66 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		#endregion
+
+		#region GetAttribute
+
+		[Test]
+		public void GetAttributesOnInstance_DecoratedWithAttribute_Instance()
+		{
+			Assert.That(this.GetAttributes<TestFixtureAttribute>(), Has.Length.EqualTo(1).And
+				.All.InstanceOf<TestFixtureAttribute>());
+		}
+
+		[Test]
+		public void GetAttributesOnInstance_NotDecoratedWithAttribute_Empty()
+		{
+			Assert.That(this.GetAttributes<DescriptionAttribute>(), Is.Empty);
+		}
+
+		[Test]
+		public void GetAttributesOnInstace_ParentDecoratedWithInheritableAttribute_NoInheritance_Empty()
+		{
+			var inheritor = new ParentDecoratedWithCategoryAndDecription();
+			Assert.That(inheritor.GetAttributes<CategoryAttribute>(), Is.Empty);
+			Assert.That(inheritor.GetAttributes<CategoryAttribute>(false), Is.Empty);
+		}
+
+		[Test]
+		public void GetAttributesOnInstace_ParentDecoratedWithInheritableAttribute_Inheritance_Instance()
+		{
+			var inheritor = new ParentDecoratedWithCategoryAndDecription();
+			Assert.That(inheritor.GetAttributes<CategoryAttribute>(true), Has.Length.EqualTo(1).And
+				.All.InstanceOf<CategoryAttribute>());
+		}
+
+		[Test]
+		public void GetAttributesOnInstace_ParentDecoratedWithNonInheritableAttribute_Inheritance_Empty()
+		{
+			var inheritor = new ParentDecoratedWithCategoryAndDecription();
+			Assert.That(inheritor.GetAttributes<DescriptionAttribute>(true), Is.Empty);
+		}
+
+		[Test]
+		public void GetAttributesOnInstace_ParentNotDecoratedWithAttribute_Empty()
+		{
+			var inheritor = new ParentDecoratedWithCategoryAndDecription();
+			Assert.That(inheritor.GetAttributes<TestAttribute>(true), Is.Empty);
+		}
+
+		[Test]
+		public void GetAttributesOnInstace_DecoratedWithMultipleAttributes_ListOfInstances()
+		{
+			var multiple = new DecoratedMultipleTimes();
+			Assert.That(multiple.GetAttributes<MultiAttribute>(), Has.Length.EqualTo(3).And
+				.Some.Matches<MultiAttribute>(a => a.Positional.Equals("a")).And
+				.Some.Matches<MultiAttribute>(a => a.Positional.Equals("b")).And
+				.Some.Matches<MultiAttribute>(a => a.Positional.Equals("c")),
+				"order cannot be guaranteed");
+		}
+
+		#endregion
+
+
 
 	}
 }

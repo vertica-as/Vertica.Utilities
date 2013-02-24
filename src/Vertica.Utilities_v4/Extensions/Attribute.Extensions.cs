@@ -62,5 +62,34 @@ namespace Vertica.Utilities_v4.Extensions.AttributeExt
 		}
 
 		#endregion
+
+		#region GetAttributes
+
+		public static T[] GetAttributes<T>(this object element, bool inherit = false) where T : Attribute
+		{
+			return Attribute.GetCustomAttributes(element.GetType(), typeof(T), inherit) as T[];
+		}
+
+		public static T[] GetAttributes<T>(this Assembly element, bool inherit = false) where T : Attribute
+		{
+			return Attribute.GetCustomAttributes(element, typeof(T), inherit) as T[];
+		}
+
+		public static T[] GetAttributes<T>(this MemberInfo element, bool inherit = false) where T : Attribute
+		{
+			return Attribute.GetCustomAttributes(element, typeof(T), inherit) as T[];
+		}
+
+		public static T[] GetAttributes<T>(this Module element, bool inherit = false) where T : Attribute
+		{
+			return Attribute.GetCustomAttributes(element, typeof(T), inherit) as T[];
+		}
+
+		public static T[] GetAttributes<T>(this ParameterInfo element, bool inherit = false) where T : Attribute
+		{
+			return Attribute.GetCustomAttributes(element, typeof(T), inherit) as T[];
+		}
+
+		#endregion
 	}
 }
