@@ -70,6 +70,15 @@ namespace Vertica.Utilities_v4.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find control with ID &apos;{0}&apos; from parent &apos;{1}&apos;..
+        /// </summary>
+        internal static string ControlExtensions_NotFoundTemplate {
+            get {
+                return ResourceManager.GetString("ControlExtensions_NotFoundTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The credential must have a non-empty user name and domain..
         /// </summary>
         internal static string Credential_NoDomainOrUser {

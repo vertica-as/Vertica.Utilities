@@ -119,7 +119,7 @@
     <Compile Include="Extensions\Infrastructure\IExtensionPoint.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\Range.Extensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\String.Extensions.cs" />
     <Compile Include="Extensions\Time.Extensions.cs" />
     <Compile Include="FormattablePercentage.cs">
       <DependentUpon>Percentage.cs</DependentUpon>
@@ -224,7 +224,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Extensions\Control.Extensions.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

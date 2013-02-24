@@ -78,5 +78,17 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 			 }
 			 return result;
 		 }
+
+		 public static string AppendIfNotThere(this string str, string appendix)
+		 {
+			 if (str == null && appendix == null) return null;
+			 return appendIfNotThere(str.EmptyIfNull(), appendix.EmptyIfNull());
+		 }
+
+		 // we have preciously handled nulls, so that they are empties
+		 private static string appendIfNotThere(string str, string appendix)
+		 {
+			 return str.EndsWith(appendix) ? str : string.Concat(str, appendix);
+		 }
 	}
 }
