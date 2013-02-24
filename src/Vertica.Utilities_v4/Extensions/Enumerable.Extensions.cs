@@ -18,6 +18,11 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 			return source == null || !source.Any() ? null : source;
 		}
 
+		public static IEnumerable<T> SkipNulls<T>(this IEnumerable<T> source) where T : class
+		{
+			return source.EmptyIfNull().Where(s => s != null);
+		}
+
 		#endregion
 
 		#region count contraints
@@ -92,6 +97,9 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 
 		#endregion
 
-		
+		public static IEnumerable<TBase> Convert<TDerived, TBase>(this IEnumerable<TDerived> source) where TDerived : TBase
+		{
+			return source.EmptyIfNull().Select(i => (TBase)i);
+		}
 	}
 }

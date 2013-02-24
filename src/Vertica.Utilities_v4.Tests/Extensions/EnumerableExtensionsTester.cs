@@ -4,6 +4,7 @@ using System.Linq;
 using NUnit.Framework;
 using Vertica.Utilities_v4.Collections;
 using Vertica.Utilities_v4.Extensions.EnumerableExt;
+using Vertica.Utilities_v4.Tests.Extensions.Support;
 
 namespace Vertica.Utilities_v4.Tests.Extensions
 {
@@ -58,6 +59,24 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 
 		#endregion
 
+		#region SkipNulls
+
+		[Test]
+		public void SkipNulls_NullItems_NotEnumerated()
+		{
+			var source = new[] { "1", null, "2", "3" };
+			Assert.That(source.SkipNulls(), Is.EqualTo(new[] { "1", "2", "3" }));
+		}
+
+		[Test]
+		public void SkipNulls_NullOrEmpty_Empty()
+		{
+			Assert.That(Chain.Null<string>().SkipNulls(), Is.Empty);
+			Assert.That(Chain.Empty<string>().SkipNulls(), Is.Empty);
+		}
+
+		#endregion
+
 		#endregion
 
 		#region count constraints
@@ -73,7 +92,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		{
 			Assert.That(Chain.Null<int>().HasOne(), Is.False);
 			Assert.That(Chain.Empty<int>().HasOne(), Is.False);
-			Assert.That(new []{1, 2}.HasOne(), Is.False);
+			Assert.That(new[] { 1, 2 }.HasOne(), Is.False);
 		}
 
 		#region HasAtLeast
@@ -117,7 +136,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		public void Foreach_GoesOverIntCounting_SameLength()
 		{
 			int count = 0;
-			
+
 			Enumerable.Range(1, 4).ForEach(i =>
 			{
 				count += 1;
@@ -150,6 +169,19 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 
 		#endregion
 
+		[Test]
+		public void Convert_AllElementsConvertible_AllElementsConverted()
+		{
+			IEnumerable<DerivedType> derived = new[] { new DerivedType("Jim", 2) };
+			Assert.That(derived.Convert<DerivedType, BaseType>(), Is.All.InstanceOf<BaseType>());
 
+		}
+
+		[Test]
+		public void Convert_NullOrEmpty_Empty()
+		{
+			Assert.That(Chain.Null<DerivedType>().Convert<DerivedType, BaseType>(), Is.Empty);
+			Assert.That(Chain.Empty<DerivedType>().Convert<DerivedType, BaseType>(), Is.Empty);
+		}
 	}
 }
