@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Vertica.Utilities_v4.Collections;
@@ -75,8 +76,6 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			Assert.That(new []{1, 2}.HasOne(), Is.False);
 		}
 
-		#endregion
-
 		#region HasAtLeast
 
 		[Test]
@@ -106,6 +105,47 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		public void HasAtLeast_MoreThanLength_False(uint length)
 		{
 			Assert.That(Enumerable.Range(1, 4).HasAtLeast(length), Is.False);
+		}
+
+		#endregion
+
+		#endregion
+
+		#region iteration
+
+		[Test]
+		public void Foreach_GoesOverIntCounting_SameLength()
+		{
+			int count = 0;
+			
+			Enumerable.Range(1, 4).ForEach(i =>
+			{
+				count += 1;
+				Assert.That(count, Is.EqualTo(i));
+			});
+
+			Assert.That(count, Is.EqualTo(4));
+		}
+
+		[Test]
+		public void For_PerformsActionOnIndexes()
+		{
+			int acc = 0;
+			Enumerable.Range(1, 4).For(new[] { 1, 2 }, (i, item) =>
+			{
+				acc += item + i;
+			});
+			Assert.That(acc, Is.EqualTo((2 + 1) + (3 + 2)));
+		}
+
+		[Test]
+		public void For_PerformsActionOnIndexesThatCanBeSpecifiedAsOptionalParameters()
+		{
+			int acc = 0;
+			Action<int, int> action = (i, item) => acc += item + i;
+			Enumerable.Range(1, 4).For(action, 1, 2);
+
+			Assert.That(acc, Is.EqualTo((2 + 1) + (3 + 2)));
 		}
 
 		#endregion

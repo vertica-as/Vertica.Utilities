@@ -53,6 +53,8 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 
 		#endregion
 
+		#region iteration
+
 		public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
 		{
 			foreach (var item in source.EmptyIfNull())
@@ -61,11 +63,35 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 			}
 		}
 
+		public static void For<T>(this IEnumerable<T> collection, IEnumerable<int> indexes, Action<T, int> action)
+		{
+			var hashedIndexes = new HashSet<int>(indexes);
+
+			int i = 0;
+			foreach (var item in collection.EmptyIfNull())
+			{
+				if (hashedIndexes.Contains(i))
+				{
+					action(item, i);
+				}
+				i++;
+			}
+		}
+
+		public static void For<T>(this IEnumerable<T> collection, Action<T, int> action, params int[] indexes)
+		{
+			For(collection, indexes.AsEnumerable(), action);
+		}
+
 		internal static void Iterate<T>(this IEnumerable<T> enumerable)
 		{
 #pragma warning disable 168
 			foreach (var item in enumerable) { }
 #pragma warning restore 168
 		}
+
+		#endregion
+
+		
 	}
 }
