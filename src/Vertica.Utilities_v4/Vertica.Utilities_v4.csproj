@@ -107,7 +107,7 @@
     <Compile Include="Eventing\ValueIndexEventArgs.cs" />
     <Compile Include="ExceptionHelper.cs" />
     <Compile Include="Extensions\Anonymous.Extensions.cs" />
-    <Compile Include="Extensions\AttributeExtensions.cs" />
+    <Compile Include="Extensions\Attribute.Extensions.cs" />
     <Compile Include="Extensions\Comparable.Extensions.cs" />
     <Compile Include="Extensions\DbCommand.Extensions.cs" />
     <Compile Include="Extensions\Delegate.Extensions.cs" />

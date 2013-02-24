@@ -7,11 +7,12 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 	[TestFixture]
 	public class AttributeExtensionsTester
 	{
+		#region HasAttribute
+
 		[Test]
 		public void HasAttributeOnInstance_DecoratedWithAttribute_True()
 		{
 			Assert.That(this.HasAttribute<TestFixtureAttribute>(), Is.True);
-			
 		}
 
 		[Test]
@@ -48,5 +49,54 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			var inheritor = new ParentDecoratedWithCategoryAndDecription();
 			Assert.That(inheritor.HasAttribute<TestAttribute>(true), Is.False);
 		}
+
+		#endregion
+
+		#region GetAttribute
+
+		[Test]
+		public void GetAttributeOnInstance_DecoratedWithAttribute_Instance()
+		{
+			Assert.That(this.GetAttribute<TestFixtureAttribute>(), Is.InstanceOf<TestFixtureAttribute>());
+		}
+
+		[Test]
+		public void GetAttributeOnInstance_NotDecoratedWithAttribute_Null()
+		{
+			Assert.That(this.GetAttribute<DescriptionAttribute>(), Is.Null);
+		}
+
+		[Test]
+		public void GetAttributeOnInstace_ParentDecoratedWithInheritableAttribute_NoInheritance_Null()
+		{
+			var inheritor = new ParentDecoratedWithCategoryAndDecription();
+			Assert.That(inheritor.GetAttribute<CategoryAttribute>(), Is.Null);
+			Assert.That(inheritor.GetAttribute<CategoryAttribute>(false), Is.Null);
+		}
+
+		[Test]
+		public void GetAttributeOnInstace_ParentDecoratedWithInheritableAttribute_Inheritance_Instance()
+		{
+			var inheritor = new ParentDecoratedWithCategoryAndDecription();
+			Assert.That(inheritor.GetAttribute<CategoryAttribute>(true), Is.InstanceOf<CategoryAttribute>()
+				.With.Property("Name").EqualTo("cat"));
+		}
+
+		[Test]
+		public void GetAttributeOnInstace_ParentDecoratedWithNonInheritableAttribute_Inheritance_Null()
+		{
+			var inheritor = new ParentDecoratedWithCategoryAndDecription();
+			Assert.That(inheritor.GetAttribute<DescriptionAttribute>(true), Is.Null);
+		}
+
+		[Test]
+		public void GetAttributeOnInstace_ParentNotDecoratedWithAttribute_Null()
+		{
+			var inheritor = new ParentDecoratedWithCategoryAndDecription();
+			Assert.That(inheritor.GetAttribute<TestAttribute>(true), Is.Null);
+		}
+
+		#endregion
+
 	}
 }
