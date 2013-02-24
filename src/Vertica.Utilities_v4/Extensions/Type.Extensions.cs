@@ -79,5 +79,21 @@ namespace Vertica.Utilities_v4.Extensions.TypeExt
 			if (!t.IsValueType) return null;
 			return Activator.CreateInstance(t);
 		}
+
+		public static bool CanBeNulled(this Type type)
+		{
+			if (type == null) return false;
+
+			return !type.IsValueType || type.IsNullable();
+		}
+
+		public static bool IsNullable(this Type type)
+		{
+			if ((type == null) || !type.IsValueType)
+			{
+				return false;
+			}
+			return (type.IsGenericType && type.GetGenericTypeDefinition() == (typeof(Nullable<>)));
+		}
 	}
 }

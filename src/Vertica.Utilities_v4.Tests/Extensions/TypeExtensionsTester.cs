@@ -40,5 +40,33 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			Assert.That(typeof(string).GetDefault(), Is.EqualTo(default(string)));
 			Assert.That(typeof(IsDefaultNonZeroEnumSubject).GetDefault(), Is.EqualTo(default(IsDefaultNonZeroEnumSubject)));
 		}
+
+		[TestCase(typeof(int), false)]
+		[TestCase(typeof(string), false)]
+		[TestCase(typeof(IsDefaultNonZeroEnumSubject), false)]
+		[TestCase(typeof(Action<>), false)]
+		[TestCase(typeof(Action<int>), false)]
+		[TestCase(typeof(Action<string>), false)]
+		[TestCase(typeof(IServiceProvider), false)]
+		[TestCase(typeof(int?), true)]
+		[TestCase(typeof(IsDefaultNonZeroEnumSubject?), true)]
+		public void IsNullable_TrueWhenNullableValueType(Type t, bool value)
+		{
+			Assert.That(t.IsNullable(), Is.EqualTo(value));
+		}
+
+		[TestCase(typeof(int), false)]
+		[TestCase(typeof(string), true)]
+		[TestCase(typeof(IsDefaultNonZeroEnumSubject), false)]
+		[TestCase(typeof(Action<>), true)]
+		[TestCase(typeof(Action<int>), true)]
+		[TestCase(typeof(Action<string>), true)]
+		[TestCase(typeof(IServiceProvider), true)]
+		[TestCase(typeof(int?), true)]
+		[TestCase(typeof(IsDefaultNonZeroEnumSubject?), true)]
+		public void CanBeNulled_TrueWhenNullableOrReference(Type t, bool value)
+		{
+			Assert.That(t.CanBeNulled(), Is.EqualTo(value));
+		}
 	}
 }
