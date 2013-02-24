@@ -20,6 +20,39 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 
 		#endregion
 
+		#region count contraints
+
+		public static bool HasOne<T>(this IEnumerable<T> source)
+		{
+			bool hasOne = false;
+			if (source != null)
+			{
+				IEnumerator<T> enumerator = source.GetEnumerator();
+				hasOne = enumerator.MoveNext() && !enumerator.MoveNext();
+			}
+			return hasOne;
+		}
+
+		public static bool HasAtLeast<T>(this IEnumerable<T> source, uint matchingCount)
+		{
+			bool result = false;
+			if (source != null)
+			{
+				int i = 0;
+				using (var enumerator = source.GetEnumerator())
+				{
+					while (i <= matchingCount && enumerator.MoveNext())
+					{
+						i++;
+					}
+				}
+				result = i >= matchingCount;
+			}
+			return result;
+		}
+
+		#endregion
+
 		public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
 		{
 			foreach (var item in source.EmptyIfNull())
