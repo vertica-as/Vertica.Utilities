@@ -68,5 +68,16 @@ namespace Vertica.Utilities_v4.Extensions.TypeExt
 			}
 			return sb.ToString();
 		}
+
+		public static T GetDefault<T>(this Type t)
+		{
+			return (T)GetDefault(t);
+		}
+
+		public static object GetDefault(this Type t)
+		{
+			if (!t.IsValueType) return null;
+			return Activator.CreateInstance(t);
+		}
 	}
 }

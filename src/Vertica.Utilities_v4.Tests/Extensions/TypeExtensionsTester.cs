@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using Vertica.Utilities_v4.Extensions.TypeExt;
+using Vertica.Utilities_v4.Tests.Extensions.Support;
 
 namespace Vertica.Utilities_v4.Tests.Extensions
 {
@@ -26,6 +27,18 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		public void LongName_WithNamespace_Spec(Type t, string longName)
 		{
 			Assert.That(t.LongName(includeNamespace: true), Is.EqualTo(longName));
+		}
+
+		[Test]
+		public void GetDefault_SameResultAsDefaultOperator()
+		{
+			Assert.That(typeof(int).GetDefault<int>(), Is.EqualTo(default(int)));
+			Assert.That(typeof(string).GetDefault<string>(), Is.EqualTo(default(string)));
+			Assert.That(typeof(IsDefaultNonZeroEnumSubject).GetDefault<IsDefaultNonZeroEnumSubject>(), Is.EqualTo(default(IsDefaultNonZeroEnumSubject)));
+
+			Assert.That(typeof(int).GetDefault(), Is.EqualTo(default(int)));
+			Assert.That(typeof(string).GetDefault(), Is.EqualTo(default(string)));
+			Assert.That(typeof(IsDefaultNonZeroEnumSubject).GetDefault(), Is.EqualTo(default(IsDefaultNonZeroEnumSubject)));
 		}
 	}
 }
