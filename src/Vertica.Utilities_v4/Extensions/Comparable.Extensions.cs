@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Vertica.Utilities_v4.Comparisons;
 
 namespace Vertica.Utilities_v4.Extensions.ComparableExt
 {
@@ -103,11 +104,9 @@ namespace Vertica.Utilities_v4.Extensions.ComparableExt
 
 		#endregion
 
-		// TODO: reverse comparer
-		/*public static IComparer<T> Reverse<T>(this IComparer<T> comparer)
+		public static IComparer<T> Reverse<T>(this IComparer<T> comparer)
 		{
-			Guard.AgainstNullArgument("comparer", comparer);
 			return new ReversedComparer<T>(comparer);
-		}*/
+		}
 	}
 }
