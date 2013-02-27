@@ -94,6 +94,7 @@
     <Compile Include="Extensions\Infrastructure\Support\MyExtensionPointOnDecimals.cs" />
     <Compile Include="Extensions\Infrastructure\Support\MyExtensions.cs" />
     <Compile Include="Extensions\Infrastructure\Support\MyGenericExtensionPoint.cs" />
+    <Compile Include="Extensions\StringExtensionsTester.cs" />
     <Compile Include="Extensions\Support\AttributeSubjects.cs" />
     <Compile Include="Extensions\Support\DbParameterValueConstraint.cs" />
     <Compile Include="Extensions\Support\InheritanceSubjects.cs" />

@@ -6,25 +6,30 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 {
 	public static class StringExtensions
 	{
-		 public static bool IsEmpty(this string str)
-		 {
-			 return string.IsNullOrEmpty(str);
-		 }
+		#region emptiness
 
-		 public static bool IsNotEmpty(this string str)
-		 {
-			 return !IsEmpty(str);
-		 }
+		public static bool IsEmpty(this string str)
+		{
+			return string.IsNullOrEmpty(str);
+		}
 
-		 public static string NullIfEmpty(this string s)
-		 {
-			 return (s == string.Empty) ? null : s;
-		 }
+		public static bool IsNotEmpty(this string str)
+		{
+			return !IsEmpty(str);
+		}
 
-		 public static string EmptyIfNull(this string s)
-		 {
-			 return s ?? string.Empty;
-		 }
+		public static string NullIfEmpty(this string s)
+		{
+			return (s == string.Empty) ? null : s;
+		}
+
+		public static string EmptyIfNull(this string s)
+		{
+			return s ?? string.Empty;
+		}
+
+		#endregion
+
 
 		 /// <summary>
 		 /// Returns the last few characters of the string with a length
