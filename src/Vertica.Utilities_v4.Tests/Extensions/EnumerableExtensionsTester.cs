@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using NUnit.Framework;
+using Testing.Commons;
 using Vertica.Utilities_v4.Collections;
 using Vertica.Utilities_v4.Extensions.EnumerableExt;
 using Vertica.Utilities_v4.Tests.Extensions.Support;
@@ -174,7 +176,6 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		{
 			IEnumerable<DerivedType> derived = new[] { new DerivedType("Jim", 2) };
 			Assert.That(derived.Convert<DerivedType, BaseType>(), Is.All.InstanceOf<BaseType>());
-
 		}
 
 		[Test]
@@ -183,5 +184,212 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			Assert.That(Chain.Null<DerivedType>().Convert<DerivedType, BaseType>(), Is.Empty);
 			Assert.That(Chain.Empty<DerivedType>().Convert<DerivedType, BaseType>(), Is.Empty);
 		}
+
+		#region ToDelimitedString
+
+		[Test]
+		public void ToDelimitedString_PopulatedCollections_DelimitedString()
+		{
+			var enumerable = new[] { 1, 2, 3, 4 };
+			Func<int, string> doubleToStringFunction = i => (i * 2).ToString(CultureInfo.InvariantCulture);
+
+			Assert.That(enumerable.ToDelimitedString(), Is.EqualTo("1, 2, 3, 4"));
+			Assert.That(enumerable.ToDelimitedString(doubleToStringFunction), Is.EqualTo("2, 4, 6, 8"));
+			Assert.That(enumerable.ToDelimitedString("-"), Is.EqualTo("1-2-3-4"));
+			Assert.That(enumerable.ToDelimitedString("*", doubleToStringFunction), Is.EqualTo("2*4*6*8"));
+		}
+
+		[Test]
+		public void ToDelimitedString_NullEnumerable_Empty()
+		{
+			Assert.That(Chain.Null<string>().ToDelimitedString(), Is.Empty);
+			Assert.That(Chain.Null<string>().ToDelimitedString(s => string.Empty), Is.Empty);
+			Assert.That(Chain.Null<string>().ToDelimitedString("*"), Is.Empty);
+			Assert.That(Chain.Null<string>().ToDelimitedString("_", s => string.Empty), Is.Empty);
+		}
+
+		[Test]
+		public void ToDelimitedString_EmptyEnumerable_Empty()
+		{
+			Assert.That(Chain.Empty<string>().ToDelimitedString(), Is.Empty);
+			Assert.That(Chain.Empty<string>().ToDelimitedString(s => string.Empty), Is.Empty);
+			Assert.That(Chain.Empty<string>().ToDelimitedString("*"), Is.Empty);
+			Assert.That(Chain.Empty<string>().ToDelimitedString("_", s => string.Empty), Is.Empty);
+		}
+
+		[Test]
+		public void ToCsv_SameBehaviorAsToDelimitedString()
+		{
+			var enumerable = new[] { 1, 2, 3, 4 };
+			Func<int, string> doubleToStringFunction = i => (i * 2).ToString(CultureInfo.InvariantCulture);
+
+			Assert.That(enumerable.ToCsv(), Is.EqualTo("1,2,3,4"));
+			Assert.That(enumerable.ToCsv(doubleToStringFunction), Is.EqualTo("2,4,6,8"));
+			Assert.That(Chain.Null<int>().ToCsv(), Is.Empty);
+			Assert.That(Chain.Null<int>().ToCsv(doubleToStringFunction), Is.Empty);
+			Assert.That(Chain.Empty<int>().ToCsv(), Is.Empty);
+			Assert.That(Chain.Empty<int>().ToCsv(doubleToStringFunction), Is.Empty);
+		}
+
+		#endregion
+
+		#region enumerable generation
+
+		#region ToCircular
+
+		[Test]
+		public void ToCircular_NonEmpty_CouldRepeatForever()
+		{
+			IEnumerable<int> circular = new[] { 1, 2, 3 }.ToCircular();
+
+			Assert.That(circular.Take(7), Is.EqualTo(new[] { 1, 2, 3, 1, 2, 3, 1 }));
+		}
+
+		[Test]
+		public void ToCircular_NullOrEmpty_Empty()
+		{
+			Assert.That(Chain.Null<string>().ToCircular(), Is.Empty);
+			Assert.That(Chain.Empty<string>().ToCircular(), Is.Empty);
+		}
+
+		#endregion
+
+		#region ToStepped
+
+		[Test]
+		public void ToStepped_One_RegularIterator()
+		{
+			Assert.That(new[] { 1, 2, 3 }.ToStepped(1), Is.EqualTo(new[] { 1, 2, 3 }));
+		}
+
+		[Test]
+		public void ToStepped_NotOne_SkipsStepElements()
+		{
+			Assert.That(Enumerable.Range(1, 7).ToStepped(2u), Is.EqualTo(new[] { 1, 3, 5, 7 }));
+			Assert.That(Enumerable.Range(1, 7).ToStepped(3u), Is.EqualTo(new[] { 1, 4, 7 }));
+			Assert.That(Enumerable.Range(1, 7).ToStepped(4u), Is.EqualTo(new[] { 1, 5 }));
+		}
+
+		[Test]
+		public void ToStepped_ZeroOrNegative_ExceptionWhenEnumerating()
+		{
+			IEnumerable<int> stepped = null;
+			Assert.That(() => stepped = new[] { 1 }.ToStepped(0), Throws.Nothing);
+			Assert.That(() => stepped.Iterate(), Throws.InstanceOf<ArgumentOutOfRangeException>());
+		}
+
+		[TestCase(3u)]
+		[TestCase(4u)]
+		[TestCase(10u)]
+		public void ToStepped_StepMoreThanLength_AlwaysEnumeratesFirst(uint step)
+		{
+			IEnumerable<int> stepped = new[] { 1, 2 }.ToStepped(step);
+
+			Assert.That(stepped.Count(), Is.EqualTo(1));
+		}
+
+		[Test]
+		public void ToStepped_Empty_FirstIsNotEnumerated()
+		{
+			Assert.That(Chain.Null<int>().ToStepped(1), Is.Empty);
+			Assert.That(Chain.Empty<int>().ToStepped(1), Is.Empty);
+		}
+
+		#endregion
+
+		#region Merge
+
+		#region Merge -- Pair<T>
+
+		[Test]
+		public void MergePair_SameLength_MergedEnumeration()
+		{
+			int[] firsts = new[] { 1, 2, 3 }, seconds = new[] { 2, 4, 6 };
+
+			IEnumerable<Pair<int>> merged = firsts.Merge<int>(seconds);
+			Assert.That(merged, Is.EqualTo(new[]
+			{
+				new Pair<int>(1, 2),
+				new Pair<int>(2, 4),
+				new Pair<int>(3, 6)
+			}));
+		}
+
+		[Test]
+		public void MergePair_DifferentLength_ExceptionWhenEnumerating()
+		{
+			int[] firsts = new[] { 1, 2, 3 }, seconds = new[] { 2, 4 };
+
+			IEnumerable<Pair<int>> merged = firsts.Merge<int>(seconds);
+			Assert.That(() => merged.Iterate(), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void MergePair_EmptyEnumerables_Empty()
+		{
+			int[] firsts = new int[] { }, seconds = new int[] { };
+
+			IEnumerable<Pair<int>> merged = firsts.Merge<int>(seconds);
+			Assert.That(merged, Is.Empty);
+		}
+
+		[Test]
+		public void MergePair_NullEnumerables_Empty()
+		{
+			IEnumerable<Pair<int>> merged = Chain.Null<int>().Merge<int>(Chain.Null<int>());
+			Assert.That(merged, Is.Empty);
+		}
+
+		#endregion
+
+		#region Merge -- Tuple<t, U>
+
+		[Test]
+		public void MergeTuple_SameLength_MergedEnumeration()
+		{
+			var firsts = new[] { 1, 2, 3 };
+			var seconds = new[] { "1", "2", "3" };
+
+			IEnumerable<Tuple<int, string>> merged = firsts.Merge(seconds);
+			Assert.That(merged, Is.EqualTo(new[]
+			{
+				Tuple.Create(1, "1"),
+				Tuple.Create(2, "2"),
+				Tuple.Create(3, "3")
+			}));
+		}
+
+		[Test]
+		public void MergeTuple_DifferentLength_ExceptionWhenEnumerating()
+		{
+			var firsts = new[] { 1, 2, 3 };
+			var seconds = new[] { "2", "4" };
+
+			IEnumerable<Tuple<int, string>> merged = firsts.Merge(seconds);
+			Assert.That(() => merged.Iterate(), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void MergeTuple_EmptyEnumerables_Empty()
+		{
+			var firsts = new int[] { };
+			var seconds = new string[] { };
+
+			IEnumerable<Tuple<int, string>> merged = firsts.Merge(seconds);
+			Assert.That(merged, Is.Empty);
+		}
+
+		[Test]
+		public void MergeTuple_NullEnumerables_Empty()
+		{
+			IEnumerable<Tuple<int, string>> merged = Chain.Null<int>().Merge(Chain.Null<string>());
+			Assert.That(merged, Is.Empty);
+		}
+
+		#endregion
+
+		#endregion
+
+		#endregion
 	}
 }

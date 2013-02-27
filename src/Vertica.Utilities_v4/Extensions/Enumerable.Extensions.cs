@@ -88,18 +88,131 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 			For(collection, indexes.AsEnumerable(), action);
 		}
 
-		internal static void Iterate<T>(this IEnumerable<T> enumerable)
-		{
-#pragma warning disable 168
-			foreach (var item in enumerable) { }
-#pragma warning restore 168
-		}
-
 		#endregion
 
 		public static IEnumerable<TBase> Convert<TDerived, TBase>(this IEnumerable<TDerived> source) where TDerived : TBase
 		{
 			return source.EmptyIfNull().Select(i => (TBase)i);
 		}
+
+		#region ToDelimited
+
+		public static string ToDelimitedString<T>(this IEnumerable<T> source, string delimiter, Func<T, string> toString)
+		{
+			return string.Join(delimiter, source.EmptyIfNull().Select(toString));
+		}
+
+		public static string ToDelimitedString<T>(this IEnumerable<T> source, string delimiter)
+		{
+			return ToDelimitedString(source, delimiter, t => t.ToString());
+		}
+
+		public static string ToDelimitedString<T>(this IEnumerable<T> source, Func<T, string> toString)
+		{
+			return ToDelimitedString(source, ", ", toString);
+		}
+
+		public static string ToDelimitedString<T>(this IEnumerable<T> source)
+		{
+			return ToDelimitedString(source, ", ", t => t.ToString());
+		}
+
+		public static string ToCsv<T>(this IEnumerable<T> source)
+		{
+			return ToDelimitedString(source, ",");
+		}
+
+		public static string ToCsv<T>(this IEnumerable<T> source, Func<T, string> toString)
+		{
+			return ToDelimitedString(source, ",", toString);
+		}
+
+		#endregion
+
+		#region enumerable generation
+
+		/* based on http://www.codeproject.com/KB/collections/Enumerators.aspx */
+
+		public static IEnumerable<T> ToCircular<T>(this IEnumerable<T> enumerable)
+		{
+			if (enumerable.EmptyIfNull().Any())
+			{
+				while (true)
+				{
+					foreach (T item in enumerable)
+					{
+						yield return item;
+					}
+				}
+			}
+		}
+
+		public static IEnumerable<T> ToStepped<T>(this IEnumerable<T> enumerable, uint step)
+		{
+			Guard.AgainstArgument<ArgumentOutOfRangeException>("step", step < 1, "Cannot be negative or zero.");
+
+			using (IEnumerator<T> enumerator = enumerable.EmptyIfNull().GetEnumerator())
+			{
+				while (enumerator.MoveNext())
+				{
+					yield return enumerator.Current;
+
+					for (uint i = step; i > 1; i--)
+						if (!enumerator.MoveNext()) break;
+				}
+			}
+		}
+
+		public static IEnumerable<Pair<T>> Merge<T>(this IEnumerable<T> firsts, IEnumerable<T> seconds)
+		{
+			using (var firstsEnumerator = firsts.EmptyIfNull().GetEnumerator())
+			{
+				using (var secondsEnumerator = seconds.EmptyIfNull().GetEnumerator())
+				{
+					bool nextFirst = firstsEnumerator.MoveNext();
+					bool nextSecond = secondsEnumerator.MoveNext();
+
+					while (nextFirst && nextSecond)
+					{
+						yield return new Pair<T>(firstsEnumerator.Current, secondsEnumerator.Current);
+
+						nextFirst = firstsEnumerator.MoveNext();
+						nextSecond = secondsEnumerator.MoveNext();
+					}
+
+					if (nextFirst || nextSecond)
+					{
+						throw new ArgumentException("firsts && seconds not same length", "seconds");
+					}
+				}
+			}
+		}
+
+		public static IEnumerable<Tuple<T, K>> Merge<T, K>(this IEnumerable<T> firsts, IEnumerable<K> seconds)
+		{
+			using (var firstsEnumerator = firsts.EmptyIfNull().GetEnumerator())
+			{
+				using (var secondsEnumerator = seconds.EmptyIfNull().GetEnumerator())
+				{
+					bool nextFirst = firstsEnumerator.MoveNext();
+					bool nextSecond = secondsEnumerator.MoveNext();
+
+					while (nextFirst && nextSecond)
+					{
+						yield return Tuple.Create(firstsEnumerator.Current, secondsEnumerator.Current);
+
+						nextFirst = firstsEnumerator.MoveNext();
+						nextSecond = secondsEnumerator.MoveNext();
+					}
+
+					if (nextFirst || nextSecond)
+					{
+						throw new ArgumentException("firsts && seconds not same length", "seconds");
+					}
+				}
+			}
+		}
+
+		#endregion
 	}
 }
