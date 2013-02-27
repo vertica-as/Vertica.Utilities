@@ -68,7 +68,17 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 			}
 		}
 
-		public static void For<T>(this IEnumerable<T> collection, IEnumerable<int> indexes, Action<T, int> action)
+		public static void For<T>(this IEnumerable<T> collection, Action<T, int> action)
+		{
+			int i = 0;
+
+			foreach (var item in collection.EmptyIfNull())
+			{
+				action(item, i++);
+			}
+		}
+
+		public static void For<T>(this IEnumerable<T> collection, Action<T, int> action, IEnumerable<int> indexes)
 		{
 			var hashedIndexes = new HashSet<int>(indexes);
 
@@ -81,11 +91,6 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 				}
 				i++;
 			}
-		}
-
-		public static void For<T>(this IEnumerable<T> collection, Action<T, int> action, params int[] indexes)
-		{
-			For(collection, indexes.AsEnumerable(), action);
 		}
 
 		#endregion

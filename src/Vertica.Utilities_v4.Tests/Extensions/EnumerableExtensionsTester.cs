@@ -137,12 +137,25 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[Test]
 		public void Foreach_GoesOverIntCounting_SameLength()
 		{
-			int count = 0;
+			int times = 0;
 
 			Enumerable.Range(1, 4).ForEach(i =>
 			{
+				times += 1;
+			});
+
+			Assert.That(times, Is.EqualTo(4));
+		}
+
+		[Test]
+		public void For_InvokesActionWithItemaAndIndex()
+		{
+			int count = 0;
+
+			Enumerable.Range(2, 4).For((i, idx) =>
+			{
 				count += 1;
-				Assert.That(count, Is.EqualTo(i));
+				Assert.That(i, Is.EqualTo(count + 1));
 			});
 
 			Assert.That(count, Is.EqualTo(4));
@@ -152,10 +165,11 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		public void For_PerformsActionOnIndexes()
 		{
 			int acc = 0;
-			Enumerable.Range(1, 4).For(new[] { 1, 2 }, (i, item) =>
+			Enumerable.Range(1, 4).For((i, item) =>
 			{
 				acc += item + i;
-			});
+			}, new[] { 1, 2 });
+
 			Assert.That(acc, Is.EqualTo((2 + 1) + (3 + 2)));
 		}
 
@@ -164,7 +178,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		{
 			int acc = 0;
 			Action<int, int> action = (i, item) => acc += item + i;
-			Enumerable.Range(1, 4).For(action, 1, 2);
+			Enumerable.Range(1, 4).For(action, new[] { 1, 2 });
 
 			Assert.That(acc, Is.EqualTo((2 + 1) + (3 + 2)));
 		}
