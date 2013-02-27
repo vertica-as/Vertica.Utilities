@@ -492,5 +492,57 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		#endregion
+
+		#region batching
+
+		[Test]
+		public void InBatchesOf_BatchSizeIsFactorOfInputLength_NumberOfBacthes()
+		{
+			var result = new[]
+			{
+				1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
+				1, 2, 3, 4, 5, 6, 7, 8, 9, 0
+			}.InBatchesOf(10);
+
+			Assert.That(result, Is.EqualTo(new[]
+			{
+				new[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0},
+				new[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}
+			}));
+		}
+
+		[Test]
+		public void InBatchesOf_BatchSizeIsNotFactorOfInputLength_NumberOfBacthesPlusOne()
+		{
+			var result = new[]
+			{
+				1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
+				1, 2, 3, 4, 5, 6, 7, 8, 9, 0
+			}.InBatchesOf(9);
+
+			Assert.That(result, Is.EqualTo(new[]
+			{
+				new[] {1, 2, 3, 4, 5, 6, 7, 8, 9 },
+				new[] {0, 1, 2, 3, 4, 5, 6, 7, 8},
+				new[] {9, 0}
+			}));
+		}
+
+		[Test]
+		public void InBatchesOf_BatchSizeIsIsGreaterThanInputLength_OneBatchWithAllElements()
+		{
+			IEnumerable<int> input = new[]
+			{
+				1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
+				1, 2, 3, 4, 5, 6, 7, 8, 9, 0
+			};
+
+			Assert.That(input.InBatchesOf(1000), Is.EqualTo(new[]
+			{
+				input
+			}));
+		}
+
+		#endregion
 	}
 }

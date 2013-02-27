@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vertica.Utilities_v4.Resources;
 
 namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 {
@@ -243,6 +244,24 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 		public static IEnumerable<T> Prepend<T>(this IEnumerable<T> source, params T[] inTheBeginning)
 		{
 			return inTheBeginning.EmptyIfNull().Concat(source);
+		}
+
+		#endregion
+
+		#region batching
+
+		public static IEnumerable<IEnumerable<T>> InBatchesOf<T>(this IEnumerable<T> items, uint batchSize)
+		{
+			Guard.AgainstArgument<ArgumentOutOfRangeException>("batchSize", batchSize == 0, Exceptions.EnumerableExtensions_ZeroBatch);
+
+			int count = 0;
+			T[] batch = new T[batchSize];
+			foreach (T item in items)
+			{
+				batch[count++ % batchSize] = item;
+				if (count % batchSize == 0) yield return batch;
+			}
+			if (count % batchSize > 0) yield return batch.Take(count % (int)batchSize);
 		}
 
 		#endregion

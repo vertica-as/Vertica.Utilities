@@ -126,6 +126,9 @@
   <data name="Credential_NoDomainOrUser" xml:space="preserve">
     <value>The credential must have a non-empty user name and domain.</value>
   </data>
+  <data name="EnumerableExtensions_ZeroBatch" xml:space="preserve">
+    <value>Size must be greater than 0.</value>
+  </data>
   <data name="Enumerated_DuplicatedTemplate" xml:space="preserve">
     <value>The enum with name '{0}' is already used.</value>
   </data>

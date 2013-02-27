@@ -88,6 +88,15 @@ namespace Vertica.Utilities_v4.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Size must be greater than 0..
+        /// </summary>
+        internal static string EnumerableExtensions_ZeroBatch {
+            get {
+                return ResourceManager.GetString("EnumerableExtensions_ZeroBatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The enum with name &apos;{0}&apos; is already used..
         /// </summary>
         internal static string Enumerated_DuplicatedTemplate {
