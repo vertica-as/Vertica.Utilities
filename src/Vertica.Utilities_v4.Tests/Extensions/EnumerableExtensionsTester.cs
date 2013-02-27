@@ -390,6 +390,61 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 
 		#endregion
 
+		#region Interlace
+
+		[Test]
+		public void Interlace_SameSizeEnumerations_AlternatesOneElementFromEach()
+		{
+			IEnumerable<int> odds = new[] { 1, 3, 5 }, evens = new[] { 2, 4, 6 };
+
+			IEnumerable<int> oneToSix = odds.Interlace(evens);
+			Assert.That(oneToSix, Is.EqualTo(new[] { 1, 2, 3, 4, 5, 6 }));
+		}
+
+		[Test]
+		public void Interlace_SomeIsNull_Empty()
+		{
+			Assert.That(Chain.Null<int>().Interlace(new[]{1}), Is.Empty);
+			Assert.That(new[] { 1 }.Interlace(Chain.Null<int>()), Is.Empty);
+		}
+
+		[Test]
+		public void Interlace_SomeIsEmpty_Empty()
+		{
+			Assert.That(Chain.Empty<int>().Interlace(new[] { 1 }), Is.Empty);
+			Assert.That(new[] { 1 }.Interlace(Chain.Empty<int>()), Is.Empty);
+		}
+
+		[Test]
+		public void Interlace_DifferentSizes_ShortesRules()
+		{
+			IEnumerable<int> odds = new[] { 1, 3, 5 }, evens = new[] { 2, 4 };
+
+			Assert.That(odds.Interlace(evens), Is.EqualTo(new[] { 1, 2, 3, 4 }));
+			Assert.That(evens.Interlace(odds), Is.EqualTo(new[] { 2, 1, 4, 3 }));
+		}
+
+		[Test]
+		public void Interlace_SampleWithWords()
+		{
+			var source = new[] { "The", "quick", "brown", "fox" };
+
+			string result = source.Interlace(streamOfSpaces())
+				.Aggregate(string.Empty, (a, b) => a + b)
+				.TrimEnd();
+
+			Assert.That(result, Is.EqualTo("The quick brown fox"));
+		}
+
+		// ReSharper disable FunctionNeverReturns
+		private static IEnumerable<string> streamOfSpaces()
+		{
+			while (true) yield return " ";
+		}
+		// ReSharper restore FunctionNeverReturns
+
+		#endregion
+
 		#endregion
 	}
 }

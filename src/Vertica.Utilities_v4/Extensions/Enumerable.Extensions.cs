@@ -213,6 +213,19 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 			}
 		}
 
+		public static IEnumerable<T> Interlace<T>(this IEnumerable<T> first, IEnumerable<T> second)
+		{
+			using (IEnumerator<T> e1 = first.EmptyIfNull().GetEnumerator())
+			{
+				using (IEnumerator<T> e2 = second.EmptyIfNull().GetEnumerator())
+					while (e1.MoveNext() && e2.MoveNext())
+					{
+						yield return e1.Current;
+						yield return e2.Current;
+					}
+			}
+		}
+
 		#endregion
 	}
 }
