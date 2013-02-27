@@ -90,9 +90,18 @@ namespace Vertica.Utilities_v4.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Size must be greater than 0..
         /// </summary>
-        internal static string EnumerableExtensions_ZeroBatch {
+        internal static string EnumerableExtensions_NonZeroBatch {
             get {
-                return ResourceManager.GetString("EnumerableExtensions_ZeroBatch", resourceCulture);
+                return ResourceManager.GetString("EnumerableExtensions_NonZeroBatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Both collections must have same length..
+        /// </summary>
+        internal static string EnumerableExtensions_Zip_SameLength {
+            get {
+                return ResourceManager.GetString("EnumerableExtensions_Zip_SameLength", resourceCulture);
             }
         }
         

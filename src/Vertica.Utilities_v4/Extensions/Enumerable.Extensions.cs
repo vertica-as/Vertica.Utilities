@@ -232,6 +232,31 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 			}
 		}
 
+		public static IEnumerable<TResult> Zip<T1, T2, TResult>(this IEnumerable<T1> first, IEnumerable<T2> second, Func<T1, T2, int, TResult> selector)
+		{
+			return first.Zip(second, (a, b) => new { a, b }).Select((pair, i) => selector(pair.a, pair.b, i));
+		}
+
+		public static IEnumerable<Tuple<T1, T2>> Zip<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second)
+		{
+			var enumerator1 = first.EmptyIfNull().GetEnumerator();
+			var enumerator2 = second.EmptyIfNull().GetEnumerator();
+
+			bool moreOfFirst;
+			do
+			{
+				moreOfFirst = enumerator1.MoveNext();
+				bool moreOfSecond = enumerator2.MoveNext();
+
+				if (moreOfFirst != moreOfSecond)
+					throw new InvalidOperationException(Exceptions.EnumerableExtensions_Zip_SameLength);
+
+				if (moreOfSecond)
+					yield return Tuple.Create(enumerator1.Current, enumerator2.Current);
+
+			} while (moreOfFirst);
+		}
+
 		#endregion
 
 		#region concatenation helpers
@@ -252,7 +277,7 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 
 		public static IEnumerable<IEnumerable<T>> InBatchesOf<T>(this IEnumerable<T> items, uint batchSize)
 		{
-			Guard.AgainstArgument<ArgumentOutOfRangeException>("batchSize", batchSize == 0, Exceptions.EnumerableExtensions_ZeroBatch);
+			Guard.AgainstArgument<ArgumentOutOfRangeException>("batchSize", batchSize == 0, Exceptions.EnumerableExtensions_NonZeroBatch);
 
 			int count = 0;
 			T[] batch = new T[batchSize];

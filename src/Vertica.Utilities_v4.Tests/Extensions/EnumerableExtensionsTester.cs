@@ -459,6 +459,55 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 
 		#endregion
 
+		#region zipping
+
+		[Test]
+		public void Zip_Indexed_SelectorIncludesIndex()
+		{
+			var numbers = new[] { 5, 6, 7, 8 };
+			var words = new[] { "cinq", "six", "sept", "huit" };
+
+			var zipped = numbers.Zip(words, (number, word, index) =>
+				new { Number = number, Word = word, Index = index });
+
+			Assert.That(zipped, Is.EqualTo(new[]
+			{
+				new { Number = 5, Word = "cinq", Index = 0 },
+				new { Number = 6, Word = "six", Index = 1 },
+				new { Number = 7, Word = "sept", Index = 2 },
+				new { Number = 8, Word = "huit", Index = 3 }
+			}));
+		}
+
+		[Test]
+		public void Zip_Strict_SameLength_TupleOfElements()
+		{
+			var numbers = new[] { 5, 6, 7, 8 };
+			var words = new[] { "cinq", "six", "sept", "huit" };
+
+			var zipped = numbers.Zip(words);
+
+			Assert.That(zipped, Is.EqualTo(new[]
+			{
+				Tuple.Create(5, "cinq"),
+				Tuple.Create(6, "six"),
+				Tuple.Create(7, "sept"),
+				Tuple.Create(8, "huit")
+			}));
+		}
+
+
+		[Test]
+		public void Zip_Strict_DifferentLength_Exception()
+		{
+			var numbers = new[] { 5, 6, 7, 8 };
+			var words = new[] { "cinq", "six", "sept", "huit", "neuf" };
+
+			Assert.That(() => numbers.Zip(words).Iterate(), Throws.InvalidOperationException);
+		}
+
+		#endregion
+
 		#endregion
 
 		#region concantenation helpers
