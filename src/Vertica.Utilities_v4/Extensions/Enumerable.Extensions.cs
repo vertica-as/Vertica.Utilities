@@ -227,5 +227,19 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 		}
 
 		#endregion
+
+		#region concatenation helpers
+
+		public static IEnumerable<T> Append<T>(this IEnumerable<T> source, params T[] toTheEnd)
+		{
+			return source.Concat(toTheEnd.EmptyIfNull());
+		}
+
+		public static IEnumerable<T> Prepend<T>(this IEnumerable<T> source, params T[] inTheBeginning)
+		{
+			return inTheBeginning.EmptyIfNull().Concat(source);
+		}
+
+		#endregion
 	}
 }

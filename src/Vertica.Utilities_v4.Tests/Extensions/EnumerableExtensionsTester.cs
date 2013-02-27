@@ -404,7 +404,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[Test]
 		public void Interlace_SomeIsNull_Empty()
 		{
-			Assert.That(Chain.Null<int>().Interlace(new[]{1}), Is.Empty);
+			Assert.That(Chain.Null<int>().Interlace(new[] { 1 }), Is.Empty);
 			Assert.That(new[] { 1 }.Interlace(Chain.Null<int>()), Is.Empty);
 		}
 
@@ -444,6 +444,38 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		// ReSharper restore FunctionNeverReturns
 
 		#endregion
+
+		#endregion
+
+		#region concantenation helpers
+
+		[Test]
+		public void Append_AddToTheEnd()
+		{
+			Assert.That(Enumerable.Range(1, 4).Append(5, 6), Is.EqualTo(new[] { 1, 2, 3, 4, 5, 6 }));
+		}
+
+		[Test]
+		public void Append_Nothing_Same()
+		{
+			Assert.That(Enumerable.Range(1, 4).Append(), Is.EqualTo(new[] { 1, 2, 3, 4 }));
+
+			Assert.That(Enumerable.Range(1, 4).Append((int[])null), Is.EqualTo(new[] { 1, 2, 3, 4 }));
+		}
+
+		[Test]
+		public void Prepend_AddToTheBeginning()
+		{
+			Assert.That(Enumerable.Range(1, 4).Prepend(5, 6), Is.EqualTo(new[] { 5, 6, 1, 2, 3, 4 }));
+		}
+
+		[Test]
+		public void Prepend_Nothing_Same()
+		{
+			Assert.That(Enumerable.Range(1, 4).Prepend(), Is.EquivalentTo(new[] { 1, 2, 3, 4 }));
+
+			Assert.That(Enumerable.Range(1, 4).Prepend((int[])null), Is.EquivalentTo(new[] { 1, 2, 3, 4 }));
+		}
 
 		#endregion
 	}
