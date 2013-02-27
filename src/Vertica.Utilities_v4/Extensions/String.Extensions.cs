@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using Vertica.Utilities_v4.Extensions.ObjectExt;
 
 namespace Vertica.Utilities_v4.Extensions.StringExt
@@ -30,8 +31,61 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 
 		#endregion
 
+		#region stripping
 
-		 /// <summary>
+		/// <summary>
+		/// Strip a string of the specified characters.
+		/// </summary>
+		/// <param name="s">the string to process</param>
+		/// <param name="chars">list of characters to remove from the string</param>
+		/// <example>
+		/// string s = "abcde";
+		/// 
+		/// s = s.Strip('a', 'd');  //s becomes 'bce;
+		/// </example>
+		/// <returns></returns>
+		public static string Strip(this string s, params char[] chars)
+		{
+			string result;
+			return s.NullOrAction(() =>
+			{
+				result = s;
+				if (chars != null)
+				{
+					foreach (char c in chars)
+					{
+						result = result.Replace(c.ToString(), string.Empty);
+					}
+				}
+				return result;
+			});
+		}
+		/// <summary>
+		/// Strip a string of the specified substring.
+		/// </summary>
+		/// <param name="s">the string to process</param>
+		/// <param name="subString">substring to remove</param>
+		/// <example>
+		/// string s = "abcde";
+		/// 
+		/// s = s.Strip("bcd");  //s becomes 'ae;
+		/// </example>
+		/// <returns></returns>
+		public static string Strip(this string s, string subString)
+		{
+			return s.NullOrAction(() => s.Replace(subString, string.Empty));
+		}
+
+		private static readonly string _strippingPattern = @"<(.|\n)*?>";
+		private static readonly Regex _strippingRegEx = new Regex(_strippingPattern, RegexOptions.Compiled);
+		public static string StripHtmlTags(this string input)
+		{
+			return input.NullOrAction(() => _strippingRegEx.Replace(input, string.Empty));
+		}
+
+		#endregion
+
+		/// <summary>
 		 /// Returns the last few characters of the string with a length
 		 /// specified by the given parameter. If the string's length is less than the 
 		 /// given length the complete string is returned. If length is zero or 
