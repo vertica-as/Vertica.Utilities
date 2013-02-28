@@ -375,6 +375,95 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 
 		#endregion
 
+		#region VirtualPathUtilityExtensions
+
+		public static ExtensionPoint<string> VirtualPath(this string subject)
+		{
+			return new ExtensionPoint<string>(subject);
+		}
+
+		/// <summary>
+		/// Extension that calls <see cref="VirtualPathUtility.Combine"/>.
+		/// </summary>
+		public static string CombineWith(this ExtensionPoint<string> basePath, string relativePath)
+		{
+			return VirtualPathUtility.Combine(basePath.ExtendedValue, relativePath);
+		}
+
+		/// <summary>
+		/// Extension that calls <see cref="VirtualPathUtility.GetDirectory"/>.
+		/// </summary>
+		public static string GetDirectory(this ExtensionPoint<string> virtualPath)
+		{
+			return VirtualPathUtility.GetDirectory(virtualPath.ExtendedValue);
+		}
+
+		/// <summary>
+		/// Extension that calls <see cref="VirtualPathUtility.GetExtension"/>.
+		/// </summary>
+		public static string GetExtension(this ExtensionPoint<string> virtualPath)
+		{
+			return VirtualPathUtility.GetExtension(virtualPath.ExtendedValue);
+		}
+
+		/// <summary>
+		/// Extension that calls <see cref="VirtualPathUtility.GetFileName"/>.
+		/// </summary>
+		public static string GetFileName(this ExtensionPoint<string> virtualPath)
+		{
+			return VirtualPathUtility.GetFileName(virtualPath.ExtendedValue);
+		}
+
+		/// <summary>
+		/// Extension that calls <see cref="VirtualPathUtility.IsAbsolute"/>.
+		/// </summary>
+		public static bool IsAbsolute(this ExtensionPoint<string> virtualPath)
+		{
+			return VirtualPathUtility.IsAbsolute(virtualPath.ExtendedValue);
+		}
+
+		/// <summary>
+		/// Extension that calls <see cref="VirtualPathUtility.IsAppRelative"/>.
+		/// </summary>
+		public static bool IsAppRelative(this ExtensionPoint<string> virtualPath)
+		{
+			return VirtualPathUtility.IsAppRelative(virtualPath.ExtendedValue);
+		}
+
+		/// <summary>
+		/// Extension that calls <see cref="VirtualPathUtility.MakeRelative"/>.
+		/// </summary>
+		public static string MakeRelativeTo(this ExtensionPoint<string> fromPath, string toPath)
+		{
+			return VirtualPathUtility.MakeRelative(fromPath.ExtendedValue, toPath);
+		}
+
+		/// <summary>
+		/// Extension that calls <see cref="VirtualPathUtility.ToAbsolute(string)"/>.
+		/// </summary>
+		public static string ToAbsolute(this ExtensionPoint<string> virtualPath)
+		{
+			return VirtualPathUtility.ToAbsolute(virtualPath.ExtendedValue);
+		}
+
+		/// <summary>
+		/// Extension that calls <see cref="VirtualPathUtility.ToAbsolute(string,string)"/>.
+		/// </summary>
+		public static string ToAbsolute(this ExtensionPoint<string> virtualPath, string applicationPath)
+		{
+			return VirtualPathUtility.ToAbsolute(virtualPath.ExtendedValue, applicationPath);
+		}
+
+		/// <summary>
+		/// Extension that calls <see cref="VirtualPathUtility.ToAppRelative(string,string)"/>.
+		/// </summary>
+		public static string ToAppRelative(this ExtensionPoint<string> virtualPath, string applicationPath)
+		{
+			return VirtualPathUtility.ToAppRelative(virtualPath.ExtendedValue, applicationPath);
+		}
+
+		#endregion
+
 		public static T Parse<T>(this string s)
 		{
 			T result = default(T);
