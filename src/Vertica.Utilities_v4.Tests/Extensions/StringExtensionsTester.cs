@@ -46,7 +46,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		#endregion
 
 		#region stripping
-		
+
 		#region Strip(chars)
 
 		[Test]
@@ -219,7 +219,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		#region substring
 
 		#region Right
-		
+
 		[TestCase("lazy lazy fox jumped", 3, "ped", Description = "last 3 chars")]
 		[TestCase("lazy lazy fox jumped", 30, "lazy lazy fox jumped", Description = "length more than argument --> argument")]
 		[TestCase("lazy lazy fox jumped", 0, "", Description = "zero length --> empty")]
@@ -277,7 +277,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		#endregion
 
 		#region Left
-		
+
 		[TestCase("lazy lazy fox jumped", 4, "lazy", Description = "first 4 chars")]
 		[TestCase("lazy lazy fox jumped", 30, "lazy lazy fox jumped", Description = "length more than argument --> argument")]
 		[TestCase("lazy lazy fox jumped", 0, "", Description = "zero length --> empty")]
@@ -370,6 +370,148 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		public void PrependIfNotThere_Combinations(string input, string prefix, string expected)
 		{
 			Assert.That(input.PrependIfNotThere(prefix), Is.EqualTo(expected));
+		}
+
+		#endregion
+
+		#region FormatWith
+
+		[Test]
+		public void FormatWith_OneArgument_FormattedString()
+		{
+			Assert.That("{0}".FormatWith(3), Is.EqualTo("3"));
+		}
+
+		[Test]
+		public void FormatWith_OneArgumentNotEnoughFormatArguments_Exception()
+		{
+			Assert.That(() => "{0}{1}".FormatWith(3), Throws.InstanceOf<FormatException>());
+		}
+
+		[Test]
+		public void FormatWith_OneNullArgument_NoException()
+		{
+			NotFiniteNumberException arg = null;
+			Assert.That(() => "{0}".FormatWith(arg), Throws.Nothing);
+		}
+
+		[Test]
+		public void FormatWith_OneArgumentNoFormatArgument_OriginalString()
+		{
+			Assert.That("asd".FormatWith(2), Is.EqualTo("asd"));
+		}
+
+		[Test]
+		public void FormatWith_OneArgumentStringEmpty_Empty()
+		{
+			Assert.That(string.Empty.FormatWith(2), Is.Empty);
+		}
+
+		[Test]
+		public void FormatWith_OneArgumentNull_Null()
+		{
+			string s = null;
+			Assert.That(s.FormatWith(2), Is.Null);
+		}
+
+		[Test]
+		public void FormatWith_MultipleArguments_FormattedString()
+		{
+			Assert.That("{0}{1}".FormatWith(3, "3"), Is.EqualTo("33"));
+		}
+
+		[Test]
+		public void FormatWith_MultipleArgumentsNotEnoughFormatArguments_Exception()
+		{
+			Assert.That(() => "{0}{1}{2}".FormatWith(3, "2"), Throws.InstanceOf<FormatException>());
+		}
+
+		[Test]
+		public void FormatWith_MultipleNullArguments_NoException()
+		{
+			NotFiniteNumberException arg = null;
+			Assert.That(() => "{0}{1}".FormatWith(arg, arg),
+				Throws.Nothing);
+		}
+
+		[Test]
+		public void FormatWith_MultipleArgumentsNoFormatArgument_OriginalString()
+		{
+			string s = "asd";
+			Assert.That(s.FormatWith(2, "2"), Is.EqualTo(s));
+		}
+
+		[Test]
+		public void FormatWith_MultipleArgumentsStringEmpty_Empty()
+		{
+			string s = string.Empty;
+			Assert.That(s.FormatWith(2, "3"), Is.Empty);
+		}
+
+		[Test]
+		public void FormatWith_MultipleArgumentsNull_Null()
+		{
+			string s = null;
+			Assert.That(s.FormatWith(2, "2"), Is.Null);
+		}
+
+		[Test]
+		public void FormatWith_NoArgumentsNull_Null()
+		{
+			string s = null;
+			Assert.That(s.FormatWith(), Is.Null);
+		}
+
+		[Test]
+		public void FormatWith_NoArgumentsNotNull_Same()
+		{
+			string s = "asd";
+			Assert.That(s.FormatWith(), Is.EqualTo(s));
+		}
+
+		[Test]
+		public void IndirectFormat_MultipleArguments_FormattedString()
+		{
+			Assert.That(indirectFormat("{0}{1}", 3, "3"), Is.EqualTo("33"));
+		}
+
+		[Test]
+		public void IndirectFormat_MultipleArgumentsNotEnoughFormatArguments_Exception()
+		{
+			Assert.Throws<FormatException>(() => indirectFormat("{0}{1}{2}", 3, "2"));
+		}
+
+		[Test]
+		public void IndirectFormat_MultipleNullArguments_NoException()
+		{
+			NotFiniteNumberException arg = null;
+			Assert.DoesNotThrow(() => indirectFormat("{0}{1}", arg, arg));
+		}
+
+		[Test]
+		public void IndirectFormat_MultipleArgumentsNoFormatArgument_OriginalString()
+		{
+			string s = "asd";
+			Assert.That(indirectFormat(s, 2, "2"), Is.EqualTo(s));
+		}
+
+		[Test]
+		public void IndirectFormat_MultipleArgumentsStringEmpty_Empty()
+		{
+			string s = string.Empty;
+			Assert.That(indirectFormat(s, 2, "3"), Is.Empty);
+		}
+
+		[Test]
+		public void IndirectFormat_MultipleArgumentsNull_Null()
+		{
+			string s = null;
+			Assert.That(indirectFormat(s, 2, "2"), Is.Null);
+		}
+
+		private static string indirectFormat(string s, params object[] parameters)
+		{
+			return s.FormatWith(parameters);
 		}
 
 		#endregion

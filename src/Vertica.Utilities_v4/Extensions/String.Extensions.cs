@@ -259,6 +259,17 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 
 		#endregion
 
+		public static string FormatWith(this string s, params object[] additionalArgs)
+		{
+			return s.NullOrAction(() =>
+			{
+				string result = additionalArgs == null || additionalArgs.Length == 0 ?
+					s :
+					string.Format(s, additionalArgs);
+				return result;
+			});
+		}
+
 		public static T Parse<T>(this string s)
 		{
 			T result = default(T);
