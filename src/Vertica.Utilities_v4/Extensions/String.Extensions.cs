@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using Vertica.Utilities_v4.Extensions.ObjectExt;
 
@@ -43,18 +44,16 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 		/// 
 		/// s = s.Strip('a', 'd');  //s becomes 'bce;
 		/// </example>
-		/// <returns></returns>
 		public static string Strip(this string s, params char[] chars)
 		{
-			string result;
 			return s.NullOrAction(() =>
 			{
-				result = s;
+				string result = s;
 				if (chars != null)
 				{
 					foreach (char c in chars)
 					{
-						result = result.Replace(c.ToString(), string.Empty);
+						result = result.Replace(c.ToString(CultureInfo.CurrentCulture), string.Empty);
 					}
 				}
 				return result;
@@ -85,69 +84,177 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 
 		#endregion
 
+		#region substrings
+
+		#region Right
+
 		/// <summary>
-		 /// Returns the last few characters of the string with a length
-		 /// specified by the given parameter. If the string's length is less than the 
-		 /// given length the complete string is returned. If length is zero or 
-		 /// less an empty string is returned
-		 /// </summary>
-		 /// <param name="s">the string to process</param>
-		 /// <param name="length">Number of characters to return</param>
-		 /// <returns></returns>
-		 public static string Right(this string s, int length)
-		 {
-			 length = Math.Max(length, 0);
-			 return s.NullOrAction(() => (s.Length > length) ? s.Substring(s.Length - length, length) : s);
-		 }
+		/// Returns the last few characters of the string with a length
+		/// specified by the given parameter. If the string's length is less than the 
+		/// given length the complete string is returned. If length is zero or 
+		/// less an empty string is returned
+		/// </summary>
+		/// <param name="s">the string to process</param>
+		/// <param name="length">Number of characters to return</param>
+		/// <returns></returns>
+		public static string Right(this string s, int length)
+		{
+			length = Math.Max(length, 0);
+			return s.NullOrAction(() => (s.Length > length) ? s.Substring(s.Length - length, length) : s);
+		}
 
-		 /// <summary>
-		 /// Returns the right part from the first ocurrence of the given substring (without the substring).
-		 /// </summary>
-		 /// <remarks>
-		 /// Features driven by this set of rules:
-		 /// <list type="bullet">
-		 /// <item><description>null.RightFromFirst(*) --> null</description></item>
-		 /// <item><description>null and string.Empty are always substrings of a not null string</description></item>
-		 /// /// <item><description>string.Empty only contains itself and null</description></item>
-		 /// <item><description>*.RightFromFirst(notFound) --> null</description></item>
-		 /// </list>
-		 /// </remarks>
-		 /// <param name="s"></param>
-		 /// <param name="substring"></param>
-		 /// <returns></returns>
-		 public static string RightFromFirst(this string s, string substring)
-		 {
-			 return s.NullOrAction(() =>
-			 {
-				 substring = substring.EmptyIfNull();
-				 int indexOfSubstringEnd = s.IndexOf(substring, StringComparison.Ordinal) >= 0 ?
-					 s.IndexOf(substring, StringComparison.Ordinal) + substring.Length :
-					 -1;
-				 return indexOfSubstringEnd < 0 ? null : s.Right(s.Length - indexOfSubstringEnd);
-			 });
-		 }
+		/// <summary>
+		/// Returns the right part from the first ocurrence of the given substring (without the substring).
+		/// </summary>
+		/// <remarks>
+		/// Features driven by this set of rules:
+		/// <list type="bullet">
+		/// <item><description>null.RightFromFirst(*) --> null</description></item>
+		/// <item><description>null and string.Empty are always substrings of a not null string</description></item>
+		/// /// <item><description>string.Empty only contains itself and null</description></item>
+		/// <item><description>*.RightFromFirst(notFound) --> null</description></item>
+		/// </list>
+		/// </remarks>
+		public static string RightFromFirst(this string s, string substring, StringComparison comparison = StringComparison.Ordinal)
+		{
+			return s.NullOrAction(() =>
+			{
+				substring = substring.EmptyIfNull();
+				int indexOfSubstringEnd = s.IndexOf(substring, comparison) >= 0 ?
+					s.IndexOf(substring, comparison) + substring.Length :
+					-1;
+				return indexOfSubstringEnd < 0 ? null : s.Right(s.Length - indexOfSubstringEnd);
+			});
+		}
 
-		 public static T Parse<T>(this string s)
-		 {
-			 T result = default(T);
-			 if (!String.IsNullOrEmpty(s))
-			 {
-				 TypeConverter tc = TypeDescriptor.GetConverter(typeof(T));
-				 result = (T)tc.ConvertFrom(s);
-			 }
-			 return result;
-		 }
+		/// <summary>
+		/// Returns the right part from the last ocurrence of the given substring (without the substring).
+		/// </summary>
+		/// <remarks>
+		/// Features driven by this set of rules:
+		/// <list type="bullet">
+		/// <item><description>null.RightFromLast(*) --> null</description></item>
+		/// <item><description>null and string.Empty are always substrings of a not null string</description></item>
+		/// /// <item><description>string.Empty only contains itself and null</description></item>
+		/// <item><description>*.RightFromLast(notFound) --> null</description></item>
+		/// </list>
+		/// </remarks>
+		public static string RightFromLast(this string s, string substring, StringComparison comparison = StringComparison.Ordinal)
+		{
+			return s.NullOrAction(() =>
+			{
+				substring = substring.EmptyIfNull();
+				int indexOfSubstringEnd = -1;
 
-		 public static string AppendIfNotThere(this string str, string appendix)
-		 {
-			 if (str == null && appendix == null) return null;
-			 return appendIfNotThere(str.EmptyIfNull(), appendix.EmptyIfNull());
-		 }
+				if (substring.IsEmpty())
+					indexOfSubstringEnd = s.Length;
+				else if (s.LastIndexOf(substring, comparison) >= 0)
+					indexOfSubstringEnd = s.LastIndexOf(substring, comparison) + substring.Length;
 
-		 // we have preciously handled nulls, so that they are empties
-		 private static string appendIfNotThere(string str, string appendix)
-		 {
-			 return str.EndsWith(appendix) ? str : string.Concat(str, appendix);
-		 }
+				return indexOfSubstringEnd < 0 ? null : s.Right(s.Length - indexOfSubstringEnd);
+			});
+		}
+
+		#endregion
+
+		#region Left
+
+		/// <summary>
+		/// Returns the first few characters of the string with a length
+		/// specified by the given parameter. If the string's length is less than the 
+		/// given length the complete string is returned. If length is zero or 
+		/// less an empty string is returned
+		/// </summary>
+		/// <param name="s">the string to process</param>
+		/// <param name="length">Number of characters to return</param>
+		/// <returns></returns>
+		public static string Left(this string s, int length)
+		{
+			length = Math.Max(length, 0);
+			return s.NullOrAction(() => (s.Length > length) ? s.Substring(0, length) : s);
+		}
+
+
+		/// <summary>
+		/// Returns the left part from the first ocurrence of the given substring (without the substring).
+		/// </summary>
+		/// <remarks>
+		/// Features driven by this set of rules:
+		/// <list type="bullet">
+		/// <item><description>null.LeftFromFirst(*) --> null</description></item>
+		/// <item><description>null and string.Empty are always substrings of a not null string</description></item>
+		/// /// <item><description>string.Empty only contains itself and null</description></item>
+		/// <item><description>*.LeftFromFirst(notFound) --> null</description></item>
+		/// </list>
+		/// </remarks>
+		public static string LeftFromFirst(this string s, string substring, StringComparison comparison = StringComparison.Ordinal)
+		{
+			return s.NullOrAction(() =>
+			{
+				substring = substring.EmptyIfNull();
+				int indexOfSubstringStart = s.IndexOf(substring, comparison) >= 0 ?
+					s.IndexOf(substring, comparison) : -1;
+
+				return indexOfSubstringStart < 0 ? null : s.Left(indexOfSubstringStart);
+			});
+		}
+
+		/// <summary>
+		/// Returns the left part from the last ocurrence of the given substring (without the substring).
+		/// </summary>
+		/// <remarks>
+		/// Features driven by this set of rules:
+		/// <list type="bullet">
+		/// <item><description>null.LeftFromLast(*) --> null</description></item>
+		/// <item><description>null and string.Empty are always substrings of a not null string</description></item>
+		/// /// <item><description>string.Empty only contains itself and null</description></item>
+		/// <item><description>*.LeftFromLast(notFound) --> null</description></item>
+		/// </list>
+		/// </remarks>
+
+		public static string LeftFromLast(this string s, string substring, StringComparison comparison = StringComparison.Ordinal)
+		{
+			return s.NullOrAction(() =>
+			{
+				substring = substring.EmptyIfNull();
+				int indexOfSubstringStart = -1;
+
+				if (substring.IsEmpty())
+					indexOfSubstringStart = 0;
+				else if (s.LastIndexOf(substring, comparison) >= 0)
+					indexOfSubstringStart = s.LastIndexOf(substring, comparison);
+
+				return indexOfSubstringStart < 0 ? null : s.Left(indexOfSubstringStart);
+			});
+		}
+
+		#endregion
+
+		#endregion
+
+
+
+		public static T Parse<T>(this string s)
+		{
+			T result = default(T);
+			if (!String.IsNullOrEmpty(s))
+			{
+				TypeConverter tc = TypeDescriptor.GetConverter(typeof(T));
+				result = (T)tc.ConvertFrom(s);
+			}
+			return result;
+		}
+
+		public static string AppendIfNotThere(this string str, string appendix)
+		{
+			if (str == null && appendix == null) return null;
+			return appendIfNotThere(str.EmptyIfNull(), appendix.EmptyIfNull());
+		}
+
+		// we have preciously handled nulls, so that they are empties
+		private static string appendIfNotThere(string str, string appendix)
+		{
+			return str.EndsWith(appendix) ? str : string.Concat(str, appendix);
+		}
 	}
 }

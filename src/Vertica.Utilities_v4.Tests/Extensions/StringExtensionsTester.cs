@@ -215,5 +215,127 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		#endregion
 
 		#endregion
+
+		#region substring
+
+		#region Right
+		
+		[TestCase("lazy lazy fox jumped", 3, "ped", Description = "last 3 chars")]
+		[TestCase("lazy lazy fox jumped", 30, "lazy lazy fox jumped", Description = "length more than argument --> argument")]
+		[TestCase("lazy lazy fox jumped", 0, "", Description = "zero length --> empty")]
+		[TestCase("lazy lazy fox jumped", -1, "", Description = "negative length --> empty")]
+		[TestCase(null, 30, null, Description = "null --> null")]
+		[TestCase("", 30, "", Description = "empty --> empty")]
+		public void Right_Specification(string input, int length, string expected)
+		{
+			Assert.That(input.Right(length), Is.EqualTo(expected));
+		}
+
+		[TestCase(null, "lazy lazy fox jumped", null, Description = "String not found")]
+		[TestCase(null, "", null, Description = "*.RightFromFirst(null) --> *")]
+		[TestCase(null, null, null, Description = "*.RightFromFirst(null) --> *")]
+		[TestCase("", "lazy lazy fox jumped", null, Description = "String not found")]
+		[TestCase("", "", "", Description = "*.RightFromFirst(string.Empty) --> *")]
+		[TestCase("", null, "", Description = "*.RightFromFirst(null) --> *")]
+		[TestCase("lazy lazy fox jumped", null, "lazy lazy fox jumped", Description = "*.RightFromFirst(null) --> *")]
+		[TestCase("lazy lazy fox jumped", "", "lazy lazy fox jumped", Description = "*.RightFromFirst(string.Empty) --> *")]
+		[TestCase("lazy lazy fox jumped", "l", "azy lazy fox jumped", Description = "right part from beginning")]
+		[TestCase("lazy lazy fox jumped", "f", "ox jumped", Description = "right part from contained char")]
+		[TestCase("lazy lazy fox jumped", "azy", " lazy fox jumped", Description = "right part from contained substring")]
+		[TestCase("lazy lazy fox jumped", "d", "", Description = "Right from end of word")]
+		[TestCase("lazy lazy fox jumped", "ed", "", Description = "Right from end of word")]
+		[TestCase("lazy lazy fox jumped", "c", null, Description = "Char not found")]
+		[TestCase("lazy lazy fox jumped", "lozy", null, Description = "String not found")]
+		[TestCase("DOMAIN\\username", "\\", "username")]
+		public void RightFromFirst_Specification(string input, string substring, string expected)
+		{
+			Assert.That(input.RightFromFirst(substring), Is.EqualTo(expected));
+		}
+
+
+		[TestCase(null, "lazy lazy fox jumped", null, Description = "String not found")]
+		[TestCase(null, "", null, Description = "*.RightFromLast(null) --> *")]
+		[TestCase(null, null, null, Description = "*.RightFromLast(null) --> *")]
+		[TestCase("", "lazy lazy fox jumped", null, Description = "String not found")]
+		[TestCase("", "", "", Description = "*.RightFromLast(string.Empty) --> *")]
+		[TestCase("", null, "", Description = "*.RightFromLast(null) --> *")]
+		[TestCase("lazy lazy fox jumped", null, "", Description = "*.RightFromLast(null) --> string.Empty")]
+		[TestCase("lazy lazy fox jumped", "", "", Description = "*.RightFromLast(string.Empty) --> string.Empty")]
+		[TestCase("lazy lazy fox jumped", "l", "azy fox jumped", Description = "right part from beginning")]
+		[TestCase("lazy lazy fox jumped", "f", "ox jumped", Description = "right part from contained char")]
+		[TestCase("lazy lazy fox jumped", "azy", " fox jumped", Description = "right part from contained substring")]
+		[TestCase("lazy lazy fox jumped", "d", "", Description = "Right from end of word")]
+		[TestCase("lazy lazy fox jumped", "ed", "", Description = "Right from end of word")]
+		[TestCase("lazy lazy fox jumped", "c", null, Description = "Char not found")]
+		[TestCase("lazy lazy fox jumped", "lozy", null, Description = "String not found")]
+		[TestCase("DOMAIN\\username", "\\", "username")]
+		public void RightFromLast_Specification(string input, string substring, string expected)
+		{
+			Assert.That(input.RightFromLast(substring), Is.EqualTo(expected));
+		}
+
+		#endregion
+
+		#region Left
+
+
+		[TestCase("lazy lazy fox jumped", 4, "lazy", Description = "first 4 chars")]
+		[TestCase("lazy lazy fox jumped", 30, "lazy lazy fox jumped", Description = "length more than argument --> argument")]
+		[TestCase("lazy lazy fox jumped", 0, "", Description = "zero length --> empty")]
+		[TestCase("lazy lazy fox jumped", -1, "", Description = "negative length --> empty")]
+		[TestCase(null, 30, null, Description = "null --> null")]
+		[TestCase("", 30, "", Description = "empty --> empty")]
+		public void Left_Specification(string input, int length, string expected)
+		{
+			Assert.That(input.Left(length), Is.EqualTo(expected));
+		}
+
+
+		[TestCase(null, "lazy lazy fox jumped", null, Description = "String not found")]
+		[TestCase(null, "", null, Description = "null.LeftFromFirst(null) --> null")]
+		[TestCase(null, null, null, Description = "null.LeftFromFirst(null) --> null")]
+		[TestCase("", "lazy lazy fox jumped", null, Description = "String not found")]
+		[TestCase("", "", "", Description = "*.LeftFromFirst(string.Empty) --> string.Empty")]
+		[TestCase("", null, "", Description = "*.LeftFromFirst(null) --> string.Empty")]
+		[TestCase("lazy lazy fox jumped", null, "", Description = "*.LeftFromFirst(null) --> string.Empty")]
+		[TestCase("lazy lazy fox jumped", "", "", Description = "*.LeftFromFirst(string.Empty) --> string.Empty")]
+		[TestCase("lazy lazy fox jumped", "l", "", Description = "Left from beginning")]
+		[TestCase("lazy lazy fox jumped", "f", "lazy lazy ", Description = "Left from contained char")]
+		[TestCase("lazy lazy fox jumped", "azy", "l", Description = "LEft from contained substring")]
+		[TestCase("lazy lazy fox jumped", "d", "lazy lazy fox jumpe", Description = "Left from end of word")]
+		[TestCase("lazy lazy fox jumped", "ed", "lazy lazy fox jump", Description = "Left from end of word")]
+		[TestCase("lazy lazy fox jumped", "c", null, Description = "Char not found")]
+		[TestCase("lazy lazy fox jumped", "lozy", null, Description = "String not found")]
+		[TestCase("DOMAIN\\username", "\\", "DOMAIN")]
+		public void LeftFromFirst_Specification(string input, string substring, string expected)
+		{
+			Assert.That(input.LeftFromFirst(substring), Is.EqualTo(expected));
+		}
+
+
+		[TestCase(null, "lazy lazy fox jumped", null, Description = "String not found")]
+		[TestCase(null, "", null, Description = "*.LeftFromLast(null) --> *")]
+		[TestCase(null, null, null, Description = "*.LeftFromLast(null) --> *")]
+		[TestCase("", "lazy lazy fox jumped", null, Description = "String not found")]
+		[TestCase("", "", "", Description = "*.LeftFromLast(string.Empty) --> *")]
+		[TestCase("", null, "", Description = "*.LeftFromLast(null) --> *")]
+		[TestCase("lazy lazy fox jumped", null, "", Description = "*.LeftFromLast(null) --> *")]
+		[TestCase("lazy lazy fox jumped", "", "", Description = "*.LeftFromLast(string.Empty) --> *")]
+		[TestCase("lazy lazy fox jumped", "l", "lazy ", Description = "Left from beginning")]
+		[TestCase("lazy lazy fox jumped", "f", "lazy lazy ", Description = "Left from contained char")]
+		[TestCase("lazy lazy fox jumped", "azy", "lazy l", Description = "LEft from contained substring")]
+		[TestCase("lazy lazy fox jumped", "d", "lazy lazy fox jumpe", Description = "Left from end of word")]
+		[TestCase("lazy lazy fox jumped", "ed", "lazy lazy fox jump", Description = "Left from end of word")]
+		[TestCase("lazy lazy fox jumped", "c", null, Description = "Char not found")]
+		[TestCase("lazy lazy fox jumped", "lozy", null, Description = "String not found")]
+		[TestCase("DOMAIN\\username", "\\", "DOMAIN")]
+		public void LeftFromLast_Specification(string input, string substring, string expected)
+		{
+			Assert.That(input.LeftFromLast(substring), Is.EqualTo(expected));
+		}
+
+		#endregion
+
+		#endregion
 	}
 }
