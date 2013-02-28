@@ -90,6 +90,23 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 			return result;
 		}
 
+		public static T? Unbox<T>(this DbExtensionPoint e) where T: struct
+		{
+			T? result = null;
+			try
+			{
+				if (e.ExtendedValue != null)
+				{
+					result = (T?)Convert.ChangeType(e.ExtendedValue, typeof(T));
+				}
+			}
+			// there is no TryChangeType :-(
+			catch (FormatException) { }
+			catch (OverflowException) { }
+			catch (InvalidCastException) { }
+			return result;
+		}
+
 		#endregion
 
 		public static bool IsIntegral(this object o)

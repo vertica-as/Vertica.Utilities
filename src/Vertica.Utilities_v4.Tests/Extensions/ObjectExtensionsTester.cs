@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using Vertica.Utilities_v4.Extensions.ObjectExt;
+using Vertica.Utilities_v4.Tests.Extensions.Support;
 
 namespace Vertica.Utilities_v4.Tests.Extensions
 {
@@ -54,6 +55,71 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		{
 			Assert.That(input.Db().ToBoolean(), Is.EqualTo(expected));
 		}
+
+		#endregion
+
+		#region Unbox
+
+		#region Unbox
+
+		[Test]
+		public void Unbox_NoConversion_SameValue()
+		{
+			Assert.That(3.Db().Unbox<int>(), Is.EqualTo(3));
+		}
+
+		[Test]
+		public void Unbox_SafeConversion_ExpectedValue()
+		{
+			const short maxValue = short.MaxValue;
+			Assert.That((maxValue + 10).Db().Unbox<int>(), Is.EqualTo(maxValue + 10));
+		}
+
+		[Test]
+		public void Unbox_NullArgument_Null()
+		{
+			object o = null;
+			Assert.That(o.Db().Unbox<short>(), Is.Null);
+		}
+
+		[Test]
+		public void Unbox_UnSafeConversionNoOverflow_ExpectedValue()
+		{
+			const int maxValue = short.MaxValue - 10;
+			Assert.That(maxValue.Db().Unbox<short>(), Is.EqualTo(maxValue));
+		}
+
+		[Test]
+		public void Unbox_UnSafeConversionOverFlow_Null()
+		{
+			const int maxValue = short.MaxValue + 10;
+			Assert.That(maxValue.Db().Unbox<short>(), Is.Null);
+		}
+
+
+		[TestCase(3.5, 4)]
+		[TestCase(3.9, 4)]
+		[TestCase(3.49, 3)]
+		[TestCase(3.1, 3)]
+		[TestCase(3.0000001, 3)]
+		public void Unbox_DifferentTypesRound_RoundedUpOrLow(double rational, int roundedValue)
+		{
+			Assert.That(rational.Db().Unbox<int>(), Is.EqualTo(roundedValue));
+		}
+
+		[Test]
+		public void Unbox_NoConversionPossible_Null()
+		{
+			Assert.That("s".Db().Unbox<short>(), Is.Null);
+		}
+
+		[Test]
+		public void Unbox_NotIConvertible_Null()
+		{
+			Assert.That("whatever".Db().Unbox<NotIConvertible>(), Is.Null);
+		}
+
+		#endregion
 
 		#endregion
 
