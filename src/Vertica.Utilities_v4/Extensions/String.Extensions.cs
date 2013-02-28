@@ -232,7 +232,32 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 
 		#endregion
 
+		#region conditional concatenation
 
+		public static string AppendIfNotThere(this string str, string appendix)
+		{
+			if (str == null && appendix == null) return null;
+			return appendIfNotThere(str.EmptyIfNull(), appendix.EmptyIfNull());
+		}
+
+		public static string PrependIfNotThere(this string str, string prefix)
+		{
+			if (str == null && prefix == null) return null;
+			return prependIfNotThere(str.EmptyIfNull(), prefix.EmptyIfNull());
+		}
+
+		// we have preciously handled nulls, so that they are empties
+		private static string appendIfNotThere(string str, string appendix)
+		{
+			return str.EndsWith(appendix) ? str : string.Concat(str, appendix);
+		}
+
+		private static string prependIfNotThere(string str, string prefix)
+		{
+			return str.StartsWith(prefix) ? str : string.Concat(prefix, str);
+		}
+
+		#endregion
 
 		public static T Parse<T>(this string s)
 		{
@@ -243,18 +268,6 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 				result = (T)tc.ConvertFrom(s);
 			}
 			return result;
-		}
-
-		public static string AppendIfNotThere(this string str, string appendix)
-		{
-			if (str == null && appendix == null) return null;
-			return appendIfNotThere(str.EmptyIfNull(), appendix.EmptyIfNull());
-		}
-
-		// we have preciously handled nulls, so that they are empties
-		private static string appendIfNotThere(string str, string appendix)
-		{
-			return str.EndsWith(appendix) ? str : string.Concat(str, appendix);
 		}
 	}
 }

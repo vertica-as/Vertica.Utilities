@@ -277,8 +277,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		#endregion
 
 		#region Left
-
-
+		
 		[TestCase("lazy lazy fox jumped", 4, "lazy", Description = "first 4 chars")]
 		[TestCase("lazy lazy fox jumped", 30, "lazy lazy fox jumped", Description = "length more than argument --> argument")]
 		[TestCase("lazy lazy fox jumped", 0, "", Description = "zero length --> empty")]
@@ -335,6 +334,43 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		#endregion
+
+		#endregion
+
+		#region conditional concatenation
+
+		[TestCase("abc", "c", "abc")]
+		[TestCase("abc", "C", "abcC")]
+		[TestCase("abc", "z", "abcz")]
+		[TestCase("", "c", "c")]
+		[TestCase(null, "c", "c")]
+		[TestCase("c", "", "c")]
+		[TestCase("c", null, "c")]
+		[TestCase("", "", "")]
+		[TestCase("", null, "")]
+		[TestCase(null, "", "")]
+		[TestCase(null, null, null)]
+		public void AppendIfNotThere_Combinations(string input, string appendix, string expected)
+		{
+			Assert.That(input.AppendIfNotThere(appendix), Is.EqualTo(expected));
+		}
+
+
+		[TestCase("abc", "a", "abc")]
+		[TestCase("abc", "A", "Aabc")]
+		[TestCase("abc", "z", "zabc")]
+		[TestCase("", "c", "c")]
+		[TestCase(null, "c", "c")]
+		[TestCase("c", "", "c")]
+		[TestCase("c", null, "c")]
+		[TestCase("", "", "")]
+		[TestCase("", null, "")]
+		[TestCase(null, "", "")]
+		[TestCase(null, null, null)]
+		public void PrependIfNotThere_Combinations(string input, string prefix, string expected)
+		{
+			Assert.That(input.PrependIfNotThere(prefix), Is.EqualTo(expected));
+		}
 
 		#endregion
 	}
