@@ -591,6 +591,22 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 
 		#endregion
 
+		#region Chunkify
+
+		[Test]
+		public void Chunkify_LengthMoreThanChunk_ManyStringsOfChunkLength()
+		{
+			Assert.That("1234567890".Chunkify(3), Is.EqualTo(new[]{"123", "456", "789", "0"}));
+		}
+
+		[Test]
+		public void Chunkify_LengthLessThanChunk_OneOriginalString()
+		{
+			Assert.That("123".Chunkify(5), Is.EqualTo(new[] { "123" }));
+		}
+
+		#endregion
+
 		#region IO
 
 		[Test]

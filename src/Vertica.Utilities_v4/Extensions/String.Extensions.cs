@@ -320,6 +320,17 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 			});
 		}
 
+		public static IEnumerable<string> Chunkify(this string text, uint chunkSize)
+		{
+			int offset = 0;
+			while (offset < text.Length)
+			{
+				int size = Math.Min((int)chunkSize, text.Length - offset);
+				yield return text.Substring(offset, size);
+				offset += size;
+			}
+		}
+
 		#region IO
 
 		public class IOExtensionPoint<T> : ExtensionPoint<T>
