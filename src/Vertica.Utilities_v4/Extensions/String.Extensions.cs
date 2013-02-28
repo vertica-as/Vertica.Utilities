@@ -270,6 +270,21 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 			});
 		}
 
+		public static string Separate(this string s, uint size, string separator)
+		{
+			Guard.AgainstArgument<ArgumentOutOfRangeException>("size", size == 0);
+
+			return s.NullOrAction(()=>
+			{
+				// RegEx pattern: (.{1,4})
+				string pattern = "(.{{1,{0}}})".FormatWith(size);
+				return Regex.Replace(s, pattern, m => 
+					m.Value + (m.NextMatch().Success ?
+					separator :
+					string.Empty));
+			});
+		}
+
 		public static T Parse<T>(this string s)
 		{
 			T result = default(T);

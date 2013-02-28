@@ -515,5 +515,76 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		#endregion
+
+		#region Separate
+
+		[Test]
+		public void Separate_NullInput_ReturnNull()
+		{
+			string s = null;
+			Assert.That(s.Separate(1, null), Is.Null);
+		}
+
+		[Test]
+		public void Separate_ZeroSplitCount_ThrowsArgumentOutOfRangeException()
+		{
+			Assert.That(() => "string".Separate(0, ""), Throws.InstanceOf<ArgumentOutOfRangeException>());
+		}
+
+		[Test]
+		public void Separate_NullSplitValue_ReturnsSameString()
+		{
+			string s = "input";
+			Assert.That(s.Separate(1, null), Is.EqualTo("input"));
+		}
+
+		[Test]
+		public void Separate_EmptySplitValue_ReturnsSameString()
+		{
+			string s = "input";
+			Assert.That(s.Separate(1, String.Empty), Is.EqualTo("input"));
+		}
+
+		[Test]
+		public void Separate_SplitCountEqualsInputLength_ReturnsSameString()
+		{
+			string s = "input";
+			Assert.That(s.Separate((uint)s.Length, "."), Is.EqualTo("input"));
+		}
+
+		[Test]
+		public void Separate_SplitCountOverflowInputLength_ReturnsSameString()
+		{
+			string s = "input";
+			Assert.That(s.Separate((uint)s.Length + 1, "."), Is.EqualTo("input"));
+		}
+
+		[Test]
+		public void Separate_ByEachChar_SeparatorEveryOtherChar()
+		{
+			string s = "input";
+			Assert.That(s.Separate(1, "-"), Is.EqualTo("i-n-p-u-t"));
+		}
+
+		[Test]
+		public void Separate_RoomforOnlyOneSeparator_OnlyOneSeparator()
+		{
+			Assert.That("input".Separate(4, "-"), Is.EqualTo("inpu-t"));
+		}
+
+		[Test]
+		public void Separate_RoomforTwoSeparators_TwoSeparators()
+		{
+			Assert.That("input".Separate(2, "-"), Is.EqualTo("in-pu-t"));
+		}
+
+		[Test]
+		public void Separate_SeparatorWouldBeLastChar_NoLastSeparator()
+		{
+			string s = "splitter";
+			Assert.That(s.Separate(4, "-"), Is.EqualTo("spli-tter"));
+		}
+
+		#endregion
 	}
 }
