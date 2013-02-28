@@ -9,12 +9,14 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 			return instance == null ? @default : instance.ToString();
 		}
 
-		public static T NullOrAction<T>(this T argument, Func<T> func) where T : class
+		public static U Safe<T, U>(this T argument, Func<T, U> func)
+			where T : class
+			where U : class
 		{
-			T result = null;
+			U result = null;
 			if (argument != null)
 			{
-				result = func();
+				result = func(argument);
 			}
 			return result;
 		}

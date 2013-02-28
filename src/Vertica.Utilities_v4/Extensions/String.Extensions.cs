@@ -53,9 +53,9 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 		/// </example>
 		public static string Strip(this string s, params char[] chars)
 		{
-			return s.NullOrAction(() =>
+			return s.Safe(s1 =>
 			{
-				string result = s;
+				string result = s1;
 				if (chars != null)
 				{
 					foreach (char c in chars)
@@ -79,14 +79,14 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 		/// <returns></returns>
 		public static string Strip(this string s, string subString)
 		{
-			return s.NullOrAction(() => s.Replace(subString, string.Empty));
+			return s.Safe(s1 => s1.Replace(subString, string.Empty));
 		}
 
 		private static readonly string _strippingPattern = @"<(.|\n)*?>";
 		private static readonly Regex _strippingRegEx = new Regex(_strippingPattern, RegexOptions.Compiled);
 		public static string StripHtmlTags(this string input)
 		{
-			return input.NullOrAction(() => _strippingRegEx.Replace(input, string.Empty));
+			return input.Safe(s1 => _strippingRegEx.Replace(s1, string.Empty));
 		}
 
 		#endregion
@@ -116,9 +116,9 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 		/// <returns></returns>
 		public static string Right(this SubstrExtensionPoint ep, int length)
 		{
-			string s = ep.ExtendedValue;
+			string e = ep.ExtendedValue;
 			length = Math.Max(length, 0);
-			return s.NullOrAction(() => (s.Length > length) ? s.Substring(s.Length - length, length) : s);
+			return e.Safe(s => (s.Length > length) ? s.Substring(s.Length - length, length) : s);
 		}
 
 		/// <summary>
@@ -135,8 +135,8 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 		/// </remarks>
 		public static string RightFromFirst(this SubstrExtensionPoint sp, string substring, StringComparison comparison = StringComparison.Ordinal)
 		{
-			string s = sp.ExtendedValue;
-			return s.NullOrAction(() =>
+			string e = sp.ExtendedValue;
+			return e.Safe(s =>
 			{
 				substring = substring.EmptyIfNull();
 				int indexOfSubstringEnd = s.IndexOf(substring, comparison) >= 0 ?
@@ -160,8 +160,8 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 		/// </remarks>
 		public static string RightFromLast(this SubstrExtensionPoint sp, string substring, StringComparison comparison = StringComparison.Ordinal)
 		{
-			string s = sp.ExtendedValue;
-			return s.NullOrAction(() =>
+			string e = sp.ExtendedValue;
+			return e.Safe(s =>
 			{
 				substring = substring.EmptyIfNull();
 				int indexOfSubstringEnd = -1;
@@ -190,9 +190,9 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 		/// <returns></returns>
 		public static string Left(this SubstrExtensionPoint sp, int length)
 		{
-			string s = sp.ExtendedValue;
+			string e = sp.ExtendedValue;
 			length = Math.Max(length, 0);
-			return s.NullOrAction(() => (s.Length > length) ? s.Substring(0, length) : s);
+			return e.Safe(s => (s.Length > length) ? s.Substring(0, length) : s);
 		}
 
 
@@ -210,8 +210,8 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 		/// </remarks>
 		public static string LeftFromFirst(this SubstrExtensionPoint sp, string substring, StringComparison comparison = StringComparison.Ordinal)
 		{
-			string s = sp.ExtendedValue;
-			return s.NullOrAction(() =>
+			string e = sp.ExtendedValue;
+			return e.Safe(s =>
 			{
 				substring = substring.EmptyIfNull();
 				int indexOfSubstringStart = s.IndexOf(substring, comparison) >= 0 ?
@@ -236,8 +236,8 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 
 		public static string LeftFromLast(this SubstrExtensionPoint sp, string substring, StringComparison comparison = StringComparison.Ordinal)
 		{
-			string s = sp.ExtendedValue;
-			return s.NullOrAction(() =>
+			string e = sp.ExtendedValue;
+			return e.Safe(s =>
 			{
 				substring = substring.EmptyIfNull();
 				int indexOfSubstringStart = -1;
@@ -296,24 +296,24 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 
 		public static string FormatWith(this string s, params object[] additionalArgs)
 		{
-			return s.NullOrAction(() =>
+			return s.Safe(input =>
 			{
 				string result = additionalArgs == null || additionalArgs.Length == 0 ?
-					s :
-					string.Format(s, additionalArgs);
+					input :
+					string.Format(input, additionalArgs);
 				return result;
 			});
 		}
 
-		public static string Separate(this string s, uint size, string separator)
+		public static string Separate(this string ss, uint size, string separator)
 		{
 			Guard.AgainstArgument<ArgumentOutOfRangeException>("size", size == 0);
 
-			return s.NullOrAction(() =>
+			return ss.Safe(input =>
 			{
 				// RegEx pattern: (.{1,4})
 				string pattern = "(.{{1,{0}}})".FormatWith(size);
-				return Regex.Replace(s, pattern, m =>
+				return Regex.Replace(input, pattern, m =>
 					m.Value + (m.NextMatch().Success ?
 					separator :
 					string.Empty));
