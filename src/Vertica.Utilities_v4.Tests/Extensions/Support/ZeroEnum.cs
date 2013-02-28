@@ -1,9 +1,9 @@
 ﻿namespace Vertica.Utilities_v4.Tests.Extensions.Support
 {
-	public enum IsDefaultNonZeroEnumSubject
+	public enum ZeroEnum
 	{
+		Zero = 0,
 		One = 1,
-		Two = 2,
-		Three = 3
+		Two = 2
 	}
 }

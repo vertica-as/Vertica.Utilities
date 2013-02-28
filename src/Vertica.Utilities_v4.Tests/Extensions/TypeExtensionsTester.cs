@@ -34,22 +34,22 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		{
 			Assert.That(typeof(int).GetDefault<int>(), Is.EqualTo(default(int)));
 			Assert.That(typeof(string).GetDefault<string>(), Is.EqualTo(default(string)));
-			Assert.That(typeof(IsDefaultNonZeroEnumSubject).GetDefault<IsDefaultNonZeroEnumSubject>(), Is.EqualTo(default(IsDefaultNonZeroEnumSubject)));
+			Assert.That(typeof(NonZeroEnum).GetDefault<NonZeroEnum>(), Is.EqualTo(default(NonZeroEnum)));
 
 			Assert.That(typeof(int).GetDefault(), Is.EqualTo(default(int)));
 			Assert.That(typeof(string).GetDefault(), Is.EqualTo(default(string)));
-			Assert.That(typeof(IsDefaultNonZeroEnumSubject).GetDefault(), Is.EqualTo(default(IsDefaultNonZeroEnumSubject)));
+			Assert.That(typeof(NonZeroEnum).GetDefault(), Is.EqualTo(default(NonZeroEnum)));
 		}
 
 		[TestCase(typeof(int), false)]
 		[TestCase(typeof(string), false)]
-		[TestCase(typeof(IsDefaultNonZeroEnumSubject), false)]
+		[TestCase(typeof(NonZeroEnum), false)]
 		[TestCase(typeof(Action<>), false)]
 		[TestCase(typeof(Action<int>), false)]
 		[TestCase(typeof(Action<string>), false)]
 		[TestCase(typeof(IServiceProvider), false)]
 		[TestCase(typeof(int?), true)]
-		[TestCase(typeof(IsDefaultNonZeroEnumSubject?), true)]
+		[TestCase(typeof(NonZeroEnum?), true)]
 		public void IsNullable_TrueWhenNullableValueType(Type t, bool value)
 		{
 			Assert.That(t.IsNullable(), Is.EqualTo(value));
@@ -57,13 +57,13 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 
 		[TestCase(typeof(int), false)]
 		[TestCase(typeof(string), true)]
-		[TestCase(typeof(IsDefaultNonZeroEnumSubject), false)]
+		[TestCase(typeof(NonZeroEnum), false)]
 		[TestCase(typeof(Action<>), true)]
 		[TestCase(typeof(Action<int>), true)]
 		[TestCase(typeof(Action<string>), true)]
 		[TestCase(typeof(IServiceProvider), true)]
 		[TestCase(typeof(int?), true)]
-		[TestCase(typeof(IsDefaultNonZeroEnumSubject?), true)]
+		[TestCase(typeof(NonZeroEnum?), true)]
 		public void CanBeNulled_TrueWhenNullableOrReference(Type t, bool value)
 		{
 			Assert.That(t.CanBeNulled(), Is.EqualTo(value));

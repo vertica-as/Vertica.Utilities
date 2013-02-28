@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Vertica.Utilities_v4.Extensions.TypeExt;
 
 namespace Vertica.Utilities_v4.Extensions.ObjectExt
 {
@@ -102,6 +103,17 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 				(o is short) || (o is ushort) ||
 				(o is int) || (o is uint) ||
 				(o is long) || (o is ulong);
+		}
+
+		public static bool IsBoxedDefault(this object instance)
+		{
+			bool isDefault = true;
+			if (instance != null)
+			{
+				Type boxedType = instance.GetType();
+				isDefault = boxedType.IsValueType && instance.Equals(boxedType.GetDefault());
+			}
+			return isDefault;
 		}
 
 		public static bool IsNotDefault<T>(this T instance)

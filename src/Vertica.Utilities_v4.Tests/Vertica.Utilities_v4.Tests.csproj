@@ -100,9 +100,10 @@
     <Compile Include="Extensions\Support\AttributeSubjects.cs" />
     <Compile Include="Extensions\Support\DbParameterValueConstraint.cs" />
     <Compile Include="Extensions\Support\InheritanceSubjects.cs" />
-    <Compile Include="Extensions\Support\IsDefaultNonZeroEnumSubject.cs" />
+    <Compile Include="Extensions\Support\NonZeroEnum.cs" />
     <Compile Include="Extensions\Support\NotIConvertible.cs" />
     <Compile Include="Extensions\Support\OrderSubject.cs" />
+    <Compile Include="Extensions\Support\ZeroEnum.cs" />
     <Compile Include="Extensions\TypeExtensionsTester.cs" />
     <Compile Include="ICloneableTester.cs" />
     <Compile Include="IInitializableTester.cs" />

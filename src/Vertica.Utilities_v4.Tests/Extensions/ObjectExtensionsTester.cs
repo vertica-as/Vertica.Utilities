@@ -117,5 +117,104 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		#endregion
+
+		#region IsBoxedDefault
+
+		[Test]
+		public void IsBoxedDefault_NullReferenceTypes_True()
+		{
+			Exception ex = null;
+			Assert.That(ex.IsBoxedDefault(), Is.True);
+			object o = ex;
+			Assert.That(o.IsBoxedDefault(), Is.True);
+		}
+
+		[Test]
+		public void IsBoxedDefault_NotNullReferenceTypes_False()
+		{
+			var ex = new Exception();
+			Assert.That(ex.IsBoxedDefault(), Is.False);
+			object o = ex;
+			Assert.That(o.IsBoxedDefault(), Is.False);
+			o = new DescriptionAttribute(null);
+			Assert.That(o.IsBoxedDefault(), Is.False);
+		}
+
+		[Test]
+		public void IsBoxedDefault_NullNullableTypes_True()
+		{
+			int? i = null;
+			Assert.That(i.IsBoxedDefault(), Is.True);
+			object o = i;
+			Assert.That(o.IsBoxedDefault(), Is.True);
+		}
+
+		[Test]
+		public void IsBoxedDefault_NotNullNonDefaultNullableTypes_False()
+		{
+			int? i = 3;
+			Assert.That(i.IsBoxedDefault(), Is.False);
+			object o = i;
+			Assert.That(o.IsBoxedDefault(), Is.False);
+		}
+
+		[Test]
+		public void IsBoxedDefault_NotNullDefaultNullableTypes_True()
+		{
+			int? i = 0;
+			Assert.That(i.IsBoxedDefault(), Is.True);
+			object o = i;
+			Assert.That(o.IsBoxedDefault(), Is.True);
+		}
+
+		[Test]
+		public void IsBoxedDefault_NonDefaultValueTypes_False()
+		{
+			int i = 3;
+			Assert.That(i.IsBoxedDefault(), Is.False);
+			object o = i;
+			Assert.That(o.IsBoxedDefault(), Is.False);
+		}
+
+		[Test]
+		public void IsBoxedDefault_DefaultValueTypes_True()
+		{
+			int i = 0;
+			Assert.That(i.IsBoxedDefault(), Is.True);
+			object o = i;
+			Assert.That(o.IsBoxedDefault(), Is.True);
+		}
+
+		[Test]
+		public void IsBoxedDefault_NonDefaultEnums_False()
+		{
+			var e1 = NonZeroEnum.One;
+			Assert.That(e1.IsBoxedDefault(), Is.False);
+			object o = e1;
+			Assert.That(o.IsBoxedDefault(), Is.False);
+
+			var e2 = ZeroEnum.Two;
+			Assert.That(e2.IsBoxedDefault(), Is.False);
+			o = e2;
+			Assert.That(o.IsBoxedDefault(), Is.False);
+		}
+
+		[Test]
+		public void IsBoxedDefault_DefaultEnums_TrueWhenZeroBased()
+		{
+			var e1 = NonZeroEnum.Zero;
+			Assert.That(e1.IsBoxedDefault(), Is.False);
+			object o = e1;
+			Assert.That(o.IsBoxedDefault(), Is.False);
+			e1 = default(NonZeroEnum);
+			Assert.That(e1.IsBoxedDefault(), Is.True);
+
+			var e2 = ZeroEnum.Zero;
+			Assert.That(e2.IsBoxedDefault(), Is.True);
+			o = e2;
+			Assert.That(o.IsBoxedDefault(), Is.True);
+		}
+
+		#endregion
 	}
 }
