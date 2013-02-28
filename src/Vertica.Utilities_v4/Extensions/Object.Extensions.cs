@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Vertica.Utilities_v4.Extensions.Infrastructure;
-using Vertica.Utilities_v4.Extensions.StringExt;
 
 namespace Vertica.Utilities_v4.Extensions.ObjectExt
 {
@@ -24,27 +22,16 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 			return result;
 		}
 
-		#region Db, old ADO checking
-
-		public class DbExtensionPoint : ExtensionPoint<object>
-		{
-			public DbExtensionPoint(object value) : base(value) { }
-		}
-
-		public static DbExtensionPoint Db(this object subject)
-		{
-			return new DbExtensionPoint(subject);
-		}
+		#region unbox, checking DbNull
 
 		/// <summary>
 		/// Returns <c>null</c> if the object cannot be converted somehow to bool or if it is<see cref="DBNull.Value"/>.
 		/// </summary>
-		public static bool? ToBoolean(this DbExtensionPoint e)
+		public static bool? UnboxBool(this object o)
 		{
 			bool? result = null;
 			try
 			{
-				object o = e.ExtendedValue;
 				if (o != DBNull.Value)
 				{
 					if (o is bool)
@@ -90,14 +77,14 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 			return result;
 		}
 
-		public static T? Unbox<T>(this DbExtensionPoint e) where T: struct
+		public static T? Unbox<T>(this object o) where T: struct
 		{
 			T? result = null;
 			try
 			{
-				if (e.ExtendedValue != null)
+				if (o != null)
 				{
-					result = (T?)Convert.ChangeType(e.ExtendedValue, typeof(T));
+					result = (T?)Convert.ChangeType(o, typeof(T));
 				}
 			}
 			// there is no TryChangeType :-(
