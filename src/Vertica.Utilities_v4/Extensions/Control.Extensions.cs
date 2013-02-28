@@ -76,7 +76,7 @@ namespace Vertica.Utilities_v4.Extensions.ControlExt
 
 	  public static T LoadControl<T>(this TemplateControl entry, Uri userControlsPath) where T : UserControl
 	  {
-		  return (T)entry.LoadControl(userControlsPath.ToString().AppendIfNotThere("/") + userControlFileName<T>());
+		  return (T)entry.LoadControl(userControlsPath.ToString().IfNotThere().Append("/") + userControlFileName<T>());
 	  }
 
   }

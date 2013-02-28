@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Web;
 using NUnit.Framework;
-using Vertica.Utilities_v4.Extensions.Infrastructure;
+using Testing.Commons.Time;
 using Vertica.Utilities_v4.Extensions.StringExt;
 
 namespace Vertica.Utilities_v4.Tests.Extensions
@@ -232,7 +233,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[TestCase("", 30, "", Description = "empty --> empty")]
 		public void Right_Specification(string input, int length, string expected)
 		{
-			Assert.That(input.Right(length), Is.EqualTo(expected));
+			Assert.That(input.Substr().Right(length), Is.EqualTo(expected));
 		}
 
 		[TestCase(null, "lazy lazy fox jumped", null, Description = "String not found")]
@@ -253,7 +254,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[TestCase("DOMAIN\\username", "\\", "username")]
 		public void RightFromFirst_Specification(string input, string substring, string expected)
 		{
-			Assert.That(input.RightFromFirst(substring), Is.EqualTo(expected));
+			Assert.That(input.Substr().RightFromFirst(substring), Is.EqualTo(expected));
 		}
 
 
@@ -275,7 +276,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[TestCase("DOMAIN\\username", "\\", "username")]
 		public void RightFromLast_Specification(string input, string substring, string expected)
 		{
-			Assert.That(input.RightFromLast(substring), Is.EqualTo(expected));
+			Assert.That(input.Substr().RightFromLast(substring), Is.EqualTo(expected));
 		}
 
 		#endregion
@@ -290,7 +291,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[TestCase("", 30, "", Description = "empty --> empty")]
 		public void Left_Specification(string input, int length, string expected)
 		{
-			Assert.That(input.Left(length), Is.EqualTo(expected));
+			Assert.That(input.Substr().Left(length), Is.EqualTo(expected));
 		}
 
 
@@ -312,7 +313,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[TestCase("DOMAIN\\username", "\\", "DOMAIN")]
 		public void LeftFromFirst_Specification(string input, string substring, string expected)
 		{
-			Assert.That(input.LeftFromFirst(substring), Is.EqualTo(expected));
+			Assert.That(input.Substr().LeftFromFirst(substring), Is.EqualTo(expected));
 		}
 
 
@@ -334,7 +335,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[TestCase("DOMAIN\\username", "\\", "DOMAIN")]
 		public void LeftFromLast_Specification(string input, string substring, string expected)
 		{
-			Assert.That(input.LeftFromLast(substring), Is.EqualTo(expected));
+			Assert.That(input.Substr().LeftFromLast(substring), Is.EqualTo(expected));
 		}
 
 		#endregion
@@ -356,7 +357,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[TestCase(null, null, null)]
 		public void AppendIfNotThere_Combinations(string input, string appendix, string expected)
 		{
-			Assert.That(input.AppendIfNotThere(appendix), Is.EqualTo(expected));
+			Assert.That(input.IfNotThere().Append(appendix), Is.EqualTo(expected));
 		}
 		
 		[TestCase("abc", "a", "abc")]
@@ -372,7 +373,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[TestCase(null, null, null)]
 		public void PrependIfNotThere_Combinations(string input, string prefix, string expected)
 		{
-			Assert.That(input.PrependIfNotThere(prefix), Is.EqualTo(expected));
+			Assert.That(input.IfNotThere().Prepend(prefix), Is.EqualTo(expected));
 		}
 
 		#endregion
@@ -658,6 +659,192 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			Assert.That(s.Http().HtmlDecode(), Is.EqualTo(HttpUtility.HtmlDecode(s)));
 		}
 
+
+		#endregion
+
+		#region Parse()
+
+		[Test]
+		public void Parse_IntStringToInt_Correct()
+		{
+			Assert.That("1".Parse<int>(), Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Parse_IntStringToNullableInt_Correct()
+		{
+			Assert.That("1".Parse<int?>(), Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Parse_NotIntStringToInt_Exception()
+		{
+			Assert.Throws<Exception>(() => "asd".Parse<int>());
+		}
+
+		[Test]
+		public void Parse_NotIntStringToNullableInt_Exception()
+		{
+			Assert.Throws<Exception>(() => "asd".Parse<int?>());
+		}
+
+		[Test]
+		public void Parse_EmptyStringToInt_0()
+		{
+			Assert.That(string.Empty.Parse<int>(), Is.EqualTo(0));
+		}
+
+		[Test]
+		public void Parse_EmptyStringToNullableInt_Null()
+		{
+			Assert.That(string.Empty.Parse<int?>(), Is.Null);
+		}
+
+		[Test]
+		public void Parse_NullStringToInt_0()
+		{
+			string nullStr = null;
+			Assert.That(nullStr.Parse<int>(), Is.EqualTo(0));
+			// ReSharper disable AssignNullToNotNullAttribute
+			Assert.Throws<ArgumentNullException>(() => int.Parse(nullStr));
+			// ReSharper restore AssignNullToNotNullAttribute
+		}
+
+		[Test]
+		public void Parse_NullStringToNullableInt_Null()
+		{
+			string nullStr = null;
+			Assert.That(nullStr.Parse<int?>(), Is.Null);
+		}
+
+		[Test]
+		public void Parse_StringToCharArray_Exception()
+		{
+			Assert.Throws<NotSupportedException>(() => "asd".Parse<char[]>());
+		}
+
+		#region AsNullable
+
+		readonly Func<string, int> _intParse = s => int.Parse(s);
+
+		private readonly Func<string, DateTime> _ddmmyyParseExact =
+			s => DateTime.ParseExact(s, @"dd/MM/yy", CultureInfo.InvariantCulture);
+		
+		[TestCase(null, null)]
+		[TestCase("", null)]
+		[TestCase("3", 3)]
+		[TestCase("-1", -1)]
+		[TestCase("notAnInteger", null, ExpectedException = typeof(FormatException))]
+		public void AsNullable_NullableInt(string s, int? expected)
+		{
+			Assert.That(s.Parse().AsNullable(_intParse), Is.EqualTo(expected));
+		}
+
+		private void parse_NullableDateTime(string s, DateTime? expected)
+		{
+			Assert.That(s.Parse().AsNullable(_ddmmyyParseExact), Is.EqualTo(expected));
+		}
+
+		[Test]
+		public void AsNullable_Null_Null()
+		{
+			parse_NullableDateTime(null, null);
+		}
+		[Test]
+		public void AsNullable_Empty_Null()
+		{
+			parse_NullableDateTime(string.Empty, null);
+		}
+		[Test]
+		public void AsNullable_CorrectBirthDay_Birthday()
+		{
+			parse_NullableDateTime("11/03/77", 11.March(1977));
+		}
+		[Test]
+		public void AsNullable_IncorrectFormat_Exception()
+		{
+			Assert.Throws<FormatException>(() => parse_NullableDateTime("11/03/1977", null));
+		}
+
+		[Test]
+		public void AsNullable_NotADate_Exception()
+		{
+			Assert.Throws<FormatException>(() => parse_NullableDateTime("notADate", null));
+		}
+
+		#endregion
+
+		// ReSharper disable AccessToModifiedClosure
+		[Test]
+		public void Parse_Vs_AsNullable_WithStrings()
+		{
+			string input = "1";
+
+			Assert.DoesNotThrow(() => input.Parse<int>());
+			Assert.DoesNotThrow(() => input.Parse().AsNullable(s => int.Parse(s)));
+
+			input = null;
+			Assert.DoesNotThrow(() => input.Parse<int>());
+			Assert.DoesNotThrow(() => input.Parse().AsNullable(s => int.Parse(s)));
+		}
+		// ReSharper restore AccessToModifiedClosure
+
+		#region TryAsNullable
+
+		readonly TryParseDelegate<int> _intTryParse =
+			(string s, out int result) => int.TryParse(s, out result);
+
+		private readonly TryParseDelegate<DateTime> _ddmmyyTryParseExact =
+			(string s, out DateTime result) => DateTime.TryParseExact(s, @"dd/MM/yy", CultureInfo.InvariantCulture, DateTimeStyles.None, out result);
+
+
+		[TestCase(null, false, null)]
+		[TestCase("", false, null)]
+		[TestCase("3", true, 3)]
+		[TestCase("-1", true, -1)]
+		[TestCase("notAnInteger", false, null)]
+		public void TryAsNullable_NullableInt(string s, bool result, int? expected)
+		{
+			int? actual;
+			Assert.That(s.Parse().TryAsNullable(out actual, _intTryParse), Is.EqualTo(result));
+			Assert.That(expected, Is.EqualTo(actual));
+		}
+
+		private void tryParse_NullableDateTime(string s, bool result, DateTime? expected)
+		{
+			DateTime? actual;
+			Assert.That(s.Parse().TryAsNullable(out actual, _ddmmyyTryParseExact), Is.EqualTo(result));
+			Assert.That(expected, Is.EqualTo(actual));
+		}
+
+		[Test]
+		public void TryAsNullable_Null_FalseAndNull()
+		{
+			tryParse_NullableDateTime(null, false, null);
+		}
+		[Test]
+		public void TryAsNullable_Empty_FalseAndNull()
+		{
+			tryParse_NullableDateTime(string.Empty, false, null);
+		}
+		[Test]
+		public void TryAsNullable_CorrectBirthDay_TrueAndBirthday()
+		{
+			tryParse_NullableDateTime("11/03/77", true, 11.March(1977));
+		}
+		[Test]
+		public void TryAsNullable_IncorrectFormat_FalseAndNull()
+		{
+			tryParse_NullableDateTime("11/03/1977", false, null);
+		}
+
+		[Test]
+		public void TryAsNullable_NotADate_FalseAndNull()
+		{
+			tryParse_NullableDateTime("notADate", false, null);
+		}
+
+		#endregion
 
 		#endregion
 	}
