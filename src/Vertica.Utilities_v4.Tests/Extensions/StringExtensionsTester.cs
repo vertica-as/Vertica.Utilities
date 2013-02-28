@@ -1,5 +1,9 @@
 ﻿using System;
+using System.IO;
+using System.Text;
+using System.Web;
 using NUnit.Framework;
+using Vertica.Utilities_v4.Extensions.Infrastructure;
 using Vertica.Utilities_v4.Extensions.StringExt;
 
 namespace Vertica.Utilities_v4.Tests.Extensions
@@ -354,8 +358,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		{
 			Assert.That(input.AppendIfNotThere(appendix), Is.EqualTo(expected));
 		}
-
-
+		
 		[TestCase("abc", "a", "abc")]
 		[TestCase("abc", "A", "Aabc")]
 		[TestCase("abc", "z", "zabc")]
@@ -584,6 +587,77 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			string s = "splitter";
 			Assert.That(s.Separate(4, "-"), Is.EqualTo("spli-tter"));
 		}
+
+		#endregion
+
+		#region IO
+
+		[Test]
+		public void GetMemoryStream_RoundTrip_SameString()
+		{
+			string s1 = "Hello World!";
+			MemoryStream m = s1.IO().GetMemoryStream();
+
+			Assert.AreEqual(12, m.Length);
+
+			string s2 = m.IO().GetString();
+
+			Assert.That(s1, Is.EqualTo(s2));
+		}
+
+		#endregion
+
+		#region HttpUtility
+
+		[Test]
+		public void UrlEncode_SameAsExtended()
+		{
+			string s = "/æ";
+			Assert.That(s.Http().UrlEncode(), Is.EqualTo(HttpUtility.UrlEncode(s)));
+		}
+
+		[Test]
+		public void UrlEncode_WithEncoding_SameAsExtended()
+		{
+			string s = "q/&æ";
+			Assert.That(s.Http().UrlEncode(Encoding.Unicode), Is.EqualTo(HttpUtility.UrlEncode(s, Encoding.Unicode)));
+		}
+
+		[Test]
+		public void UrlDecode_SameAsExtended()
+		{
+			string s = "q%20&æ";
+			Assert.That(s.Http().UrlEncode(), Is.EqualTo(HttpUtility.UrlEncode(s)));
+		}
+
+		[Test]
+		public void UrlDecode_WithEncoding_SameAsExtended()
+		{
+			string s = "q%20&æ";
+			Assert.That(s.Http().UrlEncode(Encoding.UTF8), Is.EqualTo(HttpUtility.UrlEncode(s, Encoding.UTF8)));
+		}
+
+		[Test]
+		public void HtmlEncode_SameAsExtended()
+		{
+			string s = "&<>";
+			Assert.That(s.Http().HtmlEncode(), Is.EqualTo(HttpUtility.HtmlEncode(s)));
+		}
+
+		[Test]
+		public void HtmlAttributeEncode_SameAsExtended()
+		{
+			string s = "&<>";
+			Assert.That(s.Http().AttributeEncode(), Is.EqualTo(HttpUtility.HtmlAttributeEncode(s)));
+		}
+
+		[Test]
+		public void HtmlDecode_SameAsExtended()
+		{
+			string s = "&lt;";
+			Assert.That(s.Http().HtmlDecode(), Is.EqualTo(HttpUtility.HtmlDecode(s)));
+		}
+
 
 		#endregion
 	}

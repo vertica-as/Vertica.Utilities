@@ -1,7 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
+using Vertica.Utilities_v4.Extensions.Infrastructure;
 using Vertica.Utilities_v4.Extensions.ObjectExt;
 
 namespace Vertica.Utilities_v4.Extensions.StringExt
@@ -284,6 +288,92 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 					string.Empty));
 			});
 		}
+
+
+		#region IO
+
+		public static ExtensionPoint<MemoryStream> IO(this MemoryStream subject)
+		{
+			return new ExtensionPoint<MemoryStream>(subject);
+		}
+
+		public static ExtensionPoint<string> IO(this string subject)
+		{
+			return new ExtensionPoint<string>(subject);
+		}
+
+		public static string GetString(this ExtensionPoint<MemoryStream> m)
+		{
+			string result = null;
+
+			if (m != null && m.ExtendedValue!= null && m.ExtendedValue.Length > 0)
+			{
+				m.ExtendedValue.Flush();
+				m.ExtendedValue.Position = 0;
+				var sr = new StreamReader(m.ExtendedValue);
+				result = sr.ReadToEnd();
+			}
+			return result;
+		}
+
+		public static MemoryStream GetMemoryStream(this ExtensionPoint<string> s)
+		{
+			MemoryStream result = null;
+			if (s != null && !string.IsNullOrEmpty(s.ExtendedValue))
+			{
+				result = new MemoryStream();
+				var sw = new StreamWriter(result);
+				sw.Write(s.ExtendedValue);
+				sw.Flush();
+			}
+			return result;
+		}
+
+		#endregion
+
+		#region HttpUtility
+
+		public static ExtensionPoint<string> Http(this string subject)
+		{
+			return new ExtensionPoint<string>(subject);
+		}
+
+		public static string UrlEncode(this ExtensionPoint<string> str)
+		{
+			return HttpUtility.UrlEncode(str.ExtendedValue);
+		}
+
+		public static string UrlEncode(this ExtensionPoint<string> str, Encoding e)
+		{
+			return HttpUtility.UrlEncode(str.ExtendedValue, e);
+		}
+
+		public static string UrlDecode(this ExtensionPoint<string> str)
+		{
+			return HttpUtility.UrlDecode(str.ExtendedValue);
+		}
+
+		public static string UrlDecode(this ExtensionPoint<string> str, Encoding e)
+		{
+			return HttpUtility.UrlDecode(str.ExtendedValue, e);
+		}
+
+		public static string HtmlEncode(this ExtensionPoint<string> str)
+		{
+			return HttpUtility.HtmlEncode(str.ExtendedValue);
+		}
+
+		public static string AttributeEncode(this ExtensionPoint<string> str)
+		{
+			return HttpUtility.HtmlAttributeEncode(str.ExtendedValue);
+		}
+
+		public static string HtmlDecode(this ExtensionPoint<string> str)
+		{
+			return HttpUtility.HtmlDecode(str.ExtendedValue);
+		}
+
+		#endregion
 
 		public static T Parse<T>(this string s)
 		{
