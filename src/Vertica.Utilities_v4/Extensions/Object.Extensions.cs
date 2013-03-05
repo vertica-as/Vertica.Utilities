@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Vertica.Utilities_v4.Extensions.InstanceExt;
 using Vertica.Utilities_v4.Extensions.TypeExt;
 
 namespace Vertica.Utilities_v4.Extensions.ObjectExt

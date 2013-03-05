@@ -216,5 +216,130 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		#endregion
+
+		#region IsDefault/IsNotDefault
+
+		[Test]
+		public void IsDefault_ReferenceType_TrueWhenNull()
+		{
+			string s = null;
+			Assert.That(s.IsDefault(), Is.True);
+			Assert.That(s.IsNotDefault(), Is.False);
+			Exception ex = null;
+			Assert.That(ex.IsDefault(), Is.True);
+			Assert.That(ex.IsNotDefault(), Is.False);
+
+			Assert.That(string.Empty.IsDefault(), Is.False);
+			Assert.That(string.Empty.IsNotDefault(), Is.True);
+			ex = new Exception();
+			Assert.That(ex.IsDefault(), Is.False);
+			Assert.That(ex.IsNotDefault(), Is.True);
+		}
+
+		[Test]
+		public void IsDefault_ValueType_TrueWhenDefault()
+		{
+			int i = default(int);
+			Assert.That(i.IsDefault(), Is.True);
+			Assert.That(i.IsNotDefault(), Is.False);
+
+			Guid g = default(Guid);
+			Assert.That(g.IsDefault(), Is.True);
+			Assert.That(g.IsNotDefault(), Is.False);
+
+			i = 3;
+			Assert.That(i.IsDefault(), Is.False);
+			Assert.That(i.IsNotDefault(), Is.True);
+			g = new Guid("{E4878620-577E-46fe-97D8-BE0840B3C85D}");
+			Assert.That(g.IsDefault(), Is.False);
+			Assert.That(g.IsNotDefault(), Is.True);
+		}
+
+		[Test]
+		public void IsDefault_NullableTypes_TrueWhenNull()
+		{
+			int? i = null;
+			Assert.That(i.IsDefault(), Is.True);
+			Assert.That(i.IsNotDefault(), Is.False);
+
+			Guid? g = null;
+			Assert.That(g.IsDefault(), Is.True);
+			Assert.That(g.IsNotDefault(), Is.False);
+
+			i = default(int);
+			Assert.That(i.IsDefault(), Is.False);
+			Assert.That(i.IsNotDefault(), Is.True);
+			g = default(Guid);
+			Assert.That(g.IsDefault(), Is.False);
+			Assert.That(g.IsNotDefault(), Is.True);
+		}
+
+		[Test]
+		public void IsDefault_Enumerations_TrueWhenDefault()
+		{
+			var a = default(AttributeTargets);
+			Assert.That((int)a, Is.EqualTo(0));
+			Assert.That(a.IsDefault(), Is.True);
+			Assert.That(a.IsNotDefault(), Is.False);
+
+			var zeroEnum = default(ZeroEnum);
+			Assert.That((int)zeroEnum, Is.EqualTo(0));
+			Assert.That(zeroEnum.IsDefault(), Is.True);
+			Assert.That(zeroEnum.IsNotDefault(), Is.False);
+
+			var nonZeroEnum = default(NonZeroEnum);
+			Assert.That((int)nonZeroEnum, Is.EqualTo(0));
+			Assert.That(nonZeroEnum.IsDefault(), Is.True);
+			Assert.That(nonZeroEnum.IsNotDefault(), Is.False);
+
+			a = AttributeTargets.Assembly;
+			Assert.That(a.IsDefault(), Is.False);
+			Assert.That(a.IsNotDefault(), Is.True);
+
+			zeroEnum = ZeroEnum.Zero;
+			Assert.That(zeroEnum.IsDefault(), Is.True);
+			Assert.That(zeroEnum.IsNotDefault(), Is.False);
+
+			zeroEnum = ZeroEnum.One;
+			Assert.That(zeroEnum.IsDefault(), Is.False);
+			Assert.That(zeroEnum.IsNotDefault(), Is.True);
+
+			nonZeroEnum = NonZeroEnum.Zero;
+			Assert.That(nonZeroEnum.IsDefault(), Is.False);
+			Assert.That(nonZeroEnum.IsNotDefault(), Is.True);
+		}
+
+		[Test]
+		public void IsDefault_NullableEnumerations_TrueWhenNull()
+		{
+			AttributeTargets? a = default(AttributeTargets?);
+			Assert.That(a, Is.Null);
+			Assert.That(a.IsDefault(), Is.True);
+			Assert.That(a.IsNotDefault(), Is.False);
+
+			ZeroEnum? zeroEnum = default(ZeroEnum?);
+			Assert.That(zeroEnum, Is.Null);
+			Assert.That(zeroEnum.IsDefault(), Is.True);
+			Assert.That(zeroEnum.IsNotDefault(), Is.False);
+
+			NonZeroEnum? nonZeroEnum = default(NonZeroEnum?);
+			Assert.That(nonZeroEnum, Is.Null);
+			Assert.That(nonZeroEnum.IsDefault(), Is.True);
+			Assert.That(nonZeroEnum.IsNotDefault(), Is.False);
+
+			a = 0;
+			Assert.That(a.IsDefault(), Is.False);
+			Assert.That(a.IsNotDefault(), Is.True);
+
+			zeroEnum = 0;
+			Assert.That(zeroEnum.IsDefault(), Is.False);
+			Assert.That(zeroEnum.IsNotDefault(), Is.True);
+
+			nonZeroEnum = NonZeroEnum.Zero;
+			Assert.That(nonZeroEnum.IsDefault(), Is.False);
+			Assert.That(nonZeroEnum.IsNotDefault(), Is.True);
+		}
+
+		#endregion
 	}
 }
