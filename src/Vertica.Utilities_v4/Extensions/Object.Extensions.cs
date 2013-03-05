@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Vertica.Utilities_v4.Extensions.InstanceExt;
 using Vertica.Utilities_v4.Extensions.TypeExt;
 
 namespace Vertica.Utilities_v4.Extensions.ObjectExt
@@ -39,7 +40,7 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 					{
 						result = (bool)o;
 					}
-					else if (IsIntegral(o))
+					else if (o.IsIntegral())
 					{
 						long l = Convert.ToInt64(o);
 						if (l == 0) result = false;
@@ -97,13 +98,7 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 
 		#endregion
 
-		public static bool IsIntegral(this object o)
-		{
-			return (o is byte) || (o is sbyte) ||
-				(o is short) || (o is ushort) ||
-				(o is int) || (o is uint) ||
-				(o is long) || (o is ulong);
-		}
+		
 
 		public static bool IsBoxedDefault(this object instance)
 		{
