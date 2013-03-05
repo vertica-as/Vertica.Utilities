@@ -98,8 +98,6 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 
 		#endregion
 
-		
-
 		public static bool IsBoxedDefault(this object instance)
 		{
 			bool isDefault = true;
@@ -126,6 +124,14 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 				result = instance.Equals(default(T));
 			}
 			return result;
+		}
+
+		public static bool IsIntegral<T>(this T o)
+		{
+			return (o is byte) || (o is sbyte) ||
+				(o is short) || (o is ushort) ||
+				(o is int) || (o is uint) ||
+				(o is long) || (o is ulong);
 		}
 	}
 }

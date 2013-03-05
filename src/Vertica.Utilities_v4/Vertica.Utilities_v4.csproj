@@ -117,7 +117,6 @@
     <Compile Include="Extensions\Infrastructure\EntryPoints.cs" />
     <Compile Include="Extensions\Infrastructure\ExtensionPoint.cs" />
     <Compile Include="Extensions\Infrastructure\IExtensionPoint.cs" />
-    <Compile Include="Extensions\Instance.Extensions.cs" />
     <Compile Include="Extensions\Object.Extensions.cs" />
     <Compile Include="Extensions\Queryable.Extensions.cs" />
     <Compile Include="Extensions\Range.Extensions.cs" />
