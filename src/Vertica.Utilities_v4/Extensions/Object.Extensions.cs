@@ -47,7 +47,7 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 					}
 					else if (o is char)
 					{
-						var c = (char) o;
+						var c = (char)o;
 						if (c.Equals('0')) result = false;
 						if (c.Equals('1')) result = true;
 						if (c.Equals('t') || c.Equals('T')) result = true;
@@ -78,7 +78,7 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 			return result;
 		}
 
-		public static T? Unbox<T>(this object o) where T: struct
+		public static T? Unbox<T>(this object o) where T : struct
 		{
 			T? result = null;
 			try
@@ -132,5 +132,10 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 				(o is int) || (o is uint) ||
 				(o is long) || (o is ulong);
 		}
+
+		#region Cast
+
+
+		#endregion
 	}
 }

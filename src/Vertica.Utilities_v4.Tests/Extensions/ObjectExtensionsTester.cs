@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using Vertica.Utilities_v4.Eventing;
 using Vertica.Utilities_v4.Extensions.ObjectExt;
 using Vertica.Utilities_v4.Tests.Extensions.Support;
 
@@ -339,6 +340,12 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			Assert.That(nonZeroEnum.IsDefault(), Is.False);
 			Assert.That(nonZeroEnum.IsNotDefault(), Is.True);
 		}
+
+		#endregion
+
+		#region Cast
+
+		
 
 		#endregion
 	}
