@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using NSubstitute;
 using NUnit.Framework;
 using Testing.Commons;
 using Vertica.Utilities_v4.Collections;
@@ -590,6 +591,66 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			{
 				input
 			}));
+		}
+
+		#endregion
+
+		#region shuffle
+
+		[Test]
+		public void Shuffle_Default_SameItemsMostLikelyInDifferentOrder()
+		{
+			var oneToTwenty = Enumerable.Range(1, 20).ToList();
+
+			Assert.That(oneToTwenty.Shuffle(), Is.EquivalentTo(oneToTwenty).And
+				.Not.EqualTo(oneToTwenty), "most likely not equal");
+		}
+
+		[Test]
+		public void Shuffle_Limited_SomeItemsMostLikelyInDifferentOrder()
+		{
+			var oneToTwenty = Enumerable.Range(1, 20).ToList();
+
+			Assert.That(oneToTwenty.Shuffle(4).ToArray(), Is.SubsetOf(oneToTwenty)
+				.With.Length.EqualTo(4));
+		}
+
+		[Test]
+		public void Shuffle_WithCustomRandomizer_SameItemsAsRandomizerSays()
+		{
+			var oneToFour = Enumerable.Range(1, 4).ToList();
+
+			var inverter = Substitute.For<IRandomizer>();
+			inverter.Next(4).Returns(3);
+			inverter.Next(3).Returns(2);
+			inverter.Next(2).Returns(1);
+			inverter.Next(1).Returns(0);
+
+			Assert.That(oneToFour.Shuffle(inverter), Is.EqualTo(new[]{4, 3, 2, 1}));
+		}
+
+		[Test]
+		public void Shuffle_WithCustomRandomizer_RandomizerAskedAsManyTimesAsItemsInList()
+		{
+			var oneToFour = Enumerable.Range(1, 4).ToList();
+
+			var randomizer = Substitute.For<IRandomizer>();
+
+			oneToFour.Shuffle(randomizer).Iterate();
+
+			randomizer.Received(4).Next(Arg.Any<int>());
+		}
+
+		[Test]
+		public void Shuffle_WithLimitedCustomRandomizer_RandomizerAskedAsManyTimesAsCount()
+		{
+			var oneToFour = Enumerable.Range(1, 4).ToList();
+
+			var randomizer = Substitute.For<IRandomizer>();
+
+			oneToFour.Shuffle(randomizer, 2).Iterate();
+
+			randomizer.Received(2).Next(Arg.Any<int>());
 		}
 
 		#endregion

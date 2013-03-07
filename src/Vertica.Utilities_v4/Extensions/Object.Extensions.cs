@@ -135,6 +135,10 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 
 		#region Cast
 
+		public static T Cast<T>(this T instance)
+		{
+			return (T) instance;
+		}
 
 		#endregion
 	}

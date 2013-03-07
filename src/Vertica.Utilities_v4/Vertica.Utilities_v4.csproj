@@ -50,7 +50,9 @@
       <DependentUpon>IMapper.cs</DependentUpon>
     </Compile>
     <Compile Include="Collections\Chain.cs" />
+    <Compile Include="Collections\FrameworkRandomizer.cs" />
     <Compile Include="Collections\GenericDictionaryAdapter.cs" />
+    <Compile Include="Collections\IRandomizer.cs" />
     <Compile Include="Collections\IReadOnlyList.cs" />
     <Compile Include="Collections\KeyValueAdapter.cs" />
     <Compile Include="Collections\NotifyingList.cs" />

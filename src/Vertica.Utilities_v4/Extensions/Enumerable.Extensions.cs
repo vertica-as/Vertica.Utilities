@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vertica.Utilities_v4.Collections;
 using Vertica.Utilities_v4.Resources;
 
 namespace Vertica.Utilities_v4.Extensions.EnumerableExt
@@ -287,6 +288,49 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 				if (count % batchSize == 0) yield return batch;
 			}
 			if (count % batchSize > 0) yield return batch.Take(count % (int)batchSize);
+		}
+
+		#endregion
+
+		#region Shuffle
+
+		public static IEnumerable<T> Shuffle<T>(this IList<T> collection)
+		{
+			return Shuffle(collection, new FrameworkRandomizer());
+		}
+
+		public static IEnumerable<T> Shuffle<T>(this IList<T> collection, int itemsToTake)
+		{
+			return Shuffle(collection, new FrameworkRandomizer(), itemsToTake);
+		}
+
+		public static IEnumerable<T> Shuffle<T>(this IList<T> collection, IRandomizer provider)
+		{
+			IList<T> safeCollection = collection ?? new T[0];
+			return Shuffle(collection, provider, safeCollection.Count);
+		}
+
+		public static IEnumerable<T> Shuffle<T>(this IList<T> collection, IRandomizer provider, int itemsToTake)
+		{
+			// make a copy of the argument
+			IList<T> safeCollection = collection == null ? new List<T>(0) : collection.ToList();
+			// take a copy of the current list
+			int initialCount = Math.Min(safeCollection.Count, itemsToTake);
+			if (safeCollection.Count > 0)
+			{
+				// iterate count times and "randomly" return one of the 
+				// elements
+				for (int i = 1; i <= initialCount; i++)
+				{
+					// maximum index actually buffer.Count -1 because 
+					// Random.Next will only return values LESS than 
+					// specified.
+					int randomIndex = provider.Next(safeCollection.Count);
+					yield return safeCollection[randomIndex];
+					// remove the element to prevent further selection
+					safeCollection.RemoveAt(randomIndex);
+				}
+			}
 		}
 
 		#endregion
