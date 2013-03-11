@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using Vertica.Utilities_v4.Patterns;
 
 namespace Vertica.Utilities_v4.Tests.Patterns.Support

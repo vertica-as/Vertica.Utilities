@@ -116,6 +116,7 @@
     <Compile Include="Patterns\InMemoryRepositoryTester.cs" />
     <Compile Include="Patterns\PipesAndFiltersTester.cs" />
     <Compile Include="Patterns\PredicateSpecificationTester.cs" />
+    <Compile Include="Patterns\Support\MultiLink.cs" />
     <Compile Include="Security\BCryptHasherTester.cs" />
     <Compile Include="Security\BCryptTester.cs" />
     <Compile Include="Security\CredentialTester.cs" />
