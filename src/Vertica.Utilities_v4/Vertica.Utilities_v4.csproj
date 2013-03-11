@@ -139,17 +139,23 @@
       <DependentUpon>ChainOfResponsibility.cs</DependentUpon>
     </Compile>
     <Compile Include="Patterns\Command.cs" />
-    <Compile Include="Patterns\ResponsibleLink.Returning.cs" />
-    <Compile Include="Patterns\IChainOfResponsibilityLink.Returning.cs" />
-    <Compile Include="Patterns\ExpressionSpecification.cs">
+    <Compile Include="Patterns\ResponsibleLink.Returning.cs">
+		<DependentUpon>ChainOfResponsibility.cs</DependentUpon>
+	</Compile>
+	  <Compile Include="Patterns\IChainOfResponsibilityLink.Returning.cs">
+		<DependentUpon>ChainOfResponsibility.cs</DependentUpon>
+	</Compile>
+	  <Compile Include="Patterns\ExpressionSpecification.cs">
       <DependentUpon>Specification.cs</DependentUpon>
     </Compile>
     <Compile Include="Patterns\GenericCommand.cs">
       <DependentUpon>Command.cs</DependentUpon>
     </Compile>
     <Compile Include="Patterns\GenericVisitor.cs" />
-    <Compile Include="Patterns\IChainOfResponsibilityLink.cs" />
-    <Compile Include="Patterns\IIdentifiable.cs">
+    <Compile Include="Patterns\IChainOfResponsibilityLink.cs">
+		<DependentUpon>ChainOfResponsibility.cs</DependentUpon>
+	</Compile>
+	  <Compile Include="Patterns\IIdentifiable.cs">
       <DependentUpon>Repository.cs</DependentUpon>
     </Compile>
     <Compile Include="Patterns\InMemoryRepository.cs">
@@ -166,8 +172,10 @@
     <Compile Include="Patterns\ChainOfResponsibilityLink.Returning.cs">
       <DependentUpon>ChainOfResponsibility.cs</DependentUpon>
     </Compile>
-    <Compile Include="Patterns\ResponsibleLink.cs" />
-    <Compile Include="Patterns\Specification.cs" />
+    <Compile Include="Patterns\ResponsibleLink.cs">
+		<DependentUpon>ChainOfResponsibility.cs</DependentUpon>
+	</Compile>
+	  <Compile Include="Patterns\Specification.cs" />
     <Compile Include="Patterns\Specification.Inference.cs">
       <DependentUpon>Specification.cs</DependentUpon>
     </Compile>
