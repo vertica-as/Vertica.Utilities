@@ -120,8 +120,17 @@
   <data name="CollectionCountValidator_MessageTemplate" xml:space="preserve">
     <value>The collection of type '{0}' must contain at least {1} elements, but contained {2}.</value>
   </data>
+  <data name="ControlExtensions_NotFoundTemplate" xml:space="preserve">
+    <value>Could not find control with ID '{0}' from parent '{1}'.</value>
+  </data>
   <data name="Credential_NoDomainOrUser" xml:space="preserve">
     <value>The credential must have a non-empty user name and domain.</value>
+  </data>
+  <data name="EnumerableExtensions_NonZeroBatch" xml:space="preserve">
+    <value>Size must be greater than 0.</value>
+  </data>
+  <data name="EnumerableExtensions_Zip_SameLength" xml:space="preserve">
+    <value>Both collections must have same length.</value>
   </data>
   <data name="Enumerated_DuplicatedTemplate" xml:space="preserve">
     <value>The enum with name '{0}' is already used.</value>

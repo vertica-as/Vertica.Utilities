@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Vertica.Utilities_v4.Patterns
 {
@@ -61,9 +62,24 @@ namespace Vertica.Utilities_v4.Patterns
 			return this;
 		}
 
+		public ChainOfResponsibilityLink<T, TResult> Chain(IChainOfResponsibilityLink<T, TResult> lastHandler)
+		{
+			return new ResponsibleLink<T, TResult>(lastHandler);
+		}
+
 		public ChainOfResponsibilityLink<T, TResult> Chain(params ChainOfResponsibilityLink<T, TResult>[] handlers)
 		{
 			return Chain((IEnumerable<ChainOfResponsibilityLink<T, TResult>>)handlers);
+		}
+
+		public ChainOfResponsibilityLink<T, TResult> Chain(params IChainOfResponsibilityLink<T, TResult>[] handlers)
+		{
+			return Chain((IEnumerable<IChainOfResponsibilityLink<T, TResult>>)handlers);
+		}
+
+		public ChainOfResponsibilityLink<T, TResult> Chain(IEnumerable<IChainOfResponsibilityLink<T, TResult>> handlers)
+		{
+			return Chain(handlers.Select(h => new ResponsibleLink<T, TResult>(h)));
 		}
 
 		public ChainOfResponsibilityLink<T, TResult> Chain(IEnumerable<ChainOfResponsibilityLink<T, TResult>> handlers)

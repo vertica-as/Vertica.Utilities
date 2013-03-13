@@ -86,8 +86,26 @@
     <Compile Include="Configuration\CollectionCountValidatorTester.cs" />
     <Compile Include="Configuration\Support\CollectionCountSubject.cs" />
     <Compile Include="Configuration\Support\CollectionCountElementSubject.cs" />
+    <Compile Include="Extensions\AnonymousExtensionsTester.cs" />
+    <Compile Include="Extensions\AttributeExtensionsTester.cs" />
     <Compile Include="Extensions\DbCommandExtensionsTester.cs" />
+    <Compile Include="Extensions\DeletegateExtensionsTester.cs" />
+    <Compile Include="Extensions\EnumerableExtensionsTester.cs" />
+    <Compile Include="Extensions\Infrastructure\ExtensionPointsTester.cs" />
+    <Compile Include="Extensions\Infrastructure\Support\MyExtensionPointOnDecimals.cs" />
+    <Compile Include="Extensions\Infrastructure\Support\MyExtensions.cs" />
+    <Compile Include="Extensions\Infrastructure\Support\MyGenericExtensionPoint.cs" />
+    <Compile Include="Extensions\ObjectExtensionsTester.cs" />
+    <Compile Include="Extensions\QueryableExtensionsTester.cs" />
+    <Compile Include="Extensions\StringExtensionsTester.cs" />
+    <Compile Include="Extensions\Support\AttributeSubjects.cs" />
     <Compile Include="Extensions\Support\DbParameterValueConstraint.cs" />
+    <Compile Include="Extensions\Support\InheritanceSubjects.cs" />
+    <Compile Include="Extensions\Support\NonZeroEnum.cs" />
+    <Compile Include="Extensions\Support\NotIConvertible.cs" />
+    <Compile Include="Extensions\Support\OrderSubject.cs" />
+    <Compile Include="Extensions\Support\ZeroEnum.cs" />
+    <Compile Include="Extensions\TypeExtensionsTester.cs" />
     <Compile Include="ICloneableTester.cs" />
     <Compile Include="IInitializableTester.cs" />
     <Compile Include="IMapperTester.cs" />
@@ -98,6 +116,7 @@
     <Compile Include="Patterns\InMemoryRepositoryTester.cs" />
     <Compile Include="Patterns\PipesAndFiltersTester.cs" />
     <Compile Include="Patterns\PredicateSpecificationTester.cs" />
+    <Compile Include="Patterns\Support\MultiLink.cs" />
     <Compile Include="Security\BCryptHasherTester.cs" />
     <Compile Include="Security\BCryptTester.cs" />
     <Compile Include="Security\CredentialTester.cs" />
@@ -199,7 +218,9 @@
       <Name>Vertica.Utilities_v4</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

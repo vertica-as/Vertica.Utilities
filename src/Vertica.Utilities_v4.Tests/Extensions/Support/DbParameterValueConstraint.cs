@@ -33,7 +33,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions.Support
 		}
 	}
 
-	internal static class MustExtensions
+	internal static partial class MustExtensions
 	{
 		public static DbParameterValueConstraint ConstrainedValue(this Must.HaveEntryPoint entry, Constraint valueConstraint)
 		{

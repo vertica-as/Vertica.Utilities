@@ -111,7 +111,7 @@ namespace Vertica.Utilities_v4.Security
 
 		public static string RemoveDomainIfPresent(string accountName)
 		{
-			string userName = accountName.RightFromFirst(LogonNameSeparator.ToString(CultureInfo.InvariantCulture));
+			string userName = accountName.Substr().RightFromFirst(LogonNameSeparator.ToString(CultureInfo.InvariantCulture));
 			return userName ?? accountName;
 		}
 	}

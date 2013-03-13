@@ -50,7 +50,9 @@
       <DependentUpon>IMapper.cs</DependentUpon>
     </Compile>
     <Compile Include="Collections\Chain.cs" />
+    <Compile Include="Collections\FrameworkRandomizer.cs" />
     <Compile Include="Collections\GenericDictionaryAdapter.cs" />
+    <Compile Include="Collections\IRandomizer.cs" />
     <Compile Include="Collections\IReadOnlyList.cs" />
     <Compile Include="Collections\KeyValueAdapter.cs" />
     <Compile Include="Collections\NotifyingList.cs" />
@@ -106,15 +108,23 @@
     <Compile Include="Eventing\ValueIndexChangingEventArgs.cs" />
     <Compile Include="Eventing\ValueIndexEventArgs.cs" />
     <Compile Include="ExceptionHelper.cs" />
+    <Compile Include="Extensions\Anonymous.Extensions.cs" />
+    <Compile Include="Extensions\Attribute.Extensions.cs" />
     <Compile Include="Extensions\Comparable.Extensions.cs" />
     <Compile Include="Extensions\DbCommand.Extensions.cs" />
     <Compile Include="Extensions\Delegate.Extensions.cs" />
     <Compile Include="Extensions\DomainOfValues.Extensions.cs" />
     <Compile Include="Extensions\Enumerable.Extensions.cs" />
-    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\Infrastructure\CastExtensionsPoints.cs" />
+    <Compile Include="Extensions\Infrastructure\EntryPoints.cs" />
+    <Compile Include="Extensions\Infrastructure\ExtensionPoint.cs" />
+    <Compile Include="Extensions\Infrastructure\IExtensionPoint.cs" />
+    <Compile Include="Extensions\Object.Extensions.cs" />
+    <Compile Include="Extensions\Queryable.Extensions.cs" />
     <Compile Include="Extensions\Range.Extensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\String.Extensions.cs" />
     <Compile Include="Extensions\Time.Extensions.cs" />
+    <Compile Include="Extensions\Type.Extensions.cs" />
     <Compile Include="FormattablePercentage.cs">
       <DependentUpon>Percentage.cs</DependentUpon>
     </Compile>
@@ -129,14 +139,23 @@
       <DependentUpon>ChainOfResponsibility.cs</DependentUpon>
     </Compile>
     <Compile Include="Patterns\Command.cs" />
-    <Compile Include="Patterns\ExpressionSpecification.cs">
+    <Compile Include="Patterns\ResponsibleLink.Returning.cs">
+		<DependentUpon>ChainOfResponsibility.cs</DependentUpon>
+	</Compile>
+	  <Compile Include="Patterns\IChainOfResponsibilityLink.Returning.cs">
+		<DependentUpon>ChainOfResponsibility.cs</DependentUpon>
+	</Compile>
+	  <Compile Include="Patterns\ExpressionSpecification.cs">
       <DependentUpon>Specification.cs</DependentUpon>
     </Compile>
     <Compile Include="Patterns\GenericCommand.cs">
       <DependentUpon>Command.cs</DependentUpon>
     </Compile>
     <Compile Include="Patterns\GenericVisitor.cs" />
-    <Compile Include="Patterns\IIdentifiable.cs">
+    <Compile Include="Patterns\IChainOfResponsibilityLink.cs">
+		<DependentUpon>ChainOfResponsibility.cs</DependentUpon>
+	</Compile>
+	  <Compile Include="Patterns\IIdentifiable.cs">
       <DependentUpon>Repository.cs</DependentUpon>
     </Compile>
     <Compile Include="Patterns\InMemoryRepository.cs">
@@ -153,7 +172,10 @@
     <Compile Include="Patterns\ChainOfResponsibilityLink.Returning.cs">
       <DependentUpon>ChainOfResponsibility.cs</DependentUpon>
     </Compile>
-    <Compile Include="Patterns\Specification.cs" />
+    <Compile Include="Patterns\ResponsibleLink.cs">
+		<DependentUpon>ChainOfResponsibility.cs</DependentUpon>
+	</Compile>
+	  <Compile Include="Patterns\Specification.cs" />
     <Compile Include="Patterns\Specification.Inference.cs">
       <DependentUpon>Specification.cs</DependentUpon>
     </Compile>
@@ -218,7 +240,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Extensions\Control.Extensions.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
