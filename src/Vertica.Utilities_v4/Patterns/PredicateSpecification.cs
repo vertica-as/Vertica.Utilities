@@ -18,7 +18,7 @@ namespace Vertica.Utilities_v4.Patterns
 
 		public Predicate<T> Predicate { get { return _predicate; } }
 
-		public Func<T, bool> Function { get { return Predicate.CastTo<Func<T, bool>>(); } }
+		public Func<T, bool> Function { get { return Predicate.Cast<Func<T, bool>>(); } }
 
 		#region operators
 

@@ -43,6 +43,11 @@ namespace Vertica.Utilities_v4.Patterns
 		public abstract bool CanHandle(T context);
 		protected abstract void DoHandle(T context);
 
+		public ChainOfResponsibilityLink<T> Chain(IChainOfResponsibilityLink<T> lastHandler)
+		{
+			return Chain(new ResponsibleLink<T>(lastHandler));
+		}
+
 		private ChainOfResponsibilityLink<T> _lastLink;
 		public ChainOfResponsibilityLink<T> Chain(ChainOfResponsibilityLink<T> lastHandler)
 		{
@@ -58,9 +63,19 @@ namespace Vertica.Utilities_v4.Patterns
 			return this;
 		}
 
+		public ChainOfResponsibilityLink<T> Chain(params IChainOfResponsibilityLink<T>[] handlers)
+		{
+			return Chain(handlers.AsEnumerable());
+		}
+
 		public ChainOfResponsibilityLink<T> Chain(params ChainOfResponsibilityLink<T>[] handlers)
 		{
 			return Chain(handlers.AsEnumerable());
+		}
+
+		public ChainOfResponsibilityLink<T> Chain(IEnumerable<IChainOfResponsibilityLink<T>> handlers)
+		{
+			return Chain(handlers.Select(h => new ResponsibleLink<T>(h)));
 		}
 
 		public ChainOfResponsibilityLink<T> Chain(IEnumerable<ChainOfResponsibilityLink<T>> handlers)

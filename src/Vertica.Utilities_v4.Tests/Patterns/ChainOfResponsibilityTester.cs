@@ -1,4 +1,5 @@
-﻿using NSubstitute;
+﻿using System;
+using NSubstitute;
 using NUnit.Framework;
 using Vertica.Utilities_v4.Patterns;
 using Vertica.Utilities_v4.Tests.Patterns.Support;
@@ -261,6 +262,25 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 				.Chain(third);
 
 			return chain;
+		}
+
+
+		[Test]
+		public void IChainOfResponsibility_Works_JustFine()
+		{
+			var chain = ChainOfResponsibility.Empty<int, string>()
+				.Chain(new ResponsibleLink<int, string>(new MultiLink(2)))
+				.Chain(new MultiLink(1));
+
+			var anotherchain = ChainOfResponsibility
+				.Empty<Exception>()
+				.Chain(new ResponsibleLink<Exception>(new MultiLink()))
+				.Chain(new MultiLink());
+
+			Assert.That(chain.Handle(1), Is.EqualTo("1"));
+			Exception ex = new Exception();
+			anotherchain.Handle(ex);
+			Assert.That(ex.Data, Is.Not.Empty);
 		}
 	}
 }

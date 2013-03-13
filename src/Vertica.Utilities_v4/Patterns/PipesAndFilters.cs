@@ -36,7 +36,7 @@ namespace Vertica.Utilities_v4.Patterns
 		{
 			IEnumerable<T> current = Enumerable.Empty<T>();
 			current = _operations.Aggregate(current, (input, operation) => operation.Execute(input));
-			current.Iterate();
+			foreach (var c in current) { }
 		}
 	}
 }

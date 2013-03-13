@@ -4,7 +4,7 @@ namespace Vertica.Utilities_v4.Extensions.DelegateExt
 {
 	public static class DelegateExtensions
 	{
-		public static T CastTo<T>(this Delegate value) where T : class
+		public static T Cast<T>(this Delegate value) where T : class
 		{
 			if (value == null) return null;
 
@@ -20,7 +20,7 @@ namespace Vertica.Utilities_v4.Extensions.DelegateExt
 			return Delegate.Combine(delegates) as T;
 		}
 
-		public static Action<TBase> CastTo<TBase, TDerived>(this Action<TDerived> source) where TDerived : TBase
+		public static Action<TBase> Cast<TBase, TDerived>(this Action<TDerived> source) where TDerived : TBase
 		{
 			return baseValue => source((TDerived)baseValue);
 		}
