@@ -266,7 +266,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 
 
 		[Test]
-		public void METHOD_BEHAVIOR_EXPECTATION()
+		public void IChainOfResponsibility_Works_JustFine()
 		{
 			var chain = ChainOfResponsibility.Empty<int, string>()
 				.Chain(new ResponsibleLink<int, string>(new MultiLink(2)))
