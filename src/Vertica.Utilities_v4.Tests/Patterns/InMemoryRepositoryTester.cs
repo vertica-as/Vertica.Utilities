@@ -200,7 +200,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		public void FindAll_AllReturned()
 		{
 			var subject = new InMemoryRepository<RepositorySubject, int>(1, 2);
-			IReadOnlyList<RepositorySubject> all = subject.FindAll();
+			Vertica.Utilities_v4.Collections.IReadOnlyList<RepositorySubject> all = subject.FindAll();
 			Assert.That(all.Count, Is.EqualTo(2));
 			Assert.That(all[0].Id, Is.EqualTo(1));
 			Assert.That(all[0].Property, Is.EqualTo("1"));
@@ -212,7 +212,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		public void Findall_Empty_EmptyReturned()
 		{
 			var subject = new InMemoryRepository<RepositorySubject, int>();
-			IReadOnlyList<RepositorySubject> all = subject.FindAll();
+			Vertica.Utilities_v4.Collections.IReadOnlyList<RepositorySubject> all = subject.FindAll();
 			Assert.That(all, Is.Empty);
 		}
 
@@ -220,7 +220,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		public void FindAll_MatchingExpression_MatchesReturned()
 		{
 			var subject = new InMemoryRepository<RepositorySubject, int>(1, 2, new RepositorySubject(3, null));
-			IReadOnlyList<RepositorySubject> all = subject.FindAll(e => !string.IsNullOrEmpty(e.Property));
+			Vertica.Utilities_v4.Collections.IReadOnlyList<RepositorySubject> all = subject.FindAll(e => !string.IsNullOrEmpty(e.Property));
 			Assert.That(all.Count, Is.EqualTo(2));
 			Assert.That(all[0].Id, Is.EqualTo(1));
 			Assert.That(all[0].Property, Is.EqualTo("1"));
@@ -232,7 +232,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		public void FindAll_NonMatchingExpression_EmptyReturned()
 		{
 			var subject = new InMemoryRepository<RepositorySubject, int>(1, 2);
-			IReadOnlyList<RepositorySubject> all = subject.FindAll(e => string.IsNullOrEmpty(e.Property));
+			Vertica.Utilities_v4.Collections.IReadOnlyList<RepositorySubject> all = subject.FindAll(e => string.IsNullOrEmpty(e.Property));
 			Assert.That(all, Is.Empty);
 		}
 
