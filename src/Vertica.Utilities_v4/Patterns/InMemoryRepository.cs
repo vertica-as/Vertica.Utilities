@@ -71,12 +71,12 @@ namespace Vertica.Utilities_v4.Patterns
 			return entity.IsNotDefault();
 		}
 
-		public IReadOnlyList<T> FindAll()
+		public Vertica.Utilities_v4.Collections.IReadOnlyList<T> FindAll()
 		{
 			return new ReadOnlyListAdapter<T>(_inner);
 		}
 
-		public IReadOnlyList<T> FindAll(Expression<Func<T, bool>> expression)
+		public Vertica.Utilities_v4.Collections.IReadOnlyList<T> FindAll(Expression<Func<T, bool>> expression)
 		{
 
 			return new ReadOnlyListAdapter<T>(_inner.Where(expression.Compile()).ToList());
