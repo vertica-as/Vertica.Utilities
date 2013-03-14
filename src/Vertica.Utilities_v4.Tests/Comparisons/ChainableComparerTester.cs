@@ -49,7 +49,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 		[SetUp]
 		public void initSubjects()
 		{
-			_subjects = new List<ComparisonSubject> { _e, _d, _b, _c, _a };
+			_subjects = new List<ComparisonSubject> { _e, _d, _b, _a, _c };
 		}
 
 		#endregion
@@ -91,21 +91,21 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 		public void Property3ChainedComparer_ByProperty3()
 		{
 			_subjects.Sort(new Property3ChainableComparer());
-			Assert.That(_subjects, Must.Be.RepresentableAs("B, D, E, A, C"));
+			Assert.That(_subjects, Must.Be.RepresentableAs("B, D, E, C, A"));
 		}
 
 		[Test]
 		public void Property3ChainedComparer_ByProperty3Asc()
 		{
 			_subjects.Sort(new Property3ChainableComparer(Direction.Ascending));
-			Assert.That(_subjects, Must.Be.RepresentableAs("B, D, E, A, C"));
+			Assert.That(_subjects, Must.Be.RepresentableAs("B, D, E, C, A"));
 		}
 
 		[Test]
 		public void Property3ChainedComparer_ByProperty3Desc()
 		{
 			_subjects.Sort(new Property3ChainableComparer(Direction.Descending));
-			Assert.That(_subjects, Must.Be.RepresentableAs("C, A, E, D, B"));
+			Assert.That(_subjects, Must.Be.RepresentableAs("A, C, E, D, B"));
 		}
 
 		[Test]
