@@ -39,7 +39,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 
 		#region subjects
 
-		private static readonly ComparisonSubject _a = new ComparisonSubject("A", 4, 7.60m);
+		private static readonly ComparisonSubject _a = new ComparisonSubject("A", 4, 7.61m);
 		private static readonly ComparisonSubject _b = new ComparisonSubject("B", 1, 3.00m);
 		private static readonly ComparisonSubject _c = new ComparisonSubject("C", 3, 7.60m);
 		private static readonly ComparisonSubject _d = new ComparisonSubject("D", 2, 4.20m);
@@ -119,7 +119,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 			var by3Then2Desc = new Property3ChainableComparer()
 				.Then(new Property2ChainableComparer(Direction.Descending));
 			_subjects.Sort(by3Then2Desc);
-			Assert.That(_subjects, Must.Be.RepresentableAs("B, D, E, A, C"));
+			Assert.That(_subjects, Must.Be.RepresentableAs("B, D, E, C, A"));
 		}
 
 		[Test]
@@ -131,7 +131,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 
 			_subjects.Sort(Cmp<ComparisonSubject>.By(c => c.Property3)
 				.Then(c => c.Property2, Direction.Descending));
-			Assert.That(_subjects, Must.Be.RepresentableAs("B, D, E, A, C"));
+			Assert.That(_subjects, Must.Be.RepresentableAs("B, D, E, C, A"));
 		}
 
 		[Test]
@@ -145,7 +145,7 @@ namespace Vertica.Utilities_v4.Tests.Comparisons
 			Assert.That(_subjects.OrderBy(s => s, Cmp<ComparisonSubject>
 					.By(s => s.Property3)
 					.Then(s => s.Property2, Direction.Descending)),
-				Must.Be.RepresentableAs("B, D, E, A, C"));
+				Must.Be.RepresentableAs("B, D, E, C, A"));
 		}
 
 		[Test]
