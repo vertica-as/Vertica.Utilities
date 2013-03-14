@@ -104,6 +104,12 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(fiftyPercent.Apply(100m), Is.EqualTo(50m));
 		}
 
+		[Test]
+		public void DeductFrom_CalculatesAnAmountWithoutThePercentage()
+		{
+			Assert.That(25m.Percent().DeductFrom(100m), Is.EqualTo(80m));
+		}
+
 		#region representation
 
 		[Test]

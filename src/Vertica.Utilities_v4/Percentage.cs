@@ -69,6 +69,11 @@ namespace Vertica.Utilities_v4
 			return Fraction * given;
 		}
 
+		public double DeductFrom(double amountIncludingPercentage)
+		{
+			return amountIncludingPercentage / (1 + Fraction);
+		}
+
 		public override string ToString()
 		{
 			return Formattable.ToString();
