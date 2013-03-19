@@ -64,7 +64,7 @@ namespace Vertica.Utilities_v4.Patterns
 
 		public ChainOfResponsibilityLink<T, TResult> Chain(IChainOfResponsibilityLink<T, TResult> lastHandler)
 		{
-			return new ResponsibleLink<T, TResult>(lastHandler);
+			return Chain(new ResponsibleLink<T, TResult>(lastHandler));
 		}
 
 		public ChainOfResponsibilityLink<T, TResult> Chain(params ChainOfResponsibilityLink<T, TResult>[] handlers)

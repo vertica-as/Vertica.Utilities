@@ -217,7 +217,7 @@ namespace Vertica.Utilities_v4
 				}
 			}
 
-			return result.Length == 0 ? 
+			return result.Length == 0 ?
 				includeTime ? "less than a second" : "less than a day"
 				: result.ToString().Trim();
 		}
@@ -266,14 +266,14 @@ namespace Vertica.Utilities_v4
 		public override bool Equals(object obj)
 		{
 			if (ReferenceEquals(null, obj)) return false;
-			return obj is Age && Equals((Age) obj);
+			return obj is Age && Equals((Age)obj);
 		}
 
 		public override int GetHashCode()
 		{
 			unchecked
 			{
-				return (_advent.GetHashCode()*397) ^ _terminus.GetHashCode();
+				return (_advent.GetHashCode() * 397) ^ _terminus.GetHashCode();
 			}
 		}
 

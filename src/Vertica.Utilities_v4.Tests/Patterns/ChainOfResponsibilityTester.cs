@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using NSubstitute;
 using NUnit.Framework;
 using Vertica.Utilities_v4.Patterns;
@@ -82,6 +83,28 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			Assert.That(l1.Next, Is.SameAs(l2));
 			Assert.That(l2.Next, Is.Null);
 		}
+
+		[Test]
+		public void FluentChain_LinkingTwo_InnerChaining()
+		{
+			var l1 = new IToUpperIfStartsWith("1");
+			var l2 = new IToUpperIfStartsWith("2");
+
+			ChainOfResponsibilityLink<Context> chain = ChainOfResponsibility
+				.Empty<Context>()
+				.Chain(l1)
+				.Chain(l2);
+
+			//Assert.That(chain, Is.SameAs(l2));
+
+			//Assert.That(l1.Next, Is.SameAs(l2));
+			//Assert.That(l2.Next, Is.Null);
+			var ctx = new Context("2a");
+			chain.Handle(ctx);
+			Assert.That(ctx.S, Is.EqualTo("2A"));
+		}
+
+		// TODO: add .Flatten(this IEnumerable<>) extension method: http://www.codeproject.com/Tips/375967/Flatten-a-hierarchical-collection-of-objects-with, http://stackoverflow.com/questions/11830174/how-to-flatten-tree-via-linq
 
 		[Test]
 		public void Chain_LinkingThree_InnerChaining()
@@ -264,7 +287,6 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			return chain;
 		}
 
-
 		[Test]
 		public void IChainOfResponsibility_Works_JustFine()
 		{
@@ -278,7 +300,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 				.Chain(new MultiLink());
 
 			Assert.That(chain.Handle(1), Is.EqualTo("1"));
-			Exception ex = new Exception();
+			var ex = new Exception();
 			anotherchain.Handle(ex);
 			Assert.That(ex.Data, Is.Not.Empty);
 		}
