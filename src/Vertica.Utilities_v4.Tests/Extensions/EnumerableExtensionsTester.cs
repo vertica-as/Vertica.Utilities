@@ -626,7 +626,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			inverter.Next(2).Returns(1);
 			inverter.Next(1).Returns(0);
 
-			Assert.That(oneToFour.Shuffle(inverter), Is.EqualTo(new[]{4, 3, 2, 1}));
+			Assert.That(oneToFour.Shuffle(inverter), Is.EqualTo(new[] { 4, 3, 2, 1 }));
 		}
 
 		[Test]
@@ -651,6 +651,45 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			oneToFour.Shuffle(randomizer, 2).Iterate();
 
 			randomizer.Received(2).Next(Arg.Any<int>());
+		}
+
+		#endregion
+
+		#region MinBy
+
+		[Test]
+		public void MinBy_NullCollection_Exception()
+		{
+			IEnumerable<OrderSubject> @null = Chain.Null<OrderSubject>();
+			Assert.That(() => @null.MinBy(s => s.I1), Throws.InstanceOf<ArgumentNullException>());
+		}
+
+		[Test]
+		public void MinBy_EmptyCollection_Exception()
+		{
+			IEnumerable<OrderSubject> empty = Chain.Empty<OrderSubject>();
+			Assert.That(() => empty.MinBy(s => s.I1), Throws.InvalidOperationException);
+		}
+
+		[Test]
+		public void MinBy_DefaultComparer_MinimumValueAccordingToSelector()
+		{
+			var twoOne = new OrderSubject(2, 1);
+			var collection = new[] { new OrderSubject(1, 2), twoOne };
+
+			Assert.That(collection.MinBy(s => s.I2), Is.EqualTo(twoOne));
+		}
+
+		[Test]
+		public void MinBy_AlternativeComparer_MinimumValueAccordingToSelectorAndComparer()
+		{
+			var twoOne = new OrderSubject(2, 1);
+			var collection = new[] { new OrderSubject(2, -2), twoOne };
+
+			IComparer<int> absComparer = Utilities_v4.Comparisons.Cmp<int>
+				.By((one, other) => Math.Abs(one).CompareTo(Math.Abs(other)));
+
+			Assert.That(collection.MinBy(s => s.I2, absComparer), Is.EqualTo(twoOne));
 		}
 
 		#endregion
