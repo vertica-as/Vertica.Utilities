@@ -677,7 +677,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			var twoOne = new OrderSubject(2, 1);
 			var collection = new[] { new OrderSubject(1, 2), twoOne };
 
-			Assert.That(collection.MinBy(s => s.I2), Is.EqualTo(twoOne));
+			Assert.That(collection.MinBy(s => s.I2), Is.SameAs(twoOne));
 		}
 
 		[Test]
@@ -689,7 +689,64 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			IComparer<int> absComparer = Utilities_v4.Comparisons.Cmp<int>
 				.By((one, other) => Math.Abs(one).CompareTo(Math.Abs(other)));
 
-			Assert.That(collection.MinBy(s => s.I2, absComparer), Is.EqualTo(twoOne));
+			Assert.That(collection.MinBy(s => s.I2, absComparer), Is.SameAs(twoOne));
+		}
+
+		[Test]
+		public void MinBy_SeveralEqualElements_FirstReturned()
+		{
+			OrderSubject twoOne = new OrderSubject(2, 1), anotherTwoOne = new OrderSubject(2, 1);
+			var collection = new[] { new OrderSubject(2, 3), twoOne, anotherTwoOne };
+
+			Assert.That(collection.MinBy(s => s.I2), Is.SameAs(twoOne));
+		}
+
+		#endregion
+
+		#region MinBy
+
+		[Test]
+		public void MaxBy_NullCollection_Exception()
+		{
+			IEnumerable<OrderSubject> @null = Chain.Null<OrderSubject>();
+			Assert.That(() => @null.MaxBy(s => s.I1), Throws.InstanceOf<ArgumentNullException>());
+		}
+
+		[Test]
+		public void MaxBy_EmptyCollection_Exception()
+		{
+			IEnumerable<OrderSubject> empty = Chain.Empty<OrderSubject>();
+			Assert.That(() => empty.MaxBy(s => s.I1), Throws.InvalidOperationException);
+		}
+
+		[Test]
+		public void MaxBy_DefaultComparer_MinimumValueAccordingToSelector()
+		{
+			var twoOne = new OrderSubject(2, 1);
+			var collection = new[] { new OrderSubject(1,-1), twoOne };
+
+			Assert.That(collection.MaxBy(s => s.I2), Is.EqualTo(twoOne));
+		}
+
+		[Test]
+		public void MaxBy_AlternativeComparer_MinimumValueAccordingToSelectorAndComparer()
+		{
+			var twoMinusTwo = new OrderSubject(2, -2);
+			var collection = new[] { new OrderSubject(2, -1), twoMinusTwo };
+
+			IComparer<int> absComparer = Utilities_v4.Comparisons.Cmp<int>
+				.By((one, other) => Math.Abs(one).CompareTo(Math.Abs(other)));
+
+			Assert.That(collection.MaxBy(s => s.I2, absComparer), Is.EqualTo(twoMinusTwo));
+		}
+
+		[Test]
+		public void MaxBy_SeveralEqualElements_FirstReturned()
+		{
+			OrderSubject twoOne = new OrderSubject(2, 1), anotherTwoOne = new OrderSubject(2, 1);
+			var collection = new[] { new OrderSubject(2, 0), twoOne, anotherTwoOne };
+
+			Assert.That(collection.MaxBy(s => s.I2), Is.SameAs(twoOne));
 		}
 
 		#endregion
