@@ -334,5 +334,61 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 		}
 
 		#endregion
+
+		#region CompareBy
+
+		public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+			Func<TSource, TKey> selector)
+		{
+			return source.MinBy(selector, Comparer<TKey>.Default);
+		}
+
+		public static TSource MinBy<TSource, TKey>(this IEnumerable<TSource> source,
+			   Func<TSource, TKey> selector, IComparer<TKey> comparer)
+		{
+			return compareBy(source, selector, comparer, i => i < 0);
+		}
+
+		public static TSource MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
+			Func<TSource, TKey> selector)
+		{
+			return source.MaxBy(selector, Comparer<TKey>.Default);
+		}
+
+		public static TSource MaxBy<TSource, TKey>(this IEnumerable<TSource> source,
+			   Func<TSource, TKey> selector, IComparer<TKey> comparer)
+		{
+			return compareBy(source, selector, comparer, i => i > 0);
+		}
+
+		private static TSource compareBy<TSource, TKey>(IEnumerable<TSource> source,
+			Func<TSource, TKey> selector, IComparer<TKey> comparer,
+			Func<int, bool> candidateComparison)
+		{
+			Guard.AgainstNullArgument("source", source);
+
+			using (IEnumerator<TSource> sourceIterator = source.GetEnumerator())
+			{
+				if (!sourceIterator.MoveNext())
+				{
+					throw new InvalidOperationException(Exceptions.EnumerableExtensions_EmptyCollection);
+				}
+				TSource current = sourceIterator.Current;
+				TKey currentKey = selector(current);
+				while (sourceIterator.MoveNext())
+				{
+					TSource candidate = sourceIterator.Current;
+					TKey candidateProjected = selector(candidate);
+					if (candidateComparison(comparer.Compare(candidateProjected, currentKey)))
+					{
+						current = candidate;
+						currentKey = candidateProjected;
+					}
+				}
+				return current;
+			}
+		}
+
+		#endregion
 	}
 }
