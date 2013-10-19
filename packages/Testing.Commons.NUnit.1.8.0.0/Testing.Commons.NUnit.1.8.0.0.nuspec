@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Testing.Commons.NUnit</id>
-    <version>1.6.0.0</version>
+    <version>1.8.0.0</version>
     <title>Testing Commons NUnit</title>
     <authors>Daniel González García</authors>
     <owners>Daniel González García</owners>
@@ -16,10 +16,7 @@
     <dependencies>
       <dependency id="testing.commons" version="1.1.0.0" />
       <dependency id="ExpectedObjects" version="1.0.0.2" />
-      <dependency id="NUnit" version="2.6.2" />
+      <dependency id="NUnit" version="2.6.3" />
     </dependencies>
-    <references>
-      <reference file="Testing.Commons.NUnit.dll" />
-    </references>
   </metadata>
 </package>
