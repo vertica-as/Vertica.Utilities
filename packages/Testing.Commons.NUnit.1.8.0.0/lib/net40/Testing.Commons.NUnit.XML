@@ -97,6 +97,36 @@
             Checks a comparison operator when the first operand is NULL.
             </summary>
         </member>
+        <member name="T:Testing.Commons.NUnit.Constraints.ConjunctionConstraint">
+            <summary>
+            Allows joining multiple constraints while reporting the specific constraint that failed.
+            </summary>
+        </member>
+        <member name="M:Testing.Commons.NUnit.Constraints.ConjunctionConstraint.#ctor(NUnit.Framework.Constraints.Constraint[])">
+            <summary>
+            Creates the instance of the constraint.
+            </summary>
+            <param name="constraints">The list of constraints to evaluate.</param>
+        </member>
+        <member name="M:Testing.Commons.NUnit.Constraints.ConjunctionConstraint.#ctor(System.Collections.Generic.IEnumerable{NUnit.Framework.Constraints.Constraint})">
+            <summary>
+            Creates the instance of the constraint.
+            </summary>
+            <param name="constraints">The list of constraints to evaluate.</param>
+        </member>
+        <member name="M:Testing.Commons.NUnit.Constraints.ConjunctionConstraint.Matches(System.Object)">
+            <summary>
+            Test whether the constraint is satisfied by a given value.
+            </summary>
+            <param name="current">The value to be tested</param>
+            <returns>True for success, false for failure</returns>
+        </member>
+        <member name="M:Testing.Commons.NUnit.Constraints.ConjunctionConstraint.WriteDescriptionTo(NUnit.Framework.Constraints.MessageWriter)">
+            <summary>
+            Write the constraint description to a MessageWriter.
+            </summary>
+            <param name="writer">The writer on which the description is displayed.</param>
+        </member>
         <member name="T:Testing.Commons.NUnit.Constraints.MustExtensions">
             <summary>
             Provides a set of static methods to create custom constraints.
@@ -328,6 +358,24 @@
             <param name="strictlyLessThan">An instance of <typeparamref name="U"/> that is strictly less than the value tested.</param>
             <param name="strictlyGreaterThan">An instance of <typeparamref name="U"/> that is strictly greater than the value tested.</param>
             <param name="equal">An instance of <typeparamref name="U"/> that has the same value as the value tested.</param>
+            <returns>Instance built.</returns>
+        </member>
+        <member name="M:Testing.Commons.NUnit.Constraints.MustExtensions.Conjunction(Testing.Commons.Must.SatisfyEntryPoint,NUnit.Framework.Constraints.Constraint[])">
+            <summary>
+            Builds an instance of <see cref="T:Testing.Commons.NUnit.Constraints.ConjunctionConstraint"/> that allows joining multiple constraints
+            while reporting the specific constraint that failed.
+            </summary>
+            <param name="entry">Extension entry point.</param>
+            <param name="constraints">The list of constraints to evaluate.</param>
+            <returns>Instance built.</returns>
+        </member>
+        <member name="M:Testing.Commons.NUnit.Constraints.MustExtensions.Conjunction(Testing.Commons.Must.SatisfyEntryPoint,System.Collections.Generic.IEnumerable{NUnit.Framework.Constraints.Constraint})">
+            <summary>
+            Builds an instance of <see cref="T:Testing.Commons.NUnit.Constraints.ConjunctionConstraint"/> that allows joining multiple constraints
+            while reporting the specific constraint that failed.
+            </summary>
+            <param name="entry">Extension entry point.</param>
+            <param name="constraints">The list of constraints to evaluate.</param>
             <returns>Instance built.</returns>
         </member>
         <member name="M:Testing.Commons.NUnit.Constraints.MustExtensions.After(Testing.Commons.Must.BeEntryPoint,System.DateTime)">
@@ -994,7 +1042,7 @@
             </summary>
             <param name="subject"> Instance of the type not raising the event.</param>
         </member>
-        <member name="M:Testing.Commons.NUnit.Constraints.NoPropertyChangedConstraint`1.Matches(NUnit.Framework.Constraints.ActualValueDelegate)">
+        <member name="M:Testing.Commons.NUnit.Constraints.NoPropertyChangedConstraint`1.Matches``1(NUnit.Framework.Constraints.ActualValueDelegate{``0})">
             <summary>
             Test whether the constraint is satisfied by an
             ActualValueDelegate that returns the value to be tested.
@@ -1022,7 +1070,7 @@
             </summary>
             <param name="subject"> Instance of the type not raising the event.</param>
         </member>
-        <member name="M:Testing.Commons.NUnit.Constraints.NoPropertyChangingConstraint`1.Matches(NUnit.Framework.Constraints.ActualValueDelegate)">
+        <member name="M:Testing.Commons.NUnit.Constraints.NoPropertyChangingConstraint`1.Matches``1(NUnit.Framework.Constraints.ActualValueDelegate{``0})">
             <summary>
             Test whether the constraint is satisfied by an
             ActualValueDelegate that returns the value to be tested.
@@ -1102,7 +1150,7 @@
         </member>
         <member name="P:Testing.Commons.NUnit.Constraints.RaisingConstraint`2.Matched">
             <summary>
-            Return value of <see cref="M:NUnit.Framework.Constraints.Constraint.Matches(NUnit.Framework.Constraints.ActualValueDelegate)"/>.
+            Return value of <see cref="!:Constraint.Matches(ActualValueDelegate)"/>.
             </summary>
         </member>
         <member name="P:Testing.Commons.NUnit.Constraints.RaisingConstraint`2.EventName">
@@ -1124,7 +1172,7 @@
             <param name="subject"> Instance of the event raising type.</param>
             <param name="eventArgsConstraint">Constraint to be applied to the event arg property.</param>
         </member>
-        <member name="M:Testing.Commons.NUnit.Constraints.PropertyChangedConstraint`1.Matches(NUnit.Framework.Constraints.ActualValueDelegate)">
+        <member name="M:Testing.Commons.NUnit.Constraints.PropertyChangedConstraint`1.Matches``1(NUnit.Framework.Constraints.ActualValueDelegate{``0})">
             <summary>
             Test whether the constraint is satisfied by an
             ActualValueDelegate that returns the value to be tested.
@@ -1160,7 +1208,7 @@
             <param name="subject"> Instance of the event raising type.</param>
             <param name="eventArgsConstraint">Constraint to be applied to the event arg property.</param>
         </member>
-        <member name="M:Testing.Commons.NUnit.Constraints.PropertyChangingConstraint`1.Matches(NUnit.Framework.Constraints.ActualValueDelegate)">
+        <member name="M:Testing.Commons.NUnit.Constraints.PropertyChangingConstraint`1.Matches``1(NUnit.Framework.Constraints.ActualValueDelegate{``0})">
             <summary>
             Test whether the constraint is satisfied by an
             ActualValueDelegate that returns the value to be tested.
