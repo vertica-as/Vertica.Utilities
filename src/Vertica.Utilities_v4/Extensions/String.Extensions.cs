@@ -19,7 +19,7 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 
 		public static bool IsEmpty(this string str)
 		{
-			return string.IsNullOrEmpty(str);
+			return string.IsNullOrWhiteSpace(str);
 		}
 
 		public static bool IsNotEmpty(this string str)
@@ -29,7 +29,7 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 
 		public static string NullIfEmpty(this string s)
 		{
-			return (s == string.Empty) ? null : s;
+			return s.IsEmpty() ? null : s;
 		}
 
 		public static string EmptyIfNull(this string s)

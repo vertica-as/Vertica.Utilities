@@ -22,12 +22,28 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			Assert.That(input.IsEmpty(), Is.EqualTo(isEmpty));
 		}
 
+		private static readonly string[] _onlySpaces = new[] { " ", "  " };
+
+		[Test]
+		[TestCaseSource("_onlySpaces")]
+		public void IsEmpty_OnlySpaces_True(string onlySpaces)
+		{
+			Assert.That(onlySpaces.IsEmpty(), Is.True);
+		}
+
 		[TestCase(null, false)]
 		[TestCase("", false)]
 		[TestCase("abc", true)]
 		public void IsNotEmpty_Combinations(string input, bool isNotEmpty)
 		{
 			Assert.That(input.IsNotEmpty(), Is.EqualTo(isNotEmpty));
+		}
+
+		[Test]
+		[TestCaseSource("_onlySpaces")]
+		public void IsNoEmpty_OnlySpaces_False(string onlySpaces)
+		{
+			Assert.That(onlySpaces.IsNotEmpty(), Is.False);
 		}
 
 		[Test]
@@ -43,11 +59,40 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		[Test]
+		[TestCaseSource("_onlySpaces")]
+		public void NullIfEmpty_OnlySpaces_Null(string onlySpaces)
+		{
+			Assert.That(onlySpaces.NullIfEmpty(), Is.Null);
+		}
+
+		[Test]
 		public void NullIfEmpty_NotEmptyNull_Inout()
 		{
 			Assert.That("not empty".NullIfEmpty(), Is.EqualTo("not empty"));
 		}
 
+		[Test]
+		public void EmptyIfNull_Null_Empty()
+		{
+			string @null = null;
+			Assert.That(@null.EmptyIfNull(), Is.Not.Null.And.Empty);
+			
+		}
+
+		[Test]
+		public void EmptyIfNull_NotNull_Inout()
+		{
+			string notNull = "notNull";
+			Assert.That(notNull.EmptyIfNull(), Is.EqualTo(notNull));
+		}
+
+		[Test]
+		[TestCaseSource("_onlySpaces")]
+		public void EmptyIfNull_OnlySpaces_Inout(string onlySpaces)
+		{
+			Assert.That(onlySpaces.EmptyIfNull(), Is.EqualTo(onlySpaces));
+		}
+		
 		#endregion
 
 		#region stripping
@@ -359,7 +404,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		{
 			Assert.That(input.IfNotThere().Append(appendix), Is.EqualTo(expected));
 		}
-		
+
 		[TestCase("abc", "a", "abc")]
 		[TestCase("abc", "A", "Aabc")]
 		[TestCase("abc", "z", "zabc")]
@@ -596,7 +641,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[Test]
 		public void Chunkify_LengthMoreThanChunk_ManyStringsOfChunkLength()
 		{
-			Assert.That("1234567890".Chunkify(3), Is.EqualTo(new[]{"123", "456", "789", "0"}));
+			Assert.That("1234567890".Chunkify(3), Is.EqualTo(new[] { "123", "456", "789", "0" }));
 		}
 
 		[Test]
@@ -745,7 +790,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 
 		private readonly Func<string, DateTime> _ddmmyyParseExact =
 			s => DateTime.ParseExact(s, @"dd/MM/yy", CultureInfo.InvariantCulture);
-		
+
 		[TestCase(null, null)]
 		[TestCase("", null)]
 		[TestCase("3", 3)]
