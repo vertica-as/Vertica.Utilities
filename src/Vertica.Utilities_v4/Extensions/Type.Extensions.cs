@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Vertica.Utilities_v4.Extensions.StringExt;
 
 namespace Vertica.Utilities_v4.Extensions.TypeExt
 {
@@ -29,7 +30,7 @@ namespace Vertica.Utilities_v4.Extensions.TypeExt
 
 		public static string NameWithNamespace(this Type target)
 		{
-			return !string.IsNullOrEmpty(target.Namespace) ?
+			return target.Namespace.IsNotEmpty() ?
 				target.Namespace + "." + target.Name :
 				target.Name;
 		}

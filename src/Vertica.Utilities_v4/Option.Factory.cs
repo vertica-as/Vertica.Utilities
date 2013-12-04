@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Vertica.Utilities_v4.Extensions.StringExt;
 
 namespace Vertica.Utilities_v4
 {
@@ -33,7 +34,7 @@ namespace Vertica.Utilities_v4
 
 		public static Option<string> Maybe(string value)
 		{
-			return string.IsNullOrEmpty(value) ? None(string.Empty) : Some(value);
+			return value.IsEmpty() ? None(string.Empty) : Some(value);
 		}
 
 		public static Option<IEnumerable<T>> Maybe<T>(IEnumerable<T> value)

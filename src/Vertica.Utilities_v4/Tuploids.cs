@@ -64,7 +64,7 @@ namespace Vertica.Utilities_v4
 		public static Pair<T> Parse(string pair, char tokenizer)
 		{
 			Pair<T> result = default(Pair<T>);
-			if (!string.IsNullOrEmpty(pair))
+			if (pair.IsNotEmpty())
 			{
 				var tokens = pair.Split(tokenizer);
 
@@ -151,7 +151,7 @@ namespace Vertica.Utilities_v4
 		public static Triplet<T> Parse(string triplet, char tokenizer)
 		{
 			Triplet<T> result = default(Triplet<T>);
-			if (!string.IsNullOrEmpty(triplet))
+			if (triplet.IsNotEmpty())
 			{
 				var tokens = triplet.Split(tokenizer);
 
@@ -238,7 +238,7 @@ namespace Vertica.Utilities_v4
 		public static Quartet<T> Parse(string quintet, char tokenizer)
 		{
 			Quartet<T> result = default(Quartet<T>);
-			if (!string.IsNullOrEmpty(quintet))
+			if (quintet.IsNotEmpty())
 			{
 				var tokens = quintet.Split(tokenizer);
 
@@ -331,7 +331,7 @@ namespace Vertica.Utilities_v4
 		public static Quintet<T> Parse(string quintet, char tokenizer)
 		{
 			Quintet<T> result = default(Quintet<T>);
-			if (!string.IsNullOrEmpty(quintet))
+			if (quintet.IsNotEmpty())
 			{
 				var tokens = quintet.Split(tokenizer);
 

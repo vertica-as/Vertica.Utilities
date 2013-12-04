@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Text;
+using Vertica.Utilities_v4.Extensions.StringExt;
 
 namespace Vertica.Utilities_v4
 {
@@ -234,7 +235,7 @@ namespace Vertica.Utilities_v4
 
 		public string ToString(string format, IFormatProvider provider)
 		{
-			if (string.IsNullOrEmpty(format)) format = "g";
+			if (format.IsEmpty()) format = "g";
 
 			char first = format[0];
 			if (char.ToLower(first) == 'g')

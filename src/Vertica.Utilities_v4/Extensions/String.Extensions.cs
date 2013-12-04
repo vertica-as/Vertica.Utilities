@@ -365,7 +365,7 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 		public static MemoryStream GetMemoryStream(this IOExtensionPoint<string> s)
 		{
 			MemoryStream result = null;
-			if (s != null && !string.IsNullOrEmpty(s.ExtendedValue))
+			if (s.ExtendedValue.IsNotEmpty())
 			{
 				result = new MemoryStream();
 				var sw = new StreamWriter(result);
@@ -525,7 +525,7 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 		public static T Parse<T>(this string s)
 		{
 			T result = default(T);
-			if (!String.IsNullOrEmpty(s))
+			if (s.IsNotEmpty())
 			{
 				TypeConverter tc = TypeDescriptor.GetConverter(typeof(T));
 				result = (T)tc.ConvertFrom(s);
@@ -545,7 +545,7 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 		public static T? AsNullable<T>(this ExtensionPoint<string> s, Func<string, T> parser) where T : struct
 		{
 			T? result = null;
-			if (!string.IsNullOrEmpty(s.ExtendedValue))
+			if (s.ExtendedValue.IsNotEmpty())
 			{
 				result = parser(s.ExtendedValue);
 			}
@@ -555,7 +555,7 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 		public static bool TryAsNullable<T>(this ExtensionPoint<string> s, out T? result, TryParseDelegate<T> parser) where T : struct
 		{
 			bool success;
-			if (string.IsNullOrEmpty(s.ExtendedValue))
+			if (s.ExtendedValue.IsEmpty())
 			{
 				result = null;
 				success = false;

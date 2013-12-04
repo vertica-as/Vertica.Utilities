@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Vertica.Utilities_v4.Extensions.StringExt;
 using Vertica.Utilities_v4.Resources;
 
 namespace Vertica.Utilities_v4
@@ -105,7 +106,7 @@ namespace Vertica.Utilities_v4
 
 		public bool TryFind(string enumName, out T value)
 		{
-			Guard.AgainstArgument("enumName", string.IsNullOrEmpty(enumName));
+			Guard.AgainstArgument("enumName", enumName.IsEmpty());
 
 			bool found = _inner.ContainsKey(enumName);
 			value = default(T);
