@@ -107,6 +107,7 @@
     <Compile Include="Extensions\Support\NonZeroEnum.cs" />
     <Compile Include="Extensions\Support\NotIConvertible.cs" />
     <Compile Include="Extensions\Support\OrderSubject.cs" />
+    <Compile Include="Extensions\Support\SafeSubject.cs" />
     <Compile Include="Extensions\Support\ZeroEnum.cs" />
     <Compile Include="Extensions\TypeExtensionsTester.cs" />
     <Compile Include="ICloneableTester.cs" />

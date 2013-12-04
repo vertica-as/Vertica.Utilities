@@ -6,6 +6,8 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 {
 	public static class ObjectExtensions
 	{
+		#region safe
+		
 		public static string SafeToString<T>(this T instance, string @default = null) where T : class
 		{
 			return instance == null ? @default : instance.ToString();
@@ -15,13 +17,24 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 			where T : class
 			where U : class
 		{
-			U result = null;
-			if (argument != null)
-			{
-				result = func(argument);
-			}
-			return result;
+			return argument != null ? func(argument) : null;
 		}
+
+		public static U? SafeValue<T, U>(this T argument, Func<T, U> func)
+			where T : class
+			where U : struct
+		{
+			return argument != null ? func(argument) : default(U?);
+		}
+
+		public static U? SafeValue<T, U>(this T argument, Func<T, U?> func)
+			where T : class
+			where U : struct
+		{
+			return argument != null ? func(argument) : default(U?);
+		}
+
+		#endregion
 
 		#region unbox, checking DbNull
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using NUnit.Framework;
-using Vertica.Utilities_v4.Eventing;
 using Vertica.Utilities_v4.Extensions.ObjectExt;
 using Vertica.Utilities_v4.Tests.Extensions.Support;
 
@@ -9,19 +8,56 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 	[TestFixture]
 	public class ObjectExtensionsTester
 	{
+		#region safe
+
 		[Test]
 		public void Safe_NullInstance_Null()
 		{
-			Exception @null = null;
-			Assert.That(@null.Safe(o => o.Message), Is.Null);
+			SafeSubject @null = null;
+			Assert.That(@null.Safe(o => o.ReferenceProperty), Is.Null);
 		}
 
 		[Test]
 		public void Safe_NotNullInstance_FunctionExecuted()
 		{
-			var notNull = new Exception("msg");
-			Assert.That(notNull.Safe(o => o.Message), Is.EqualTo("msg"));
+			var notNull = new SafeSubject { ReferenceProperty = new Exception("msg") };
+			Assert.That(notNull.Safe(o => o.ReferenceProperty.Message), Is.EqualTo("msg"));
 		}
+
+		[Test]
+		public void SafeValue_NullableProperty_NullInstace_Null()
+		{
+			SafeSubject @null = null;
+			Assert.That(@null.SafeValue(o => o.NullableProperty), Is.Null);
+		}
+
+		[Test]
+		public void SafeValue_NullableProperty_NotNullInstace_FunctionExecuted()
+		{
+			var notNull = new SafeSubject { NullableProperty = 3 };
+			Assert.That(notNull.SafeValue(o => o.NullableProperty), Is.EqualTo(3));
+
+			// null is a valid proprety value
+			notNull = new SafeSubject { NullableProperty = null };
+			Assert.That(notNull.SafeValue(o => o.NullableProperty), Is.Null);
+		}
+
+		[Test]
+		public void SafeValue_ValueProperty_NullInstace_Null()
+		{
+			SafeSubject @null = null;
+			Assert.That(@null.SafeValue(o => o.ValueProperty), Is.Null);
+		}
+
+		[Test]
+		public void SafeNullable_ValueProperty_NotNullInstace_FunctionExecuted()
+		{
+			var notNull = new SafeSubject { ValueProperty = 3 };
+			Assert.That(notNull.SafeValue(o => o.ValueProperty), Is.EqualTo(3));
+		}
+
+		#endregion
+
 
 		#region Unbox
 
@@ -345,7 +381,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 
 		#region Cast
 
-		
+
 
 		#endregion
 	}
