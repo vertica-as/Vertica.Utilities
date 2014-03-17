@@ -233,5 +233,19 @@ namespace Vertica.Utilities_v4
 		{
 			return string.Format("{0}..{1}", _lowerBound.Lower(), _upperBound.Upper());
 		}
+
+		public Range<T> Join(Range<T> range)
+		{
+			if (range == null) return this;
+
+			IBound<T> lower = LowerBound.IsAtLeast(range.LowerBound) ?
+				range._lowerBound :
+				_lowerBound;
+			IBound<T> upper = UpperBound.IsAtMost(range.UpperBound) ?
+				range._upperBound :
+				_upperBound;
+
+			return new Range<T>(lower, upper);
+		}
 	}
 }

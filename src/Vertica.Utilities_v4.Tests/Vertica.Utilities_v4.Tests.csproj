@@ -121,6 +121,7 @@
     <Compile Include="Patterns\PipesAndFiltersTester.cs" />
     <Compile Include="Patterns\PredicateSpecificationTester.cs" />
     <Compile Include="Patterns\Support\MultiLink.cs" />
+    
     <Compile Include="Security\BCryptHasherTester.cs" />
     <Compile Include="Security\BCryptTester.cs" />
     <Compile Include="Security\CredentialTester.cs" />
@@ -197,7 +198,16 @@
     <Compile Include="RangeTester.Limit.cs">
       <DependentUpon>RangeTester.cs</DependentUpon>
     </Compile>
-    <Compile Include="Extensions\TimeExtensionsTester.cs" />
+	  <Compile Include="RangeTester.Overlaps.cs">
+		  <DependentUpon>RangeTester.cs</DependentUpon>
+	  </Compile>
+	  <Compile Include="RangeTester.Join.cs">
+		  <DependentUpon>RangeTester.cs</DependentUpon>
+	  </Compile>
+	  <Compile Include="RangeTester.Intersects.cs">
+		  <DependentUpon>RangeTester.cs</DependentUpon>
+	  </Compile>
+	  <Compile Include="Extensions\TimeExtensionsTester.cs" />
     <Compile Include="Reflection\NameAndValueTester.cs" />
     <Compile Include="Reflection\Support\StaticReflectionSubjects.cs" />
     <Compile Include="Support\AgeConstraint.cs" />
