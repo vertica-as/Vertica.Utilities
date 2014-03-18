@@ -238,13 +238,35 @@ namespace Vertica.Utilities_v4
 		{
 			if (range == null) return this;
 
-			IBound<T> lower = LowerBound.IsAtLeast(range.LowerBound) ?
-				range._lowerBound :
-				_lowerBound;
-			IBound<T> upper = UpperBound.IsAtMost(range.UpperBound) ?
-				range._upperBound :
-				_upperBound;
+			IBound<T> lower = null, upper = null;
+			if (LowerBound.IsEqualTo(range.LowerBound))
+			{
+				bool closed = _lowerBound.IsClosed || range._lowerBound.IsClosed;
+				lower = closed ? new Closed<T>(LowerBound) as IBound<T> : new Open<T>(LowerBound);
+			}
+			else if (LowerBound.IsLessThan(range.LowerBound))
+			{
+				lower = _lowerBound;
+			}
+			else
+			{
+				lower = range._lowerBound;
+			}
 
+			if (UpperBound.IsEqualTo(range.UpperBound))
+			{
+				bool closed = _upperBound.IsClosed || range._upperBound.IsClosed;
+				upper = closed ? new Closed<T>(UpperBound) as IBound<T> : new Open<T>(UpperBound);
+			}
+			else if (UpperBound.IsMoreThan(range.UpperBound))
+			{
+				upper = _upperBound;
+			}
+			else
+			{
+				upper = range._upperBound;
+			}
+			
 			return new Range<T>(lower, upper);
 		}
 	}

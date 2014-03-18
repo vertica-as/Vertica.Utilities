@@ -72,9 +72,25 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		[Test]
-		public void Join_scenario_outcome()
+		public void Join_LowerBoundTypeMissmatch_Closed()
 		{
+			Range<int> oneToThree = Range.HalfOpen(1, 3),
+				oneToFive = Range.HalfClosed(1, 5);
 
+			var union = oneToThree.Join(oneToFive);
+
+			Assert.That(union.Contains(1), Is.True);
+		}
+
+		[Test]
+		public void Join_UpperBoundTypeMissmatch_Closed()
+		{
+			Range<int> oneToThree = Range.HalfOpen(1, 3),
+				oneToFive = Range.HalfClosed(1, 5);
+
+			var union = oneToThree.Join(oneToFive);
+
+			Assert.That(union.Contains(5), Is.True);
 		}
 	}
 }
