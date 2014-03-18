@@ -11,9 +11,11 @@ namespace Vertica.Utilities_v4
 	 * JP´s Range class
 	 * and
 	 * http://devlicio.us/blogs/sergio_pereira/archive/2010/01/02/language-envy-c-needs-ranges.aspx
+	 * and
+	 * https://github.com/cmcnab/WhatsMissing/blob/master/WhatsMissing/Range.cs
 	 */
 	[Serializable]
-	public class Range<T> /*: IEquatable<Range<T>>*/ where T : IComparable<T>
+	public class Range<T> : IEquatable<Range<T>> where T : IComparable<T>
 	{
 		private readonly IBound<T> _lowerBound;
 		private readonly IBound<T> _upperBound;
@@ -238,36 +240,38 @@ namespace Vertica.Utilities_v4
 		{
 			if (range == null) return this;
 
-			IBound<T> lower = null, upper = null;
-			if (LowerBound.IsEqualTo(range.LowerBound))
-			{
-				bool closed = _lowerBound.IsClosed || range._lowerBound.IsClosed;
-				lower = closed ? new Closed<T>(LowerBound) as IBound<T> : new Open<T>(LowerBound);
-			}
-			else if (LowerBound.IsLessThan(range.LowerBound))
-			{
-				lower = _lowerBound;
-			}
-			else
-			{
-				lower = range._lowerBound;
-			}
+			IBound<T> lower = min(_lowerBound, range._lowerBound),
+				upper = max(_upperBound, range._upperBound);
 
-			if (UpperBound.IsEqualTo(range.UpperBound))
+			return new Range<T>(lower, upper);
+		}
+
+		private static IBound<T> min(IBound<T> x, IBound<T> y)
+		{
+			IBound<T> min;
+			if (x.Value.IsEqualTo(y.Value))
 			{
-				bool closed = _upperBound.IsClosed || range._upperBound.IsClosed;
-				upper = closed ? new Closed<T>(UpperBound) as IBound<T> : new Open<T>(UpperBound);
-			}
-			else if (UpperBound.IsMoreThan(range.UpperBound))
-			{
-				upper = _upperBound;
+				min = x.LessRestrictive(y);
 			}
 			else
 			{
-				upper = range._upperBound;
+				min = x.Value.IsLessThan(y.Value) ? x : y;
 			}
-			
-			return new Range<T>(lower, upper);
+			return min;
+		}
+
+		private static IBound<T> max(IBound<T> x, IBound<T> y)
+		{
+			IBound<T> max;
+			if (x.Value.IsEqualTo(y.Value))
+			{
+				max = x.LessRestrictive(y);
+			}
+			else
+			{
+				max = x.Value.IsMoreThan(y.Value) ? x : y;
+			}
+			return max;
 		}
 	}
 }

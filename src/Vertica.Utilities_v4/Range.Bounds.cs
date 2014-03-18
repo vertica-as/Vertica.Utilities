@@ -20,7 +20,7 @@ namespace Vertica.Utilities_v4
 	public interface IBound<T> : IEquatable<IBound<T>> where T : IComparable<T>
 	{
 		T Value { get; }
-	
+		
 		#region representation
 
 		string Lower();
@@ -46,7 +46,7 @@ namespace Vertica.Utilities_v4
 		#region union implementation
 
 		bool IsClosed { get; }
-		IBound<T> New(T value);
+		IBound<T> LessRestrictive(IBound<T> bound);
 
 		#endregion
 	}
@@ -91,11 +91,17 @@ namespace Vertica.Utilities_v4
 		{
 			return _value + " (inclusive)";
 		}
+
 		public bool IsClosed { get { return true; } }
 
-		public IBound<T> New(T value)
+		public IBound<T> LessRestrictive(IBound<T> bound)
 		{
-			return new Closed<T>(value);
+			Guard.AgainstArgument("bound",
+				Comparer<T>.Default.Compare(Value, bound.Value) != 0,
+				"Bound values need to be equal");
+
+			if (IsClosed) return this;
+			return bound.IsClosed ? bound : this;
 		}
 
 		#region value equality (to increase performance)
@@ -165,9 +171,14 @@ namespace Vertica.Utilities_v4
 
 		public bool IsClosed { get { return false; } }
 
-		public IBound<T> New(T value)
+		public IBound<T> LessRestrictive(IBound<T> bound)
 		{
-			return new Open<T>(value);
+			Guard.AgainstArgument("bound",
+				Comparer<T>.Default.Compare(Value, bound.Value) != 0,
+				"Bound values need to be equal");
+
+			if (IsClosed) return this;
+			return bound.IsClosed ? bound : this;
 		}
 
 		#region value equality (to increase performance)
