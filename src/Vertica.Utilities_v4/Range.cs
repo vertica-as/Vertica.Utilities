@@ -34,7 +34,7 @@ namespace Vertica.Utilities_v4
 		{
 			AssertBounds(lowerBound, upperBound);
 
-			_lowerBound =  new Closed<T>(lowerBound);
+			_lowerBound = new Closed<T>(lowerBound);
 			_upperBound = new Closed<T>(upperBound);
 		}
 
@@ -168,7 +168,7 @@ namespace Vertica.Utilities_v4
 			_nextGenerator = _nextGenerator ?? initNextGenerator(increment);
 			return Generate(_nextGenerator);
 		}
-		
+
 		#region Empty Range
 
 		public static Range<T> Empty { get { return EmptyRange<T>.Instance; } }
@@ -242,18 +242,44 @@ namespace Vertica.Utilities_v4
 		{
 			if (range == null || ReferenceEquals(range, Empty)) return this;
 
-			IBound<T> lower = min(_lowerBound, range._lowerBound),
-				upper = max(_upperBound, range._upperBound);
+			IBound<T> lower = min(_lowerBound, range._lowerBound, Restrictive.Less),
+				upper = max(_upperBound, range._upperBound, Restrictive.Less);
 
 			return new Range<T>(lower, upper);
 		}
 
-		private static IBound<T> min(IBound<T> x, IBound<T> y)
+		internal static class Restrictive
+		{
+			public static IBound<T> Less(IBound<T> x, IBound<T> y)
+			{
+				assertArguments(x, y);
+
+				if (x.IsClosed) return x;
+				return y.IsClosed ? y : x;
+			}
+
+			public static IBound<T> More(IBound<T> x, IBound<T> y)
+			{
+				assertArguments(x, y);
+
+				if (x.IsClosed) return y;
+				return y.IsClosed ? x : y;
+			}
+
+			private static void assertArguments(IBound<T> x, IBound<T> y)
+			{
+				Guard.AgainstArgument("y",
+					!x.Value.IsEqualTo(y.Value),
+					"Bound values need to be equal to check restrictiveness.");
+			}
+		}
+
+		private static IBound<T> min(IBound<T> x, IBound<T> y, Func<IBound<T>, IBound<T>, IBound<T>> equalSelection)
 		{
 			IBound<T> min;
 			if (x.Value.IsEqualTo(y.Value))
 			{
-				min = x.LessRestrictive(y);
+				min = equalSelection(x, y);
 			}
 			else
 			{
@@ -262,12 +288,12 @@ namespace Vertica.Utilities_v4
 			return min;
 		}
 
-		private static IBound<T> max(IBound<T> x, IBound<T> y)
+		private static IBound<T> max(IBound<T> x, IBound<T> y, Func<IBound<T>, IBound<T>, IBound<T>> equalSelection)
 		{
 			IBound<T> max;
 			if (x.Value.IsEqualTo(y.Value))
 			{
-				max = x.LessRestrictive(y);
+				max = equalSelection(x, y);
 			}
 			else
 			{
@@ -278,26 +304,8 @@ namespace Vertica.Utilities_v4
 
 		public virtual Range<T> Intersect(Range<T> range)
 		{
-			/*
-			 * var low1 = this.Lesser;
-			var high1 = this.Greater;
-			var low2 = other.Lesser;
-			var high2 = other.Greater;
-
-			if (low2.CompareTo(high1) < 0 && high2.CompareTo(low1) > 0)
-			{
-				var conflictLow = low2.CompareTo(low1) < 0 ? low1 : low2;
-				var conflictHigh = high2.CompareTo(high1) > 0 ? high1 : high2;
-
-				// Note the returned range preserves the directionality of this range.
-				return this.IsForward
-					? new Range<T>(conflictLow, conflictHigh)
-					: new Range<T>(conflictHigh, conflictLow);
-			}
-
-			return null;
-			 * */
 			if (range == null || ReferenceEquals(range, Empty)) return Empty;
+			
 			if (_lowerBound.IsClosed && range._upperBound.IsClosed && LowerBound.IsEqualTo(range.UpperBound))
 			{
 				return Range.Degenerate(LowerBound);
@@ -305,6 +313,12 @@ namespace Vertica.Utilities_v4
 			if (_upperBound.IsClosed && range._lowerBound.IsClosed && UpperBound.IsEqualTo(range.LowerBound))
 			{
 				return Range.Degenerate(UpperBound);
+			}
+			if (range.LowerBound.IsLessThan(UpperBound) && range.UpperBound.IsMoreThan(LowerBound))
+			{
+				IBound<T> lower = max(_lowerBound, range._lowerBound, Restrictive.More), 
+					upper = min(_upperBound, range._upperBound, Restrictive.More);
+				return new Range<T>(lower, upper);
 			}
 			return Empty;
 		}

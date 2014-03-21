@@ -100,5 +100,57 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(intersection.UpperBound, Is.EqualTo(10));
 			Assert.That(intersection.Contains(10), Is.True);
 		}
+
+		[Test]
+		public void Intersect_WellContained_Contained()
+		{
+			Range<int> container = Range.New(1, 10),
+				contained = Range.New(3, 6);
+
+			var intersection = container.Intersect(contained);
+
+			Assert.That(intersection, Is.EqualTo(contained));
+		}
+
+		[Test]
+		public void Intersect_CleanIntersection_MaxLowerMinUpper()
+		{
+			Range<int> left = Range.Closed(1, 5),
+				right = Range.Closed(3, 8);
+
+			var intersection = left.Intersect(right);
+
+			Assert.That(intersection.LowerBound, Is.EqualTo(3));
+			Assert.That(intersection.UpperBound, Is.EqualTo(5));
+		}
+
+		[Test]
+		public void Intersect_CleanIntersection_LowerNatureAsOfMaxLower()
+		{
+			Range<int> left = Range.Closed(1, 5),
+				open = Range.Open(3, 8),
+				closed = Range.Closed(3, 8);
+
+			var openLower = left.Intersect(open);
+			Assert.That(openLower.Contains(3), Is.False);
+
+			var closedLower = left.Intersect(closed);
+			Assert.That(closedLower.Contains(3), Is.True);
+		}
+
+		[Test]
+		public void Intersect_CleanIntersection_UpperNatureAsOfMinUpper()
+		{
+			Range<int> right = Range.Closed(3, 8),
+				open = Range.Open(1, 5),
+				closed = Range.Closed(1, 5);
+
+			var openUpper = right.Intersect(open);
+			Assert.That(openUpper.Contains(5), Is.False);
+
+			var closedUpper = right.Intersect(closed);
+			Assert.That(closedUpper.Contains(3), Is.True);
+		}
+		
 	}
 }

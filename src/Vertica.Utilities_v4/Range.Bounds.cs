@@ -43,12 +43,7 @@ namespace Vertica.Utilities_v4
 
 		T Generate(Func<T, T> nextGenerator);
 
-		#region union implementation
-
 		bool IsClosed { get; }
-		IBound<T> LessRestrictive(IBound<T> bound);
-
-		#endregion
 	}
 
 	[Serializable]
@@ -93,16 +88,6 @@ namespace Vertica.Utilities_v4
 		}
 
 		public bool IsClosed { get { return true; } }
-
-		public IBound<T> LessRestrictive(IBound<T> bound)
-		{
-			Guard.AgainstArgument("bound",
-				Comparer<T>.Default.Compare(Value, bound.Value) != 0,
-				"Bound values need to be equal");
-
-			if (IsClosed) return this;
-			return bound.IsClosed ? bound : this;
-		}
 
 		#region value equality (to increase performance)
 
@@ -170,16 +155,6 @@ namespace Vertica.Utilities_v4
 		}
 
 		public bool IsClosed { get { return false; } }
-
-		public IBound<T> LessRestrictive(IBound<T> bound)
-		{
-			Guard.AgainstArgument("bound",
-				Comparer<T>.Default.Compare(Value, bound.Value) != 0,
-				"Bound values need to be equal");
-
-			if (IsClosed) return this;
-			return bound.IsClosed ? bound : this;
-		}
 
 		#region value equality (to increase performance)
 
