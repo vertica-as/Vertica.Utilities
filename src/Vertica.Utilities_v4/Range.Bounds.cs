@@ -44,6 +44,8 @@ namespace Vertica.Utilities_v4
 		T Generate(Func<T, T> nextGenerator);
 
 		bool IsClosed { get; }
+
+		bool Touches(IBound<T> bound);
 	}
 
 	[Serializable]
@@ -88,6 +90,11 @@ namespace Vertica.Utilities_v4
 		}
 
 		public bool IsClosed { get { return true; } }
+
+		public bool Touches(IBound<T> bound)
+		{
+			return bound.IsClosed && Value.IsEqualTo(bound.Value);
+		}
 
 		#region value equality (to increase performance)
 
@@ -155,6 +162,11 @@ namespace Vertica.Utilities_v4
 		}
 
 		public bool IsClosed { get { return false; } }
+
+		public bool Touches(IBound<T> bound)
+		{
+			return false;
+		}
 
 		#region value equality (to increase performance)
 

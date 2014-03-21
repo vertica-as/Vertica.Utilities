@@ -304,23 +304,26 @@ namespace Vertica.Utilities_v4
 
 		public virtual Range<T> Intersect(Range<T> range)
 		{
-			if (range == null || ReferenceEquals(range, Empty)) return Empty;
-			
-			if (_lowerBound.IsClosed && range._upperBound.IsClosed && LowerBound.IsEqualTo(range.UpperBound))
+			Range<T> intersection = Empty;
+
+			if (range != null && !ReferenceEquals(range, Empty))
 			{
-				return Range.Degenerate(LowerBound);
+				if (_lowerBound.Touches(range._upperBound))
+				{
+					intersection = Range.Degenerate(LowerBound);
+				}
+				else if (_upperBound.Touches(range._lowerBound))
+				{
+					intersection = Range.Degenerate(UpperBound);
+				}
+				else if (range.LowerBound.IsLessThan(UpperBound) && range.UpperBound.IsMoreThan(LowerBound))
+				{
+					IBound<T> lower = max(_lowerBound, range._lowerBound, Restrictive.More),
+						upper = min(_upperBound, range._upperBound, Restrictive.More);
+					intersection = new Range<T>(lower, upper);
+				}
 			}
-			if (_upperBound.IsClosed && range._lowerBound.IsClosed && UpperBound.IsEqualTo(range.LowerBound))
-			{
-				return Range.Degenerate(UpperBound);
-			}
-			if (range.LowerBound.IsLessThan(UpperBound) && range.UpperBound.IsMoreThan(LowerBound))
-			{
-				IBound<T> lower = max(_lowerBound, range._lowerBound, Restrictive.More), 
-					upper = min(_upperBound, range._upperBound, Restrictive.More);
-				return new Range<T>(lower, upper);
-			}
-			return Empty;
+			return intersection;
 		}
 	}
 }
