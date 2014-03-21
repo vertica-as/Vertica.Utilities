@@ -325,5 +325,10 @@ namespace Vertica.Utilities_v4
 			}
 			return intersection;
 		}
+
+		public virtual bool Overlaps(Range<T> range)
+		{
+			return false;
+		}
 	}
 }

@@ -203,9 +203,6 @@
     <Compile Include="RangeTester.Join.cs">
       <DependentUpon>RangeTester.cs</DependentUpon>
     </Compile>
-    <Compile Include="RangeTester.Intersects.cs">
-      <DependentUpon>RangeTester.cs</DependentUpon>
-    </Compile>
     <Compile Include="Extensions\TimeExtensionsTester.cs" />
     <Compile Include="Reflection\NameAndValueTester.cs" />
     <Compile Include="Reflection\Support\StaticReflectionSubjects.cs" />
