@@ -183,6 +183,10 @@ namespace Vertica.Utilities_v4
 			public override U LimitLower(U value) { return value; }
 			public override U LimitUpper(U value) { return value; }
 			public override Range<U> Join(Range<U> range) { return range ?? this; }
+			public override Range<U> Intersect(Range<U> range)
+			{
+				return null;
+			}
 
 			public static Range<U> Instance { get { return Nested.instance; } }
 			// ReSharper disable ClassNeverInstantiated.Local
@@ -275,8 +279,29 @@ namespace Vertica.Utilities_v4
 			return max;
 		}
 
-		public virtual Range<T> Intersect(Range<T> rane)
+		public virtual Range<T> Intersect(Range<T> range)
 		{
+			/*
+			 * var low1 = this.Lesser;
+			var high1 = this.Greater;
+			var low2 = other.Lesser;
+			var high2 = other.Greater;
+
+			if (low2.CompareTo(high1) < 0 && high2.CompareTo(low1) > 0)
+			{
+				var conflictLow = low2.CompareTo(low1) < 0 ? low1 : low2;
+				var conflictHigh = high2.CompareTo(high1) > 0 ? high1 : high2;
+
+				// Note the returned range preserves the directionality of this range.
+				return this.IsForward
+					? new Range<T>(conflictLow, conflictHigh)
+					: new Range<T>(conflictHigh, conflictLow);
+			}
+
+			return null;
+			 * */
+			if (range == null || ReferenceEquals(range, Empty)) return Empty;
+			T low1 = LowerBound, high1;
 			return null;
 		}
 	}
