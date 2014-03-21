@@ -183,10 +183,7 @@ namespace Vertica.Utilities_v4
 			public override U LimitLower(U value) { return value; }
 			public override U LimitUpper(U value) { return value; }
 			public override Range<U> Join(Range<U> range) { return range ?? this; }
-			public override Range<U> Intersect(Range<U> range)
-			{
-				return null;
-			}
+			public override Range<U> Intersect(Range<U> range) { return this; }
 
 			public static Range<U> Instance { get { return Nested.instance; } }
 			// ReSharper disable ClassNeverInstantiated.Local
