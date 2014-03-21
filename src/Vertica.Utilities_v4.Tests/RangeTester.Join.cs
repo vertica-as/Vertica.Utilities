@@ -92,5 +92,40 @@ namespace Vertica.Utilities_v4.Tests
 
 			Assert.That(union.Contains(5), Is.True);
 		}
+
+		[Test]
+		public void Join_NotEmptyToEmpty_Self()
+		{
+			Range<int> notEmpty = Range.New(1, 3);
+
+			var union = notEmpty.Join(Range.Empty<int>());
+			Assert.That(union, Is.SameAs(notEmpty));
+		}
+
+		[Test]
+		public void Join_EmptyToNotEmpty_NotEmpty()
+		{
+			Range<int> notEmpty = Range.New(1, 3);
+
+			var union = Range.Empty<int>().Join(notEmpty);
+
+			Assert.That(union, Is.SameAs(notEmpty));
+		}
+
+		[Test]
+		public void Join_EmptyToNull_Empty()
+		{
+			var union = Range.Empty<int>().Join(null);
+
+			Assert.That(union, Is.SameAs(Range.Empty<int>()));
+		}
+
+		[Test]
+		public void Join_EmptyToEmpty_Empty()
+		{
+			var union = Range.Empty<byte>().Join(Range<byte>.Empty);
+
+			Assert.That(union, Is.SameAs(Range.Empty<byte>()));
+		}
 	}
 }

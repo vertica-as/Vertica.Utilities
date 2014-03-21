@@ -182,6 +182,7 @@ namespace Vertica.Utilities_v4
 			public override U Limit(U value) { return value; }
 			public override U LimitLower(U value) { return value; }
 			public override U LimitUpper(U value) { return value; }
+			public override Range<U> Join(Range<U> range) { return range ?? this; }
 
 			public static Range<U> Instance { get { return Nested.instance; } }
 			// ReSharper disable ClassNeverInstantiated.Local
@@ -236,9 +237,9 @@ namespace Vertica.Utilities_v4
 			return string.Format("{0}..{1}", _lowerBound.Lower(), _upperBound.Upper());
 		}
 
-		public Range<T> Join(Range<T> range)
+		public virtual Range<T> Join(Range<T> range)
 		{
-			if (range == null) return this;
+			if (range == null || ReferenceEquals(range, Empty)) return this;
 
 			IBound<T> lower = min(_lowerBound, range._lowerBound),
 				upper = max(_upperBound, range._upperBound);
@@ -272,6 +273,11 @@ namespace Vertica.Utilities_v4
 				max = x.Value.IsMoreThan(y.Value) ? x : y;
 			}
 			return max;
+		}
+
+		public virtual Range<T> Intersect(Range<T> rane)
+		{
+			return null;
 		}
 	}
 }

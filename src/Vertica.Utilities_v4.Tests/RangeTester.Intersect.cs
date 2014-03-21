@@ -5,6 +5,6 @@ namespace Vertica.Utilities_v4.Tests
 	[TestFixture]
 	public partial class RangeTester
 	{
-		//Range.(1, 2);
+		
 	}
 }
