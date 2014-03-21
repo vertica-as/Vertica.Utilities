@@ -151,6 +151,5 @@ namespace Vertica.Utilities_v4.Tests
 			var closedUpper = right.Intersect(closed);
 			Assert.That(closedUpper.Contains(3), Is.True);
 		}
-		
 	}
 }
