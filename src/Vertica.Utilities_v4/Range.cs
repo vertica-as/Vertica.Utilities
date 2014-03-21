@@ -300,11 +300,11 @@ namespace Vertica.Utilities_v4
 			if (range == null || ReferenceEquals(range, Empty)) return Empty;
 			if (_lowerBound.IsClosed && range._upperBound.IsClosed && LowerBound.IsEqualTo(range.UpperBound))
 			{
-				return Range.Closed(LowerBound, LowerBound);
+				return Range.Degenerate(LowerBound);
 			}
 			if (_upperBound.IsClosed && range._lowerBound.IsClosed && UpperBound.IsEqualTo(range.LowerBound))
 			{
-				return Range.Closed(UpperBound, UpperBound);
+				return Range.Degenerate(UpperBound);
 			}
 			return Empty;
 		}

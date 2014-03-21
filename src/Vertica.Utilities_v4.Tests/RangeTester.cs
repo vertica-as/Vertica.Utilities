@@ -84,6 +84,15 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(() => Range.New(31.October(1952), 11.March(1977)), Throws.Nothing);
 		}
 
+		[Test]
+		public void Degenerate_SameBounds()
+		{
+			Range<TimeSpan> degenerate = Range.Degenerate(2.Seconds());
+
+			Assert.That(degenerate.LowerBound, Is.EqualTo(2.Seconds()));
+			Assert.That(degenerate.UpperBound, Is.EqualTo(2.Seconds()));
+		}
+
 		#endregion
 
 		#region representation

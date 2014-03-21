@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Testing.Commons.Time;
 
 namespace Vertica.Utilities_v4.Tests
@@ -98,5 +99,14 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		#endregion
+
+		[Test]
+		public void Contains_Degenerate_ContainsValue()
+		{
+			TimeSpan value = 2.Seconds();
+			var degenerate = Range.Degenerate(value);
+
+			Assert.That(degenerate.Contains(value), Is.True);
+		}
 	}
 }
