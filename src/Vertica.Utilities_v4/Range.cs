@@ -298,8 +298,15 @@ namespace Vertica.Utilities_v4
 			return null;
 			 * */
 			if (range == null || ReferenceEquals(range, Empty)) return Empty;
-			T low1 = LowerBound, high1;
-			return null;
+			if (_lowerBound.IsClosed && range._upperBound.IsClosed && LowerBound.IsEqualTo(range.UpperBound))
+			{
+				return Range.Closed(LowerBound, LowerBound);
+			}
+			if (_upperBound.IsClosed && range._lowerBound.IsClosed && UpperBound.IsEqualTo(range.LowerBound))
+			{
+				return Range.Closed(UpperBound, UpperBound);
+			}
+			return Empty;
 		}
 	}
 }
