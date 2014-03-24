@@ -316,7 +316,7 @@ namespace Vertica.Utilities_v4
 				{
 					intersection = Range.Degenerate(UpperBound);
 				}
-				else if (range.LowerBound.IsLessThan(UpperBound) && range.UpperBound.IsMoreThan(LowerBound))
+				else if (LowerBound.IsLessThan(range.UpperBound) && UpperBound.IsMoreThan(range.LowerBound))
 				{
 					IBound<T> lower = max(_lowerBound, range._lowerBound, Restrictive.More),
 						upper = min(_upperBound, range._upperBound, Restrictive.More);
@@ -328,7 +328,13 @@ namespace Vertica.Utilities_v4
 
 		public virtual bool Overlaps(Range<T> range)
 		{
-			return !ReferenceEquals(Intersect(range),Empty);
+			if (range == null || ReferenceEquals(range, Empty)) return false;
+
+			bool overlaps = _lowerBound.Touches(range._upperBound) ||
+				_upperBound.Touches(range._lowerBound) ||
+				(LowerBound.IsLessThan(range.UpperBound) && UpperBound.IsMoreThan(range.LowerBound));
+			
+			return overlaps;
 		}
 	}
 }
