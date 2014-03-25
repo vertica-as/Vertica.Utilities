@@ -11,9 +11,11 @@ namespace Vertica.Utilities_v4
 	 * JP´s Range class
 	 * and
 	 * http://devlicio.us/blogs/sergio_pereira/archive/2010/01/02/language-envy-c-needs-ranges.aspx
+	 * and
+	 * https://github.com/cmcnab/WhatsMissing/blob/master/WhatsMissing/Range.cs
 	 */
 	[Serializable]
-	public class Range<T> /*: IEquatable<Range<T>>*/ where T : IComparable<T>
+	public class Range<T> : IEquatable<Range<T>> where T : IComparable<T>
 	{
 		private readonly IBound<T> _lowerBound;
 		private readonly IBound<T> _upperBound;
@@ -32,7 +34,7 @@ namespace Vertica.Utilities_v4
 		{
 			AssertBounds(lowerBound, upperBound);
 
-			_lowerBound =  new Closed<T>(lowerBound);
+			_lowerBound = new Closed<T>(lowerBound);
 			_upperBound = new Closed<T>(upperBound);
 		}
 
@@ -166,7 +168,7 @@ namespace Vertica.Utilities_v4
 			_nextGenerator = _nextGenerator ?? initNextGenerator(increment);
 			return Generate(_nextGenerator);
 		}
-		
+
 		#region Empty Range
 
 		public static Range<T> Empty { get { return EmptyRange<T>.Instance; } }
@@ -180,7 +182,9 @@ namespace Vertica.Utilities_v4
 			public override U Limit(U value) { return value; }
 			public override U LimitLower(U value) { return value; }
 			public override U LimitUpper(U value) { return value; }
-
+			public override Range<U> Join(Range<U> range) { return range ?? this; }
+			public override Range<U> Intersect(Range<U> range) { return this; }
+			
 			public static Range<U> Instance { get { return Nested.instance; } }
 			// ReSharper disable ClassNeverInstantiated.Local
 			class Nested
@@ -232,6 +236,105 @@ namespace Vertica.Utilities_v4
 		public override string ToString()
 		{
 			return string.Format("{0}..{1}", _lowerBound.Lower(), _upperBound.Upper());
+		}
+
+		public virtual Range<T> Join(Range<T> range)
+		{
+			if (range == null || ReferenceEquals(range, Empty)) return this;
+
+			IBound<T> lower = min(_lowerBound, range._lowerBound, Restrictive.Less),
+				upper = max(_upperBound, range._upperBound, Restrictive.Less);
+
+			return new Range<T>(lower, upper);
+		}
+
+		internal static class Restrictive
+		{
+			public static IBound<T> Less(IBound<T> x, IBound<T> y)
+			{
+				assertArguments(x, y);
+
+				if (x.IsClosed) return x;
+				return y.IsClosed ? y : x;
+			}
+
+			public static IBound<T> More(IBound<T> x, IBound<T> y)
+			{
+				assertArguments(x, y);
+
+				if (x.IsClosed) return y;
+				return y.IsClosed ? x : y;
+			}
+
+			private static void assertArguments(IBound<T> x, IBound<T> y)
+			{
+				Guard.AgainstArgument("y",
+					!x.Value.IsEqualTo(y.Value),
+					"Bound values need to be equal to check restrictiveness.");
+			}
+		}
+
+		private static IBound<T> min(IBound<T> x, IBound<T> y, Func<IBound<T>, IBound<T>, IBound<T>> equalSelection)
+		{
+			IBound<T> min;
+			if (x.Value.IsEqualTo(y.Value))
+			{
+				min = equalSelection(x, y);
+			}
+			else
+			{
+				min = x.Value.IsLessThan(y.Value) ? x : y;
+			}
+			return min;
+		}
+
+		private static IBound<T> max(IBound<T> x, IBound<T> y, Func<IBound<T>, IBound<T>, IBound<T>> equalSelection)
+		{
+			IBound<T> max;
+			if (x.Value.IsEqualTo(y.Value))
+			{
+				max = equalSelection(x, y);
+			}
+			else
+			{
+				max = x.Value.IsMoreThan(y.Value) ? x : y;
+			}
+			return max;
+		}
+
+		public virtual Range<T> Intersect(Range<T> range)
+		{
+			Range<T> intersection = Empty;
+
+			if (range != null && !ReferenceEquals(range, Empty))
+			{
+				if (_lowerBound.Touches(range._upperBound))
+				{
+					intersection = Range.Degenerate(LowerBound);
+				}
+				else if (_upperBound.Touches(range._lowerBound))
+				{
+					intersection = Range.Degenerate(UpperBound);
+				}
+				else if (LowerBound.IsLessThan(range.UpperBound) && UpperBound.IsMoreThan(range.LowerBound))
+				{
+					IBound<T> lower = max(_lowerBound, range._lowerBound, Restrictive.More),
+						upper = min(_upperBound, range._upperBound, Restrictive.More);
+					intersection = new Range<T>(lower, upper);
+				}
+			}
+			return intersection;
+		}
+
+		public virtual bool Overlaps(Range<T> range)
+		{
+			if (range == null || ReferenceEquals(range, Empty)) return false;
+
+			bool overlaps = _lowerBound.Touches(range._upperBound) ||
+				_upperBound.Touches(range._lowerBound) ||
+				(LowerBound.IsLessThan(range.UpperBound) && UpperBound.IsMoreThan(range.LowerBound));
+			
+			return overlaps;
 		}
 	}
 }

@@ -34,9 +34,9 @@
     <Reference Include="ExpectedObjects">
       <HintPath>..\..\packages\ExpectedObjects.1.0.0.2\lib\ExpectedObjects.dll</HintPath>
     </Reference>
-    <Reference Include="NSubstitute, Version=1.6.1.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
+    <Reference Include="NSubstitute, Version=1.7.2.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NSubstitute.1.6.1.0\lib\NET40\NSubstitute.dll</HintPath>
+      <HintPath>..\..\packages\NSubstitute.1.7.2.0\lib\NET40\NSubstitute.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -197,6 +197,15 @@
     <Compile Include="RangeTester.Limit.cs">
       <DependentUpon>RangeTester.cs</DependentUpon>
     </Compile>
+    <Compile Include="RangeTester.Overlaps.cs">
+      <DependentUpon>RangeTester.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RangeTester.Join.cs">
+      <DependentUpon>RangeTester.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RangeTester.Intersect.cs">
+      <DependentUpon>RangeTester.cs</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\TimeExtensionsTester.cs" />
     <Compile Include="Reflection\NameAndValueTester.cs" />
     <Compile Include="Reflection\Support\StaticReflectionSubjects.cs" />
@@ -227,7 +236,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
+	   Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">

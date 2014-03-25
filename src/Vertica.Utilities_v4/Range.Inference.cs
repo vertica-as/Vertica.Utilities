@@ -52,6 +52,18 @@ namespace Vertica.Utilities_v4
 			return new Range<T>(lowerBound.Open(), upperbound.Close());
 		}
 
+
+		/// <summary>
+		/// Creates a closed range with a single value
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		public static Range<T> Degenerate<T>(T value) where T : IComparable<T>
+		{
+			return Closed(value, value);
+		}
+
 		public static Range<T> Empty<T>() where T : IComparable<T>
 		{
 			return Range<T>.Empty;

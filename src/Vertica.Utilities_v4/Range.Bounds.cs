@@ -20,7 +20,7 @@ namespace Vertica.Utilities_v4
 	public interface IBound<T> : IEquatable<IBound<T>> where T : IComparable<T>
 	{
 		T Value { get; }
-
+		
 		#region representation
 
 		string Lower();
@@ -42,6 +42,10 @@ namespace Vertica.Utilities_v4
 		#endregion
 
 		T Generate(Func<T, T> nextGenerator);
+
+		bool IsClosed { get; }
+
+		bool Touches(IBound<T> bound);
 	}
 
 	[Serializable]
@@ -49,7 +53,7 @@ namespace Vertica.Utilities_v4
 	{
 		private readonly T _value;
 		public T Value { get { return _value; } }
-
+		
 		public Closed(T value)
 		{
 			_value = value;
@@ -85,6 +89,13 @@ namespace Vertica.Utilities_v4
 			return _value + " (inclusive)";
 		}
 
+		public bool IsClosed { get { return true; } }
+
+		public bool Touches(IBound<T> bound)
+		{
+			return bound.IsClosed && Value.IsEqualTo(bound.Value);
+		}
+
 		#region value equality (to increase performance)
 
 		public bool Equals(IBound<T> other)
@@ -107,7 +118,6 @@ namespace Vertica.Utilities_v4
 		}
 
 		#endregion
-
 	}
 
 	[Serializable]
@@ -115,7 +125,7 @@ namespace Vertica.Utilities_v4
 	{
 		private readonly T _value;
 		public T Value { get { return _value; } }
-
+		
 		public Open(T value)
 		{
 			_value = value;
@@ -149,6 +159,13 @@ namespace Vertica.Utilities_v4
 		public string ToAssertion()
 		{
 			return _value + " (not inclusive)";
+		}
+
+		public bool IsClosed { get { return false; } }
+
+		public bool Touches(IBound<T> bound)
+		{
+			return false;
 		}
 
 		#region value equality (to increase performance)
