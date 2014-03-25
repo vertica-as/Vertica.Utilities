@@ -33,6 +33,15 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(twoYears1977.Equals(twoYears1981), Is.False);
 			Assert.That(twoYears1977 == anotherTwoYears1977, Is.True);
 			Assert.That(twoYears1977 != twoYears1981, Is.True);
+
+			Age twoDays = new Age(27.November(2012), 29.November(2012));
+			TimeSpan oneDay = 1.Days();
+			Assert.That(twoDays.CompareTo(oneDay), Is.GreaterThan(0));
+			Assert.That(twoYears1977.CompareTo(twoYears1981), Is.EqualTo(0));
+			Assert.That(twoYears1977 > twoDays, Is.True);
+			Assert.That(twoYears1981 < twoDays, Is.False);
+			Assert.That(twoYears1977 <= twoYears1981, Is.True);
+			Assert.That(twoYears1981 >= twoYears1977, Is.True);
 		}
 
 		#endregion
@@ -300,7 +309,7 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		#region gt
-		
+
 		[Test]
 		public void GreaterThanOperator_EqualDates_SameAsTimeStamp()
 		{
