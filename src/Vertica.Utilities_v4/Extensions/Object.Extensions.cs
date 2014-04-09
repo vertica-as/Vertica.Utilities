@@ -13,25 +13,31 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 			return instance == null ? @default : instance.ToString();
 		}
 
-		public static U Safe<T, U>(this T argument, Func<T, U> func)
+		public static U Safe<T, U>(this T argument, Func<T, U> func, Predicate<T> isSafe = null)
 			where T : class
 			where U : class
 		{
-			return argument != null ? func(argument) : null;
+			return notSafe(argument, isSafe) ? null: func(argument);
 		}
 
-		public static U? SafeValue<T, U>(this T argument, Func<T, U> func)
+		public static U? SafeValue<T, U>(this T argument, Func<T, U> func, Predicate<T> isSafe = null)
 			where T : class
 			where U : struct
 		{
-			return argument != null ? func(argument) : default(U?);
+			return notSafe(argument, isSafe) ? default(U?) : func(argument);
 		}
 
-		public static U? SafeValue<T, U>(this T argument, Func<T, U?> func)
+		public static U? SafeValue<T, U>(this T argument, Func<T, U?> func, Predicate<T> isSafe = null)
 			where T : class
 			where U : struct
 		{
-			return argument != null ? func(argument) : default(U?);
+			return notSafe(argument, isSafe) ? default(U?): func(argument);
+		}
+
+		private static bool notSafe<T>(T argument, Predicate<T> isSafe) where T : class
+		{
+			bool notSafe = isSafe != null ? !isSafe(argument) : EqualityComparer<T>.Default.Equals(argument, default(T));
+			return notSafe;
 		}
 
 		#endregion

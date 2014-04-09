@@ -25,6 +25,58 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		[Test]
+		public void Safe_NotNullChain_InnerMostValue()
+		{
+			var subject = new SafeSubject {ReferenceProperty = new Exception("msg", new Exception("inner msg"))};
+
+			string innerMostMessage = subject
+				.Safe(s => s.ReferenceProperty)
+				.Safe(p => p.InnerException)
+				.Safe(p =>  p.Message);
+
+			Assert.That(innerMostMessage, Is.EqualTo("inner msg"));
+		}
+
+		[Test]
+		public void Safe_SomeNullInChain_Null()
+		{
+			var subject = new SafeSubject { ReferenceProperty = new Exception("msg", null) };
+
+			string innerMostMessage = subject
+				.Safe(s => s.ReferenceProperty)
+				.Safe(p => p.InnerException)
+				.Safe(p => p.Message);
+
+			Assert.That(innerMostMessage, Is.Null);
+		}
+
+		[Test]
+		public void Safe_CustomSafetyFullfiled_ChainContinues()
+		{
+			var subject = new SafeSubject {ReferenceProperty = new Exception("msg", new Exception("inner msg"))};
+
+			string innerMostMessage = subject
+				.Safe(s => s.ReferenceProperty)
+				.Safe(p => p.InnerException, ex => ex.Message.Length == 3)
+				.Safe(p => p.Message);
+
+			Assert.That(innerMostMessage, Is.EqualTo("inner msg"));
+		}
+
+		[Test]
+		public void Safe_CustomSafetyNotFullfiled_ChainBreaks()
+		{
+			var subject = new SafeSubject { ReferenceProperty = new Exception("msg", new Exception("inner msg")) };
+
+			string innerMostMessage = subject
+				.Safe(s => s.ReferenceProperty)
+				.Safe(p => p.InnerException, ex => ex.Message.Length > 3)
+				.Safe(p => p.Message);
+
+			Assert.That(innerMostMessage, Is.Null);
+		}
+
+		[Test]
 		public void SafeValue_NullableProperty_NullInstace_Null()
 		{
 			SafeSubject @null = null;
