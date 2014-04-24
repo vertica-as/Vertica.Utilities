@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using NUnit.Framework;
 
 namespace Vertica.Utilities_v4.Tests
@@ -79,7 +80,7 @@ namespace Vertica.Utilities_v4.Tests
 		public void GenericAgainst_TrueConditionWithArgumentsForTemplate_FormattedMessage()
 		{
 			string template = "message {0}", argument = "arg";
-			Assert.That(() => Guard.Against<NotSupportedException>(true, template, argument), 
+			Assert.That(() => Guard.Against<NotSupportedException>(true, template, argument),
 				Throws.InstanceOf<NotSupportedException>().With.Message.EqualTo("message arg"));
 		}
 
@@ -231,7 +232,95 @@ namespace Vertica.Utilities_v4.Tests
 			{
 				Guard.AgainstNullArgument("param", param);
 			}
+
+			public void Method(string x, char? y)
+			{
+				Guard.AgainstNullArgument(new { x, y });
+			}
 		}
+
+		#region anonymous null argument checking
+
+		[Test]
+		public void AgainstNullArguments_NullContainer_Exception()
+		{
+			// Use an initial assignment to get the right anonymous type. Ick!
+			var nullContainer = new { x = "hi" };
+			nullContainer = null;
+
+			Assert.That(() => Guard.AgainstNullArgument(nullContainer), Throws.InstanceOf<ArgumentNullException>()
+				.With.Property("ParamName").EqualTo("container"));
+		}
+
+		[Test]
+		public void AgainstNullArgument_ValueTypeArgument_NoException()
+		{
+			var withValueType = new { i = 5 };
+			Assert.That(() => Guard.AgainstNullArgument(withValueType), Throws.Nothing);
+		}
+
+		[Test]
+		public void AgainstNullArgument_NoNulls_NoException()
+		{
+			var notNulls = new { x = "hello", y = new object() };
+			Assert.That(() => Guard.AgainstNullArgument(notNulls), Throws.Nothing);
+		}
+
+		[Test]
+		public void AgainstNullArgument_SingleNullValue_ExceptionWithArgumentName()
+		{
+			var singleNull = new { x = (Stream)null };
+			Assert.That(() => Guard.AgainstNullArgument(singleNull), Throws.InstanceOf<ArgumentNullException>()
+				.With.Property("ParamName").EqualTo("x"));
+		}
+
+		[Test]
+		public void AgainstNullArgument_MultipleNullValues_ExceptionWithOneName()
+		{
+			var multipleNulls = new { x = "hello", y = (string)null, z = (string)null };
+
+			Assert.That(() => Guard.AgainstNullArgument(multipleNulls), Throws.InstanceOf<ArgumentNullException>()
+				.With.Property("ParamName").EqualTo("y").Or
+				.With.Property("ParamName").EqualTo("z"));
+		}
+
+		[Test]
+		public void AgainstNullArgument_NullableNull_Exception()
+		{
+			var withNullableNull = new { x = default(int?) };
+
+			Assert.That(() => Guard.AgainstNullArgument(withNullableNull), Throws.InstanceOf<ArgumentNullException>());
+		}
+
+		[Test]
+		public void AgainstNullArgument_NullableNotNull_NoException()
+		{
+			// ReSharper disable once RedundantExplicitNullableCreation
+			// ReSharper disable once ConvertNullableToShortForm
+			var withNullableNull = new { x = new Nullable<int>(4) };
+
+			Assert.That(() => Guard.AgainstNullArgument(withNullableNull), Throws.Nothing);
+		}
+
+		[Test]
+		public void AgainstNullArgument_NoNullArguments_NoException()
+		{
+			Assert.That(() => new GuardSubject().Method("notNull", 'A'), Throws.Nothing);
+		}
+
+		// ReSharper disable ExpressionIsAlwaysNull
+		[Test]
+		public void AgainstNullArgument_SomeNullArguments_ExceptionWithDefaultMessageAndParam()
+		{
+			string paramName = "x", actualMessage = new ArgumentNullException(paramName).Message;
+
+			Assert.That(() => new GuardSubject().Method(null, 'B'), Throws.InstanceOf<ArgumentNullException>()
+				.With.Message.EqualTo(actualMessage).And
+				.With.Property("ParamName").EqualTo(paramName));
+		}
+		// ReSharper restore ExpressionIsAlwaysNull
+
+		#endregion
 	}
 	// ReSharper restore ConditionIsAlwaysTrueOrFalse
 }

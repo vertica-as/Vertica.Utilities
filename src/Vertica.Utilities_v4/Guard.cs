@@ -1,4 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using Vertica.Utilities_v4.Extensions.StringExt;
 
 namespace Vertica.Utilities_v4
 {
@@ -74,6 +79,52 @@ namespace Vertica.Utilities_v4
 		{
 			if (!assertion) return;
 			ExceptionHelper.ThrowArgumentException<TArgumentException>(paramName, message, formattingArguments);
+		}
+
+		public static void AgainstNullArgument<T>(T container) where T: class
+		{
+			if (container == null) throw new ArgumentNullException("container");
+
+			NullChecker<T>.Check(container);
+		}
+
+		private static class NullChecker<T> where T : class
+		{
+			private static readonly Func<T, string> _nullSeeker;
+
+			static NullChecker()
+			{
+
+				Expression body = Expression.Constant(null, typeof(string));
+				var param = Expression.Parameter(typeof(T), "obj");
+
+				foreach (PropertyInfo property in typeof(T).GetProperties())
+				{
+					Type propType = property.PropertyType;
+					if (propType.IsValueType && Nullable.GetUnderlyingType(propType) == null)
+					{
+						continue; // can't be null
+					}
+
+					body = Expression.Condition(
+						Expression.Equal(
+							Expression.Property(param, property),
+							Expression.Constant(null, propType)),
+						Expression.Constant(property.Name, typeof(string)),
+						body);
+				}
+				_nullSeeker = Expression.Lambda<Func<T, string>>(body, param).Compile();
+			}
+
+			internal static void Check(T item)
+			{
+				string nullArg = _nullSeeker(item);
+				if (nullArg.IsNotEmpty())
+				{
+					throw new ArgumentNullException(nullArg);
+				}
+			}
+
 		}
 	}
 }
