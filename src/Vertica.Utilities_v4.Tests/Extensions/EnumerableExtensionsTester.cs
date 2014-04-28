@@ -723,7 +723,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		public void MaxBy_DefaultComparer_MinimumValueAccordingToSelector()
 		{
 			var twoOne = new OrderSubject(2, 1);
-			var collection = new[] { new OrderSubject(1,-1), twoOne };
+			var collection = new[] { new OrderSubject(1, -1), twoOne };
 
 			Assert.That(collection.MaxBy(s => s.I2), Is.EqualTo(twoOne));
 		}
@@ -747,6 +747,34 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			var collection = new[] { new OrderSubject(2, 0), twoOne, anotherTwoOne };
 
 			Assert.That(collection.MaxBy(s => s.I2), Is.SameAs(twoOne));
+		}
+
+		#endregion
+
+		#region ToHashSet
+
+		[Test]
+		public void ToHashSet_Null_Exception()
+		{
+			IEnumerable<int> a = null;
+
+			Assert.That(() => a.ToHashSet(), Throws.InstanceOf<ArgumentNullException>());
+		}
+
+		[Test]
+		public void ToHashSet_Empty_EmptyHashSet()
+		{
+			IEnumerable<int> a = new int[0];
+
+			Assert.That(a.ToHashSet(), Is.Empty);
+		}
+
+		[Test]
+		public void ToHashSet_NoMoreArguments_HashSetWithAllMembers()
+		{
+			var subject = new[] { 1, 2, 3, 4 };
+			HashSet<int> set = subject.ToHashSet<int>();
+			Assert.That(set, Has.Count.EqualTo(4));
 		}
 
 		#endregion

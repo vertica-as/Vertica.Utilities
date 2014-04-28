@@ -6,6 +6,7 @@ using Vertica.Utilities_v4.Resources;
 
 namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 {
+	// ReSharper disable PossibleMultipleEnumeration
 	public static class EnumerableExtensions
 	{
 		#region nullability
@@ -390,5 +391,17 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 		}
 
 		#endregion
+
+		#region ToHashSet
+
+		public static HashSet<T> ToHashSet<T>(this IEnumerable<T> source)
+		{
+			Guard.AgainstNullArgument(new { source });
+
+			return new HashSet<T>(source);
+		}
+		#endregion
+
+		// ReSharper restore PossibleMultipleEnumeration
 	}
 }
