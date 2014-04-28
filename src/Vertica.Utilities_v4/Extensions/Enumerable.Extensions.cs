@@ -396,16 +396,12 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 
 		public static HashSet<T> ToHashSet<T>(this IEnumerable<T> source)
 		{
-			Guard.AgainstNullArgument(new { source });
-
-			return new HashSet<T>(source);
+			return source.ToHashSet(e => e);
 		}
 
 		public static HashSet<U> ToHashSet<T, U>(this IEnumerable<T> source, Func<T, U> selector)
 		{
-			Guard.AgainstNullArgument(new { source, selector });
-
-			return new HashSet<U>(source.Select(selector));
+			return source.ToHashSet(selector, null);
 		}
 
 		public static HashSet<U> ToHashSet<T, U>(this IEnumerable<T> source, Func<T, U> selector, IEqualityComparer<U>  comparer)
