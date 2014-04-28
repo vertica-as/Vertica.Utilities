@@ -791,6 +791,19 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			Assert.That(set, Is.EquivalentTo(new[] { 1, 2 }));
 		}
 
+		[Test]
+		public void ToHashSet_SelectorAndComparer_HashSetWithUniqueMembersAccordingToComparer()
+		{
+			IEnumerable<DerivedType> subject = new[]
+			{
+				new DerivedType("one", 1),
+				new DerivedType("two", 2),
+				new DerivedType("ONE", 1)
+			};
+			HashSet<string> set = subject.ToHashSet(d => d.Name, StringComparer.OrdinalIgnoreCase);
+			Assert.That(set, Is.EquivalentTo(new[] { "one", "two" }));
+		}
+
 		#endregion
 	}
 }
