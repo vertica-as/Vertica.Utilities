@@ -779,6 +779,15 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		[Test]
+		public void ToHashSet_NullSelector_Exception()
+		{
+			IEnumerable<DerivedType> a = new DerivedType[0];
+			Func<DerivedType, int> selector = null;
+
+			Assert.That(() => a.ToHashSet(selector), Throws.InstanceOf<ArgumentNullException>());
+		}
+
+		[Test]
 		public void ToHashSet_Selector_HashSetWithUniqueMembers()
 		{
 			IEnumerable<DerivedType> subject = new[]
@@ -802,6 +811,19 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			};
 			HashSet<string> set = subject.ToHashSet(d => d.Name, StringComparer.OrdinalIgnoreCase);
 			Assert.That(set, Is.EquivalentTo(new[] { "one", "two" }));
+		}
+
+		[Test]
+		public void ToHashSet_NullComparer_DefaultComparer()
+		{
+			IEnumerable<DerivedType> subject = new[]
+			{
+				new DerivedType("one", 1),
+				new DerivedType("two", 2),
+				new DerivedType("ONE", 1)
+			};
+			HashSet<string> set = subject.ToHashSet(d => d.Name, null);
+			Assert.That(set, Is.EquivalentTo(new[] { "one", "two", "ONE" }));
 		}
 
 		#endregion
