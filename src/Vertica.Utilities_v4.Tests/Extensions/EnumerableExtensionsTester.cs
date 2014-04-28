@@ -7,6 +7,7 @@ using NSubstitute;
 using NUnit.Framework;
 using Testing.Commons;
 using Vertica.Utilities_v4.Collections;
+using Vertica.Utilities_v4.Comparisons;
 using Vertica.Utilities_v4.Extensions.EnumerableExt;
 using Vertica.Utilities_v4.Tests.Extensions.Support;
 
@@ -824,6 +825,23 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			};
 			HashSet<string> set = subject.ToHashSet(d => d.Name, null);
 			Assert.That(set, Is.EquivalentTo(new[] { "one", "two", "ONE" }));
+		}
+
+		[Test]
+		public void ToHashSet_OnlyComparer_HashSetWithUniqueMembersAsComparer()
+		{
+			IEnumerable<DerivedType> subject = new[]
+			{
+				new DerivedType("one", 1),
+				new DerivedType("two", 2),
+				new DerivedType("ONE", 1)
+			};
+			IEqualityComparer<DerivedType> comparer = Eq<DerivedType>.By(
+				(x, y) => x.Name.Equals(y.Name, StringComparison.OrdinalIgnoreCase),
+				Hasher.Zero);
+
+			HashSet<DerivedType> set = subject.ToHashSet(comparer);
+			Assert.That(set, Has.Count.EqualTo(2));
 		}
 
 		#endregion
