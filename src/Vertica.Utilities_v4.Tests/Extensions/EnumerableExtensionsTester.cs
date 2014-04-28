@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using NSubstitute;
 using NUnit.Framework;
 using Testing.Commons;
 using Vertica.Utilities_v4.Collections;
+using Vertica.Utilities_v4.Comparisons;
 using Vertica.Utilities_v4.Extensions.EnumerableExt;
 using Vertica.Utilities_v4.Tests.Extensions.Support;
 
@@ -703,7 +705,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 
 		#endregion
 
-		#region MinBy
+		#region MaxBy
 
 		[Test]
 		public void MaxBy_NullCollection_Exception()
@@ -723,7 +725,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		public void MaxBy_DefaultComparer_MinimumValueAccordingToSelector()
 		{
 			var twoOne = new OrderSubject(2, 1);
-			var collection = new[] { new OrderSubject(1,-1), twoOne };
+			var collection = new[] { new OrderSubject(1, -1), twoOne };
 
 			Assert.That(collection.MaxBy(s => s.I2), Is.EqualTo(twoOne));
 		}
@@ -747,6 +749,99 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			var collection = new[] { new OrderSubject(2, 0), twoOne, anotherTwoOne };
 
 			Assert.That(collection.MaxBy(s => s.I2), Is.SameAs(twoOne));
+		}
+
+		#endregion
+
+		#region ToHashSet
+
+		[Test]
+		public void ToHashSet_Null_Exception()
+		{
+			IEnumerable<int> a = null;
+
+			Assert.That(() => a.ToHashSet(), Throws.InstanceOf<ArgumentNullException>());
+		}
+
+		[Test]
+		public void ToHashSet_Empty_EmptyHashSet()
+		{
+			IEnumerable<int> a = new int[0];
+
+			Assert.That(a.ToHashSet(), Is.Empty);
+		}
+
+		[Test]
+		public void ToHashSet_NoMoreArguments_HashSetWithAllUniqueMembers()
+		{
+			var subject = new[] { 1, 2, 3, 4, 3 };
+			HashSet<int> set = subject.ToHashSet();
+			Assert.That(set, Is.EquivalentTo(new[] { 1, 2, 3, 4 }));
+		}
+
+		[Test]
+		public void ToHashSet_NullSelector_Exception()
+		{
+			IEnumerable<DerivedType> a = new DerivedType[0];
+			Func<DerivedType, int> selector = null;
+
+			Assert.That(() => a.ToHashSet(selector), Throws.InstanceOf<ArgumentNullException>());
+		}
+
+		[Test]
+		public void ToHashSet_Selector_HashSetWithUniqueMembers()
+		{
+			IEnumerable<DerivedType> subject = new[]
+			{
+				new DerivedType("one", 1),
+				new DerivedType("two", 2),
+				new DerivedType("ONE", 1)
+			};
+			HashSet<int> set = subject.ToHashSet(d => d.ID);
+			Assert.That(set, Is.EquivalentTo(new[] { 1, 2 }));
+		}
+
+		[Test]
+		public void ToHashSet_SelectorAndComparer_HashSetWithUniqueMembersAccordingToComparer()
+		{
+			IEnumerable<DerivedType> subject = new[]
+			{
+				new DerivedType("one", 1),
+				new DerivedType("two", 2),
+				new DerivedType("ONE", 1)
+			};
+			HashSet<string> set = subject.ToHashSet(d => d.Name, StringComparer.OrdinalIgnoreCase);
+			Assert.That(set, Is.EquivalentTo(new[] { "one", "two" }));
+		}
+
+		[Test]
+		public void ToHashSet_NullComparer_DefaultComparer()
+		{
+			IEnumerable<DerivedType> subject = new[]
+			{
+				new DerivedType("one", 1),
+				new DerivedType("two", 2),
+				new DerivedType("ONE", 1)
+			};
+			HashSet<string> set = subject.ToHashSet(d => d.Name, null);
+			Assert.That(set, Is.EquivalentTo(new[] { "one", "two", "ONE" }));
+		}
+
+		[Test]
+		public void ToHashSet_OnlyComparer_HashSetWithUniqueMembersAsComparer()
+		{
+			IEnumerable<DerivedType> subject = new[]
+			{
+				new DerivedType("one", 1),
+				new DerivedType("two", 2),
+				new DerivedType("ONE", 1)
+			};
+			IEqualityComparer<DerivedType> comparer = Eq<DerivedType>.By(
+				(x, y) => x.Name.Equals(y.Name, StringComparison.OrdinalIgnoreCase),
+				Hasher.Zero);
+
+			HashSet<DerivedType> set = subject.ToHashSet(comparer);
+			Assert.That(set, Has.Count.EqualTo(2));
 		}
 
 		#endregion
