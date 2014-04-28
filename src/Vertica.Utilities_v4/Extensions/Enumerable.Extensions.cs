@@ -400,6 +400,13 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 
 			return new HashSet<T>(source);
 		}
+
+		public static HashSet<U> ToHashSet<T, U>(this IEnumerable<T> source, Func<T, U> selector)
+		{
+			Guard.AgainstNullArgument(new { source, selector });
+
+			return new HashSet<U>(source.Select(selector));
+		}
 		#endregion
 
 		// ReSharper restore PossibleMultipleEnumeration

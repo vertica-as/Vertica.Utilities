@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using NSubstitute;
 using NUnit.Framework;
 using Testing.Commons;
@@ -770,11 +771,24 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		[Test]
-		public void ToHashSet_NoMoreArguments_HashSetWithAllMembers()
+		public void ToHashSet_NoMoreArguments_HashSetWithAllUniqueMembers()
 		{
-			var subject = new[] { 1, 2, 3, 4 };
-			HashSet<int> set = subject.ToHashSet<int>();
-			Assert.That(set, Has.Count.EqualTo(4));
+			var subject = new[] { 1, 2, 3, 4, 3 };
+			HashSet<int> set = subject.ToHashSet();
+			Assert.That(set, Is.EquivalentTo(new[] { 1, 2, 3, 4 }));
+		}
+
+		[Test]
+		public void ToHashSet_Selector_HashSetWithUniqueMembers()
+		{
+			IEnumerable<DerivedType> subject = new[]
+			{
+				new DerivedType("one", 1),
+				new DerivedType("two", 2),
+				new DerivedType("ONE", 1)
+			};
+			HashSet<int> set = subject.ToHashSet(d => d.ID);
+			Assert.That(set, Is.EquivalentTo(new[] { 1, 2 }));
 		}
 
 		#endregion
