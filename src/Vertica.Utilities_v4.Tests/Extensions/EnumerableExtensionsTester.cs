@@ -703,7 +703,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 
 		#endregion
 
-		#region MinBy
+		#region MaxBy
 
 		[Test]
 		public void MaxBy_NullCollection_Exception()
