@@ -845,5 +845,43 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		#endregion
+
+		#region SortBy
+		[Test]
+		public void SortBy_ListOfExistingKeys_ObjectsInSameOrder()
+		{
+			OrderSubject one = new OrderSubject(1, 1), two = new OrderSubject(2, 2);
+			var subject = new[] { one, two };
+			var actual = subject.SortBy(s => s.I1, new[] { 2, 1 });
+			Assert.That(actual, Is.EqualTo(new[] { two, one }));
+		}
+		[Test]
+		public void SortBy_SomeMissingKeys_ExistingObjectsInSpecifiedOrder()
+		{
+			OrderSubject one = new OrderSubject(1, 1), two = new OrderSubject(2, 2);
+			var subject = new[] { one, two };
+			var actual = subject.SortBy(s => s.I1, new[] { 2, 3, 1 });
+			Assert.That(actual, Is.EqualTo(new[] { two, one }));
+		}
+		[Test]
+		public void SortBy_SomeUnexpectedObject_ObjectFilteredOut()
+		{
+			OrderSubject one = new OrderSubject(1, 1), two = new OrderSubject(2, 2);
+			var subject = new[] { one, two };
+			var actual = subject.SortBy(s => s.I1, new[] { 3, 2 });
+			Assert.That(actual, Is.EqualTo(new[] { two }));
+		}
+		[Test]
+		public void SortBy_CustomEqualizer_EqualizerHonored()
+		{
+			OrderSubject one = new OrderSubject(1, 1), two = new OrderSubject(2, 2);
+			var subject = new[] { one, two };
+			IEqualityComparer<int> signDoesNotMatter = Eq<int>.By(
+			(x, y) => Math.Abs(x).Equals(Math.Abs(y)),
+			i => Math.Abs(i).GetHashCode());
+			var actual = subject.SortBy(s => s.I1, new[] { -2, 1 }, signDoesNotMatter);
+			Assert.That(actual, Is.EqualTo(new[] { two, one }));
+		}
+		#endregion
 	}
 }

@@ -417,6 +417,26 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 		}
 		#endregion
 
+		public static IEnumerable<T> SortBy<T, U>(this IEnumerable<T> toBeSorted, Func<T, U> selector, IEnumerable<U> sorter)
+		{
+			return SortBy(toBeSorted, selector, sorter, EqualityComparer<U>.Default);
+		}
+
+		public static IEnumerable<T> SortBy<T, U>(this IEnumerable<T> toBeSorted, Func<T, U> selector, IEnumerable<U> sorter, IEqualityComparer<U> comparer)
+		{
+			// avoid multiple linear searches
+			Dictionary<U, T> lookup = toBeSorted.ToDictionary(selector, e => e, comparer);
+
+			foreach (var element in sorter)
+			{
+				T found;
+				if (lookup.TryGetValue(element, out found))
+				{
+					yield return found;
+				}
+			}
+		}
+
 		// ReSharper restore PossibleMultipleEnumeration
 	}
 }
