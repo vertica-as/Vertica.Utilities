@@ -20,7 +20,11 @@ namespace Vertica.Utilities_v4
 		private readonly IBound<T> _lowerBound;
 		private readonly IBound<T> _upperBound;
 
-		private Range() { }
+		private Range()
+		{
+			_lowerBound = new Open<T>(default(T));
+			_upperBound = new Open<T>(default(T));
+		}
 
 		public Range(IBound<T> lowerBound, IBound<T> upperBound)
 		{
@@ -175,7 +179,7 @@ namespace Vertica.Utilities_v4
 
 		private sealed class EmptyRange<U> : Range<U> where U : IComparable<U>
 		{
-			private EmptyRange() : base(default(U), default(U)) { }
+			private EmptyRange() { }
 			public override bool Contains(U item) { return false; }
 			public override IEnumerable<U> Generate(U increment) { return Enumerable.Empty<U>(); }
 			public override IEnumerable<U> Generate(Func<U, U> increment) { return Enumerable.Empty<U>(); }

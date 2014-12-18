@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace Vertica.Utilities_v4.Tests
 {
@@ -55,6 +56,26 @@ namespace Vertica.Utilities_v4.Tests
 		public void Empty_IsSingleton()
 		{
 			Assert.That(Range<int>.Empty, Is.SameAs(Range.Empty<int>()));
+		}
+
+		[Test]
+		public void Empty_DefaultBounds_NotIncluded()
+		{
+			Assert.That(Range.Empty<int>().ToString(), Is.EqualTo("(0..0)"));
+		}
+
+		[Test]
+		public void Empty_Equals_DefaultDegenerated_False()
+		{
+			Assert.That(Range.Empty<int>().Equals(Range.Degenerate(default(int))), Is.False);
+			Assert.That(Range.Degenerate(default(int)).Equals(Range.Empty<int>()), Is.False);
+		}
+
+		// effectively nothing is equal to Empty as creation of open sigularity is not possible
+		[Test]
+		public void Empty_IsOneOfAKind()
+		{
+			Assert.That(() => Range.Open(default(int), default(int)), Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 	}
 }
