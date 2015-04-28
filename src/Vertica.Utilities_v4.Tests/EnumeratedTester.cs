@@ -44,6 +44,13 @@ namespace Vertica.Utilities_v4.Tests
 		}
 
 		[Test]
+		public void Values_GivesAccessToAllNames()
+		{
+			var subjects = EnumeratedSubject.Names;
+			Assert.That(subjects, Is.EqualTo(new[] { "one", "two", "three" }));
+		}
+
+		[Test]
 		public void Parse_ExistingValue_GivesTheValue()
 		{
 			EnumeratedSubject parsed = EnumeratedSubject.Parse("one");

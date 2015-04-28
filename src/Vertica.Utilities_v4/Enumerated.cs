@@ -37,6 +37,14 @@ namespace Vertica.Utilities_v4
 			}
 		}
 
+		public static IEnumerable<string> Names
+		{
+			get
+			{
+				return _repo.FindAll().Select(e => e.Name);
+			}
+		}
+
 		/// <summary>
 		/// Parse the enum by enumName
 		/// </summary>
