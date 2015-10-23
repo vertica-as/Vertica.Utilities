@@ -62,6 +62,7 @@
       <DependentUpon>SmartEnumerable.cs</DependentUpon>
     </Compile>
     <Compile Include="Collections\SmartEnumerable.cs" />
+    <Compile Include="Collections\Tree.cs" />
     <Compile Include="Comparisons\ChainableComparer.cs" />
     <Compile Include="Comparisons\ChainableEqualizer.cs" />
     <Compile Include="Comparisons\Cmp.cs" />
