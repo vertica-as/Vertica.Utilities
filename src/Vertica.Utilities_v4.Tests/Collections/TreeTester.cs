@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
+using Testing.Commons;
+using Testing.Commons.NUnit.Constraints;
 using Vertica.Utilities_v4.Collections;
 using Vertica.Utilities_v4.Extensions.EnumerableExt;
 using Vertica.Utilities_v4.Tests.Collections.Support;
@@ -16,7 +19,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 			c4 = new Category { Id = 4, ParentId = 5 };
 
 		[Test]
-		public void ToTree_BuildsATree_OfWrappedCategories()
+		public void ToTree_BuildsATree_OfWrappedModels()
 		{
 			var categories = new[] { c1, c2, c3, c4 };
 
@@ -24,16 +27,19 @@ namespace Vertica.Utilities_v4.Tests.Collections
 				c => c.Id,
 				(c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
-			Assert.That(tree.Count(), Is.EqualTo(2));
-			Assert.That(tree.ElementAt(0).Model, Is.SameAs(c1));
-			Assert.That(tree.ElementAt(1).Model, Is.SameAs(c2));
+			// roots
+			Assert.That(tree, Must.Be.Constrained(model(c1), model(c2)));
+			// children of c1
+			Assert.That(tree.ElementAt(0), Must.Be.Constrained(model(c3)));
+		}
 
-			Assert.That(tree.ElementAt(0).Count(), Is.EqualTo(1));
-			Assert.That(tree.ElementAt(0).ElementAt(0).Model, Is.SameAs(c3));
+		private Constraint model(Category category)
+		{
+			return Must.Have.Property<TreeNode<Category>>(n => n.Model, Is.SameAs(category));
 		}
 
 		[Test]
-		public void Orphans_NodesWithoutParent_GoToAnotherStructure()
+		public void Orphans_ModelsWithoutParent_GoToAnotherStructure()
 		{
 			var categories = new[] { c1, c2, c3, c4 };
 
@@ -41,8 +47,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 				c => c.Id, 
 				(c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
-			Assert.That(tree.Orphans().Count(), Is.EqualTo(1));
-			Assert.That(tree.Orphans().ElementAt(0), Is.EqualTo(c4));
+			Assert.That(tree.Orphans(), Must.Be.Constrained(Is.SameAs(c4)));
 		}
 
 		[Test]
