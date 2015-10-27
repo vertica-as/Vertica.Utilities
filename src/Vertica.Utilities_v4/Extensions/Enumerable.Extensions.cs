@@ -438,5 +438,20 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 		}
 
 		// ReSharper restore PossibleMultipleEnumeration
+
+		#region Tree
+
+		public static Tree<TItem, TModel, TKey> ToTree<TItem, TModel, TKey>(this IEnumerable<TItem> source, Func<TItem, TKey> key, Func<TItem, Tree<TItem, TModel, TKey>.Parent, Tree<TItem, TModel, TKey>.Parent.Key> parentKey, Func<TItem, TModel> projection, IEqualityComparer<TKey> comparer = null)
+		{
+			return new Tree<TItem, TModel, TKey>(source, key, parentKey, projection, comparer);
+		}
+
+		public static Tree<TModel, TKey> ToTree<TModel, TKey>(this IEnumerable<TModel> source, Func<TModel, TKey> key, Func<TModel, Tree<TModel, TKey>.Parent, Tree<TModel, TKey>.Parent.Key> parentKey, IEqualityComparer<TKey> comparer = null)
+		{
+			return new Tree<TModel, TKey>(source, key, parentKey, comparer);
+		}
+
+		#endregion
+
 	}
 }
