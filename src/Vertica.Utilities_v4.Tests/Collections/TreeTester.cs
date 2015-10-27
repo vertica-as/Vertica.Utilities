@@ -70,7 +70,8 @@ namespace Vertica.Utilities_v4.Tests.Collections
 			KeyNotFoundException exception = Assert.Throws<KeyNotFoundException>(() => tree.Get(4), "c4 is an orphan");
 			Assert.That(exception.Message, Is.StringContaining(4.ToString()), "contains the key in text");
 
-			Assert.Throws<KeyNotFoundException>(() => tree.Get(42), "c42 does not even exist");
+			Assert.That(() => tree.Get(42), Throws.InstanceOf<KeyNotFoundException>(),
+				"c42 does not even exist");
 		}
 
 		[Test]
@@ -172,7 +173,8 @@ namespace Vertica.Utilities_v4.Tests.Collections
 				c => c.Id,
 				(c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
-			Assert.Throws<ArgumentOutOfRangeException>(() => { var node = tree[0][1]; }, "should not exist any node at index 1");
+			Assert.That(() => tree[0][1], Throws.InstanceOf<ArgumentOutOfRangeException>(),
+				"should not exist any node at index 1");
 		}
 
 		[Test]
@@ -184,7 +186,8 @@ namespace Vertica.Utilities_v4.Tests.Collections
 				c => c.Id,
 				(c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
-			Assert.Throws<ArgumentOutOfRangeException>(() => { var node = tree[1]; }, "should not exist any at index 1");
+			Assert.That(() => tree[1], Throws.InstanceOf<ArgumentOutOfRangeException>(),
+				"should not exist any at index 1");
 		}
 	}
 }
