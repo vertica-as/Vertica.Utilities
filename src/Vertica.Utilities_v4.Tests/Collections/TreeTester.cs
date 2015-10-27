@@ -44,7 +44,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 			var categories = new[] { c1, c2, c3, c4 };
 
 			Tree<Category, int> tree = categories.ToTree(
-				c => c.Id, 
+				c => c.Id,
 				(c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
 			Assert.That(tree.Orphans(), Must.Be.Constrained(Is.SameAs(c4)));
@@ -103,7 +103,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		}
 
 		[Test]
-		public void Build_Family_Tree_Of_Men_With_Projection()
+		public void ToTree_ModesCanBeProjectedWhileBuildingStructure()
 		{
 			var members = new[]
 			{
@@ -113,21 +113,55 @@ namespace Vertica.Utilities_v4.Tests.Collections
 			};
 
 			Tree<FamilyMember, string, string> tree = members.ToTree(
-				x => x.Name, 
-				(x, p) => x.ParentName != null ? p.Value(x.ParentName) : p.None, 
-				x => x.Name, 
+				x => x.Name,
+				(x, p) => x.ParentName != null ? p.Value(x.ParentName) : p.None,
+				x => x.Name,
 				StringComparer.OrdinalIgnoreCase);
 
 			Assert.That(tree, Must.Be.Constrained(model("Grand Dad")));
 			Assert.That(tree.ElementAt(0), Must.Be.Constrained(model("Dad")));
 			Assert.That(tree.ElementAt(0).ElementAt(0), Must.Be.Constrained(model("Son")));
+		}
+
+		[Test]
+		public void Parent_MaintainsUpstreamStructure()
+		{
+			var members = new[]
+			{
+				new FamilyMember { Name = "Son", ParentName = "Dad"},
+				new FamilyMember { Name = "Grand Dad" },
+				new FamilyMember { Name = "Dad", ParentName = "Grand dad" }
+			};
+
+			Tree<FamilyMember, string, string> tree = members.ToTree(
+				x => x.Name,
+				(x, p) => x.ParentName != null ? p.Value(x.ParentName) : p.None,
+				x => x.Name,
+				StringComparer.OrdinalIgnoreCase);
 
 			Assert.That(tree.ElementAt(0).ElementAt(0).ElementAt(0).Parent, model("Dad"));
 			Assert.That(tree.ElementAt(0).ElementAt(0).ElementAt(0).Parent.Parent, model("Grand Dad"));
+		}
 
-			CollectionAssert.AreEqual(tree["Grand Dad"].Breadcrumb(), new[] { "Grand Dad" });
-			CollectionAssert.AreEqual(tree["dad"].Breadcrumb(), new[] { "Grand Dad", "Dad" });
-			CollectionAssert.AreEqual(tree["Son"].Breadcrumb(), new[] {"Grand Dad", "Dad", "Son"});
+		[Test]
+		public void Breadcrumb_MaintainsADownstreamPath()
+		{
+			var members = new[]
+			{
+				new FamilyMember { Name = "Son", ParentName = "Dad"},
+				new FamilyMember { Name = "Grand Dad" },
+				new FamilyMember { Name = "Dad", ParentName = "Grand dad" }
+			};
+
+			Tree<FamilyMember, string, string> tree = members.ToTree(
+				x => x.Name,
+				(x, p) => x.ParentName != null ? p.Value(x.ParentName) : p.None,
+				x => x.Name,
+				StringComparer.OrdinalIgnoreCase);
+
+			Assert.That(tree["Grand Dad"].Breadcrumb(), Is.EqualTo(new[] { "Grand Dad" }));
+			Assert.That(tree["dad"].Breadcrumb(), Is.EqualTo(new[] { "Grand Dad", "Dad" }));
+			Assert.That(tree["Son"].Breadcrumb(), Is.EqualTo(new[] { "Grand Dad", "Dad", "Son" }));
 		}
 	}
 }
