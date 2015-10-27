@@ -33,9 +33,9 @@ namespace Vertica.Utilities_v4.Tests.Collections
 			Assert.That(tree.ElementAt(0), Must.Be.Constrained(model(c3)));
 		}
 
-		private Constraint model(Category category)
+		private Constraint model<T>(T model)
 		{
-			return Must.Have.Property<TreeNode<Category>>(n => n.Model, Is.SameAs(category));
+			return Must.Have.Property<TreeNode<T>>(n => n.Model, Is.SameAs(model));
 		}
 
 		[Test]
@@ -118,16 +118,12 @@ namespace Vertica.Utilities_v4.Tests.Collections
 				x => x.Name, 
 				StringComparer.OrdinalIgnoreCase);
 
-			Assert.That(tree.Count(), Is.EqualTo(1));
-			Assert.That(tree.ElementAt(0).Model, Is.EqualTo("Grand Dad"));
+			Assert.That(tree, Must.Be.Constrained(model("Grand Dad")));
+			Assert.That(tree.ElementAt(0), Must.Be.Constrained(model("Dad")));
+			Assert.That(tree.ElementAt(0).ElementAt(0), Must.Be.Constrained(model("Son")));
 
-			Assert.That(tree.ElementAt(0).Count(), Is.EqualTo(1));
-			Assert.That(tree.ElementAt(0).ElementAt(0).Model, Is.EqualTo("Dad"));
-
-			Assert.That(tree.ElementAt(0).ElementAt(0).Count(), Is.EqualTo(1));
-			Assert.That(tree.ElementAt(0).ElementAt(0).ElementAt(0).Model, Is.EqualTo("Son"));
-			Assert.That(tree.ElementAt(0).ElementAt(0).ElementAt(0).Parent.Model, Is.EqualTo("Dad"));
-			Assert.That(tree.ElementAt(0).ElementAt(0).ElementAt(0).Parent.Parent.Model, Is.EqualTo("Grand Dad"));
+			Assert.That(tree.ElementAt(0).ElementAt(0).ElementAt(0).Parent, model("Dad"));
+			Assert.That(tree.ElementAt(0).ElementAt(0).ElementAt(0).Parent.Parent, model("Grand Dad"));
 
 			CollectionAssert.AreEqual(tree["Grand Dad"].Breadcrumb(), new[] { "Grand Dad" });
 			CollectionAssert.AreEqual(tree["dad"].Breadcrumb(), new[] { "Grand Dad", "Dad" });
