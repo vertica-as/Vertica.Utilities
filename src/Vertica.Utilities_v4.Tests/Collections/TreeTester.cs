@@ -12,34 +12,32 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		[Test]
 		public void Build_Category_Tree()
 		{
-			var categories = new[]
-			{
-				new Category { Id = 1},
-				new Category { Id = 2},
-				new Category { Id = 3, ParentId = 1 },
-				new Category { Id = 4, ParentId = 5 }
-			};
+			Category c1 = new Category { Id = 1},
+				c2 = new Category { Id = 2},
+				c3 = new Category { Id = 3, ParentId = 1 },
+				c4 = new Category { Id = 4, ParentId = 5 };
+			var categories = new[] { c1, c2, c3, c4 };
 
 			Tree<Category, int> tree = categories.ToTree(c => c.Id, (c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
 			Assert.That(tree.Count(), Is.EqualTo(2));
-			Assert.That(tree.ElementAt(0).Model, Is.SameAs(categories[0]));
-			Assert.That(tree.ElementAt(1).Model, Is.SameAs(categories[1]));
+			Assert.That(tree.ElementAt(0).Model, Is.SameAs(c1));
+			Assert.That(tree.ElementAt(1).Model, Is.SameAs(c2));
 
 			Assert.That(tree.ElementAt(0).Count(), Is.EqualTo(1));
-			Assert.That(tree.ElementAt(0).ElementAt(0).Model, Is.SameAs(categories[2]));
+			Assert.That(tree.ElementAt(0).ElementAt(0).Model, Is.SameAs(c3));
 
 			Assert.That(tree.Orphans().Count(), Is.EqualTo(1));
-			Assert.That(tree.Orphans().ElementAt(0), Is.EqualTo(categories[3]));
+			Assert.That(tree.Orphans().ElementAt(0), Is.EqualTo(c4));
 
 			Assert.That(tree[1], Is.Not.Null);
-			Assert.That(tree[1].Model, Is.SameAs(categories[0]));
+			Assert.That(tree[1].Model, Is.SameAs(c1));
 			Assert.That(tree[4], Is.Null);
 
 			TreeNode<Category> node;
 			Assert.That(tree.TryGet(5, out node), Is.False);
 			Assert.That(tree.TryGet(3, out node), Is.True);
-			Assert.That(node.Model, Is.SameAs(categories[2]));
+			Assert.That(node.Model, Is.SameAs(c3));
 		}
 
 		public class Category
