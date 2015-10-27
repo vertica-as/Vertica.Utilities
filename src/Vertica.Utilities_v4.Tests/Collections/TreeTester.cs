@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using Testing.Commons;
 using Testing.Commons.NUnit.Constraints;
 using Vertica.Utilities_v4.Collections;
@@ -28,14 +27,12 @@ namespace Vertica.Utilities_v4.Tests.Collections
 				(c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
 			// roots
-			Assert.That(tree, Must.Be.Constrained(model(c1), model(c2)));
+			Assert.That(tree, Must.Be.Constrained(
+				Must.Have.Model(c1),
+				Must.Have.Model(c2)));
 			// children of c1
-			Assert.That(tree.ElementAt(0), Must.Be.Constrained(model(c3)));
-		}
-
-		private Constraint model<T>(T model)
-		{
-			return Must.Have.Property<TreeNode<T>>(n => n.Model, Is.SameAs(model));
+			Assert.That(tree.ElementAt(0), Must.Be.Constrained(
+				Must.Have.Model(c3)));
 		}
 
 		[Test]
@@ -118,9 +115,9 @@ namespace Vertica.Utilities_v4.Tests.Collections
 				x => x.Name,
 				StringComparer.OrdinalIgnoreCase);
 
-			Assert.That(tree, Must.Be.Constrained(model("Grand Dad")));
-			Assert.That(tree.ElementAt(0), Must.Be.Constrained(model("Dad")));
-			Assert.That(tree.ElementAt(0).ElementAt(0), Must.Be.Constrained(model("Son")));
+			Assert.That(tree, Must.Be.Constrained(Must.Have.Model("Grand Dad")));
+			Assert.That(tree.ElementAt(0), Must.Be.Constrained(Must.Have.Model("Dad")));
+			Assert.That(tree.ElementAt(0).ElementAt(0), Must.Be.Constrained(Must.Have.Model("Son")));
 		}
 
 		[Test]
@@ -139,8 +136,8 @@ namespace Vertica.Utilities_v4.Tests.Collections
 				x => x.Name,
 				StringComparer.OrdinalIgnoreCase);
 
-			Assert.That(tree.ElementAt(0).ElementAt(0).ElementAt(0).Parent, model("Dad"));
-			Assert.That(tree.ElementAt(0).ElementAt(0).ElementAt(0).Parent.Parent, model("Grand Dad"));
+			Assert.That(tree.ElementAt(0).ElementAt(0).ElementAt(0).Parent, Must.Have.Model("Dad"));
+			Assert.That(tree.ElementAt(0).ElementAt(0).ElementAt(0).Parent.Parent, Must.Have.Model("Grand Dad"));
 		}
 
 		[Test]
