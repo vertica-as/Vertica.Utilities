@@ -72,21 +72,32 @@ namespace Vertica.Utilities_v4.Collections
 			return collection != null ? collection.Count : defaultCapacity;
 		}
 
-		public TreeNode<TModel> this[TKey key]
+		public TreeNode<TModel> this[int index]
 		{
-			get
-			{
-				Tuple<TKey, Parent.Key, TModel, List<TKey>> item;
-				if (!_orphans.Contains(key) && _tree.TryGetValue(key, out item))
-					return new TreeNode<TModel>(_tree[key].Item3, GetEnumerator(item.Item4), () => item.Item2 != null ? this[item.Item2.Value] : null);
+			get { return Get(_root[index]); }
+		}
 
-				return null;				
-			}
+		public TreeNode<TModel> Get(TKey key)
+		{
+			TreeNode<TModel> node;
+			if (!TryGet(key, out node))
+				throw new KeyNotFoundException(String.Format(@"Node with key {0} was not found.", key));
+
+			return node;
 		}
 
 		public bool TryGet(TKey key, out TreeNode<TModel> node)
 		{
-			node = this[key];
+			node = null;
+
+			Tuple<TKey, Parent.Key, TModel, List<TKey>> item;
+			if (!_orphans.Contains(key) && _tree.TryGetValue(key, out item))
+			{
+				node = new TreeNode<TModel>(
+					_tree[key].Item3, 
+					GetEnumerator(item.Item4), 
+					() => item.Item2 != null ? Get(item.Item2.Value) : null);
+			}
 
 			return node != null;
 		}
@@ -110,7 +121,15 @@ namespace Vertica.Utilities_v4.Collections
 		{
 			if (nodes == null) throw new ArgumentNullException("nodes");
 
-			return nodes.Select(x => this[x]).Where(x => x != null).GetEnumerator();
+			return nodes
+				.Select(x =>
+				{
+					TreeNode<TModel> node;
+					TryGet(x, out node);
+					return node;
+				})
+				.Where(x => x != null)
+				.GetEnumerator();
 		}
 
 		public class Parent
@@ -144,6 +163,11 @@ namespace Vertica.Utilities_v4.Collections
 			Model = model;
 			_children = children;
 			_parent = parent;
+		}
+
+		public TreeNode<TModel> this[int index]
+		{
+			get { return this.ElementAt(index); }
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()

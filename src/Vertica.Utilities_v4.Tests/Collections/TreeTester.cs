@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Testing.Commons;
 using Testing.Commons.NUnit.Constraints;
@@ -31,7 +31,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 				Must.Have.Model(c1),
 				Must.Have.Model(c2)));
 			// children of c1
-			Assert.That(tree.ElementAt(0), Must.Be.Constrained(
+			Assert.That(tree[0], Must.Be.Constrained(
 				Must.Have.Model(c3)));
 		}
 
@@ -48,7 +48,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		}
 
 		[Test]
-		public void Indexer_NodeKeysInTree_NodeReference()
+		public void Get_NodeKeysInTree_DoesNotThrowAndNodeReference()
 		{
 			var categories = new[] { c1, c2, c3, c4 };
 
@@ -56,19 +56,21 @@ namespace Vertica.Utilities_v4.Tests.Collections
 				c => c.Id,
 				(c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
-			Assert.That(tree[1], Is.Not.Null);
-			Assert.That(tree[1].Model, Is.SameAs(c1));
+			Assert.DoesNotThrow(() => tree.Get(1));
+			Assert.That(tree.Get(1).Model, Is.SameAs(c1));
 		}
 
 		[Test]
-		public void Indexer_NodeKeysNotInTree_Null()
+		public void Get_NodeKeysNotInTree_Throws()
 		{
 			var categories = new[] { c1, c2, c3, c4 };
 
 			Tree<Category, int> tree = categories.ToTree(c => c.Id, (c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
-			Assert.That(tree[4], Is.Null, "c4 is an orphan");
-			Assert.That(tree[42], Is.Null, "c42 does not even exist");
+			KeyNotFoundException exception = Assert.Throws<KeyNotFoundException>(() => tree.Get(4), "c4 is an orphan");
+			Assert.That(exception.Message, Is.StringContaining(4.ToString()), "contains the key in text");
+
+			Assert.Throws<KeyNotFoundException>(() => tree.Get(42), "c42 does not even exist");
 		}
 
 		[Test]
@@ -116,8 +118,8 @@ namespace Vertica.Utilities_v4.Tests.Collections
 				StringComparer.OrdinalIgnoreCase);
 
 			Assert.That(tree, Must.Be.Constrained(Must.Have.Model("Grand Dad")));
-			Assert.That(tree.ElementAt(0), Must.Be.Constrained(Must.Have.Model("Dad")));
-			Assert.That(tree.ElementAt(0).ElementAt(0), Must.Be.Constrained(Must.Have.Model("Son")));
+			Assert.That(tree[0], Must.Be.Constrained(Must.Have.Model("Dad")));
+			Assert.That(tree[0][0], Must.Be.Constrained(Must.Have.Model("Son")));
 		}
 
 		[Test]
@@ -136,8 +138,8 @@ namespace Vertica.Utilities_v4.Tests.Collections
 				x => x.Name,
 				StringComparer.OrdinalIgnoreCase);
 
-			Assert.That(tree.ElementAt(0).ElementAt(0).ElementAt(0).Parent, Must.Have.Model("Dad"));
-			Assert.That(tree.ElementAt(0).ElementAt(0).ElementAt(0).Parent.Parent, Must.Have.Model("Grand Dad"));
+			Assert.That(tree[0][0][0].Parent, Must.Have.Model("Dad"));
+			Assert.That(tree[0][0][0].Parent.Parent, Must.Have.Model("Grand Dad"));
 		}
 
 		[Test]
@@ -156,9 +158,33 @@ namespace Vertica.Utilities_v4.Tests.Collections
 				x => x.Name,
 				StringComparer.OrdinalIgnoreCase);
 
-			Assert.That(tree["Grand Dad"].Breadcrumb(), Is.EqualTo(new[] { "Grand Dad" }));
-			Assert.That(tree["dad"].Breadcrumb(), Is.EqualTo(new[] { "Grand Dad", "Dad" }));
-			Assert.That(tree["Son"].Breadcrumb(), Is.EqualTo(new[] { "Grand Dad", "Dad", "Son" }));
+			Assert.That(tree.Get("Grand Dad").Breadcrumb(), Is.EqualTo(new[] { "Grand Dad" }));
+			Assert.That(tree.Get("dad").Breadcrumb(), Is.EqualTo(new[] { "Grand Dad", "Dad" }));
+			Assert.That(tree.Get("Son").Breadcrumb(), Is.EqualTo(new[] { "Grand Dad", "Dad", "Son" }));
+		}
+
+		[Test]
+		public void Indexer_Node_ThrowsOutOfRange()
+		{
+			var categories = new[] { c1 };
+
+			Tree<Category, int> tree = categories.ToTree(
+				c => c.Id,
+				(c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
+
+			Assert.Throws<ArgumentOutOfRangeException>(() => { var node = tree[0][1]; }, "should not exist any node at index 1");
+		}
+
+		[Test]
+		public void Indexer_Tree_ThrowsOutOfRange()
+		{
+			var categories = new[] { c1 };
+
+			Tree<Category, int> tree = categories.ToTree(
+				c => c.Id,
+				(c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
+
+			Assert.Throws<ArgumentOutOfRangeException>(() => { var node = tree[1]; }, "should not exist any at index 1");
 		}
 	}
 }
