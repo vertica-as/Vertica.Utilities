@@ -95,7 +95,8 @@ namespace Vertica.Utilities_v4.Collections
 			{
 				node = new TreeNode<TModel>(
 					_tree[key].Item3, 
-					GetEnumerator(item.Item4), 
+					GetEnumerator(item.Item4),
+ 					index => Get(item.Item4[index]),
 					() => item.Item2 != null ? Get(item.Item2.Value) : null);
 			}
 
@@ -156,18 +157,20 @@ namespace Vertica.Utilities_v4.Collections
 	public class TreeNode<TModel> : IEnumerable<TreeNode<TModel>>
 	{
 		private readonly IEnumerator<TreeNode<TModel>> _children;
+		private readonly Func<int, TreeNode<TModel>> _childNodeAt;
 		private readonly Func<TreeNode<TModel>> _parent;
 
-		internal TreeNode(TModel model, IEnumerator<TreeNode<TModel>> children, Func<TreeNode<TModel>> parent)
+		internal TreeNode(TModel model, IEnumerator<TreeNode<TModel>> children, Func<int, TreeNode<TModel>> childNodeAt, Func<TreeNode<TModel>> parent)
 		{
 			Model = model;
 			_children = children;
+			_childNodeAt = childNodeAt;
 			_parent = parent;
 		}
 
 		public TreeNode<TModel> this[int index]
 		{
-			get { return this.ElementAt(index); }
+			get { return _childNodeAt(index); }
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
