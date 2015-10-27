@@ -71,6 +71,7 @@
     <Compile Include="Collections\PaginationTester.cs" />
     <Compile Include="Collections\PriorityQueueTester.cs" />
     <Compile Include="Collections\SmartEnumerableTester.cs" />
+    <Compile Include="Collections\Support\TreeSubjects.cs" />
     <Compile Include="Collections\Support\MustExtensions.cs" />
     <Compile Include="Collections\Support\SmartEntryConstraint.cs" />
     <Compile Include="Collections\TreeTester.cs" />

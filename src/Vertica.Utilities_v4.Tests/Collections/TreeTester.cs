@@ -3,6 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using Vertica.Utilities_v4.Collections;
 using Vertica.Utilities_v4.Extensions.EnumerableExt;
+using Vertica.Utilities_v4.Tests.Collections.Support;
 
 namespace Vertica.Utilities_v4.Tests.Collections
 {
@@ -40,12 +41,6 @@ namespace Vertica.Utilities_v4.Tests.Collections
 			Assert.That(node.Model, Is.SameAs(c3));
 		}
 
-		public class Category
-		{
-			public int Id { get; set; }
-			public int? ParentId { get; set; }
-		}
-
 		[Test]
 		public void Build_Family_Tree_Of_Men_With_Projection()
 		{
@@ -76,12 +71,6 @@ namespace Vertica.Utilities_v4.Tests.Collections
 			CollectionAssert.AreEqual(tree["Grand Dad"].Breadcrumb(), new[] { "Grand Dad" });
 			CollectionAssert.AreEqual(tree["dad"].Breadcrumb(), new[] { "Grand Dad", "Dad" });
 			CollectionAssert.AreEqual(tree["Son"].Breadcrumb(), new[] {"Grand Dad", "Dad", "Son"});
-		}
-
-		public class FamilyMember
-		{
-			public string Name { get; set; }
-			public string ParentName { get; set; }
 		}
 	}
 }
