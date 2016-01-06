@@ -96,6 +96,42 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 			}
 		}
 
+		public static IEnumerable<T> Selecting<T>(this IEnumerable<T> source, Action<T> action)
+		{
+			foreach (var item in source.EmptyIfNull())
+			{
+				action(item);
+				yield return item;
+			}
+		}
+
+		public static IEnumerable<T> Selecting<T>(this IEnumerable<T> collection, Action<T, int> action)
+		{
+			int i = 0;
+
+			foreach (var item in collection.EmptyIfNull())
+			{
+				action(item, i++);
+				yield return item;
+			}
+		}
+
+		public static IEnumerable<T> Selecting<T>(this IEnumerable<T> collection, Action<T, int> action, IEnumerable<int> indexes)
+		{
+			var hashedIndexes = new HashSet<int>(indexes);
+
+			int i = 0;
+			foreach (var item in collection.EmptyIfNull())
+			{
+				if (hashedIndexes.Contains(i))
+				{
+					action(item, i);
+				}
+				i++;
+				yield return item;
+			}
+		}
+
 		#endregion
 
 		#region ToDelimited

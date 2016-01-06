@@ -150,7 +150,38 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		[Test]
-		public void For_InvokesActionWithItemaAndIndex()
+		public void Selecting_GoesOverIntCounting_SameLengthAndComposable()
+		{
+			int times = 0;
+
+			var oneToFour = Enumerable.Range(1, 4).Selecting(i =>
+		   {
+			   times += 1;
+		   });
+
+			// this enumeration is important, otherwise, lazyness will prevent enuemration
+			Assert.That(oneToFour, Is.EqualTo(new[] { 1, 2, 3, 4 }));
+			Assert.That(times, Is.EqualTo(4));
+		}
+
+		[Test]
+		public void Selecting_OnlyAction_IsLazy()
+		{
+			int times = 0;
+
+			var oneToFour = Enumerable.Range(1, 4).Selecting(i =>
+		   {
+			   times += 1;
+		   });
+
+			Assert.That(times, Is.EqualTo(0), "Because we have not enumerated the collection");
+			// ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+			oneToFour.ToArray();
+			Assert.That(times, Is.EqualTo(4), "Because the collection has been enumerated");
+		}
+
+		[Test]
+		public void For_InvokesActionWithItemAndIndex()
 		{
 			int count = 0;
 
@@ -161,6 +192,39 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			});
 
 			Assert.That(count, Is.EqualTo(4));
+		}
+
+		[Test]
+		public void Selecting_InvokesActionWithItemAndIndex()
+		{
+			int count = 0;
+
+			var twoToFour = Enumerable.Range(2, 4).Selecting((i, idx) =>
+		   {
+			   count += 1;
+			   Assert.That(i, Is.EqualTo(count + 1));
+		   });
+
+			// this enumeration is important, otherwise, lazyness will prevent enuemration
+			Assert.That(twoToFour, Is.EqualTo(new[] { 2, 3, 4, 5 }));
+			Assert.That(count, Is.EqualTo(4));
+		}
+
+		[Test]
+		public void Selecting_WithIndex_IsLazy()
+		{
+			int count = 0;
+
+			var twoToFour = Enumerable.Range(2, 4).Selecting((i, idx) =>
+		   {
+			   count += 1;
+			   Assert.That(i, Is.EqualTo(count + 1));
+		   });
+
+			Assert.That(count, Is.EqualTo(0), "Because we have not enumerated the collection");
+			// ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+			twoToFour.ToArray();
+			Assert.That(count, Is.EqualTo(4), "Because the collection has been enumerated");
 		}
 
 		[Test]
@@ -183,6 +247,31 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			Enumerable.Range(1, 4).For(action, new[] { 1, 2 });
 
 			Assert.That(acc, Is.EqualTo((2 + 1) + (3 + 2)));
+		}
+
+		[Test]
+		public void Selecting_PerformsActionOnIndexesThatCanBeSpecifiedAsOptionalParameters()
+		{
+			int acc = 0;
+			Action<int, int> action = (i, item) => acc += item + i;
+			var oneToFour = Enumerable.Range(1, 4).Selecting(action, new[] { 1, 2 });
+
+			// this enumeration is important, otherwise, lazyness will prevent enuemration
+			Assert.That(oneToFour, Is.EqualTo(new[] { 1, 2, 3, 4 }));
+			Assert.That(acc, Is.EqualTo((2 + 1) + (3 + 2)));
+		}
+
+		[Test]
+		public void Selecting_OptionalIndexes_IsLazy()
+		{
+			int acc = 0;
+			Action<int, int> action = (i, item) => acc += item + i;
+			var oneToFour = Enumerable.Range(1, 4).Selecting(action, new[] { 1, 2 });
+
+			Assert.That(acc, Is.EqualTo(0), "Because we have not enumerated the collection");
+			// ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+			oneToFour.ToArray();
+			Assert.That(acc, Is.EqualTo((2 + 1) + (3 + 2)), "Because the collection has been enumerated");
 		}
 
 		#endregion
