@@ -4,8 +4,8 @@ namespace Vertica.Utilities_v4.Comparisons
 {
 	public abstract class ChainableEqualizer<T> : IEqualityComparer<T>
 	{
-		public abstract bool DoEquals(T x, T y);
-		public abstract int DoGetHashCode(T obj);
+		protected abstract bool DoEquals(T x, T y);
+		protected abstract int DoGetHashCode(T obj);
 
 		public bool Equals(T x, T y)
 		{

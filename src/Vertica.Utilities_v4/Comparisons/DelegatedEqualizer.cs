@@ -20,12 +20,12 @@ namespace Vertica.Utilities_v4.Comparisons
 		public DelegatedEqualizer(IComparer<T> comparer, Func<T, int> hasher)
 			: this((x, y) => comparer.Compare(x, y) == 0, hasher) { }
 
-		public override bool DoEquals(T x, T y)
+		protected override bool DoEquals(T x, T y)
 		{
 			return _equals(x, y);
 		}
 
-		public override int DoGetHashCode(T obj)
+		protected override int DoGetHashCode(T obj)
 		{
 			return _hasher(obj);
 		}

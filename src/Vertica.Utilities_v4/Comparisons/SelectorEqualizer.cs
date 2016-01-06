@@ -16,14 +16,14 @@ namespace Vertica.Utilities_v4.Comparisons
 			return _selector(obj);
 		}
 
-		public override bool DoEquals(T x, T y)
+		protected override bool DoEquals(T x, T y)
 		{
 			K xKey = keyFor(x), yKey = keyFor(y);
 
 			return EqualityComparer<K>.Default.Equals(xKey, yKey);
 		}
 
-		public override int DoGetHashCode(T obj)
+		protected override int DoGetHashCode(T obj)
 		{
 			K key = keyFor(obj);
 			return EqualityComparer<K>.Default.GetHashCode(key);
