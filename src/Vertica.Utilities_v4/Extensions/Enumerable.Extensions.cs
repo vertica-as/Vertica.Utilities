@@ -191,31 +191,6 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 			}
 		}
 
-		public static IEnumerable<Tuple<T, K>> Merge<T, K>(this IEnumerable<T> firsts, IEnumerable<K> seconds)
-		{
-			using (var firstsEnumerator = firsts.EmptyIfNull().GetEnumerator())
-			{
-				using (var secondsEnumerator = seconds.EmptyIfNull().GetEnumerator())
-				{
-					bool nextFirst = firstsEnumerator.MoveNext();
-					bool nextSecond = secondsEnumerator.MoveNext();
-
-					while (nextFirst && nextSecond)
-					{
-						yield return Tuple.Create(firstsEnumerator.Current, secondsEnumerator.Current);
-
-						nextFirst = firstsEnumerator.MoveNext();
-						nextSecond = secondsEnumerator.MoveNext();
-					}
-
-					if (nextFirst || nextSecond)
-					{
-						throw new ArgumentException("firsts && seconds not same length", "seconds");
-					}
-				}
-			}
-		}
-
 		public static IEnumerable<T> Interlace<T>(this IEnumerable<T> first, IEnumerable<T> second)
 		{
 			using (IEnumerator<T> e1 = first.EmptyIfNull().GetEnumerator())

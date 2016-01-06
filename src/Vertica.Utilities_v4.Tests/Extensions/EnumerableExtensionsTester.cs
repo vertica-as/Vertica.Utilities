@@ -301,14 +301,12 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 
 		#region Merge
 
-		#region Merge -- Pair<T>
-
 		[Test]
-		public void MergePair_SameLength_MergedEnumeration()
+		public void Merge_SameLength_MergedEnumeration()
 		{
-			int[] firsts = new[] { 1, 2, 3 }, seconds = new[] { 2, 4, 6 };
+			int[] firsts = { 1, 2, 3 }, seconds = { 2, 4, 6 };
 
-			IEnumerable<Pair<int>> merged = firsts.Merge<int>(seconds);
+			IEnumerable<Pair<int>> merged = firsts.Merge(seconds);
 			Assert.That(merged, Is.EqualTo(new[]
 			{
 				new Pair<int>(1, 2),
@@ -318,77 +316,29 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		[Test]
-		public void MergePair_DifferentLength_ExceptionWhenEnumerating()
+		public void Merge_DifferentLength_ExceptionWhenEnumerating()
 		{
-			int[] firsts = new[] { 1, 2, 3 }, seconds = new[] { 2, 4 };
+			int[] firsts = { 1, 2, 3 }, seconds = { 2, 4 };
 
-			IEnumerable<Pair<int>> merged = firsts.Merge<int>(seconds);
+			IEnumerable<Pair<int>> merged = firsts.Merge(seconds);
 			Assert.That(() => merged.Iterate(), Throws.ArgumentException);
 		}
 
 		[Test]
-		public void MergePair_EmptyEnumerables_Empty()
+		public void Merge_EmptyEnumerables_Empty()
 		{
-			int[] firsts = new int[] { }, seconds = new int[] { };
+			int[] firsts = { }, seconds = { };
 
-			IEnumerable<Pair<int>> merged = firsts.Merge<int>(seconds);
+			IEnumerable<Pair<int>> merged = firsts.Merge(seconds);
 			Assert.That(merged, Is.Empty);
 		}
 
 		[Test]
-		public void MergePair_NullEnumerables_Empty()
+		public void Merge_NullEnumerables_Empty()
 		{
-			IEnumerable<Pair<int>> merged = Chain.Null<int>().Merge<int>(Chain.Null<int>());
+			IEnumerable<Pair<int>> merged = Chain.Null<int>().Merge(Chain.Null<int>());
 			Assert.That(merged, Is.Empty);
 		}
-
-		#endregion
-
-		#region Merge -- Tuple<t, U>
-
-		[Test]
-		public void MergeTuple_SameLength_MergedEnumeration()
-		{
-			var firsts = new[] { 1, 2, 3 };
-			var seconds = new[] { "1", "2", "3" };
-
-			IEnumerable<Tuple<int, string>> merged = firsts.Merge(seconds);
-			Assert.That(merged, Is.EqualTo(new[]
-			{
-				Tuple.Create(1, "1"),
-				Tuple.Create(2, "2"),
-				Tuple.Create(3, "3")
-			}));
-		}
-
-		[Test]
-		public void MergeTuple_DifferentLength_ExceptionWhenEnumerating()
-		{
-			var firsts = new[] { 1, 2, 3 };
-			var seconds = new[] { "2", "4" };
-
-			IEnumerable<Tuple<int, string>> merged = firsts.Merge(seconds);
-			Assert.That(() => merged.Iterate(), Throws.ArgumentException);
-		}
-
-		[Test]
-		public void MergeTuple_EmptyEnumerables_Empty()
-		{
-			var firsts = new int[] { };
-			var seconds = new string[] { };
-
-			IEnumerable<Tuple<int, string>> merged = firsts.Merge(seconds);
-			Assert.That(merged, Is.Empty);
-		}
-
-		[Test]
-		public void MergeTuple_NullEnumerables_Empty()
-		{
-			IEnumerable<Tuple<int, string>> merged = Chain.Null<int>().Merge(Chain.Null<string>());
-			Assert.That(merged, Is.Empty);
-		}
-
-		#endregion
 
 		#endregion
 
@@ -673,7 +623,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			var twoOne = new OrderSubject(2, 1);
 			var collection = new[] { new OrderSubject(2, -2), twoOne };
 
-			IComparer<int> absComparer = Utilities_v4.Comparisons.Cmp<int>
+			IComparer<int> absComparer = Cmp<int>
 				.By((one, other) => Math.Abs(one).CompareTo(Math.Abs(other)));
 
 			Assert.That(collection.MinBy(s => s.I2, absComparer), Is.SameAs(twoOne));
@@ -721,7 +671,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			var twoMinusTwo = new OrderSubject(2, -2);
 			var collection = new[] { new OrderSubject(2, -1), twoMinusTwo };
 
-			IComparer<int> absComparer = Utilities_v4.Comparisons.Cmp<int>
+			IComparer<int> absComparer = Cmp<int>
 				.By((one, other) => Math.Abs(one).CompareTo(Math.Abs(other)));
 
 			Assert.That(collection.MaxBy(s => s.I2, absComparer), Is.EqualTo(twoMinusTwo));
