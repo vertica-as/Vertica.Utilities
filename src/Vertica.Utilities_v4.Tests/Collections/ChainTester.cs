@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Vertica.Utilities_v4.Collections;
 
@@ -33,6 +34,13 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		public void Null_NullEnumerable()
 		{
 			Assert.That(Chain.Null<int>(), Is.Null);
+		}
+
+		[Test]
+		public void Of_InfiniteEnumerable()
+		{
+			IEnumerable<string> chainOfFools = Chain.Of("fool").Take(3);
+			Assert.That(chainOfFools, Is.EqualTo(new[] { "fool", "fool", "fool" }));
 		}
 	}
 }

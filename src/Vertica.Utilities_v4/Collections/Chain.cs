@@ -19,5 +19,12 @@ namespace Vertica.Utilities_v4.Collections
 		{
 			return null;
 		}
+
+		// ReSharper disable FunctionNeverReturns
+		public static IEnumerable<T> Of<T>(T element)
+		{
+			while (true) yield return element;
+		}
+		// ReSharper restore FunctionNeverReturns
 	}
 }
