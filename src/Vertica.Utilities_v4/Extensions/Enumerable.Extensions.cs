@@ -98,11 +98,6 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 
 		#endregion
 
-		public static IEnumerable<TBase> Convert<TDerived, TBase>(this IEnumerable<TDerived> source) where TDerived : TBase
-		{
-			return source.EmptyIfNull().Select(i => (TBase)i);
-		}
-
 		#region ToDelimited
 
 		public static string ToDelimitedString<T>(this IEnumerable<T> source, string delimiter, Func<T, string> toString)

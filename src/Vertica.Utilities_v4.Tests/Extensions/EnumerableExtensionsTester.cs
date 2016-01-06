@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using NSubstitute;
 using NUnit.Framework;
 using Testing.Commons;
@@ -187,20 +186,6 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		#endregion
-
-		[Test]
-		public void Convert_AllElementsConvertible_AllElementsConverted()
-		{
-			IEnumerable<DerivedType> derived = new[] { new DerivedType("Jim", 2) };
-			Assert.That(derived.Convert<DerivedType, BaseType>(), Is.All.InstanceOf<BaseType>());
-		}
-
-		[Test]
-		public void Convert_NullOrEmpty_Empty()
-		{
-			Assert.That(Chain.Null<DerivedType>().Convert<DerivedType, BaseType>(), Is.Empty);
-			Assert.That(Chain.Empty<DerivedType>().Convert<DerivedType, BaseType>(), Is.Empty);
-		}
 
 		#region ToDelimitedString
 
