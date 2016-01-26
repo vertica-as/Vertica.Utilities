@@ -908,5 +908,28 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		#endregion
 
 		#endregion
+
+		#region Compress
+
+		[Test]
+		public void Compress_LongString_SmallerFootprint()
+		{
+			string longString = new string('a', 120);
+
+			Assert.That(longString, Has.Length.EqualTo(120));
+
+			Assert.That(longString.Compress(), Has.Length.LessThan(120));
+		}
+
+		[Test]
+		public void Decompress_GetsOriginalString()
+		{
+			string original = new string('a', 120),
+				compressed = original.Compress();
+			
+			Assert.That(compressed.Decompress(), Is.EqualTo(original));
+		}
+
+		#endregion
 	}
 }
