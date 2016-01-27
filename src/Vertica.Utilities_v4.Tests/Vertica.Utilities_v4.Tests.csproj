@@ -68,6 +68,7 @@
     <Compile Include="Collections\GenericDictionaryAdapterTester.cs" />
     <Compile Include="Collections\NotifyingListTester.cs" />
     <Compile Include="Collections\PaginatedCollectionTester.cs" />
+    <Compile Include="Collections\PaginatedResultsTester.cs" />
     <Compile Include="Collections\PaginationTester.cs" />
     <Compile Include="Collections\PriorityQueueTester.cs" />
     <Compile Include="Collections\SmartEnumerableTester.cs" />
