@@ -118,6 +118,11 @@ namespace Vertica.Utilities_v4.Collections
 			return _orphans.Select(x => _tree[x].Item3);
 		}
 
+		public int Count
+		{
+			get { return _tree.Count - _orphans.Count; }
+		}
+
 		private IEnumerator<TreeNode<TModel>> GetEnumerator(List<TKey> nodes)
 		{
 			if (nodes == null) throw new ArgumentNullException("nodes");

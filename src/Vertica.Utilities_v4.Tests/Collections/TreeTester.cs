@@ -15,12 +15,12 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		private static readonly Category c1 = new Category { Id = 1 },
 			c2 = new Category { Id = 2 },
 			c3 = new Category { Id = 3, ParentId = 1 },
-			c4 = new Category { Id = 4, ParentId = 5 };
+			c4_orphan = new Category { Id = 4, ParentId = 5 };
 
 		[Test]
 		public void ToTree_BuildsATree_OfWrappedModels()
 		{
-			var categories = new[] { c1, c2, c3, c4 };
+			var categories = new[] { c1, c2, c3, c4_orphan };
 
 			Tree<Category, int> tree = categories.ToTree(
 				c => c.Id,
@@ -38,19 +38,19 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		[Test]
 		public void Orphans_ModelsWithoutParent_GoToAnotherStructure()
 		{
-			var categories = new[] { c1, c2, c3, c4 };
+			var categories = new[] { c1, c2, c3, c4_orphan };
 
 			Tree<Category, int> tree = categories.ToTree(
 				c => c.Id,
 				(c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
-			Assert.That(tree.Orphans(), Must.Be.Constrained(Is.SameAs(c4)));
+			Assert.That(tree.Orphans(), Must.Be.Constrained(Is.SameAs(c4_orphan)));
 		}
 
 		[Test]
 		public void Get_NodeKeysInTree_DoesNotThrowAndNodeReference()
 		{
-			var categories = new[] { c1, c2, c3, c4 };
+			var categories = new[] { c1, c2, c3, c4_orphan };
 
 			Tree<Category, int> tree = categories.ToTree(
 				c => c.Id,
@@ -63,7 +63,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		[Test]
 		public void Get_NodeKeysNotInTree_Throws()
 		{
-			var categories = new[] { c1, c2, c3, c4 };
+			var categories = new[] { c1, c2, c3, c4_orphan };
 
 			Tree<Category, int> tree = categories.ToTree(c => c.Id, (c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
@@ -77,7 +77,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		[Test]
 		public void TryGet_NodeKeysInTree_TrueAndNodeReference()
 		{
-			var categories = new[] { c1, c2, c3, c4 };
+			var categories = new[] { c1, c2, c3, c4_orphan };
 
 			Tree<Category, int> tree = categories.ToTree(
 				c => c.Id,
@@ -91,7 +91,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		[Test]
 		public void TryGet_NodeKeysNotInTree_FalseAndNull()
 		{
-			var categories = new[] { c1, c2, c3, c4 };
+			var categories = new[] { c1, c2, c3, c4_orphan };
 
 			Tree<Category, int> tree = categories.ToTree(
 				c => c.Id,
@@ -188,6 +188,32 @@ namespace Vertica.Utilities_v4.Tests.Collections
 
 			Assert.That(() => tree[1], Throws.InstanceOf<ArgumentOutOfRangeException>(),
 				"should not exist any at index 1");
+		}
+
+
+		[Test]
+		public void Count_No_Orphans()
+		{
+			var categories = new[] { c1, c2, c3 };
+
+			Tree<Category, int> tree = categories.ToTree(
+				c => c.Id,
+				(c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
+
+			Assert.That(tree.Count, Is.EqualTo(categories.Length));
+		}
+
+		[Test]
+		public void Count_C4_Is_Orphan()
+		{
+			var categories = new[] { c1, c2, c3, c4_orphan };
+
+			Tree<Category, int> tree = categories.ToTree(
+				c => c.Id,
+				(c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
+
+			// c4 references a parent thats not there
+			Assert.That(tree.Count, Is.EqualTo(3));
 		}
 	}
 }
