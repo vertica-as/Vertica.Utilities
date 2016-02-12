@@ -619,6 +619,30 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			}));
 		}
 
+		[Test]
+		public void InBatchesOf_CallingToArray_ShouldBeTheSameAsNotCallingItAndIterating()
+		{
+			string[] input =
+			{
+				"140720",
+				"358998",
+				"519897",
+				"882101",
+				"1197596"
+			};
+
+			var enumerable = input.InBatchesOf(2);
+			var array = input.InBatchesOf(2).ToArray();
+
+			Assert.That(enumerable, Is.EqualTo(array));
+			Assert.That(enumerable, Is.EqualTo(new[]
+			{
+				new [] {"140720" , "358998"},
+				new [] {"519897", "882101"},
+				new [] {"1197596"},
+			}));
+		}
+
 		#endregion
 
 		#region shuffle

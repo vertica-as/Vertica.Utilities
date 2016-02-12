@@ -287,14 +287,26 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 		{
 			Guard.AgainstArgument<ArgumentOutOfRangeException>("batchSize", batchSize == 0, Exceptions.EnumerableExtensions_NonZeroBatch);
 
-			int count = 0;
-			T[] batch = new T[batchSize];
-			foreach (T item in items)
+			T[] bucket = null;
+			var count = 0;
+
+			foreach (var item in items)
 			{
-				batch[count++ % batchSize] = item;
-				if (count % batchSize == 0) yield return batch;
+				if (bucket == null) bucket = new T[batchSize];
+
+				bucket[count++] = item;
+
+				if (count != batchSize) continue;
+
+				// performance hack for array elements
+				yield return bucket.Select(x => x);
+
+				bucket = null;
+				count = 0;
 			}
-			if (count % batchSize > 0) yield return batch.Take(count % (int)batchSize);
+
+			// Return the last bucket with all remaining elements
+			if (bucket != null && count > 0) yield return bucket.Take(count);
 		}
 
 		#endregion
