@@ -55,5 +55,24 @@ namespace Vertica.Utilities_v4.Tests.Collections
 			Assert.That(subject.RecordNumbers.LowerBound, Is.EqualTo(1));
 			Assert.That(subject.RecordNumbers.UpperBound, Is.EqualTo(2));
 		}
+
+		[Test]
+		public void Project_MapsToNewForm_KeepsSameMeta()
+		{
+			var pagination = new Pagination(3, 1);
+			int totalResults = 5;
+			var subject = new PaginatedResults<int>(new[] { 10, 20 }, totalResults, pagination);
+
+			PaginatedResults<string> projection = subject.Project(x => x.ToString());
+
+			Assert.That(projection.Pagination, Is.EqualTo(subject.Pagination));
+			Assert.That(projection.Pagination.PageNumber, Is.EqualTo(subject.Pagination.PageNumber));
+			Assert.That(projection.Pagination.PageSize, Is.EqualTo(subject.Pagination.PageSize));
+
+			Assert.That(projection.TotalResults, Is.EqualTo(subject.TotalResults));
+			Assert.That(projection.TotalResults, Is.EqualTo(5));
+
+			CollectionAssert.AreEqual(projection.PageOfResults, new[] {"10", "20"});
+		}
 	}
 }
