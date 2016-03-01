@@ -69,10 +69,9 @@ namespace Vertica.Utilities_v4.Tests.Collections
 			Assert.That(projection.Pagination.PageNumber, Is.EqualTo(subject.Pagination.PageNumber));
 			Assert.That(projection.Pagination.PageSize, Is.EqualTo(subject.Pagination.PageSize));
 
-			Assert.That(projection.TotalResults, Is.EqualTo(subject.TotalResults));
-			Assert.That(projection.TotalResults, Is.EqualTo(5));
+			Assert.That(projection.TotalResults, Is.EqualTo(subject.TotalResults).And.EqualTo(5));
 
-			CollectionAssert.AreEqual(projection.PageOfResults, new[] {"10", "20"});
+			Assert.That(projection.PageOfResults, Is.EqualTo(new[] { "10", "20" }));
 		}
 	}
 }

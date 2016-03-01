@@ -268,29 +268,29 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 			return new IfNotThereExtensionPoint(subject);
 		}
 
-		public static string Append(this IfNotThereExtensionPoint sp, string appendix)
+		public static string Append(this IfNotThereExtensionPoint sp, string appendix, StringComparison comparison = StringComparison.Ordinal)
 		{
 			string str = sp.ExtendedValue;
 			if (str == null && appendix == null) return null;
-			return appendIfNotThere(str.EmptyIfNull(), appendix.EmptyIfNull());
+			return appendIfNotThere(str.EmptyIfNull(), appendix.EmptyIfNull(), comparison);
 		}
 
-		public static string Prepend(this IfNotThereExtensionPoint sp, string prefix)
+		public static string Prepend(this IfNotThereExtensionPoint sp, string prefix, StringComparison comparison = StringComparison.Ordinal)
 		{
 			string str = sp.ExtendedValue;
 			if (str == null && prefix == null) return null;
-			return prependIfNotThere(str.EmptyIfNull(), prefix.EmptyIfNull());
+			return prependIfNotThere(str.EmptyIfNull(), prefix.EmptyIfNull(), comparison);
 		}
 
 		// we have preciously handled nulls, so that they are empties
-		private static string appendIfNotThere(string str, string appendix)
+		private static string appendIfNotThere(string str, string appendix, StringComparison comparison)
 		{
-			return str.EndsWith(appendix) ? str : string.Concat(str, appendix);
+			return str.EndsWith(appendix, comparison) ? str : string.Concat(str, appendix);
 		}
 
-		private static string prependIfNotThere(string str, string prefix)
+		private static string prependIfNotThere(string str, string prefix, StringComparison comparison)
 		{
-			return str.StartsWith(prefix) ? str : string.Concat(prefix, str);
+			return str.StartsWith(prefix, comparison) ? str : string.Concat(prefix, str);
 		}
 
 		#endregion
