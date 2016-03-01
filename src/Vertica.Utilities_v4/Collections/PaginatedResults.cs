@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Vertica.Utilities_v4.Collections
 {
@@ -45,5 +46,15 @@ namespace Vertica.Utilities_v4.Collections
 
 		public string PageNumber { get { return "PageNumber"; } }
 		public Pagination Pagination { get; private set; }
+
+		/// <summary>
+		/// Projects each element of this PaginatedResults into a new form.
+		/// </summary>
+		public PaginatedResults<TTo> Project<TTo>(Func<T, TTo> mapper)
+		{
+			if (mapper == null) throw new ArgumentNullException(nameof(mapper));
+
+			return new PaginatedResults<TTo>(PageOfResults.Select(mapper).ToArray(), (int)TotalResults, Pagination);
+		}
 	}
 }
