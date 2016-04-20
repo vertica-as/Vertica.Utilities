@@ -16,8 +16,8 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 			var visitor = new GenericVisitor<VisitableBase>();
 			Visit_1 square1 = s => s.Property1 *= s.Property1;
 			Visit_2 square2 = s => s.Property2 *= s.Property2;
-			visitor.AddDelegate(square1);
-			visitor.AddDelegate(square2);
+			visitor
+				.AddDelegate(square1).AddDelegate(square2);
 
 			var s1 = new Visitable_1 { Property1 = 2 };
 			var s2 = new Visitable_2 { Property2 = 3 };

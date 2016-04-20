@@ -2,11 +2,11 @@
 
 namespace Vertica.Utilities_v4.Tests.Patterns.Support
 {
-	internal class Visitable_2 : VisitableBase
+	internal class Visitable_2 : VisitableBase, IVisitable<VisitableBase>
 	{
 		public int Property2 { get; set; }
-
-		public override void Accept(GenericVisitor<VisitableBase> visitor)
+		
+		public void Accept(IVisitor<VisitableBase> visitor)
 		{
 			visitor.Visit(this);
 		}
