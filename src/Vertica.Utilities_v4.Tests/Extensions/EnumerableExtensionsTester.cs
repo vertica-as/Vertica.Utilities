@@ -523,6 +523,24 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			}));
 		}
 
+		[Test]
+		public void Zip_MultipleStrict_SameLength_TupleOfElements()
+		{
+			var numbers = new[] { 5, 6, 7, 8 };
+			var french = new[] { "cinq", "six", "sept", "huit" };
+			var spanish = new[] { "cinco", "seis", "siete", "ocho" };
+
+			var zipped = numbers.Zip(french, spanish);
+
+			Assert.That(zipped, Is.EqualTo(new[]
+			{
+				Tuple.Create(5, "cinq", "cinco"),
+				Tuple.Create(6, "six", "seis"),
+				Tuple.Create(7, "sept", "siete"),
+				Tuple.Create(8, "huit", "ocho")
+			}));
+		}
+
 
 		[Test]
 		public void Zip_Strict_DifferentLength_Exception()
@@ -531,6 +549,27 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			var words = new[] { "cinq", "six", "sept", "huit", "neuf" };
 
 			Assert.That(() => numbers.Zip(words).Iterate(), Throws.InvalidOperationException);
+		}
+
+		[Test]
+		public void Zip_MultipleStrict_DifferentLength_Exception()
+		{
+			var numbers = new[] { 5, 6, 7, 8 };
+			var french = new[] { "cinq", "six", "sept", "huit" };
+			var spanish = new[] { "cinco", "seis", "sieste", "ocho", "nueve" };
+
+			Assert.That(() => numbers.Zip(french, spanish).Iterate(), Throws.InvalidOperationException);
+		}
+
+		[Test]
+		public void Zip_MultipleStrict_LessElementsLength_Exception()
+		{
+			var numbers = new[] { 5, 6, 7, 8 };
+			var french = new[] { "cinq", "six", "sept", "huit" };
+			var spanish = new[] { "cinco", "seis", "sieste", "ocho", "nueve" };
+			var danish = new[] { "fem" };
+
+			Assert.That(() => numbers.Zip(french, spanish, danish).Iterate(), Throws.InvalidOperationException);
 		}
 
 		#endregion

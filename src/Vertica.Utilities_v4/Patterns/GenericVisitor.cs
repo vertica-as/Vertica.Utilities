@@ -32,7 +32,7 @@ namespace Vertica.Utilities_v4.Patterns
 		void Visit<TSub>(TSub visitable) where TSub : TBase;
 	}
 
-	internal interface IVisitable<out TBase>
+	public interface IVisitable<out TBase>
 	{
 		void Accept(IVisitor<TBase> visitor);
 	}

@@ -133,7 +133,7 @@
     <value>Size must be greater than 0.</value>
   </data>
   <data name="EnumerableExtensions_Zip_SameLength" xml:space="preserve">
-    <value>Both collections must have same length.</value>
+    <value>All collections must have same length.</value>
   </data>
   <data name="Enumerated_DuplicatedTemplate" xml:space="preserve">
     <value>The enum with name '{0}' is already used.</value>

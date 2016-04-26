@@ -265,6 +265,52 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 			} while (moreOfFirst);
 		}
 
+		public static IEnumerable<Tuple<T1, T2, T3>> Zip<T1, T2, T3>(this IEnumerable<T1> first, IEnumerable<T2> second, IEnumerable<T3> third)
+		{
+			var enumerator1 = first.EmptyIfNull().GetEnumerator();
+			var enumerator2 = second.EmptyIfNull().GetEnumerator();
+			var enumerator3 = third.EmptyIfNull().GetEnumerator();
+
+			bool moreOfFirst;
+			do
+			{
+				moreOfFirst = enumerator1.MoveNext();
+				bool moreOfSecond = enumerator2.MoveNext();
+				bool moreOfThird = enumerator3.MoveNext();
+
+				if (moreOfFirst != moreOfSecond || moreOfFirst != moreOfThird)
+					throw new InvalidOperationException(Exceptions.EnumerableExtensions_Zip_SameLength);
+
+				if (moreOfSecond)
+					yield return Tuple.Create(enumerator1.Current, enumerator2.Current, enumerator3.Current);
+
+			} while (moreOfFirst);
+		}
+
+		public static IEnumerable<Tuple<T1, T2, T3, T4>> Zip<T1, T2, T3, T4>(this IEnumerable<T1> first, IEnumerable<T2> second, IEnumerable<T3> third, IEnumerable<T4> fourth)
+		{
+			var enumerator1 = first.EmptyIfNull().GetEnumerator();
+			var enumerator2 = second.EmptyIfNull().GetEnumerator();
+			var enumerator3 = third.EmptyIfNull().GetEnumerator();
+			var enumerator4 = fourth.EmptyIfNull().GetEnumerator();
+
+			bool moreOfFirst;
+			do
+			{
+				moreOfFirst = enumerator1.MoveNext();
+				bool moreOfSecond = enumerator2.MoveNext();
+				bool moreOfThird = enumerator3.MoveNext();
+				bool moreOfFourth = enumerator4.MoveNext();
+
+				if (moreOfFirst != moreOfSecond || moreOfFirst != moreOfThird || moreOfFirst != moreOfFourth)
+					throw new InvalidOperationException(Exceptions.EnumerableExtensions_Zip_SameLength);
+
+				if (moreOfSecond)
+					yield return Tuple.Create(enumerator1.Current, enumerator2.Current, enumerator3.Current, enumerator4.Current);
+
+			} while (moreOfFirst);
+		}
+
 		#endregion
 
 		#region concatenation helpers
