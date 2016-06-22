@@ -861,5 +861,26 @@ namespace Vertica.Utilities_v4
 		}
 
 		#endregion
+
+		#region translation
+
+		public static TTarget Translate<TSource, TTarget>(TSource source, bool ignoreCase = false) where TTarget : struct, IComparable, IFormattable, IConvertible
+		{
+			return Parse<TTarget>(source.ToString(), ignoreCase);
+		}
+
+		public static bool TryTranslate<TSource, TTarget>(TSource source, out TTarget? translated, bool ignoreCase = false) where TTarget : struct, IComparable, IFormattable, IConvertible
+		{
+			return TryParse(source.ToString(), ignoreCase, out translated);
+		}
+
+		public static TTarget Translate<TSource, TTarget>(TSource source, TTarget defaultValue, bool ignoreCase = false) where TTarget : struct, IComparable, IFormattable, IConvertible
+		{
+			TTarget? translated;
+			TryParse(source.ToString(), ignoreCase, out translated);
+			return translated.GetValueOrDefault(defaultValue);
+		}
+
+		#endregion
 	}
 }

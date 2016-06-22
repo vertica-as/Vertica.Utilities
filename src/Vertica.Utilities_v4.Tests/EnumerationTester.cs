@@ -54,6 +54,12 @@ namespace Vertica.Utilities_v4.Tests
 		}
 		// ReSharper restore UnusedMember.Local
 
+		public enum MyPlatforms
+		{
+			Unix,
+			MacOSX
+		}
+
 		#endregion
 
 		[Test, NUnit.Framework.Category("Exploratory")]
@@ -1230,6 +1236,50 @@ namespace Vertica.Utilities_v4.Tests
 		public void Comparer_NotEnum_Throws()
 		{
 			Assert.That(() => Enumeration.GetComparer<decimal>(), Throws.ArgumentException);
+		}
+
+		#endregion
+
+		#region translations
+
+		[Test]
+		public void Translate_PossibleTranslation_DifferentType()
+		{
+			Assert.That(Enumeration.Translate<PlatformID, MyPlatforms>(PlatformID.Unix), Is.EqualTo(MyPlatforms.Unix));
+		}
+
+		[Test]
+		public void Translate_ImpossibleTranslation_Exception()
+		{
+			Assert.That(()=> Enumeration.Translate<PlatformID, MyPlatforms>(PlatformID.WinCE), Throws.InstanceOf<InvalidEnumArgumentException>());
+		}
+
+		[Test]
+		public void TryTranslate_PossibleTranslation_DifferentType()
+		{
+			MyPlatforms? translated;
+			Assert.That(Enumeration.TryTranslate(PlatformID.Unix, out translated), Is.True);
+			Assert.That(translated, Is.EqualTo(MyPlatforms.Unix));
+		}
+
+		[Test]
+		public void TryTranslate_ImpossibleTranslation_FalseAndNull()
+		{
+			MyPlatforms? translated;
+			Assert.That(Enumeration.TryTranslate(PlatformID.WinCE, out translated), Is.False);
+			Assert.That(translated, Is.Null);
+		}
+
+		[Test]
+		public void TranslateWithDefault_PossibleTranslation_DifferentType()
+		{
+			Assert.That(Enumeration.Translate(PlatformID.Unix, MyPlatforms.MacOSX), Is.EqualTo(MyPlatforms.Unix));
+		}
+
+		[Test]
+		public void TranslateWithDefault_ImpossibleTranslation_Default()
+		{
+			Assert.That(Enumeration.Translate(PlatformID.WinCE, MyPlatforms.MacOSX), Is.EqualTo(MyPlatforms.MacOSX));
 		}
 
 		#endregion
