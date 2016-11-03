@@ -5,6 +5,7 @@ using System.DirectoryServices;
 
 namespace Vertica.Utilities_v4.DirectoryServices
 {
+	[Obsolete(".NET Standard")]
 	public class DirectoryEntryCollection : IDisposable, IEnumerable<DirectoryEntry>
 	{
 		private readonly List<DirectoryEntry> _inner;
