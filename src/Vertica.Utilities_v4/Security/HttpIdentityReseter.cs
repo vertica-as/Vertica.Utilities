@@ -4,6 +4,7 @@ using System.Web;
 
 namespace Vertica.Utilities_v4.Security
 {
+	[Obsolete(".NET Standard")]
 	public class HttpIdentityReseter : IIdentityReseter
 	{
 		private readonly IPrincipal _previous;

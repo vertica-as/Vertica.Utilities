@@ -1,8 +1,10 @@
-﻿using System.Security.Principal;
+﻿using System;
+using System.Security.Principal;
 using System.Web;
 
 namespace Vertica.Utilities_v4.Security
 {
+	[Obsolete(".NET Standard")]
 	public class HttpRequestIdentityProvider : WindowsIdentityProviderBase
 	{
 		private readonly HttpRequestBase _request;

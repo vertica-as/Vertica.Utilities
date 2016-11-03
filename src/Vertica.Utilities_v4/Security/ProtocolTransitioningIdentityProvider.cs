@@ -3,6 +3,7 @@ using System.Security.Principal;
 
 namespace Vertica.Utilities_v4.Security
 {
+	[Obsolete(".NET Standard")]
 	public class ProtocolTransitioningIdentityProvider : WindowsIdentityProviderBase
 	{
 		private readonly Func<string> _principalName;

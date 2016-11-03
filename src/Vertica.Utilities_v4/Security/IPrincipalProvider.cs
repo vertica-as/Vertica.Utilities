@@ -5,11 +5,13 @@ using System.Web;
 
 namespace Vertica.Utilities_v4.Security
 {
+	[Obsolete(".NET Standard")]
 	public interface IPrincipalProvider : IDisposable
 	{
 		IPrincipal GetPrincipal();
 	}
 
+	[Obsolete(".NET Standard")]
 	public class HttpContextPrincipalProvider : IPrincipalProvider
 	{
 		private readonly HttpContextBase _context;

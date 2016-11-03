@@ -1,8 +1,10 @@
-﻿using System.Security.Principal;
+﻿using System;
+using System.Security.Principal;
 using System.Threading;
 
 namespace Vertica.Utilities_v4.Security
 {
+	[Obsolete(".NET Standard")]
 	public class CurrentThreadSecurityProvider : IWindowsIdentityProvider, IPrincipalProvider
 	{
 		public void Dispose() { }

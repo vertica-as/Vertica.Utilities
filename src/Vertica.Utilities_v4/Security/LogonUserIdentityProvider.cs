@@ -6,6 +6,7 @@ using Vertica.Utilities_v4.Resources;
 
 namespace Vertica.Utilities_v4.Security
 {
+	[Obsolete(".NET Standard")]
 	internal class LogonUserIdentityProvider : WindowsIdentityProviderBase
 	{
 		private readonly Credential _credential;
