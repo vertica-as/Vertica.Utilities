@@ -8,6 +8,7 @@ using Vertica.Utilities_v4.Extensions.ObjectExt;
 
 namespace Vertica.Utilities_v4.Web
 {
+	[Obsolete(".NET Standard")]
 	public class SiteMapBuilder
 	{
 		#region schema internals
