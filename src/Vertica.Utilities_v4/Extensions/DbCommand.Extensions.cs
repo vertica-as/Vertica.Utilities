@@ -4,9 +4,11 @@ using System.Data;
 
 namespace Vertica.Utilities_v4.Extensions.DataExt
 {
+	[Obsolete(".NET Standard")]
 	/* based on http://www.madprops.org/blog/addwithvalue-via-extension-methods/ and http://www.madprops.org/blog/adding-idbcommand-parameters-with-anonymous-types/ */
 	public static class DbCommandExtensions
 	{
+		[Obsolete(".NET Standard")]
 		public static int AddInputParameter<T>(this IDbCommand cmd, string name, T value) where T : class
 		{
 			var dataParameter = cmd.CreateParameter();
@@ -15,6 +17,7 @@ namespace Vertica.Utilities_v4.Extensions.DataExt
 			return cmd.Parameters.Add(dataParameter);
 		}
 
+		[Obsolete(".NET Standard")]
 		public static int AddInputParameter<T>(this IDbCommand cmd, string name, T? value) where T : struct
 		{
 			var dataParameter = cmd.CreateParameter();
@@ -23,6 +26,7 @@ namespace Vertica.Utilities_v4.Extensions.DataExt
 			return cmd.Parameters.Add(dataParameter);
 		}
 
+		[Obsolete(".NET Standard")]
 		public static void AddInputParameters<T>(this IDbCommand cmd, T parameters) where T : class
 		{
 			foreach (var prop in parameters.GetType().GetProperties())
@@ -35,6 +39,7 @@ namespace Vertica.Utilities_v4.Extensions.DataExt
 			}
 		}
 
+		[Obsolete(".NET Standard")]
 		public static IDbDataParameter AddOutputParameter(this IDbCommand cmd, string name, DbType dbType)
 		{
 			var dataParameter = cmd.CreateParameter();
@@ -45,6 +50,7 @@ namespace Vertica.Utilities_v4.Extensions.DataExt
 			return dataParameter;
 		}
 
+		[Obsolete(".NET Standard")]
 		public static void AddOutputParameters<T>(this IDbCommand cmd, T parameters) where T : class
 		{
 			foreach (var prop in parameters.GetType().GetProperties())
@@ -84,12 +90,15 @@ namespace Vertica.Utilities_v4.Extensions.DataExt
 			{typeof(byte), DbType.Byte},
 			{typeof(Guid), DbType.Guid}
 		};
+
+		[Obsolete(".NET Standard")]
 		public static DbType? TryTranslate(this Type netType)
 		{
 			DbType found;
 			return _map.TryGetValue(netType, out found) ? found : default(DbType?);
 		}
 
+		[Obsolete(".NET Standard")]
 		public static DbType Translate(this Type netType)
 		{
 			DbType? tried = netType.TryTranslate();
@@ -101,6 +110,7 @@ namespace Vertica.Utilities_v4.Extensions.DataExt
 		}
 	}
 
+	[Obsolete(".NET Standard")]
 	public interface IAddParamStrategy
 	{
 		int Input { get; }
