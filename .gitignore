@@ -26,4 +26,4 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
-*.json.lock
+*.lock.json
