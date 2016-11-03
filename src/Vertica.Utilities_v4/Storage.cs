@@ -5,6 +5,7 @@ using System.Web;
 namespace Vertica.Utilities_v4
 {
 	/* based on RhinoCommon's LocalData */
+	[Obsolete(".NET Standard")]
 	public interface IStorage
 	{
 		/// <summary>
@@ -21,6 +22,7 @@ namespace Vertica.Utilities_v4
 		int Count { get; }
 	}
 
+	[Obsolete(".NET Standard")]
 	public static class Storage
 	{
 		private static readonly IStorage _current = new StorageData();

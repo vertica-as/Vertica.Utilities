@@ -4,6 +4,7 @@ using System.Security.Principal;
 
 namespace Vertica.Utilities_v4.Security
 {
+	[Obsolete(".NET Standard")]
 	public class Impersonate
 	{
 		private readonly IWindowsIdentityProvider _provider;

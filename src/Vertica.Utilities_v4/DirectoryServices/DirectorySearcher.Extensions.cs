@@ -5,10 +5,12 @@ using Vertica.Utilities_v4.Extensions.EnumerableExt;
 
 namespace Vertica.Utilities_v4.DirectoryServices
 {
+	[Obsolete(".NET Standard")]
 	public static class DirectorySearcherExtensions
 	{
 		private static readonly TimeSpan twoSeconds = TimeSpan.FromSeconds(2);
 
+		[Obsolete(".NET Standard")]
 		public static DirectoryEntry GetOu(this DirectorySearcher ds, string ouName)
 		{
 			string ouFilter = "(&(objectCategory=organizationalUnit)(name={0}))";
@@ -22,6 +24,7 @@ namespace Vertica.Utilities_v4.DirectoryServices
 			return sr == null ? null : sr.GetDirectoryEntry();
 		}
 
+		[Obsolete(".NET Standard")]
 		public static DirectoryEntry FindOu(this DirectorySearcher ds, string ouName)
 		{
 			string ouFilter = "(&(objectCategory=organizationalUnit)(name={0}))";
@@ -35,6 +38,7 @@ namespace Vertica.Utilities_v4.DirectoryServices
 			return sr == null ? null : sr.GetDirectoryEntry();
 		}
 
+		[Obsolete(".NET Standard")]
 		public static DirectoryEntry GetGroup(this DirectorySearcher ds, string groupName)
 		{
 			string ouFilter = "(&(objectCategory=group)(name={0}))";
@@ -48,6 +52,7 @@ namespace Vertica.Utilities_v4.DirectoryServices
 			return sr == null ? null : sr.GetDirectoryEntry();
 		}
 
+		[Obsolete(".NET Standard")]
 		public static DirectoryEntry FindGroup(this DirectorySearcher ds, string groupName)
 		{
 			string ouFilter = "(&(objectCategory=group)(name={0}))";
@@ -61,6 +66,7 @@ namespace Vertica.Utilities_v4.DirectoryServices
 			return sr == null ? null : sr.GetDirectoryEntry();
 		}
 
+		[Obsolete(".NET Standard")]
 		public static DirectoryEntry GetUser(this DirectorySearcher ds, string samAccountName)
 		{
 			string ouFilter = "(&(objectCategory=user)(samAccountName={0}))";
@@ -76,6 +82,7 @@ namespace Vertica.Utilities_v4.DirectoryServices
 			return sr == null ? null : sr.GetDirectoryEntry();
 		}
 
+		[Obsolete(".NET Standard")]
 		public static DirectoryEntry FindUser(this DirectorySearcher ds, string samAccountName)
 		{
 			string ouFilter = "(&(objectCategory=user)(samAccountName={0}))";
@@ -89,6 +96,7 @@ namespace Vertica.Utilities_v4.DirectoryServices
 			return sr == null ? null : sr.GetDirectoryEntry();
 		}
 
+		[Obsolete(".NET Standard")]
 		public static DirectoryEntryCollection GetAllOf(this DirectorySearcher ds, AdObjectCategory category)
 		{
 			string ouFilter = "(objectCategory={0})";
@@ -103,6 +111,7 @@ namespace Vertica.Utilities_v4.DirectoryServices
 			return entries;
 		}
 
+		[Obsolete(".NET Standard")]
 		public static DirectoryEntryCollection FindAllOf(this DirectorySearcher ds, AdObjectCategory category)
 		{
 			string ouFilter = "(objectCategory={0})";

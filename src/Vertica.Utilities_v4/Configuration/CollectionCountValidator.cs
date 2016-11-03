@@ -4,6 +4,7 @@ using System.Globalization;
 
 namespace Vertica.Utilities_v4.Configuration
 {
+	[Obsolete(".NET Standard")]
 	public class CollectionCountValidator : ConfigurationValidatorBase
 	{
 		private readonly uint _minimumCount;
@@ -32,6 +33,7 @@ namespace Vertica.Utilities_v4.Configuration
 	}
 
 	[AttributeUsage(AttributeTargets.Property)]
+	[Obsolete(".NET Standard")]
 	public class CollectionCountValidatorAttribute : ConfigurationValidatorAttribute
 	{
 		public uint MinCount { get; set; }

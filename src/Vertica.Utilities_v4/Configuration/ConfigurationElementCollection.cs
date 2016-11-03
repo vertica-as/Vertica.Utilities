@@ -1,7 +1,9 @@
+using System;
 using System.Configuration;
 
 namespace Vertica.Utilities_v4.Configuration
 {
+	[Obsolete(".NET Standard")]
 	public abstract class ConfigurationElementCollection<TKey, TValue> : ConfigurationElementCollection
 		where TValue : ConfigurationElement, new()
 	{
