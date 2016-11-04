@@ -94,7 +94,6 @@
     <Compile Include="Configuration\Support\CollectionCountElementSubject.cs" />
     <Compile Include="Extensions\AnonymousExtensionsTester.cs" />
     <Compile Include="Extensions\AttributeExtensionsTester.cs" />
-    <Compile Include="Extensions\DbCommandExtensionsTester.cs" />
     <Compile Include="Extensions\DeletegateExtensionsTester.cs" />
     <Compile Include="Extensions\EnumerableExtensionsTester.cs" />
     <Compile Include="Extensions\Infrastructure\ExtensionPointsTester.cs" />
