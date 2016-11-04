@@ -35,17 +35,17 @@ namespace Vertica.Utilities_v4
 		}
 
 		[DllImport("rpcrt4.dll", SetLastError = true)]
-		private static extern int UuidCreateSequential(out Guid guid); 
+		private static extern int UuidCreateSequential(out Guid guid);
 		private const int RPC_S_OK = 0;
 
-        // Used to sort the bytes of the Guid according to Alberto Ferrari article (http://sqlblog.com/blogs/alberto_ferrari/archive/2007/08/31/how-are-guids-sorted-by-sql-server.aspx)
-        private static readonly int[] _sqlOrderMap = new[] {3, 2, 1, 0, 5, 4, 7, 6, 9, 8, 15, 14, 13, 12, 11, 10};
+		// Used to sort the bytes of the Guid according to Alberto Ferrari article (http://sqlblog.com/blogs/alberto_ferrari/archive/2007/08/31/how-are-guids-sorted-by-sql-server.aspx)
+		private static readonly int[] _sqlOrderMap = { 3, 2, 1, 0, 5, 4, 7, 6, 9, 8, 15, 14, 13, 12, 11, 10 };
 
 		[Obsolete(".NET Standard")]
 		public static Guid Sequential()
 		{
 			Guid guid = generateSequentialGuid();
-			return setSortOrder(guid); 
+			return setSortOrder(guid);
 		}
 
 		private static Guid generateSequentialGuid()
@@ -56,7 +56,7 @@ namespace Vertica.Utilities_v4
 
 			if (hr != RPC_S_OK)
 			{
-				throw new Win32Exception(hr, string.Format("UuidCreateSequential() call failed: {0}", hr));
+				throw new Win32Exception(hr, $"UuidCreateSequential() call failed: {hr}");
 			}
 
 			return sequentialguid;
@@ -76,6 +76,6 @@ namespace Vertica.Utilities_v4
 
 			guid = new Guid(bytes);
 			return guid;
-		} 
+		}
 	}
 }

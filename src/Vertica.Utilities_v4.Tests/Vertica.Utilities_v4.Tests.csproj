@@ -127,8 +127,6 @@
     <Compile Include="Security\BCryptHasherTester.cs" />
     <Compile Include="Security\BCryptTester.cs" />
     <Compile Include="Security\CredentialTester.cs" />
-    <Compile Include="Security\HttpContextSecurityProviderTester.cs" />
-    <Compile Include="Security\HttpRequestIdentityProviderTester.cs" />
     <Compile Include="Security\SimplePasswordGeneratorTester.cs" />
     <Compile Include="Security\SimplePasswordHasherTester.cs" />
     <Compile Include="Patterns\ReturningChainOfResponsibilityTester.cs" />
@@ -147,7 +145,6 @@
     <Compile Include="StaticClassMapperTester.cs">
       <DependentUpon>IMapperTester.cs</DependentUpon>
     </Compile>
-    <Compile Include="StorageTester.cs" />
     <Compile Include="TuploidsTester.cs" />
     <Compile Include="UniqueIdentifierTester.cs" />
     <Compile Include="DecimalPercentageTester.cs">
@@ -219,10 +216,6 @@
     <Compile Include="Web\CompactGuidTester.cs" />
     <Compile Include="Web\HtmlTester.cs" />
     <Compile Include="Web\QueryStringHelperTester.cs" />
-    <Compile Include="Web\SiteMapBuilderTester.cs" />
-    <Compile Include="Web\Support\EquivalentSiteMapConstraint.cs" />
-    <Compile Include="Web\Support\MustExtensions.cs" />
-    <Compile Include="Web\Support\PersistentSitemap.cs" />
     <Compile Include="Web\TcpPortTester.cs" />
   </ItemGroup>
   <ItemGroup>

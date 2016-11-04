@@ -87,10 +87,6 @@
     <Compile Include="Comparisons\ReverseComparer.cs" />
     <Compile Include="Comparisons\SelectorComparer.cs" />
     <Compile Include="Comparisons\StringRepresentationComparer.cs" />
-    <Compile Include="DirectoryServices\DirectoryEntry.Extensions.cs" />
-    <Compile Include="DirectoryServices\DirectoryEntryCollection.cs" />
-    <Compile Include="DirectoryServices\DirectorySearcher.Extensions.cs" />
-    <Compile Include="DirectoryServices\Enumerations.cs" />
     <Compile Include="DisposableAction.cs" />
     <Compile Include="DomainOf.cs" />
     <Compile Include="DomainOfValues.cs" />
@@ -207,33 +203,17 @@
     <Compile Include="Security\BCrypt.cs" />
     <Compile Include="Security\BCryptHasher.cs" />
     <Compile Include="Security\Credential.cs" />
-    <Compile Include="Security\CurrentIdentityProvider.cs" />
-    <Compile Include="Security\CurrentThreadSecurityProvider.cs" />
-    <Compile Include="Security\HttpContextIdentityProvider.cs" />
-    <Compile Include="Security\HttpRequestIdentityProvider.cs" />
-    <Compile Include="Security\HttpIdentityReseter.cs" />
-    <Compile Include="Security\IIdentityProvider.cs" />
-    <Compile Include="Security\IIdentityReseter.cs" />
-    <Compile Include="Security\Impersonate.cs" />
     <Compile Include="Security\IPasswordGenerator.cs" />
     <Compile Include="Security\IPasswordHasher.cs" />
-    <Compile Include="Security\IPrincipalProvider.cs" />
-    <Compile Include="Security\IWindowsIdentityProvider.cs" />
-    <Compile Include="Security\LogonUserIdentityProvider.cs" />
-    <Compile Include="Security\ProtocolTransitioningIdentityProvider.cs" />
     <Compile Include="Security\SimplePasswordHasher.cs" />
     <Compile Include="Security\SimplePasswordGenerator.cs" />
-    <Compile Include="Security\ThreadIdentityReseter.cs" />
-    <Compile Include="Storage.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Testing\TimeReseter.cs" />
     <Compile Include="Tuploids.cs" />
     <Compile Include="UniqueIdentifier.cs" />
     <Compile Include="Web\CompactGuid.cs" />
     <Compile Include="Web\Html.cs" />
-    <Compile Include="Web\MapNode.cs" />
     <Compile Include="Web\QueryStringHelper.cs" />
-    <Compile Include="Web\SiteMapBuilder.cs" />
     <Compile Include="Web\SomeWellKnownPorts.cs">
       <DependentUpon>TcpPort.cs</DependentUpon>
     </Compile>
@@ -245,9 +225,6 @@
       <LastGenOutput>Exceptions.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Extensions\Control.Extensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
