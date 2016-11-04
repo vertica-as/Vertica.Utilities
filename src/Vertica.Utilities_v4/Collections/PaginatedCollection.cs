@@ -5,8 +5,7 @@ using System.Linq;
 
 namespace Vertica.Utilities_v4.Collections
 {
-	[Serializable]
-	public class PaginatedCollection<T> : IPaginatedCollection<T>
+	public partial class PaginatedCollection<T> : IPaginatedCollection<T>
 	{
 		private readonly IEnumerable<T> _collection;
 		private readonly Pagination _pagination;

@@ -59,8 +59,10 @@
     <Compile Include="Collections\IReadOnlyList.cs" />
     <Compile Include="Collections\KeyValueAdapter.cs" />
     <Compile Include="Collections\NotifyingList.cs" />
+    <Compile Include="Collections\PaginatedCollection.net.cs" />
     <Compile Include="Collections\PaginatedCollection.cs" />
     <Compile Include="Collections\PaginatedResults.cs" />
+    <Compile Include="Collections\Pagination.net.cs" />
     <Compile Include="Collections\Pagination.cs" />
     <Compile Include="Collections\PriorityQueue.cs" />
     <Compile Include="Collections\SmartEntry.cs">
@@ -91,6 +93,7 @@
     <Compile Include="DomainOf.cs" />
     <Compile Include="DomainOfValues.net.cs" />
     <Compile Include="DomainOfValues.cs" />
+    <Compile Include="Enumerated.net.cs" />
     <Compile Include="Enumerated.cs" />
     <Compile Include="Enumeration.cs" />
     <Compile Include="Eventing\CancelEventArgs.cs" />

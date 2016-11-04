@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using Vertica.Utilities_v4.Extensions.StringExt;
 using Vertica.Utilities_v4.Resources;
 
@@ -16,8 +15,7 @@ namespace Vertica.Utilities_v4
 		string Name { get; }
 	}
 
-	[Serializable]
-	public abstract class Enumerated<T> : IEnumerated where T : IEnumerated
+	public abstract partial class Enumerated<T> : IEnumerated where T : IEnumerated
 	{
 		private static readonly EnumeratedRepository<T> _repo = new EnumeratedRepository<T>();
 
@@ -27,7 +25,7 @@ namespace Vertica.Utilities_v4
 			_repo.Add(this);
 		}
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
 		public static IEnumerable<T> Values
 		{

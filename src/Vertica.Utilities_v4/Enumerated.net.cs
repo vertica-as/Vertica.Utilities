@@ -3,5 +3,8 @@
 namespace Vertica.Utilities_v4
 {
 	[Serializable]
-	public partial class Range<T> { }
+	public abstract partial class Enumerated<T>
+	{
+		
+	}
 }
