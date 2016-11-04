@@ -89,6 +89,7 @@
     <Compile Include="Comparisons\StringRepresentationComparer.cs" />
     <Compile Include="DisposableAction.cs" />
     <Compile Include="DomainOf.cs" />
+    <Compile Include="DomainOfValues.net.cs" />
     <Compile Include="DomainOfValues.cs" />
     <Compile Include="Enumerated.cs" />
     <Compile Include="Enumeration.cs" />
