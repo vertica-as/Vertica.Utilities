@@ -48,8 +48,7 @@ namespace Vertica.Utilities_v4
 		bool Touches(IBound<T> bound);
 	}
 
-	[Serializable]
-	internal struct Closed<T> : IBound<T> where T : IComparable<T>
+	internal partial struct Closed<T> : IBound<T> where T : IComparable<T>
 	{
 		private readonly T _value;
 		public T Value { get { return _value; } }
@@ -120,8 +119,7 @@ namespace Vertica.Utilities_v4
 		#endregion
 	}
 
-	[Serializable]
-	internal struct Open<T> : IBound<T> where T : IComparable<T>
+	internal partial struct Open<T> : IBound<T> where T : IComparable<T>
 	{
 		private readonly T _value;
 		public T Value { get { return _value; } }

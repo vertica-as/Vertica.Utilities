@@ -186,6 +186,8 @@
       <DependentUpon>Percentage.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Range.Bounds.net.cs" />
+    <Compile Include="Range.net.cs" />
     <Compile Include="Range.Bounds.cs" />
     <Compile Include="Range.cs">
       <SubType>Code</SubType>

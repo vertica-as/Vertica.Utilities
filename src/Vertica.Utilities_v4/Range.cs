@@ -14,8 +14,7 @@ namespace Vertica.Utilities_v4
 	 * and
 	 * https://github.com/cmcnab/WhatsMissing/blob/master/WhatsMissing/Range.cs
 	 */
-	[Serializable]
-	public class Range<T> : IEquatable<Range<T>> where T : IComparable<T>
+	public partial class Range<T> : IEquatable<Range<T>> where T : IComparable<T>
 	{
 		private readonly IBound<T> _lowerBound;
 		private readonly IBound<T> _upperBound;
@@ -42,9 +41,9 @@ namespace Vertica.Utilities_v4
 			_upperBound = new Closed<T>(upperBound);
 		}
 
-		public T LowerBound { get { return _lowerBound.Value; } }
+		public T LowerBound => _lowerBound.Value;
 
-		public T UpperBound { get { return _upperBound.Value; } }
+		public T UpperBound => _upperBound.Value;
 
 		public virtual bool Contains(T item)
 		{
@@ -55,20 +54,20 @@ namespace Vertica.Utilities_v4
 
 		public virtual T LimitLower(T value)
 		{
-			return Limit(value, LowerBound, value);
+			return limit(value, LowerBound, value);
 		}
 
 		public virtual T LimitUpper(T value)
 		{
-			return Limit(value, value, UpperBound);
+			return limit(value, value, UpperBound);
 		}
 
 		public virtual T Limit(T value)
 		{
-			return Limit(value, LowerBound, UpperBound);
+			return limit(value, LowerBound, UpperBound);
 		}
 
-		private static T Limit(T value, T lowerBound, T upperBound)
+		private static T limit(T value, T lowerBound, T upperBound)
 		{
 			T result = value;
 			if (value.IsMoreThan(upperBound)) result = upperBound;
@@ -116,7 +115,7 @@ namespace Vertica.Utilities_v4
 		{
 			string message = string.Format(Exceptions.Range_UnorderedBounds_Template, lowerBound, upperBound);
 
-			return new ArgumentOutOfRangeException("upperBound", upperBound, message);
+			return new ArgumentOutOfRangeException(nameof(upperBound), upperBound, message);
 		}
 
 		public void AssertArgument(string paramName, T value)
@@ -133,7 +132,7 @@ namespace Vertica.Utilities_v4
 
 		public void AssertArgument(string paramName, IEnumerable<T> values)
 		{
-			if (values == null) throw new ArgumentNullException("values");
+			if (values == null) throw new ArgumentNullException(nameof(values));
 
 			foreach (var value in values)
 			{
@@ -150,7 +149,7 @@ namespace Vertica.Utilities_v4
 			{
 				yield return numberInRange;
 				T next = nextGenerator(numberInRange);
-				if (next.IsAtMost(numberInRange)) throw new ArgumentException(Exceptions.Range_NotIncrementingGenerator, "nextGenerator");
+				if (next.IsAtMost(numberInRange)) throw new ArgumentException(Exceptions.Range_NotIncrementingGenerator, nameof(nextGenerator));
 				numberInRange = next;
 			}
 		}
@@ -175,7 +174,7 @@ namespace Vertica.Utilities_v4
 
 		#region Empty Range
 
-		public static Range<T> Empty { get { return EmptyRange<T>.Instance; } }
+		public static Range<T> Empty => EmptyRange<T>.Instance;
 
 		private sealed class EmptyRange<U> : Range<U> where U : IComparable<U>
 		{
@@ -189,7 +188,7 @@ namespace Vertica.Utilities_v4
 			public override Range<U> Join(Range<U> range) { return range ?? this; }
 			public override Range<U> Intersect(Range<U> range) { return this; }
 			
-			public static Range<U> Instance { get { return Nested.instance; } }
+			public static Range<U> Instance => Nested.instance;
 			// ReSharper disable ClassNeverInstantiated.Local
 			class Nested
 			{
@@ -239,7 +238,7 @@ namespace Vertica.Utilities_v4
 		/// </remarks>
 		public override string ToString()
 		{
-			return string.Format("{0}..{1}", _lowerBound.Lower(), _upperBound.Upper());
+			return $"{_lowerBound.Lower()}..{_upperBound.Upper()}";
 		}
 
 		public virtual Range<T> Join(Range<T> range)
