@@ -1,9 +1,7 @@
-using System;
 using System.Configuration;
 
 namespace Vertica.Utilities_v4.Configuration
 {
-	[Obsolete(".NET Standard")]
 	public abstract class ConfigurationElementCollection<TKey, TValue> : ConfigurationElementCollection
 		where TValue : ConfigurationElement, new()
 	{
@@ -11,15 +9,9 @@ namespace Vertica.Utilities_v4.Configuration
 
 		protected abstract override string ElementName { get; }
 
-		public TValue this[TKey key]
-		{
-			get { return (TValue) BaseGet(key); }
-		}
+		public TValue this[TKey key] => (TValue) BaseGet(key);
 
-		public TValue this[int index]
-		{
-			get { return (TValue) BaseGet(index); }
-		}
+		public TValue this[int index] => (TValue) BaseGet(index);
 
 		protected abstract TKey GetElementKey(TValue element);
 

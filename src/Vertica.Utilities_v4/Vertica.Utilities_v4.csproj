@@ -77,8 +77,8 @@
     <Compile Include="Comparisons\Hasher.cs" />
     <Compile Include="Comparisons\OperatorComparer.cs" />
     <Compile Include="Comparisons\SelectorEqualizer.cs" />
-    <Compile Include="Configuration\CollectionCountValidator.cs" />
-    <Compile Include="Configuration\ConfigurationElementCollection.cs" />
+    <Compile Include="Configuration\CollectionCountValidator.net.cs" />
+    <Compile Include="Configuration\ConfigurationElementCollection.net.cs" />
     <Compile Include="ConsoleFormatter.cs" />
     <Compile Include="DecimalPercentage.cs">
       <DependentUpon>Percentage.cs</DependentUpon>
@@ -211,7 +211,7 @@
     <Compile Include="Tuploids.cs" />
     <Compile Include="UniqueIdentifier.cs" />
     <Compile Include="Web\CompactGuid.cs" />
-    <Compile Include="Web\Html.cs" />
+    <Compile Include="Web\Html.net.cs" />
     <Compile Include="Web\QueryStringHelper.cs" />
     <Compile Include="Web\SomeWellKnownPorts.cs">
       <DependentUpon>TcpPort.cs</DependentUpon>
