@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Testing.Commons;
 using Testing.Commons.NUnit.Constraints;
@@ -35,7 +36,37 @@ namespace Vertica.Utilities_v4.Tests.Collections
 				Must.Have.Model(c3)));
 		}
 
-		[Test]
+        [Test]
+        public void ToTree_MultipleParentOfSameItem_BothParentsHaveSameItem()
+        {
+            var categories = new[] {c1, c2, c3}.ToDictionary(x => x.Id, x => x);
+            var references = new[]
+            {
+                new Category { Id = c1.Id },
+                new Category { Id = c2.Id },
+                new Category { Id = c3.Id, ParentId = c1.Id },
+                new Category { Id = c3.Id, ParentId = c2.Id }
+            };
+
+            Tree<Category, Category, int> tree = references.ToTree(
+                c => c.Id,
+                (c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None,
+                c => categories[c.Id]);
+
+            var parent1 = tree.Get(c1.Id);
+            var childrenOfParent1 = parent1.ToArray();
+
+            Assert.That(childrenOfParent1.Length, Is.EqualTo(1));
+            Assert.That(childrenOfParent1[0].Model, Is.SameAs(c3));
+
+            var parent2 = tree.Get(c2.Id);
+            var childrenOfParent2 = parent2.ToArray();
+
+            Assert.That(childrenOfParent2.Length, Is.EqualTo(1));
+            Assert.That(childrenOfParent2[0].Model, Is.SameAs(c3));
+        }
+
+        [Test]
 		public void Orphans_ModelsWithoutParent_GoToAnotherStructure()
 		{
 			var categories = new[] { c1, c2, c3, c4_orphan };
@@ -189,8 +220,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 			Assert.That(() => tree[1], Throws.InstanceOf<ArgumentOutOfRangeException>(),
 				"should not exist any at index 1");
 		}
-
-
+        
 		[Test]
 		public void Count_No_Orphans()
 		{
