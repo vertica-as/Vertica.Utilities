@@ -15,7 +15,7 @@ namespace Vertica.Utilities_v4.Collections
 
 	public class Tree<TItem, TModel, TKey> : IEnumerable<TreeNode<TModel>>
 	{
-		private readonly Dictionary<TKey, Tuple<TKey, Parent.Key, TModel, List<TKey>>> _tree;
+		private readonly Dictionary<TKey, Tuple<TKey, List<Parent.Key>, TModel, List<TKey>>> _tree;
 		private readonly List<TKey> _root;
 		private readonly HashSet<TKey> _orphans;
 
@@ -27,7 +27,7 @@ namespace Vertica.Utilities_v4.Collections
 			if (projection == null) throw new ArgumentNullException("projection");
 
 			// Optimize by setting the initial count to the number of items (if item is List, Collection, Array)
-			_tree = new Dictionary<TKey, Tuple<TKey, Parent.Key, TModel, List<TKey>>>(TreeCapacityOr(items as ICollection<TModel>, 0), comparer);
+			_tree = new Dictionary<TKey, Tuple<TKey, List<Parent.Key>, TModel, List<TKey>>>(TreeCapacityOr(items as ICollection<TModel>, 0), comparer);
 
 			_root = new List<TKey>();
 			_orphans = new HashSet<TKey>(comparer);
@@ -40,26 +40,45 @@ namespace Vertica.Utilities_v4.Collections
 				TKey itemKey = key(item);
 				Parent.Key itemParentKey = parentKey(item, parentHelper);
 
-				// No way to optimize/guess the initial capacity of the list
-				_tree[itemKey] = Tuple.Create(itemKey, itemParentKey, projection(item), new List<TKey>());
+                List<Parent.Key> listOfParents = null;
+			    Tuple<TKey, List<Parent.Key>, TModel, List<TKey>> itemNode;
+			    if (!_tree.TryGetValue(itemKey, out itemNode))
+			    {
+			        listOfParents = new List<Parent.Key>();
+
+			        // No way to optimize/guess the initial capacity of the list
+			        _tree[itemKey] = Tuple.Create(itemKey, listOfParents, projection(item), new List<TKey>());
+			    }
+			    else
+			    {
+			        listOfParents = itemNode.Item2;
+			    }
+
+                if (itemParentKey != null)
+			        listOfParents.Add(itemParentKey);
 			}
 
 			// Relate children to their parents
-			foreach (Tuple<TKey, Parent.Key, TModel, List<TKey>> item in _tree.Values)
+			foreach (Tuple<TKey, List<Parent.Key>, TModel, List<TKey>> item in _tree.Values)
 			{
 				// Test if we have a parent
-				if (item.Item2 != null)
+				if (item.Item2.Count > 0)
 				{
-					Tuple<TKey, Parent.Key, TModel, List<TKey>> parent;
-					if (_tree.TryGetValue(item.Item2.Value, out parent))
-					{
-						parent.Item4.Add(item.Item1);
-					}
-					else
-					{
-						_orphans.Add(item.Item1);
-					}
-				}
+				    bool isOrphan = true;
+
+				    foreach (var itemParentKey in item.Item2)
+				    {
+                        Tuple<TKey, List<Parent.Key>, TModel, List<TKey>> parent;
+                        if (_tree.TryGetValue(itemParentKey.Value, out parent))
+                        {
+                            parent.Item4.Add(item.Item1);
+                            isOrphan = false;
+                        }
+                    }
+
+                    if (isOrphan)
+                        _orphans.Add(item.Item1);
+                }
 				else
 				{
 					_root.Add(item.Item1);
@@ -90,14 +109,14 @@ namespace Vertica.Utilities_v4.Collections
 		{
 			node = null;
 
-			Tuple<TKey, Parent.Key, TModel, List<TKey>> item;
+			Tuple<TKey, List<Parent.Key>, TModel, List<TKey>> item;
 			if (!_orphans.Contains(key) && _tree.TryGetValue(key, out item))
 			{
 				node = new TreeNode<TModel>(
 					_tree[key].Item3, 
 					GetEnumerator(item.Item4),
  					index => Get(item.Item4[index]),
-					() => item.Item2 != null ? Get(item.Item2.Value) : null);
+					item.Item2.Select(x => Get(x.Value)));
 			}
 
 			return node != null;
@@ -163,14 +182,14 @@ namespace Vertica.Utilities_v4.Collections
 	{
 		private readonly IEnumerator<TreeNode<TModel>> _children;
 		private readonly Func<int, TreeNode<TModel>> _childNodeAt;
-		private readonly Func<TreeNode<TModel>> _parent;
+		private readonly IEnumerable<TreeNode<TModel>> _parents;
 
-		internal TreeNode(TModel model, IEnumerator<TreeNode<TModel>> children, Func<int, TreeNode<TModel>> childNodeAt, Func<TreeNode<TModel>> parent)
+		internal TreeNode(TModel model, IEnumerator<TreeNode<TModel>> children, Func<int, TreeNode<TModel>> childNodeAt, IEnumerable<TreeNode<TModel>> parents)
 		{
 			Model = model;
 			_children = children;
 			_childNodeAt = childNodeAt;
-			_parent = parent;
+			_parents = parents;
 		}
 
 		public TreeNode<TModel> this[int index]
@@ -190,7 +209,7 @@ namespace Vertica.Utilities_v4.Collections
 
 		public TreeNode<TModel> Parent
 		{
-			get { return _parent(); }
+			get { return _parents.FirstOrDefault(); }
 		}
 
 		public TModel Model { get; private set; }
