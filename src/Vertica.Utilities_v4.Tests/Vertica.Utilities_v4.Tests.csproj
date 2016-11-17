@@ -218,6 +218,9 @@
     <Compile Include="TimeTester.cs" />
     <Compile Include="Web\CompactGuidTester.cs" />
     <Compile Include="Web\HtmlTester.cs" />
+    <Compile Include="Web\QualifiedCollectionTester.cs" />
+    <Compile Include="Web\QualifiedTester.cs" />
+    <Compile Include="Web\QualityTester.cs" />
     <Compile Include="Web\QueryStringHelperTester.cs" />
     <Compile Include="Web\SiteMapBuilderTester.cs" />
     <Compile Include="Web\Support\EquivalentSiteMapConstraint.cs" />
