@@ -1,8 +1,5 @@
-﻿using System;
-
-namespace Vertica.Utilities_v4.Collections
+﻿namespace Vertica.Utilities_v4.Collections
 {
-	[Serializable]
 	public struct Pagination
 	{
 		public Pagination(uint pageSize, uint pageNumber) : this()
@@ -18,9 +15,9 @@ namespace Vertica.Utilities_v4.Collections
 		{
 			get
 			{
-				return (PageNumber == 0) ?
-					1 :
-					((PageNumber - 1) * PageSize) + 1;
+			    return PageNumber == 0
+			        ? 1
+			        : (PageNumber - 1)*PageSize + 1;
 			}
 		}
 
@@ -28,7 +25,7 @@ namespace Vertica.Utilities_v4.Collections
 		{
 			get
 			{
-				return (PageSize == 0) ?
+				return PageSize == 0 ?
 					FirstRecord :
 					FirstRecord + PageSize - 1;
 			}
