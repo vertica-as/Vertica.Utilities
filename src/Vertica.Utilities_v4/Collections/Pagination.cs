@@ -15,9 +15,9 @@
 		{
 			get
 			{
-				return (PageNumber == 0) ?
-					1 :
-					((PageNumber - 1) * PageSize) + 1;
+			    return PageNumber == 0
+			        ? 1
+			        : (PageNumber - 1)*PageSize + 1;
 			}
 		}
 
@@ -25,7 +25,7 @@
 		{
 			get
 			{
-				return (PageSize == 0) ?
+				return PageSize == 0 ?
 					FirstRecord :
 					FirstRecord + PageSize - 1;
 			}
