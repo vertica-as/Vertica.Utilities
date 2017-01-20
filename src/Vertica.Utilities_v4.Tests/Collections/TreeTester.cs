@@ -13,15 +13,16 @@ namespace Vertica.Utilities_v4.Tests.Collections
 	[TestFixture]
 	public class TreeTester
 	{
-		private static readonly Category c1 = new Category { Id = 1 },
-			c2 = new Category { Id = 2 },
-			c3 = new Category { Id = 3, ParentId = 1 },
-			c4_orphan = new Category { Id = 4, ParentId = 5 };
+		private static readonly Category 
+            C1 = new Category { Id = 1 },
+			C2 = new Category { Id = 2 },
+			C3 = new Category { Id = 3, ParentId = 1 },
+			C4Orphan = new Category { Id = 4, ParentId = 5 };
 
 		[Test]
 		public void ToTree_BuildsATree_OfWrappedModels()
 		{
-			var categories = new[] { c1, c2, c3, c4_orphan };
+			var categories = new[] { C1, C2, C3, C4Orphan };
 
 			Tree<Category, int> tree = categories.ToTree(
 				c => c.Id,
@@ -29,23 +30,25 @@ namespace Vertica.Utilities_v4.Tests.Collections
 
 			// roots
 			Assert.That(tree, Must.Be.Constrained(
-				Must.Have.Model(c1),
-				Must.Have.Model(c2)));
+				Must.Have.Model(C1),
+				Must.Have.Model(C2)));
 			// children of c1
 			Assert.That(tree[0], Must.Be.Constrained(
-				Must.Have.Model(c3)));
+				Must.Have.Model(C3)));
 		}
 
         [Test]
         public void ToTree_MultipleParentOfSameItem_BothParentsHaveSameItem()
         {
-            var categories = new[] {c1, c2, c3}.ToDictionary(x => x.Id, x => x);
-            var references = new[]
+            Dictionary<int, Category> categories = new[] { C1, C2, C3 }
+                .ToDictionary(x => x.Id, x => x);
+
+            Category[] references = 
             {
-                new Category { Id = c1.Id },
-                new Category { Id = c2.Id },
-                new Category { Id = c3.Id, ParentId = c1.Id },
-                new Category { Id = c3.Id, ParentId = c2.Id }
+                new Category { Id = C1.Id },
+                new Category { Id = C2.Id },
+                new Category { Id = C3.Id, ParentId = C1.Id },
+                new Category { Id = C3.Id, ParentId = C2.Id } // same ID as previous, different parent
             };
 
             Tree<Category, Category, int> tree = references.ToTree(
@@ -53,48 +56,48 @@ namespace Vertica.Utilities_v4.Tests.Collections
                 (c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None,
                 c => categories[c.Id]);
 
-            var parent1 = tree.Get(c1.Id);
-            var childrenOfParent1 = parent1.ToArray();
+            TreeNode<Category> parent1 = tree.Get(C1.Id);
+            TreeNode<Category>[] childrenOfParent1 = parent1.ToArray();
 
             Assert.That(childrenOfParent1.Length, Is.EqualTo(1));
-            Assert.That(childrenOfParent1[0].Model, Is.SameAs(c3));
+            Assert.That(childrenOfParent1[0].Model, Is.SameAs(C3));
 
-            var parent2 = tree.Get(c2.Id);
-            var childrenOfParent2 = parent2.ToArray();
+            TreeNode<Category> parent2 = tree.Get(C2.Id);
+            TreeNode<Category>[] childrenOfParent2 = parent2.ToArray();
 
             Assert.That(childrenOfParent2.Length, Is.EqualTo(1));
-            Assert.That(childrenOfParent2[0].Model, Is.SameAs(c3));
+            Assert.That(childrenOfParent2[0].Model, Is.SameAs(C3));
         }
 
         [Test]
 		public void Orphans_ModelsWithoutParent_GoToAnotherStructure()
 		{
-			var categories = new[] { c1, c2, c3, c4_orphan };
+			var categories = new[] { C1, C2, C3, C4Orphan };
 
 			Tree<Category, int> tree = categories.ToTree(
 				c => c.Id,
 				(c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
-			Assert.That(tree.Orphans(), Must.Be.Constrained(Is.SameAs(c4_orphan)));
+			Assert.That(tree.Orphans(), Must.Be.Constrained(Is.SameAs(C4Orphan)));
 		}
 
 		[Test]
 		public void Get_NodeKeysInTree_DoesNotThrowAndNodeReference()
 		{
-			var categories = new[] { c1, c2, c3, c4_orphan };
+			var categories = new[] { C1, C2, C3, C4Orphan };
 
 			Tree<Category, int> tree = categories.ToTree(
 				c => c.Id,
 				(c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
 			Assert.DoesNotThrow(() => tree.Get(1));
-			Assert.That(tree.Get(1).Model, Is.SameAs(c1));
+			Assert.That(tree.Get(1).Model, Is.SameAs(C1));
 		}
 
 		[Test]
 		public void Get_NodeKeysNotInTree_Throws()
 		{
-			var categories = new[] { c1, c2, c3, c4_orphan };
+			var categories = new[] { C1, C2, C3, C4Orphan };
 
 			Tree<Category, int> tree = categories.ToTree(c => c.Id, (c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
@@ -108,7 +111,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		[Test]
 		public void TryGet_NodeKeysInTree_TrueAndNodeReference()
 		{
-			var categories = new[] { c1, c2, c3, c4_orphan };
+			var categories = new[] { C1, C2, C3, C4Orphan };
 
 			Tree<Category, int> tree = categories.ToTree(
 				c => c.Id,
@@ -116,13 +119,13 @@ namespace Vertica.Utilities_v4.Tests.Collections
 
 			TreeNode<Category> node;
 			Assert.That(tree.TryGet(3, out node), Is.True);
-			Assert.That(node.Model, Is.SameAs(c3));
+			Assert.That(node.Model, Is.SameAs(C3));
 		}
 
 		[Test]
 		public void TryGet_NodeKeysNotInTree_FalseAndNull()
 		{
-			var categories = new[] { c1, c2, c3, c4_orphan };
+			var categories = new[] { C1, C2, C3, C4Orphan };
 
 			Tree<Category, int> tree = categories.ToTree(
 				c => c.Id,
@@ -198,7 +201,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		[Test]
 		public void Indexer_Node_ThrowsOutOfRange()
 		{
-			var categories = new[] { c1 };
+			var categories = new[] { C1 };
 
 			Tree<Category, int> tree = categories.ToTree(
 				c => c.Id,
@@ -211,7 +214,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		[Test]
 		public void Indexer_Tree_ThrowsOutOfRange()
 		{
-			var categories = new[] { c1 };
+			var categories = new[] { C1 };
 
 			Tree<Category, int> tree = categories.ToTree(
 				c => c.Id,
@@ -224,7 +227,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		[Test]
 		public void Count_No_Orphans()
 		{
-			var categories = new[] { c1, c2, c3 };
+			var categories = new[] { C1, C2, C3 };
 
 			Tree<Category, int> tree = categories.ToTree(
 				c => c.Id,
@@ -236,7 +239,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		[Test]
 		public void Count_C4_Is_Orphan()
 		{
-			var categories = new[] { c1, c2, c3, c4_orphan };
+			var categories = new[] { C1, C2, C3, C4Orphan };
 
 			Tree<Category, int> tree = categories.ToTree(
 				c => c.Id,
