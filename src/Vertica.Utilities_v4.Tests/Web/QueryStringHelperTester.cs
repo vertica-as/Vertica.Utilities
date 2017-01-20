@@ -312,11 +312,20 @@ namespace Vertica.Utilities_v4.Tests.Web
 			Assert.That(qs, Is.EqualTo("?k=v&="));
 		}
 
-		#endregion
+        [Test]
+        public void ToDecodedQueryString_MultiValuedKey_RepeatsKeyQs()
+        {
+            string qs = new NameValueCollection { { "key", "value1" }, { "key", "value2" } }
+                .ToDecodedQueryString();
 
-		#region DecodedQuery from NameValueCollection
+            Assert.That(qs, Is.EqualTo("?key=value1&key=value2"));
+        }
 
-		[Test]
+        #endregion
+
+        #region DecodedQuery from NameValueCollection
+
+        [Test]
 		public void ToDecodedQuery_EmptyCollection_Empty()
 		{
 			string q = new NameValueCollection().ToDecodedQuery();

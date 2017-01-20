@@ -57,14 +57,27 @@ namespace Vertica.Utilities_v4.Web
 			var sb = new StringBuilder();
 			foreach (string key in collection.Keys)
 			{
-				string strValue = collection[key];
-				if (key != null)
-				{
-					sb.Append(valueEncoding(key));
-					sb.Append(EQ);
-					sb.Append(valueEncoding(strValue));
-					sb.Append(AMP);
-				}
+			    if (key != null)
+			    {
+                    string[] values = collection.GetValues(key);
+
+                    if (values != null)
+                    {
+                        foreach (var value in values)
+                        {
+                            sb.Append(valueEncoding(key));
+                            sb.Append(EQ);
+                            sb.Append(valueEncoding(value));
+                            sb.Append(AMP);
+                        }
+                    }
+                    else
+                    {
+                        sb.Append(valueEncoding(key));
+                        sb.Append(EQ);
+                        sb.Append(AMP);
+                    }
+                }
 			}
 			// maybe insert first ? and remove last &
 			if (sb.Length > 0)
