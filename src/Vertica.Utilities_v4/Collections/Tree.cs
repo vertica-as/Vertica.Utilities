@@ -217,12 +217,17 @@ namespace Vertica.Utilities_v4.Collections
 			return _children;
 		}
 
-		public TreeNode<TModel> Parent
+	    public IEnumerable<TreeNode<TModel>> Parents
+	    {
+	        get { return _parents; }
+	    }
+
+	    public TreeNode<TModel> Parent
 		{
-			get { return _parents.FirstOrDefault(); }
+			get { return Parents.FirstOrDefault(); }
 		}
 
-		public TModel Model { get; private set; }
+	    public TModel Model { get; private set; }
 
 		public TModel[] Breadcrumb()
 		{

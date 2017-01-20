@@ -57,16 +57,22 @@ namespace Vertica.Utilities_v4.Tests.Collections
                 c => categories[c.Id]);
 
             TreeNode<Category> parent1 = tree.Get(C1.Id);
+            TreeNode<Category> parent2 = tree.Get(C2.Id);
+            TreeNode<Category> child = tree.Get(C3.Id);
+
             TreeNode<Category>[] childrenOfParent1 = parent1.ToArray();
+            TreeNode<Category>[] childrenOfParent2 = parent2.ToArray();
+            TreeNode<Category>[] parentsOfChild = child.Parents.ToArray();
 
             Assert.That(childrenOfParent1.Length, Is.EqualTo(1));
-            Assert.That(childrenOfParent1[0].Model, Is.SameAs(C3));
-
-            TreeNode<Category> parent2 = tree.Get(C2.Id);
-            TreeNode<Category>[] childrenOfParent2 = parent2.ToArray();
-
+            Assert.That(childrenOfParent1[0].Model, Is.SameAs(child.Model));
+            
             Assert.That(childrenOfParent2.Length, Is.EqualTo(1));
-            Assert.That(childrenOfParent2[0].Model, Is.SameAs(C3));
+            Assert.That(childrenOfParent2[0].Model, Is.SameAs(child.Model));
+
+            CollectionAssert.AreEqual(
+                parentsOfChild.Select(x => x.Model), 
+                new[] { parent1, parent2 }.Select(x => x.Model));
         }
 
         [Test]
