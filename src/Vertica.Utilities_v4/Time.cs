@@ -119,8 +119,6 @@ namespace Vertica.Utilities_v4
 
 		#region Timer
 
-		// based on http://blog.functionalfun.net/2008/06/extending-stopwatch.html */
-
 		/// <summary>
 		/// Times the execution time of the given delegate.
 		/// </summary>

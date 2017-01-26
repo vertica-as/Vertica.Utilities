@@ -9,9 +9,6 @@ using Vertica.Utilities_v4.Resources;
 
 namespace Vertica.Utilities_v4
 {
-	//* 
-	//* Based upon http://rodenbaugh.net/archive/2006/11/01/Enum-Helper-Class-Using-Generics.aspx
-	//* 
 	public static class Enumeration
 	{
 		#region checking
@@ -779,7 +776,6 @@ namespace Vertica.Utilities_v4
 
 		#region fast comparison
 
-		/* based on: http://www.codeproject.com/KB/cs/EnumComparer.aspx */
 		internal class FastEnumComparer<TEnum> : IEqualityComparer<TEnum> where TEnum : struct, IComparable, IFormattable, IConvertible
 		{
 			public static readonly IEqualityComparer<TEnum> Instance;

@@ -5,7 +5,6 @@ using System.Data;
 namespace Vertica.Utilities_v4.Extensions.DataExt
 {
 	[Obsolete(".NET Standard")]
-	/* based on http://www.madprops.org/blog/addwithvalue-via-extension-methods/ and http://www.madprops.org/blog/adding-idbcommand-parameters-with-anonymous-types/ */
 	public static class DbCommandExtensions
 	{
 		[Obsolete(".NET Standard")]

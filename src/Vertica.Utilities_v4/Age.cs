@@ -5,7 +5,6 @@ using Vertica.Utilities_v4.Extensions.StringExt;
 
 namespace Vertica.Utilities_v4
 {
-	/* based on: http://www.singular.co.nz/blog/archive/2007/05/01/building-an-age-class-in-csharp.aspx */
 	public struct Age : IFormattable, IEquatable<Age>, IComparable, IComparable<Age>, IComparable<TimeSpan>
 	{
 		#region construction
@@ -26,7 +25,6 @@ namespace Vertica.Utilities_v4
 		/// </summary>
 		/// <param name="advent"></param>
 		/// <param name="terminus"></param>
-		// Implementation based on http://tommycarlier.blogspot.com/2006/02/years-months-and-days-between-2-dates.html#links
 		public Age(DateTime advent, DateTime terminus)
 		{
 			_advent = advent;

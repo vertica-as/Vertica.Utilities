@@ -4,7 +4,6 @@ using Vertica.Utilities_v4.Extensions.EnumerableExt;
 
 namespace Vertica.Utilities_v4.Patterns
 {
-	/* based on http://nayyeri.net/pipes-and-filters-pattern-in-net */
 	public interface IOperation<T>
 	{
 		IEnumerable<T> Execute(IEnumerable<T> input);

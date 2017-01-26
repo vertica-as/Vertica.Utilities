@@ -2,8 +2,6 @@
 
 namespace Vertica.Utilities_v4.Patterns
 {
-	/* based on http://www.managed-world.com/2008/06/15/AvoidingInheritanceDependenciesUsingGenericsAndLambdas.aspx */
-
 	public class GenericCommand<TReceiver> : ICommand
 	{
 		private readonly TReceiver _receiver;

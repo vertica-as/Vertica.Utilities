@@ -170,8 +170,6 @@ namespace Vertica.Utilities_v4.Extensions.EnumerableExt
 
 		#region enumerable generation
 
-		/* based on http://www.codeproject.com/KB/collections/Enumerators.aspx */
-
 		public static IEnumerable<T> ToCircular<T>(this IEnumerable<T> enumerable)
 		{
 			if (enumerable.EmptyIfNull().Any())

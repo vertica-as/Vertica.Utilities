@@ -2,9 +2,6 @@
 
 namespace Vertica.Utilities_v4.Web
 {
-	/* based on ShortGuid implementation from
-	* http://www.singular.co.nz/blog/archive/2007/12/20/shortguid-a-shorter-and-url-friendly-guid-in-c-sharp.aspx
-	*/
 	public struct CompactGuid : IEquatable<CompactGuid>
 	{
 		#region construction
@@ -41,8 +38,8 @@ namespace Vertica.Utilities_v4.Web
 		#endregion
 
 
-		public Guid Guid { get; private set; }
-		public string Value { get; private set; }
+		public Guid Guid { get; }
+		public string Value { get; }
 
 		public override string ToString()
 		{

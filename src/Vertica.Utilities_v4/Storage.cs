@@ -4,7 +4,6 @@ using System.Web;
 
 namespace Vertica.Utilities_v4
 {
-	/* based on RhinoCommon's LocalData */
 	[Obsolete(".NET Standard")]
 	public interface IStorage
 	{

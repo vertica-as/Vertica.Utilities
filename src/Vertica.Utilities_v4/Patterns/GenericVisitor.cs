@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Vertica.Utilities_v4.Patterns
 {
-	/* based on http://derek-says.blogspot.com/2008/05/implementation-of-visitor-pattern-using.html */
 	public class GenericVisitor<TBase> : IVisitor<TBase>
 	{
 		public delegate void VisitDelegate<in TSub>(TSub u) where TSub : TBase;
