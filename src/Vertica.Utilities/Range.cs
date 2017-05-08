@@ -7,7 +7,6 @@ using Vertica.Utilities_v4.Resources;
 
 namespace Vertica.Utilities_v4
 {
-	[Serializable]
 	public class Range<T> : IEquatable<Range<T>> where T : IComparable<T>
 	{
 		private readonly IBound<T> _lowerBound;

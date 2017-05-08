@@ -2,7 +2,6 @@
 
 namespace Vertica.Utilities_v4.Collections
 {
-	[Serializable]
 	public struct Pagination
 	{
 		public Pagination(uint pageSize, uint pageNumber) : this()

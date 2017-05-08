@@ -16,7 +16,6 @@ namespace Vertica.Utilities_v4
 		string Name { get; }
 	}
 
-	[Serializable]
 	public abstract class Enumerated<T> : IEnumerated where T : IEnumerated
 	{
 		private static readonly EnumeratedRepository<T> _repo = new EnumeratedRepository<T>();

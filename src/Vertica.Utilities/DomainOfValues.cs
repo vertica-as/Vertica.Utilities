@@ -61,7 +61,6 @@ namespace Vertica.Utilities_v4
 		}
 	}
 
-	[Serializable]
 	public class InvalidDomainException<T> : InvalidOperationException
 	{
 		public InvalidDomainException() {}
