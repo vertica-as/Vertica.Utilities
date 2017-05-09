@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using System.Web.UI;
 using NUnit.Framework;
 
 using Desc = System.ComponentModel.DescriptionAttribute;
 
-namespace Vertica.Utilities_v4.Tests
+namespace Vertica.Utilities.Tests
 {
 	[TestFixture]
 	public class EnumerationTester
 	{
+		public enum MyTargets
+		{
+			Default,
+			Suite
+		}
+
 		#region subjects
 
 		// ReSharper disable UnusedMember.Local
@@ -54,29 +58,23 @@ namespace Vertica.Utilities_v4.Tests
 		}
 		// ReSharper restore UnusedMember.Local
 
-		public enum MyPlatforms
-		{
-			Unix,
-			MacOSX
-		}
-
 		#endregion
 
-		[Test, NUnit.Framework.Category("Exploratory")]
+		[Test, Category("Exploratory")]
 		public void Explore()
 		{
-			Assert.That(Enumeration.IsEnum<PlatformID>(), Is.True);
+			Assert.That(Enumeration.IsEnum<ActionTargets>(), Is.True);
 			Assert.That(Enumeration.IsEnum<int>(), Is.False);
-			Assert.That(() => Enumeration.AssertEnum<PlatformID>(), Throws.Nothing);
-			Assert.That(() => Enumeration.AssertEnum<int>(), Throws
+			Assert.That(Enumeration.AssertEnum<ActionTargets>, Throws.Nothing);
+			Assert.That(Enumeration.AssertEnum<int>, Throws
 				.InstanceOf<ArgumentException>()
-				.With.Message.StringContaining("Int32"));
+				.With.Message.Contains("Int32"));
 			Assert.That(Enumeration.IsFlags<ZeroFlags>(), Is.True);
 			Assert.That(Enumeration.IsFlags<IntEnum>(), Is.False);
-			Assert.That(() => Enumeration.AssertFlags<ZeroFlags>(), Throws.Nothing);
-			Assert.That(() => Enumeration.AssertFlags<IntEnum>(), Throws
+			Assert.That(Enumeration.AssertFlags<ZeroFlags>, Throws.Nothing);
+			Assert.That(Enumeration.AssertFlags<IntEnum>, Throws
 				.ArgumentException
-				.With.Message.StringContaining("IntEnum"));
+				.With.Message.Contains("IntEnum"));
 
 			Assert.That(Enumeration.IsDefined(StringComparison.Ordinal), Is.True);
 			Assert.That(Enumeration.IsDefined((StringComparison)100), Is.False);
@@ -87,8 +85,8 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(() => Enumeration.AssertDefined(StringComparison.Ordinal), Throws.Nothing);
 			Assert.That(() => Enumeration.AssertDefined<StringComparison>("ordinal"), Throws
 				.InstanceOf<InvalidEnumArgumentException>()
-				.With.Message.StringContaining("ordinal")
-				.And.With.Message.StringContaining("StringComparison"));
+				.With.Message.Contains("ordinal")
+				.And.With.Message.Contains("StringComparison"));
 
 			Assert.That(Enumeration.GetName(StringComparison.Ordinal), Is.EqualTo("Ordinal"));
 			Assert.That(Enumeration.GetName<ULongEnum>(1UL), Is.EqualTo("Two"));
@@ -102,13 +100,13 @@ namespace Vertica.Utilities_v4.Tests
 			StringComparison? value;
 			Assert.That(Enumeration.TryCast(100, out value), Is.False);
 
-			Assert.That(Enumeration.Parse<PlatformID>("Unix"), Is.EqualTo(PlatformID.Unix));
-			Assert.That(() => Enumeration.Parse<PlatformID>("UNIx", ignoreCase: false),
+			Assert.That(Enumeration.Parse<ActionTargets>("Suite"), Is.EqualTo(ActionTargets.Suite));
+			Assert.That(() => Enumeration.Parse<ActionTargets>("SUIte", ignoreCase: false),
 				Throws.InstanceOf<InvalidEnumArgumentException>());
 			Assert.That(Enumeration.Parse<StringComparison>("4"), Is.EqualTo(StringComparison.Ordinal));
-			PlatformID? parsed;
+			ActionTargets? parsed;
 			Assert.That(() => Enumeration.TryParse("100", out parsed), Is.False);
-			Assert.That(Enumeration.TryParse("unIx", true, out parsed), Is.True);
+			Assert.That(Enumeration.TryParse("suiTE", true, out parsed), Is.True);
 
 			var fourNotSet = NoZeroFlags.Three;
 			NoZeroFlags fourSet = fourNotSet.SetFlag(NoZeroFlags.Four);
@@ -132,7 +130,7 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void IsEnum_EnumType_True()
 		{
-			Assert.That(Enumeration.IsEnum<PlatformID>(), Is.True);
+			Assert.That(Enumeration.IsEnum<ActionTargets>(), Is.True);
 		}
 
 		[Test]
@@ -144,13 +142,13 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void AssertEnum_EnumType_NoException()
 		{
-			Assert.That(() => Enumeration.AssertEnum<PlatformID>(), Throws.Nothing);
+			Assert.That(Enumeration.AssertEnum<ActionTargets>, Throws.Nothing);
 		}
 
 		[Test]
 		public void AssertEnum_NotEnumType_Exception()
 		{
-			Assert.That(() => Enumeration.AssertEnum<int>(), Throws.InstanceOf<ArgumentException>().With.Message.StringContaining("Int32"));
+			Assert.That(Enumeration.AssertEnum<int>, Throws.InstanceOf<ArgumentException>().With.Message.Contains("Int32"));
 		}
 
 		#endregion
@@ -273,8 +271,8 @@ namespace Vertica.Utilities_v4.Tests
 		{
 			var undefined = (StringComparison)100;
 			Assert.That(() => Enumeration.AssertDefined(undefined), Throws.InstanceOf<InvalidEnumArgumentException>()
-				.With.Message.StringContaining("100")
-				.And.With.Message.StringContaining("StringComparison"));
+				.With.Message.Contain("100")
+				.And.With.Message.Contain("StringComparison"));
 		}
 
 		[Test]
@@ -376,7 +374,7 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void GetNames_NotEnumType_Exception()
 		{
-			Assert.That(() => Enumeration.GetNames<int>(), Throws.InstanceOf<ArgumentException>());
+			Assert.That(Enumeration.GetNames<int>, Throws.InstanceOf<ArgumentException>());
 		}
 
 		#region GetName
@@ -548,7 +546,7 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void GetUnderlyingType_NotAnEnum_Exception()
 		{
-			Assert.That(() => Enumeration.GetUnderlyingType<int>(), Throws.ArgumentException);
+			Assert.That(Enumeration.GetUnderlyingType<int>, Throws.ArgumentException);
 		}
 
 		[Test]
@@ -561,7 +559,7 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void GetValues_NotAnEnum_Exception()
 		{
-			Assert.That(() => Enumeration.GetValues<int>(), Throws.ArgumentException);
+			Assert.That(Enumeration.GetValues<int>, Throws.ArgumentException);
 		}
 
 		[Test]
@@ -691,7 +689,7 @@ namespace Vertica.Utilities_v4.Tests
 		public void Invert_SomeValues_RemainingValues()
 		{
 			Assert.That(Enumeration.Invert(StringSplitOptions.None), Is.EquivalentTo(new[] { StringSplitOptions.RemoveEmptyEntries }));
-			Assert.That(Enumeration.Invert(new[] { StringSplitOptions.None }), Is.EquivalentTo(new[] { StringSplitOptions.RemoveEmptyEntries }));
+			Assert.That(Enumeration.Invert(StringSplitOptions.None), Is.EquivalentTo(new[] { StringSplitOptions.RemoveEmptyEntries }));
 		}
 
 		#endregion
@@ -790,16 +788,16 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void Parse_DefinedValue_Value()
 		{
-			Assert.That(Enumeration.Parse<PlatformID>("Unix"), Is.EqualTo(PlatformID.Unix));
-			Assert.That(Enumeration.Parse<PlatformID>("unIx", true), Is.EqualTo(PlatformID.Unix));
+			Assert.That(Enumeration.Parse<ActionTargets>("Test"), Is.EqualTo(ActionTargets.Test));
+			Assert.That(Enumeration.Parse<ActionTargets>("TEst", true), Is.EqualTo(ActionTargets.Test));
 		}
 
 		[Test]
 		public void Parse_UndefinedValue_Exception()
 		{
-			Assert.That(() => Enumeration.Parse<PlatformID>("nonExisting"), Throws.InstanceOf<InvalidEnumArgumentException>());
-			Assert.That(() => Enumeration.Parse<PlatformID>("UniX"), Throws.InstanceOf<InvalidEnumArgumentException>());
-			Assert.That(() => Enumeration.Parse<PlatformID>("UNIx", false), Throws.InstanceOf<InvalidEnumArgumentException>());
+			Assert.That(() => Enumeration.Parse<ActionTargets>("nonExisting"), Throws.InstanceOf<InvalidEnumArgumentException>());
+			Assert.That(() => Enumeration.Parse<ActionTargets>("TEsT"), Throws.InstanceOf<InvalidEnumArgumentException>());
+			Assert.That(() => Enumeration.Parse<ActionTargets>("SuiTE", false), Throws.InstanceOf<InvalidEnumArgumentException>());
 		}
 
 		[Test]
@@ -811,34 +809,34 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void Parse_Empty_Exception()
 		{
-			Assert.That(() => Enumeration.Parse<PlatformID>(string.Empty), Throws.InstanceOf<InvalidEnumArgumentException>());
-			Assert.That(() => Enumeration.Parse<PlatformID>(null), Throws.InstanceOf<InvalidEnumArgumentException>());
+			Assert.That(() => Enumeration.Parse<ActionTargets>(string.Empty), Throws.InstanceOf<InvalidEnumArgumentException>());
+			Assert.That(() => Enumeration.Parse<ActionTargets>(null), Throws.InstanceOf<InvalidEnumArgumentException>());
 		}
 
 		[Test]
 		public void Parse_UndefinedNumericValue_Exception()
 		{
-			Assert.That(() => Enumeration.Parse<PlatformID>("100"), Throws.InstanceOf<InvalidEnumArgumentException>());
+			Assert.That(() => Enumeration.Parse<ActionTargets>("100"), Throws.InstanceOf<InvalidEnumArgumentException>());
 		}
 
 		[Test]
 		public void TryParse_DefinedValue_True()
 		{
-			PlatformID? parsed;
-			Assert.That(Enumeration.TryParse("Unix", out parsed), Is.True);
-			Assert.That(parsed, Is.EqualTo(PlatformID.Unix));
+			ActionTargets? parsed;
+			Assert.That(Enumeration.TryParse("Suite", out parsed), Is.True);
+			Assert.That(parsed, Is.EqualTo(ActionTargets.Suite));
 
-			Assert.That(Enumeration.TryParse("unIx", true, out parsed), Is.True);
-			Assert.That(parsed, Is.EqualTo(PlatformID.Unix));
+			Assert.That(Enumeration.TryParse("SUiTe", true, out parsed), Is.True);
+			Assert.That(parsed, Is.EqualTo(ActionTargets.Suite));
 		}
 
 		[Test]
 		public void TryParse_UndefinedValue_False()
 		{
-			PlatformID? parsed;
+			ActionTargets? parsed;
 			Assert.That(() => Enumeration.TryParse("nonExisting", out parsed), Is.False);
-			Assert.That(() => Enumeration.TryParse("UniX", out parsed), Is.False);
-			Assert.That(() => Enumeration.TryParse("UNIx", false, out parsed), Is.False);
+			Assert.That(() => Enumeration.TryParse("SUiTe", out parsed), Is.False);
+			Assert.That(() => Enumeration.TryParse("SUiTe", false, out parsed), Is.False);
 		}
 
 		[Test]
@@ -852,14 +850,14 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void TryParse_UndefinedNumericValue_False()
 		{
-			PlatformID? parsed;
+			ActionTargets? parsed;
 			Assert.That(() => Enumeration.TryParse("100", out parsed), Is.False);
 		}
 
 		[Test]
 		public void TryParse_Empty_False()
 		{
-			PlatformID? nonExisting;
+			ActionTargets? nonExisting;
 
 			Assert.That(Enumeration.TryParse(string.Empty, out nonExisting), Is.False);
 			Assert.That(Enumeration.TryParse(null, out nonExisting), Is.False);
@@ -980,20 +978,20 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void AssertFlags_Flagged_NoException()
 		{
-			Assert.That(() => Enumeration.AssertFlags<ZeroFlags>(), Throws.Nothing);
+			Assert.That(Enumeration.AssertFlags<ZeroFlags>, Throws.Nothing);
 		}
 
 		[Test]
 		public void AssertFlags_NotFlagged_Exception()
 		{
-			Assert.That(() => Enumeration.AssertFlags<IntEnum>(), Throws.ArgumentException
-				.With.Message.StringContaining("IntEnum"));
+			Assert.That(Enumeration.AssertFlags<IntEnum>, Throws.ArgumentException
+				.With.Message.Contain("IntEnum"));
 		}
 
 		[Test]
 		public void AssertFlags_NotEnum_Exception()
 		{
-			Assert.That(() => Enumeration.AssertFlags<decimal>(), Throws.ArgumentException);
+			Assert.That(Enumeration.AssertFlags<decimal>, Throws.ArgumentException);
 		}
 
 		#region SetFlag
@@ -1235,7 +1233,7 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void Comparer_NotEnum_Throws()
 		{
-			Assert.That(() => Enumeration.GetComparer<decimal>(), Throws.ArgumentException);
+			Assert.That(Enumeration.GetComparer<decimal>, Throws.ArgumentException);
 		}
 
 		#endregion
@@ -1245,41 +1243,41 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void Translate_PossibleTranslation_DifferentType()
 		{
-			Assert.That(Enumeration.Translate<PlatformID, MyPlatforms>(PlatformID.Unix), Is.EqualTo(MyPlatforms.Unix));
+			Assert.That(Enumeration.Translate<ActionTargets, MyTargets>(ActionTargets.Suite), Is.EqualTo(MyTargets.Suite));
 		}
 
 		[Test]
 		public void Translate_ImpossibleTranslation_Exception()
 		{
-			Assert.That(()=> Enumeration.Translate<PlatformID, MyPlatforms>(PlatformID.WinCE), Throws.InstanceOf<InvalidEnumArgumentException>());
+			Assert.That(()=> Enumeration.Translate<ActionTargets, MyTargets>(ActionTargets.Test), Throws.InstanceOf<InvalidEnumArgumentException>());
 		}
 
 		[Test]
 		public void TryTranslate_PossibleTranslation_DifferentType()
 		{
-			MyPlatforms? translated;
-			Assert.That(Enumeration.TryTranslate(PlatformID.Unix, out translated), Is.True);
-			Assert.That(translated, Is.EqualTo(MyPlatforms.Unix));
+			MyTargets? translated;
+			Assert.That(Enumeration.TryTranslate(ActionTargets.Suite, out translated), Is.True);
+			Assert.That(translated, Is.EqualTo(MyTargets.Suite));
 		}
 
 		[Test]
 		public void TryTranslate_ImpossibleTranslation_FalseAndNull()
 		{
-			MyPlatforms? translated;
-			Assert.That(Enumeration.TryTranslate(PlatformID.WinCE, out translated), Is.False);
+			MyTargets? translated;
+			Assert.That(Enumeration.TryTranslate(ActionTargets.Test, out translated), Is.False);
 			Assert.That(translated, Is.Null);
 		}
 
 		[Test]
 		public void TranslateWithDefault_PossibleTranslation_DifferentType()
 		{
-			Assert.That(Enumeration.Translate(PlatformID.Unix, MyPlatforms.MacOSX), Is.EqualTo(MyPlatforms.Unix));
+			Assert.That(Enumeration.Translate(ActionTargets.Suite, MyTargets.Default), Is.EqualTo(MyTargets.Suite));
 		}
 
 		[Test]
 		public void TranslateWithDefault_ImpossibleTranslation_Default()
 		{
-			Assert.That(Enumeration.Translate(PlatformID.WinCE, MyPlatforms.MacOSX), Is.EqualTo(MyPlatforms.MacOSX));
+			Assert.That(Enumeration.Translate(ActionTargets.Test, MyTargets.Default), Is.EqualTo(MyTargets.Default));
 		}
 
 		#endregion

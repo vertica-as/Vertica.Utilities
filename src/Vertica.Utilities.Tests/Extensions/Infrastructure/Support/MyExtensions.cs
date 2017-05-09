@@ -1,4 +1,4 @@
-﻿namespace Vertica.Utilities_v4.Tests.Extensions.Infrastructure.Support
+﻿namespace Vertica.Utilities.Tests.Extensions.Infrastructure.Support
 {
 	public static class MyExtensions
 	{

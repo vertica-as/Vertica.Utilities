@@ -2,7 +2,7 @@
 using System.IO;
 using NUnit.Framework;
 
-namespace Vertica.Utilities_v4.Tests
+namespace Vertica.Utilities.Tests
 {
 	// ReSharper disable ConditionIsAlwaysTrueOrFalse
 	[TestFixture]
@@ -132,7 +132,7 @@ namespace Vertica.Utilities_v4.Tests
 			bool trueCondition = 3 > 2;
 
 			Assert.That(() => Guard.AgainstArgument(param, trueCondition, message), Throws.ArgumentException
-				.With.Message.StringStarting(message).And
+				.With.Message.StartWith(message).And
 				.With.Property("ParamName").EqualTo(param));
 		}
 
@@ -151,7 +151,7 @@ namespace Vertica.Utilities_v4.Tests
 			string message = "message{0}", argument = "argument", param = "param";
 			bool trueCondition = 3 > 2;
 			Assert.That(() => Guard.AgainstArgument(param, trueCondition, message, argument), Throws.ArgumentException
-				.With.Message.StringStarting(string.Format(message, argument)).And
+				.With.Message.StartsWith(string.Format(message, argument)).And
 				.With.Property("ParamName").EqualTo(param));
 		}
 
@@ -184,7 +184,7 @@ namespace Vertica.Utilities_v4.Tests
 			string message = "message", param = "param";
 			bool trueCondition = 3 > 2;
 			Assert.That(() => Guard.AgainstArgument<ArgumentNullException>(param, trueCondition, message),
-				Throws.InstanceOf<ArgumentNullException>().With.Message.StringStarting(message).And
+				Throws.InstanceOf<ArgumentNullException>().With.Message.StartWith(message).And
 				.With.Property("ParamName").EqualTo(param));
 		}
 
@@ -204,7 +204,7 @@ namespace Vertica.Utilities_v4.Tests
 			bool trueCondition = 3 > 2;
 			Assert.That(() => Guard.AgainstArgument<ArgumentOutOfRangeException>(param, trueCondition, message, argument),
 				Throws.InstanceOf<ArgumentOutOfRangeException>()
-					.With.Message.StringStarting(string.Format(message, argument)).And
+					.With.Message.StartWith(string.Format(message, argument)).And
 					.With.Property("ParamName").EqualTo(param));
 		}
 

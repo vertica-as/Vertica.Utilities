@@ -2,11 +2,11 @@
 using NUnit.Framework;
 using Testing.Commons;
 using Testing.Commons.Time;
-using Vertica.Utilities_v4.Extensions.TimeExt;
-using Vertica.Utilities_v4.Testing;
-using Vertica.Utilities_v4.Tests.Support;
+using Vertica.Utilities.Extensions.TimeExt;
+using Vertica.Utilities.Testing;
+using Vertica.Utilities.Tests.Support;
 
-namespace Vertica.Utilities_v4.Tests
+namespace Vertica.Utilities.Tests
 {
 	[TestFixture]
 	public class AgeTester
@@ -303,9 +303,6 @@ namespace Vertica.Utilities_v4.Tests
 
 			Assert.That(twoDays.CompareTo(oneDay), Is.GreaterThan(0));
 			Assert.That(twoDays.CompareTo(2.Days()), Is.EqualTo(0));
-
-			Assert.That(() => oneDay.CompareTo(twoDays), Throws.InstanceOf<ArgumentException>(),
-				"there is automatic conversion from Age to TimeSpan");
 		}
 
 		#region gt

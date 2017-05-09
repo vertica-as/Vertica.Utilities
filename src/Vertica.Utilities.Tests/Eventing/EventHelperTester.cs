@@ -1,16 +1,15 @@
 ﻿using System;
 using NUnit.Framework;
-using Vertica.Utilities_v4.Eventing;
-using Vertica.Utilities_v4.Tests.Eventing.Support;
+using Vertica.Utilities.Tests.Eventing.Support;
+using Vertica.Utilities.Eventing;
 
-namespace Vertica.Utilities_v4.Tests.Eventing
+namespace Vertica.Utilities.Tests.Eventing
 {
 	[TestFixture]
 	public class EventHelperTester
 	{
 		#region subject
 
-		[NonSerialized]
 		private EventHandler<ValueEventArgs<int>> _complexEvent;
 
 		public event EventHandler<ValueEventArgs<int>> ComplexEvent
@@ -31,7 +30,6 @@ namespace Vertica.Utilities_v4.Tests.Eventing
 			}
 		}
 
-		[NonSerialized]
 		private EventHandler _simpleEvent;
 		public event EventHandler SimpleEvent
 		{

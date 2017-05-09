@@ -75,31 +75,31 @@ namespace Vertica.Utilities.Extensions.AttributeExt
 		public static T[] GetAttributes<T>(this object element, bool inherit = false) where T : Attribute
 		{
 			Guard.AgainstNullArgument(nameof(element), element);
-			return element.GetType().GetTypeInfo().GetCustomAttributes<T>().ToArray();
+			return element.GetType().GetTypeInfo().GetCustomAttributes<T>(inherit).ToArray();
 		}
 
 		public static T[] GetAttributes<T>(this Assembly element, bool inherit = false) where T : Attribute
 		{
 			Guard.AgainstNullArgument(nameof(element), element);
-			return element.GetType().GetTypeInfo().GetCustomAttributes<T>().ToArray();
+			return element.GetType().GetTypeInfo().GetCustomAttributes<T>(inherit).ToArray();
 		}
 
 		public static T[] GetAttributes<T>(this MemberInfo element, bool inherit = false) where T : Attribute
 		{
 			Guard.AgainstNullArgument(nameof(element), element);
-			return element.GetType().GetTypeInfo().GetCustomAttributes<T>().ToArray();
+			return element.GetType().GetTypeInfo().GetCustomAttributes<T>(inherit).ToArray();
 		}
 
 		public static T[] GetAttributes<T>(this Module element, bool inherit = false) where T : Attribute
 		{
 			Guard.AgainstNullArgument(nameof(element), element);
-			return element.GetType().GetTypeInfo().GetCustomAttributes<T>().ToArray();
+			return element.GetType().GetTypeInfo().GetCustomAttributes<T>(inherit).ToArray();
 		}
 
 		public static T[] GetAttributes<T>(this ParameterInfo element, bool inherit = false) where T : Attribute
 		{
 			Guard.AgainstNullArgument(nameof(element), element);
-			return element.GetType().GetTypeInfo().GetCustomAttributes<T>().ToArray();
+			return element.GetType().GetTypeInfo().GetCustomAttributes<T>(inherit).ToArray();
 		}
 
 		#endregion

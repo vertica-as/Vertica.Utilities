@@ -1,6 +1,6 @@
-﻿using Vertica.Utilities_v4.Extensions.Infrastructure;
+﻿using Vertica.Utilities.Extensions.Infrastructure;
 
-namespace Vertica.Utilities_v4.Tests.Extensions.Infrastructure.Support
+namespace Vertica.Utilities.Tests.Extensions.Infrastructure.Support
 {
 	public class MyExtensionPointOnDecimals : ExtensionPoint<decimal>
 	{

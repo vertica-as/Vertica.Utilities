@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
-using Vertica.Utilities_v4.Extensions.ObjectExt;
-using Vertica.Utilities_v4.Tests.Extensions.Support;
+using Vertica.Utilities.Tests.Extensions.Support;
+using Vertica.Utilities.Extensions.ObjectExt;
 
-namespace Vertica.Utilities_v4.Tests.Extensions
+namespace Vertica.Utilities.Tests.Extensions
 {
 	[TestFixture]
 	public class ObjectExtensionsTester
@@ -177,7 +177,6 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[Test]
 		public void UnboxBool_null_null()
 		{
-			Assert.That(DBNull.Value.UnboxBool(), Is.Null);
 			object @null = null;
 			Assert.That(@null.UnboxBool(), Is.Null);
 		}

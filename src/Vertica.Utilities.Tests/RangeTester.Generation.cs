@@ -3,7 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using Testing.Commons.Time;
 
-namespace Vertica.Utilities_v4.Tests
+namespace Vertica.Utilities.Tests
 {
 	[TestFixture]
 	public partial class RangeTester
@@ -83,7 +83,7 @@ namespace Vertica.Utilities_v4.Tests
 			
 			Assert.That(() => Range.HalfClosed(begin, threeMonthsLater).Generate(threeMonthsLater),
 				Throws.InstanceOf<InvalidOperationException>()
-				.With.Message.StringContaining("operator Add is not defined"));
+				.With.Message.Contain("operator Add is not defined"));
 		}
 
 		#endregion

@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Vertica.Utilities_v4.Tests.Extensions.Infrastructure.Support;
+using Vertica.Utilities.Tests.Extensions.Infrastructure.Support;
 
-namespace Vertica.Utilities_v4.Tests.Extensions.Infrastructure
+namespace Vertica.Utilities.Tests.Extensions.Infrastructure
 {
 	[TestFixture, Category("Exploratory")]
 	public class ExtensionPointsTester

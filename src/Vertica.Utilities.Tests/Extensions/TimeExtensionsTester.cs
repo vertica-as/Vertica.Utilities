@@ -3,65 +3,69 @@ using System.Globalization;
 using NUnit.Framework;
 using Testing.Commons.Globalization;
 using Testing.Commons.Time;
-using Vertica.Utilities_v4.Extensions.TimeExt;
-using Vertica.Utilities_v4.Testing;
+using Vertica.Utilities.Extensions.TimeExt;
+using Vertica.Utilities.Testing;
 
-namespace Vertica.Utilities_v4.Tests.Extensions
+namespace Vertica.Utilities.Tests.Extensions
 {
 	[TestFixture]
 	public class TimeExtensionsTester
 	{
 		#region documentation
 
-		[Test, Category("Exploratory"), SetCulture("da-DK")]
+		[Test, Category("Exploratory")]
 		public void Explore()
 		{
-			Assert.That(2001.IsLeapYear(), Is.False);
-			Assert.That(25.October(2012).InUtc().Week(), Is.EqualTo(43));
-
-			Assert.That(DayOfWeek.Monday.DaysTill(DayOfWeek.Thursday), Is.EqualTo(3));
-			Assert.That(DayOfWeek.Monday.DaysSince(DayOfWeek.Friday), Is.EqualTo(3));
-			Assert.That(/* Mon */16.June(2008).InUtc().Previous(DayOfWeek.Thursday), Is.EqualTo(12.June(2008).InUtc() /* Thu */));
-			Assert.That(/* Thu */12.June(2008).InUtc().Next(DayOfWeek.Monday), Is.EqualTo(16.June(2008).InUtc() /* Mon */));
-
-			Assert.That(12.June(2008).At(15.Hours().Minutes(43).Seconds(10)).InUtc()
-				.BeginningOfDay(), Is.EqualTo(12.June(2008).At(Time.MidNight).InUtc()));
-			Assert.That(12.June(2008).InUtc().BeginningOfWeek(), Is.EqualTo(9.June(2008).InUtc()));
-			Assert.That(12.June(2008).InUtc().BeginningOf(Period.Year), Is.EqualTo(1.January(2008).InUtc()));
-			Assert.That(12.June(2008).InUtc().EndOfWeek(), Is.EqualTo(15.June(2008).At(Time.EndOfDay).InUtc()));
-
-			Assert.That(11.March(1977).InUtc().Difference(14.March(1977).InUtc()), Is.EqualTo(3.Days()));
-			DateTimeOffset firstFebruary = 1.February(2008).InUtc(), fifthFebruary = 5.February(2008).InUtc();
-			Assert.That(firstFebruary.DiffersFrom(fifthFebruary).InAtLeast(2.Days()), Is.True);
-			Assert.That(firstFebruary.DiffersFrom(fifthFebruary).InAtMost(4.Days()), Is.True);
-			Assert.That(firstFebruary.DiffersFrom(fifthFebruary).InLessThan(1.Weeks()), Is.True);
-			Assert.That(firstFebruary.DiffersFrom(fifthFebruary).InMoreThan(Time.OneHour), Is.True);
-			Assert.That(firstFebruary.DiffersFrom(firstFebruary).InNothing(), Is.True);
-			Assert.That(firstFebruary.DiffersFrom(fifthFebruary).InSomething(), Is.True);
-
-			using (TimeReseter.Set(10.February(2000).At(Time.Noon).In(1.Hours())))
+			using (CultureReseter.Set("da-DK"))
 			{
-				Assert.That(2.Days().Ago(), Is.EqualTo(8.February(2000).At(Time.Noon).In(Time.Offset)));
-				Assert.That(2.Days().FromNow(), Is.EqualTo(12.February(2000).At(Time.Noon).In(Time.Offset)));
-				Assert.That(9.February(2000).In(Time.Offset).Elapsed(), Is.EqualTo(1.Days().Hours(12)));
+
+				Assert.That(2001.IsLeapYear(), Is.False);
+				Assert.That(25.October(2012).InUtc().Week(), Is.EqualTo(43));
+
+				Assert.That(DayOfWeek.Monday.DaysTill(DayOfWeek.Thursday), Is.EqualTo(3));
+				Assert.That(DayOfWeek.Monday.DaysSince(DayOfWeek.Friday), Is.EqualTo(3));
+				Assert.That( /* Mon */16.June(2008).InUtc().Previous(DayOfWeek.Thursday),
+					Is.EqualTo(12.June(2008).InUtc() /* Thu */));
+				Assert.That( /* Thu */12.June(2008).InUtc().Next(DayOfWeek.Monday), Is.EqualTo(16.June(2008).InUtc() /* Mon */));
+
+				Assert.That(12.June(2008).At(15.Hours().Minutes(43).Seconds(10)).InUtc()
+					.BeginningOfDay(), Is.EqualTo(12.June(2008).At(Time.MidNight).InUtc()));
+				Assert.That(12.June(2008).InUtc().BeginningOfWeek(), Is.EqualTo(9.June(2008).InUtc()));
+				Assert.That(12.June(2008).InUtc().BeginningOf(Period.Year), Is.EqualTo(1.January(2008).InUtc()));
+				Assert.That(12.June(2008).InUtc().EndOfWeek(), Is.EqualTo(15.June(2008).At(Time.EndOfDay).InUtc()));
+
+				Assert.That(11.March(1977).InUtc().Difference(14.March(1977).InUtc()), Is.EqualTo(3.Days()));
+				DateTimeOffset firstFebruary = 1.February(2008).InUtc(), fifthFebruary = 5.February(2008).InUtc();
+				Assert.That(firstFebruary.DiffersFrom(fifthFebruary).InAtLeast(2.Days()), Is.True);
+				Assert.That(firstFebruary.DiffersFrom(fifthFebruary).InAtMost(4.Days()), Is.True);
+				Assert.That(firstFebruary.DiffersFrom(fifthFebruary).InLessThan(1.Weeks()), Is.True);
+				Assert.That(firstFebruary.DiffersFrom(fifthFebruary).InMoreThan(Time.OneHour), Is.True);
+				Assert.That(firstFebruary.DiffersFrom(firstFebruary).InNothing(), Is.True);
+				Assert.That(firstFebruary.DiffersFrom(fifthFebruary).InSomething(), Is.True);
+
+				using (TimeReseter.Set(10.February(2000).At(Time.Noon).In(1.Hours())))
+				{
+					Assert.That(2.Days().Ago(), Is.EqualTo(8.February(2000).At(Time.Noon).In(Time.Offset)));
+					Assert.That(2.Days().FromNow(), Is.EqualTo(12.February(2000).At(Time.Noon).In(Time.Offset)));
+					Assert.That(9.February(2000).In(Time.Offset).Elapsed(), Is.EqualTo(1.Days().Hours(12)));
+				}
+
+				Assert.That(TimeSpan.Zero.Describe(), Is.EqualTo("now"));
+				Assert.That(59.Seconds().Describe(), Is.EqualTo("59 seconds"));
+				Assert.That(1.Minutes().Seconds(1).Describe(), Is.EqualTo("about 1 minute"));
+				Assert.That(3.Minutes().Seconds(31).Describe(), Is.EqualTo("about 4 minutes"));
+				Assert.That(3.Hours().Minutes(3).Seconds(1).Describe(), Is.EqualTo("about 3 hours"));
+				Assert.That(2.Days().Minutes(1).Seconds(1).Describe(), Is.EqualTo("about 2 days"));
+				Assert.That(2.Days().Minutes(1).Seconds(1).AsLapseDescription(), Is.EqualTo("about 2 days ago"));
+
+				Assert.That(1.January(2008).At(15.Hours()).AsOffset(3.Hours()),
+					Is.EqualTo(new DateTimeOffset(2008, 1, 1, 15, 0, 0, 3.Hours())));
+				Assert.That(1.January(2008).At(15.Hours()).AsUtcOffset(),
+					Is.EqualTo(new DateTimeOffset(2008, 1, 1, 15, 0, 0, 0.Hours())));
+
+				Assert.That(25.October(2012).At(15.Hours().Minutes(55)).InUtc().SetTime(15, 56, 0),
+					Is.EqualTo(25.October(2012).At(15.Hours().Minutes(56)).InUtc()));
 			}
-
-			Assert.That(TimeSpan.Zero.Describe(), Is.EqualTo("now"));
-			Assert.That(59.Seconds().Describe(), Is.EqualTo("59 seconds"));
-			Assert.That(1.Minutes().Seconds(1).Describe(), Is.EqualTo("about 1 minute"));
-			Assert.That(3.Minutes().Seconds(31).Describe(), Is.EqualTo("about 4 minutes"));
-			Assert.That(3.Hours().Minutes(3).Seconds(1).Describe(), Is.EqualTo("about 3 hours"));
-			Assert.That(2.Days().Minutes(1).Seconds(1).Describe(), Is.EqualTo("about 2 days"));
-			Assert.That(2.Days().Minutes(1).Seconds(1).AsLapseDescription(), Is.EqualTo("about 2 days ago"));
-
-			Assert.That(1.January(2008).At(15.Hours()).AsOffset(3.Hours()),
-				Is.EqualTo(new DateTimeOffset(2008, 1, 1, 15, 0, 0, 3.Hours())));
-			Assert.That(1.January(2008).At(15.Hours()).AsUtcOffset(),
-				Is.EqualTo(new DateTimeOffset(2008, 1, 1, 15, 0, 0, 0.Hours())));
-
-			Assert.That(25.October(2012).At(15.Hours().Minutes(55)).InUtc().SetTime(15, 56, 0),
-				Is.EqualTo(25.October(2012).At(15.Hours().Minutes(56)).InUtc()));
-			
 		}
 
 		#endregion
@@ -294,7 +298,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			var thu12Jun = 12.June(2008).At(_baseTime).InUtc();
 			DateTimeOffset weekStart;
 
-			using (CultureReseter.Set("en-US"))
+			using (CultureReseter.Set("pt-BR"))
 			{
 				weekStart = thu12Jun.BeginningOfWeek();
 				Assert.That(weekStart.DayOfWeek, Is.EqualTo(DayOfWeek.Sunday));
@@ -347,7 +351,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			var thu12Jun = 12.June(2008).At(_baseTime).InUtc();
 			DateTimeOffset weekEnd;
 
-			using (CultureReseter.Set("en-US"))
+			using (CultureReseter.Set("pt-BR"))
 			{
 				weekEnd = thu12Jun.EndOfWeek();
 				Assert.That(weekEnd.DayOfWeek, Is.EqualTo(DayOfWeek.Saturday));
@@ -435,7 +439,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 				Assert.That(thuInFirstWeek.Week(CalendarWeekRule.FirstFullWeek), Is.EqualTo(53), "last week from previous year");
 			}
 
-			using (CultureReseter.Set("en-US"))
+			using (CultureReseter.Set("pt-BR"))
 			{
 				var thuInFirstWeek = 3.January(2008).InUtc();
 				Assert.That(thuInFirstWeek.Week(CalendarWeekRule.FirstFullWeek), Is.EqualTo(52), "last week from previous year");

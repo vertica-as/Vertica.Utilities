@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using NUnit.Framework;
-using Vertica.Utilities_v4.Collections;
-using Vertica.Utilities_v4.Patterns;
-using Vertica.Utilities_v4.Tests.Patterns.Support;
+using Vertica.Utilities.Tests.Patterns.Support;
+using Vertica.Utilities.Patterns;
 
-namespace Vertica.Utilities_v4.Tests.Patterns
+namespace Vertica.Utilities.Tests.Patterns
 {
 	[TestFixture]
 	public class InMemoryRepositoryTester
@@ -200,7 +198,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		public void FindAll_AllReturned()
 		{
 			var subject = new InMemoryRepository<RepositorySubject, int>(1, 2);
-			Vertica.Utilities_v4.Collections.IReadOnlyList<RepositorySubject> all = subject.FindAll();
+			var all = subject.FindAll();
 			Assert.That(all.Count, Is.EqualTo(2));
 			Assert.That(all[0].Id, Is.EqualTo(1));
 			Assert.That(all[0].Property, Is.EqualTo("1"));
@@ -212,7 +210,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		public void Findall_Empty_EmptyReturned()
 		{
 			var subject = new InMemoryRepository<RepositorySubject, int>();
-			Vertica.Utilities_v4.Collections.IReadOnlyList<RepositorySubject> all = subject.FindAll();
+			var all = subject.FindAll();
 			Assert.That(all, Is.Empty);
 		}
 
@@ -220,7 +218,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		public void FindAll_MatchingExpression_MatchesReturned()
 		{
 			var subject = new InMemoryRepository<RepositorySubject, int>(1, 2, new RepositorySubject(3, null));
-			Vertica.Utilities_v4.Collections.IReadOnlyList<RepositorySubject> all = subject.FindAll(e => !string.IsNullOrEmpty(e.Property));
+			Utilities.Collections.IReadOnlyList<RepositorySubject> all = subject.FindAll(e => !string.IsNullOrEmpty(e.Property));
 			Assert.That(all.Count, Is.EqualTo(2));
 			Assert.That(all[0].Id, Is.EqualTo(1));
 			Assert.That(all[0].Property, Is.EqualTo("1"));
@@ -232,7 +230,7 @@ namespace Vertica.Utilities_v4.Tests.Patterns
 		public void FindAll_NonMatchingExpression_EmptyReturned()
 		{
 			var subject = new InMemoryRepository<RepositorySubject, int>(1, 2);
-			Vertica.Utilities_v4.Collections.IReadOnlyList<RepositorySubject> all = subject.FindAll(e => string.IsNullOrEmpty(e.Property));
+			Utilities.Collections.IReadOnlyList<RepositorySubject> all = subject.FindAll(e => string.IsNullOrEmpty(e.Property));
 			Assert.That(all, Is.Empty);
 		}
 

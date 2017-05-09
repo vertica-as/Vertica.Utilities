@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Vertica.Utilities_v4.Tests.Patterns.Support
+namespace Vertica.Utilities.Tests.Patterns.Support
 {
 	internal class ComplexContainer : IEnumerable<ComplexType>
 	{

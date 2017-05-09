@@ -2,9 +2,9 @@
 using NUnit.Framework;
 using Testing.Commons.Globalization;
 using Testing.Commons.Time;
-using Vertica.Utilities_v4.Testing;
+using Vertica.Utilities.Testing;
 
-namespace Vertica.Utilities_v4.Tests
+namespace Vertica.Utilities.Tests
 {
 	[TestFixture]
 	public class TimeTester
@@ -62,10 +62,11 @@ namespace Vertica.Utilities_v4.Tests
 			{
 				Assert.DoesNotThrow(() => Time.SetUtcNow(DateTimeOffset.UtcNow));
 
-				var plus1Hour = TimeZoneInfo.CreateCustomTimeZone("test", 1.Hours(), "test", "test");
-				DateTimeOffset notUtc = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, plus1Hour);
-				var ex = Assert.Throws<InvalidTimeZoneException>(() => Time.SetUtcNow(notUtc));
-				Assert.That(ex.Message, Is.StringContaining("1"));
+				var plusTwoHours = TimeZoneInfo.FindSystemTimeZoneById("Central Europe Standard Time");
+				DateTimeOffset notUtc = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, plusTwoHours);
+
+				Assert.That(() => Time.SetUtcNow(notUtc), Throws.InstanceOf<InvalidTimeZoneException>().
+					With.Message.Contain("2"));
 			}
 			finally
 			{
@@ -134,7 +135,7 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void FirstDayOfWeek_DependsOnCulture()
 		{
-			using (CultureReseter.Set("en-US"))
+			using (CultureReseter.Set("pt-BR"))
 			{
 				Assert.That(Time.FirstDayOfWeek(), Is.EqualTo(DayOfWeek.Sunday));
 			}
@@ -148,7 +149,7 @@ namespace Vertica.Utilities_v4.Tests
 		[Test]
 		public void LastDayOfWeek_DependsOnCulture()
 		{
-			using (CultureReseter.Set("en-US"))
+			using (CultureReseter.Set("pt-BR"))
 			{
 				Assert.That(Time.LastDayOfWeek(), Is.EqualTo(DayOfWeek.Saturday));
 			}

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework.Constraints;
 using Testing.Commons.NUnit.Constraints;
-using Vertica.Utilities_v4.Patterns;
+using Vertica.Utilities.Patterns;
 
-namespace Vertica.Utilities_v4.Tests.Patterns.Support
+namespace Vertica.Utilities.Tests.Patterns.Support
 {
-	public class SpecificationConstraint<T> : DelegatingConstraint<ISpecification<T>>
+	public class SpecificationConstraint<T> : DelegatingConstraint
 	{
 		private readonly List<T> _values;
 
@@ -13,22 +13,6 @@ namespace Vertica.Utilities_v4.Tests.Patterns.Support
 		{
 			_values = new List<T> {value};
 			Delegate = new EqualConstraint(satisfied);
-		}
-
-		private T _failingValue;
-		protected override bool matches(ISpecification<T> current)
-		{
-			bool result = false;
-			foreach (var value in _values)
-			{
-				result = Delegate.Matches(current.IsSatisfiedBy(value));
-				if (!result)
-				{
-					_failingValue = value;
-					break;
-				}
-			}
-			return result;
 		}
 
 		public new SpecificationConstraint<T> Or(T value)
@@ -43,12 +27,38 @@ namespace Vertica.Utilities_v4.Tests.Patterns.Support
 			return this;
 		}
 
-		public override void WriteMessageTo(MessageWriter writer)
+		protected override ConstraintResult matches(object current)
 		{
-			writer.Write("Value ");
-			writer.WriteValue(_failingValue);
-			writer.WriteLine();
-			base.WriteMessageTo(writer);
+			ConstraintResult result = new ConstraintResult(this, current, true);
+
+			ISpecification<T> spec = (ISpecification<T>)current;
+			foreach (var value in _values)
+			{
+				result = new SpecificationResult(Delegate, Delegate.ApplyTo(spec.IsSatisfiedBy(value)));
+				if (!result.IsSuccess)
+				{
+					break;
+				}
+			}
+			return result;
+		}
+
+		class SpecificationResult : ConstraintResult
+		{
+			private readonly ConstraintResult _result;
+
+			public SpecificationResult(IConstraint constraint, ConstraintResult result) : base(constraint, result.ActualValue, result.IsSuccess)
+			{
+				_result = result;
+			}
+
+			public override void WriteMessageTo(MessageWriter writer)
+			{
+				writer.Write("Value ");
+				writer.WriteValue(_result.ActualValue);
+				writer.WriteLine();
+				base.WriteMessageTo(writer);
+			}
 		}
 	}
 }

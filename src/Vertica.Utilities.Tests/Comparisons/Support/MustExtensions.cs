@@ -1,6 +1,6 @@
 ﻿using Testing.Commons;
 
-namespace Vertica.Utilities_v4.Tests.Comparisons.Support
+namespace Vertica.Utilities.Tests.Comparisons.Support
 {
 	internal static class MustExtensions
 	{

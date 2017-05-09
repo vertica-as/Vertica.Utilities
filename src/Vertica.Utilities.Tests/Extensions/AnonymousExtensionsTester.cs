@@ -4,10 +4,10 @@ using System.Linq;
 using NUnit.Framework;
 using Testing.Commons;
 using Testing.Commons.NUnit.Constraints;
-using Vertica.Utilities_v4.Extensions.AnonymousExt;
-using Vertica.Utilities_v4.Extensions.Infrastructure;
+using Vertica.Utilities.Extensions.AnonymousExt;
+using Vertica.Utilities.Extensions.Infrastructure;
 
-namespace Vertica.Utilities_v4.Tests.Extensions
+namespace Vertica.Utilities.Tests.Extensions
 {
 	[TestFixture]
 	public class AnonymousExtensionsTester

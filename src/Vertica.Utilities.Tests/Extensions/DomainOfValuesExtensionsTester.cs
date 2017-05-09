@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Vertica.Utilities_v4.Extensions.DomainExt;
+using Vertica.Utilities.Extensions.DomainExt;
 
-namespace Vertica.Utilities_v4.Tests.Extensions
+namespace Vertica.Utilities.Tests.Extensions
 {
 	[TestFixture]
 	public class DomainOfValuesExtensionsTester

@@ -1,8 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
+using Testing.Commons.Globalization;
 using Testing.Commons.Time;
 
-namespace Vertica.Utilities_v4.Tests
+namespace Vertica.Utilities.Tests
 {
 	[TestFixture]
 	public partial class RangeTester
@@ -65,15 +66,18 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(() => Range<TimeSpan>.AssertBounds(3.Seconds(), 3.Seconds()), Throws.Nothing);
 		}
 
-		[Test, SetCulture("da-DK")]
+		[Test]
 		public void AssertBounds_IncorrectlyOrderedBounds_Exception()
 		{
-			Assert.That(() => Range<char>.AssertBounds('z', 'a'), throwsBoundException('a', "a"));
-			Assert.That(() => Range<int>.AssertBounds(1, -1), throwsBoundException(-1, "-1"));
-			Assert.That(() => Range<TimeSpan>.AssertBounds(1.Hours(), 3.Seconds()),
-				throwsBoundException(3.Seconds(), "00:00:03"));
-			Assert.That(() => Range<DateTime>.AssertBounds(9.September(2010), 11.March(1977)),
-				throwsBoundException(11.March(1977), "11-03-1977 00:00:00"));
+			using (CultureReseter.Set("da-DK"))
+			{
+				Assert.That(() => Range<char>.AssertBounds('z', 'a'), throwsBoundException('a', "a"));
+				Assert.That(() => Range<int>.AssertBounds(1, -1), throwsBoundException(-1, "-1"));
+				Assert.That(() => Range<TimeSpan>.AssertBounds(1.Hours(), 3.Seconds()),
+					throwsBoundException(3.Seconds(), "00:00:03"));
+				Assert.That(() => Range<DateTime>.AssertBounds(9.September(2010), 11.March(1977)),
+					throwsBoundException(11.March(1977), "11-03-1977 00:00:00"));
+			}
 		}
 
 		[Test]
@@ -94,9 +98,9 @@ namespace Vertica.Utilities_v4.Tests
 
 			Assert.That(() => subject.AssertArgument("arg", 6),
 				Throws.InstanceOf<ArgumentOutOfRangeException>()
-				.With.Message.StringContaining("[1..5]").And
-				.With.Message.StringContaining("1 (inclusive)").And
-				.With.Message.StringContaining("5 (inclusive)")
+				.With.Message.Contain("[1..5]").And
+				.With.Message.Contain("1 (inclusive)").And
+				.With.Message.Contain("5 (inclusive)")
 				.With.Property("ParamName").EqualTo("arg").And
 				.With.Property("ActualValue").EqualTo(6));
 		}
@@ -116,9 +120,9 @@ namespace Vertica.Utilities_v4.Tests
 
 			Assert.That(() => subject.AssertArgument("arg", 6),
 				Throws.InstanceOf<ArgumentOutOfRangeException>()
-				.With.Message.StringContaining("(1..5)").And
-				.With.Message.StringContaining("1 (not inclusive)").And
-				.With.Message.StringContaining("5 (not inclusive)")
+				.With.Message.Contain("(1..5)").And
+				.With.Message.Contain("1 (not inclusive)").And
+				.With.Message.Contain("5 (not inclusive)")
 				.With.Property("ParamName").EqualTo("arg").And
 				.With.Property("ActualValue").EqualTo(6));
 		}
@@ -138,9 +142,9 @@ namespace Vertica.Utilities_v4.Tests
 
 			Assert.That(() => subject.AssertArgument("arg", 6),
 				Throws.InstanceOf<ArgumentOutOfRangeException>()
-				.With.Message.StringContaining("[1..5)").And
-				.With.Message.StringContaining("1 (inclusive)").And
-				.With.Message.StringContaining("5 (not inclusive)")
+				.With.Message.Contain("[1..5)").And
+				.With.Message.Contain("1 (inclusive)").And
+				.With.Message.Contain("5 (not inclusive)")
 				.With.Property("ParamName").EqualTo("arg").And
 				.With.Property("ActualValue").EqualTo(6));
 		}
@@ -160,9 +164,9 @@ namespace Vertica.Utilities_v4.Tests
 
 			Assert.That(() => subject.AssertArgument("arg", 6),
 				Throws.InstanceOf<ArgumentOutOfRangeException>()
-				.With.Message.StringContaining("(1..5]").And
-				.With.Message.StringContaining("1 (not inclusive)").And
-				.With.Message.StringContaining("5 (inclusive)")
+				.With.Message.Contain("(1..5]").And
+				.With.Message.Contain("1 (not inclusive)").And
+				.With.Message.Contain("5 (inclusive)")
 				.With.Property("ParamName").EqualTo("arg").And
 				.With.Property("ActualValue").EqualTo(6));
 		}
@@ -194,9 +198,9 @@ namespace Vertica.Utilities_v4.Tests
 		{
 			Assert.That(() => Range.Closed(1, 5).AssertArgument("arg", new[] { 2, 6, 4 }),
 				Throws.InstanceOf<ArgumentOutOfRangeException>()
-				.With.Message.StringContaining("[1..5]").And
-				.With.Message.StringContaining("1 (inclusive)").And
-				.With.Message.StringContaining("5 (inclusive)")
+				.With.Message.Contain("[1..5]").And
+				.With.Message.Contain("1 (inclusive)").And
+				.With.Message.Contain("5 (inclusive)")
 				.With.Property("ParamName").EqualTo("arg").And
 				.With.Property("ActualValue").EqualTo(6)
 				);

@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
-using Vertica.Utilities_v4.Collections;
-using Vertica.Utilities_v4.Eventing;
+using Vertica.Utilities.Collections;
+using Vertica.Utilities.Eventing;
 
-namespace Vertica.Utilities_v4.Tests.Collections
+namespace Vertica.Utilities.Tests.Collections
 {
 	[TestFixture]
 	public class NotifyingListTester

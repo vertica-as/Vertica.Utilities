@@ -4,11 +4,11 @@ using System.Linq;
 using NUnit.Framework;
 using Testing.Commons;
 using Testing.Commons.NUnit.Constraints;
-using Vertica.Utilities_v4.Collections;
-using Vertica.Utilities_v4.Extensions.EnumerableExt;
-using Vertica.Utilities_v4.Tests.Collections.Support;
+using Vertica.Utilities.Tests.Collections.Support;
+using Vertica.Utilities.Collections;
+using Vertica.Utilities.Extensions.EnumerableExt;
 
-namespace Vertica.Utilities_v4.Tests.Collections
+namespace Vertica.Utilities.Tests.Collections
 {
 	[TestFixture]
 	public class TreeTester
@@ -108,7 +108,7 @@ namespace Vertica.Utilities_v4.Tests.Collections
 			Tree<Category, int> tree = categories.ToTree(c => c.Id, (c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
 			KeyNotFoundException exception = Assert.Throws<KeyNotFoundException>(() => tree.Get(4), "c4 is an orphan");
-			Assert.That(exception.Message, Is.StringContaining(4.ToString()), "contains the key in text");
+			Assert.That(exception.Message, Does.Contain("4"), "contains the key in text");
 
 			Assert.That(() => tree.Get(42), Throws.InstanceOf<KeyNotFoundException>(),
 				"c42 does not even exist");

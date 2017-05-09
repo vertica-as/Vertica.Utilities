@@ -2,10 +2,10 @@
 using System.Globalization;
 using NSubstitute;
 using NUnit.Framework;
-using Vertica.Utilities_v4.Patterns;
-using Vertica.Utilities_v4.Tests.Patterns.Support;
+using Vertica.Utilities.Tests.Patterns.Support;
+using Vertica.Utilities.Patterns;
 
-namespace Vertica.Utilities_v4.Tests.Patterns
+namespace Vertica.Utilities.Tests.Patterns
 {
 	[TestFixture]
 	public class ChainOfResponsibilityTester

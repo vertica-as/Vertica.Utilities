@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace Vertica.Utilities_v4.Tests
+namespace Vertica.Utilities.Tests
 {
 	[TestFixture]
 	public class ExceptionHelperTester
@@ -43,7 +43,7 @@ namespace Vertica.Utilities_v4.Tests
 		public void Throw_MessageAndInnerException_MessageAndInnerSet()
 		{
 			string message = "template value", innerMessage = "inner message";
-			var inner = new NullReferenceException(innerMessage); ;
+			var inner = new NullReferenceException(innerMessage);
 
 			Assert.That(() => ExceptionHelper.Throw<ArgumentException>(inner, message),
 				Throws.InstanceOf<ArgumentException>()
@@ -58,7 +58,7 @@ namespace Vertica.Utilities_v4.Tests
 			string template = "template {0}", argument = "arg", param = "param";
 			var ex = Assert.Throws<ArgumentException>(() => ExceptionHelper.ThrowArgumentException(param, template, argument));
 
-			Assert.That(ex.Message, Is.StringStarting("template arg").And.StringContaining(param));
+			Assert.That(ex.Message, Does.StartWith("template arg").And.Contain(param));
 			Assert.That(ex.ParamName, Is.EqualTo(param));
 			Assert.That(ex.InnerException, Is.Null);
 		}
@@ -69,7 +69,7 @@ namespace Vertica.Utilities_v4.Tests
 			string template = "template", param = "param";
 			var ex = Assert.Throws<ArgumentException>(() => ExceptionHelper.ThrowArgumentException(param, "template", "arg"));
 
-			Assert.That(ex.Message, Is.StringStarting(template).And.StringContaining(param));
+			Assert.That(ex.Message, Does.StartWith(template).And.Contain(param));
 			Assert.That(ex.ParamName, Is.EqualTo(param));
 			Assert.That(ex.InnerException, Is.Null);
 		}
@@ -99,7 +99,7 @@ namespace Vertica.Utilities_v4.Tests
 			var ex = Assert.Throws<ArgumentNullException>(
 				() => ExceptionHelper.ThrowArgumentException<ArgumentNullException>(param, template, argument));
 
-			Assert.That(ex.Message, Is.StringStarting("template arg").And.StringContaining(param));
+			Assert.That(ex.Message, Does.StartWith("template arg").And.Contain(param));
 			Assert.That(ex.ParamName, Is.EqualTo(param));
 			Assert.That(ex.InnerException, Is.Null);
 		}
@@ -111,7 +111,7 @@ namespace Vertica.Utilities_v4.Tests
 			var ex = Assert.Throws<ArgumentOutOfRangeException>(
 				() => ExceptionHelper.ThrowArgumentException<ArgumentOutOfRangeException>(param, "template", "arg"));
 
-			Assert.That(ex.Message, Is.StringStarting(template).And.StringContaining(param));
+			Assert.That(ex.Message, Does.StartWith(template).And.Contain(param));
 			Assert.That(ex.ParamName, Is.EqualTo(param));
 			Assert.That(ex.InnerException, Is.Null);
 		}

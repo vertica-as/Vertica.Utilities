@@ -1,10 +1,11 @@
 ﻿using System;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using Testing.Commons.Globalization;
 using Testing.Commons.Time;
-using Vertica.Utilities_v4.Extensions.RangeExt;
+using Vertica.Utilities.Extensions.RangeExt;
 
-namespace Vertica.Utilities_v4.Tests
+namespace Vertica.Utilities.Tests
 {
 	// ReSharper disable PossibleNullReferenceException
 	[TestFixture]
@@ -33,14 +34,6 @@ namespace Vertica.Utilities_v4.Tests
 		#region construction
 
 		[Test]
-		public void IsSerializable()
-		{
-			Assert.That(typeof (Range<>), Has.Attribute<SerializableAttribute>());
-			Assert.That(new Range<int>(3, 4), Is.BinarySerializable);
-			Assert.That(new Range<char>('3', '4'), Is.XmlSerializable);
-		}
-
-		[Test]
 		public void Ctor_SetsProperties()
 		{
 			var subject = new Range<char>('a', 'z');
@@ -48,16 +41,20 @@ namespace Vertica.Utilities_v4.Tests
 			Assert.That(subject.UpperBound, Is.EqualTo('z'));
 		}
 
-		[Test, SetCulture("da-DK")]
+		[Test]
 		public void Ctor_PoorlyConstructed_Exception()
 		{
-			Assert.That(() => new Range<int>(5, 1), throwsBoundException(1, "1"));
+			using (CultureReseter.Set("da-DK"))
+			{
+				Assert.That(() => new Range<int>(5, 1), throwsBoundException(1, "1"));
 
-			Assert.That(() => new Range<int>(-1, -5), throwsBoundException(-5, "-5"));
+				Assert.That(() => new Range<int>(-1, -5), throwsBoundException(-5, "-5"));
 
-			Assert.That(() => new Range<TimeSpan>(3.Seconds(), 2.Seconds()), throwsBoundException(2.Seconds(), "00:00:02"));
+				Assert.That(() => new Range<TimeSpan>(3.Seconds(), 2.Seconds()), throwsBoundException(2.Seconds(), "00:00:02"));
 
-			Assert.That(() => new Range<DateTime>(11.March(1977), 31.October(1952)), throwsBoundException(31.October(1952), "31-10-1952 00:00:00"));
+				Assert.That(() => new Range<DateTime>(11.March(1977), 31.October(1952)),
+					throwsBoundException(31.October(1952), "31-10-1952 00:00:00"));
+			}
 		}
 
 		[Test]
@@ -156,7 +153,7 @@ namespace Vertica.Utilities_v4.Tests
 		{
 			return Throws.InstanceOf<ArgumentOutOfRangeException>().With
 				.Property("ActualValue").EqualTo(upperBound).And
-				.Message.StringContaining(upperBoundRepresentation);
+				.Message.Contain(upperBoundRepresentation);
 		}
 	}
 	// ReSharper restore PossibleNullReferenceException	

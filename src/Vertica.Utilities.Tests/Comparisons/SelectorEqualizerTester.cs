@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Vertica.Utilities_v4.Comparisons;
+using Vertica.Utilities.Comparisons;
 
-namespace Vertica.Utilities_v4.Tests.Comparisons.Support
+namespace Vertica.Utilities.Tests.Comparisons.Support
 {
 	[TestFixture]
 	public class SelectorEqualizerTester

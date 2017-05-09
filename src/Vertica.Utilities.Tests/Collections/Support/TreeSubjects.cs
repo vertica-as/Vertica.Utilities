@@ -1,4 +1,4 @@
-namespace Vertica.Utilities_v4.Tests.Collections.Support
+namespace Vertica.Utilities.Tests.Collections.Support
 {
 	public class Category
 	{

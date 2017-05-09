@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using Testing.Commons.Globalization;
 
-namespace Vertica.Utilities_v4.Tests
+namespace Vertica.Utilities.Tests
 {
 	[TestFixture]
 	public class DecimalPercentageTester

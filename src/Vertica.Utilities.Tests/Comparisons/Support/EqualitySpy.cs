@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Vertica.Utilities_v4.Comparisons;
+using Vertica.Utilities.Comparisons;
 
-namespace Vertica.Utilities_v4.Tests.Comparisons.Support
+namespace Vertica.Utilities.Tests.Comparisons.Support
 {
 	internal class EqualitySpy : IEquatable<EqualitySpy>
 	{

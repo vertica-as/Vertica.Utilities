@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Vertica.Utilities_v4.Comparisons;
-using Vertica.Utilities_v4.Web;
+using Vertica.Utilities.Comparisons;
+using Vertica.Utilities.Web;
 
-namespace Vertica.Utilities_v4.Tests.Web
+namespace Vertica.Utilities.Tests.Web
 {
 	[TestFixture]
 	public class QualifiedCollectionTester

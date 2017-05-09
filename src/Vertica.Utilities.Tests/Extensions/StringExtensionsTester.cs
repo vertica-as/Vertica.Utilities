@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using System.Text;
-using System.Web;
+using System.Net;
 using NUnit.Framework;
 using Testing.Commons.Time;
-using Vertica.Utilities_v4.Extensions.StringExt;
+using Vertica.Utilities.Extensions.StringExt;
 
-namespace Vertica.Utilities_v4.Tests.Extensions
+namespace Vertica.Utilities.Tests.Extensions
 {
 	[TestFixture]
 	public class StringExtensionsTester
@@ -22,10 +21,10 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			Assert.That(input.IsEmpty(), Is.EqualTo(isEmpty));
 		}
 
-		private static readonly string[] _onlySpaces = new[] { " ", "  " };
+		private static readonly string[] _onlySpaces = { " ", "  " };
 
 		[Test]
-		[TestCaseSource("_onlySpaces")]
+		[TestCaseSource(nameof(_onlySpaces))]
 		public void IsEmpty_OnlySpaces_True(string onlySpaces)
 		{
 			Assert.That(onlySpaces.IsEmpty(), Is.True);
@@ -40,7 +39,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		[Test]
-		[TestCaseSource("_onlySpaces")]
+		[TestCaseSource(nameof(_onlySpaces))]
 		public void IsNoEmpty_OnlySpaces_False(string onlySpaces)
 		{
 			Assert.That(onlySpaces.IsNotEmpty(), Is.False);
@@ -59,7 +58,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		[Test]
-		[TestCaseSource("_onlySpaces")]
+		[TestCaseSource(nameof(_onlySpaces))]
 		public void NullIfEmpty_OnlySpaces_Null(string onlySpaces)
 		{
 			Assert.That(onlySpaces.NullIfEmpty(), Is.Null);
@@ -87,7 +86,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		}
 
 		[Test]
-		[TestCaseSource("_onlySpaces")]
+		[TestCaseSource(nameof(_onlySpaces))]
 		public void EmptyIfNull_OnlySpaces_Inout(string onlySpaces)
 		{
 			Assert.That(onlySpaces.EmptyIfNull(), Is.EqualTo(onlySpaces));
@@ -440,7 +439,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[Test]
 		public void FormatWith_OneNullArgument_NoException()
 		{
-			NotFiniteNumberException arg = null;
+			DivideByZeroException arg = null;
 			Assert.That(() => "{0}".FormatWith(arg), Throws.Nothing);
 		}
 
@@ -478,7 +477,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[Test]
 		public void FormatWith_MultipleNullArguments_NoException()
 		{
-			NotFiniteNumberException arg = null;
+			DivideByZeroException arg = null;
 			Assert.That(() => "{0}{1}".FormatWith(arg, arg),
 				Throws.Nothing);
 		}
@@ -533,7 +532,7 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[Test]
 		public void IndirectFormat_MultipleNullArguments_NoException()
 		{
-			NotFiniteNumberException arg = null;
+			DivideByZeroException arg = null;
 			Assert.DoesNotThrow(() => indirectFormat("{0}{1}", arg, arg));
 		}
 
@@ -675,49 +674,28 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		public void UrlEncode_SameAsExtended()
 		{
 			string s = "/æ";
-			Assert.That(s.Http().UrlEncode(), Is.EqualTo(HttpUtility.UrlEncode(s)));
-		}
-
-		[Test]
-		public void UrlEncode_WithEncoding_SameAsExtended()
-		{
-			string s = "q/&æ";
-			Assert.That(s.Http().UrlEncode(Encoding.Unicode), Is.EqualTo(HttpUtility.UrlEncode(s, Encoding.Unicode)));
+			Assert.That(s.Http().UrlEncode(), Is.EqualTo(WebUtility.UrlEncode(s)));
 		}
 
 		[Test]
 		public void UrlDecode_SameAsExtended()
 		{
 			string s = "q%20&æ";
-			Assert.That(s.Http().UrlEncode(), Is.EqualTo(HttpUtility.UrlEncode(s)));
-		}
-
-		[Test]
-		public void UrlDecode_WithEncoding_SameAsExtended()
-		{
-			string s = "q%20&æ";
-			Assert.That(s.Http().UrlEncode(Encoding.UTF8), Is.EqualTo(HttpUtility.UrlEncode(s, Encoding.UTF8)));
+			Assert.That(s.Http().UrlEncode(), Is.EqualTo(WebUtility.UrlEncode(s)));
 		}
 
 		[Test]
 		public void HtmlEncode_SameAsExtended()
 		{
 			string s = "&<>";
-			Assert.That(s.Http().HtmlEncode(), Is.EqualTo(HttpUtility.HtmlEncode(s)));
-		}
-
-		[Test]
-		public void HtmlAttributeEncode_SameAsExtended()
-		{
-			string s = "&<>";
-			Assert.That(s.Http().AttributeEncode(), Is.EqualTo(HttpUtility.HtmlAttributeEncode(s)));
+			Assert.That(s.Http().HtmlEncode(), Is.EqualTo(WebUtility.HtmlEncode(s)));
 		}
 
 		[Test]
 		public void HtmlDecode_SameAsExtended()
 		{
 			string s = "&lt;";
-			Assert.That(s.Http().HtmlDecode(), Is.EqualTo(HttpUtility.HtmlDecode(s)));
+			Assert.That(s.Http().HtmlDecode(), Is.EqualTo(WebUtility.HtmlDecode(s)));
 		}
 
 
@@ -795,10 +773,15 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 		[TestCase("", null)]
 		[TestCase("3", 3)]
 		[TestCase("-1", -1)]
-		[TestCase("notAnInteger", null, ExpectedException = typeof(FormatException))]
 		public void AsNullable_NullableInt(string s, int? expected)
 		{
 			Assert.That(s.Parse().AsNullable(_intParse), Is.EqualTo(expected));
+		}
+
+		[Test]
+		public void AsNullable_NotAnInteger_Exception()
+		{
+			Assert.That(()=> "notAnInteger".Parse().AsNullable(_intParse), Throws.InstanceOf<FormatException>());
 		}
 
 		private void parse_NullableDateTime(string s, DateTime? expected)
@@ -842,11 +825,11 @@ namespace Vertica.Utilities_v4.Tests.Extensions
 			string input = "1";
 
 			Assert.DoesNotThrow(() => input.Parse<int>());
-			Assert.DoesNotThrow(() => input.Parse().AsNullable(s => int.Parse(s)));
+			Assert.DoesNotThrow(() => input.Parse().AsNullable(int.Parse));
 
 			input = null;
 			Assert.DoesNotThrow(() => input.Parse<int>());
-			Assert.DoesNotThrow(() => input.Parse().AsNullable(s => int.Parse(s)));
+			Assert.DoesNotThrow(() => input.Parse().AsNullable(int.Parse));
 		}
 		// ReSharper restore AccessToModifiedClosure
 

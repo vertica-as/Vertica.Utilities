@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
 using Testing.Commons.Time;
-using Vertica.Utilities_v4.Testing;
+using Vertica.Utilities.Testing;
 
-namespace Vertica.Utilities_v4.Tests.Testing
+namespace Vertica.Utilities.Tests.Testing
 {
 	[TestFixture]
 	public class TimeReseterTester

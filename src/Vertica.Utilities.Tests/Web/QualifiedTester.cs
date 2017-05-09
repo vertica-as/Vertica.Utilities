@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
 using Testing.Commons;
 using Testing.Commons.NUnit.Constraints;
-using Vertica.Utilities_v4.Web;
+using Vertica.Utilities.Web;
 
-namespace Vertica.Utilities_v4.Tests.Web
+namespace Vertica.Utilities.Tests.Web
 {
 	[TestFixture]
 	public class QualifiedTester

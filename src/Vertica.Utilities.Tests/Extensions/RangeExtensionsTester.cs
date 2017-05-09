@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
 using Testing.Commons.Time;
-using Vertica.Utilities_v4.Extensions.RangeExt;
+using Vertica.Utilities.Extensions.RangeExt;
 
-namespace Vertica.Utilities_v4.Tests.Extensions
+namespace Vertica.Utilities.Tests.Extensions
 {
 	[TestFixture]
 	public class RangeExtensionsTester

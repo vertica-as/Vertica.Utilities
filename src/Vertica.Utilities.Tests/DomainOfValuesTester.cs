@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace Vertica.Utilities_v4.Tests
+namespace Vertica.Utilities.Tests
 {
 	[TestFixture]
 	public class DomainOfValuesTester
@@ -171,8 +171,8 @@ namespace Vertica.Utilities_v4.Tests
 			var twoThreeFour = DomainOf.Values(2, 3, 4);
 			Assert.That(() => twoThreeFour.AssertContains(5),
 				Throws.InstanceOf<InvalidDomainException<int>>()
-					.With.Message.StringContaining("5").And
-					.Message.StringContaining("[2, 3, 4]"));
+					.With.Message.Contain("5").And
+					.Message.Contain("[2, 3, 4]"));
 		}
 
 		#endregion

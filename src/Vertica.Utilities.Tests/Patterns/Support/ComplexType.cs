@@ -1,4 +1,4 @@
-﻿namespace Vertica.Utilities_v4.Tests.Patterns.Support
+﻿namespace Vertica.Utilities.Tests.Patterns.Support
 {
 	internal class ComplexType
 	{

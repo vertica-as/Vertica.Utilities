@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace Vertica.Utilities.Collections
 {
+	public class MutableLookup : MutableLookup<string, string> { }
     public class MutableLookup<T, U> : ILookup<T, U>
     {
 	    private readonly Dictionary<T, MutableGrouping> _groups;

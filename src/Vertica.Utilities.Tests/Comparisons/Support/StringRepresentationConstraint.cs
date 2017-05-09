@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Linq;
 using NUnit.Framework.Constraints;
+using NUnit.Framework.Internal;
 
-namespace Vertica.Utilities_v4.Tests.Comparisons.Support
+namespace Vertica.Utilities.Tests.Comparisons.Support
 {
 	internal class StringRepresentationConstraint : Constraint
 	{
@@ -20,27 +21,43 @@ namespace Vertica.Utilities_v4.Tests.Comparisons.Support
 			return string.Join(", ", collection.Cast<object>().Select(o => o.ToString()));
 		}
 
-		public override bool Matches(object current)
+		public override string Description
 		{
-			actual = represent((IEnumerable)current);
-			return _inner.Matches(actual);
+			get
+			{
+				MessageWriter writer = new TextMessageWriter();
+				representedAs(writer);
+				writer.WriteValue(_representation);
+				return writer.ToString();
+			}
 		}
 
-		public override void WriteDescriptionTo(MessageWriter writer)
+		private static void representedAs(MessageWriter writer)
 		{
-			representedAs(writer);
-			writer.WriteValue(_representation);
+			writer.Write("Something representable as ");
 		}
 
-		private void representedAs(MessageWriter writer)
+		public override ConstraintResult ApplyTo<TActual>(TActual actual)
 		{
-			writer.WritePredicate("Something representable as");
+			string representation = represent((IEnumerable)actual);
+			var result = _inner.ApplyTo(representation);
+			return new RepresentationResult(_inner, result);
 		}
 
-		public override void WriteActualValueTo(MessageWriter writer)
+		class RepresentationResult : ConstraintResult
 		{
-			representedAs(writer);
-			_inner.WriteActualValueTo(writer);
+			private readonly ConstraintResult _result;
+
+			public RepresentationResult(IConstraint constraint, ConstraintResult result) : base(constraint, result.ActualValue, result.IsSuccess)
+			{
+				_result = result;
+			}
+
+			public override void WriteActualValueTo(MessageWriter writer)
+			{
+				representedAs(writer);
+				_result.WriteActualValueTo(writer);
+			}
 		}
 	}
 }

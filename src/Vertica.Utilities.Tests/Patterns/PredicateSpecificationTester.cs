@@ -4,10 +4,10 @@ using System.Linq;
 using NUnit.Framework;
 using Testing.Commons;
 using Testing.Commons.NUnit.Constraints;
-using Vertica.Utilities_v4.Patterns;
-using Vertica.Utilities_v4.Tests.Patterns.Support;
+using Vertica.Utilities.Tests.Patterns.Support;
+using Vertica.Utilities.Patterns;
 
-namespace Vertica.Utilities_v4.Tests.Patterns
+namespace Vertica.Utilities.Tests.Patterns
 {
 	[TestFixture]
 	public class PredicateSpecificationTester

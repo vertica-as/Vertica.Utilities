@@ -5,12 +5,12 @@ using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
 using Testing.Commons;
-using Vertica.Utilities_v4.Collections;
-using Vertica.Utilities_v4.Comparisons;
-using Vertica.Utilities_v4.Extensions.EnumerableExt;
-using Vertica.Utilities_v4.Tests.Extensions.Support;
+using Vertica.Utilities.Tests.Extensions.Support;
+using Vertica.Utilities.Collections;
+using Vertica.Utilities.Comparisons;
+using Vertica.Utilities.Extensions.EnumerableExt;
 
-namespace Vertica.Utilities_v4.Tests.Extensions
+namespace Vertica.Utilities.Tests.Extensions
 {
 	[TestFixture]
 	public class EnumerableExtensionsTester

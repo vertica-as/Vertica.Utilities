@@ -2,9 +2,9 @@
 using NUnit.Framework.Constraints;
 using Testing.Commons;
 using Testing.Commons.NUnit.Constraints;
-using Vertica.Utilities_v4.Collections;
+using Vertica.Utilities.Collections;
 
-namespace Vertica.Utilities_v4.Tests.Collections.Support
+namespace Vertica.Utilities.Tests.Collections.Support
 {
 	internal static partial class MustExtensions
 	{

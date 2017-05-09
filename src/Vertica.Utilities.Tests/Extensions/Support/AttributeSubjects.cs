@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace Vertica.Utilities_v4.Tests.Extensions.Support
+namespace Vertica.Utilities.Tests.Extensions.Support
 {
 	[Category("cat"), Description("desc")]
 	internal class DecoratedWithCategoryAndDescription { }

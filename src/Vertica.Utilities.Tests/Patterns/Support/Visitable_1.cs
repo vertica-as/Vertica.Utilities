@@ -1,6 +1,6 @@
-﻿using Vertica.Utilities_v4.Patterns;
+﻿using Vertica.Utilities.Patterns;
 
-namespace Vertica.Utilities_v4.Tests.Patterns.Support
+namespace Vertica.Utilities.Tests.Patterns.Support
 {
 	
 

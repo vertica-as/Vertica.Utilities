@@ -1,8 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
-using Vertica.Utilities_v4.Collections;
+using Vertica.Utilities.Collections;
 
-namespace Vertica.Utilities_v4.Tests.Collections
+namespace Vertica.Utilities.Tests.Collections
 {
 	[TestFixture]
 	public class PaginationTester
@@ -21,8 +21,6 @@ namespace Vertica.Utilities_v4.Tests.Collections
 			Assert.That(subject.LastRecord, Is.EqualTo(lastRecord));
 		}
 
-
-		[TestCase(0U, 0U, 0U, ExpectedException = typeof(DivideByZeroException))]
 		[TestCase(0U, 1U, 0U)]
 		[TestCase(1U, 1U, 1U)]
 		[TestCase(1U, 5U, 1U)]
@@ -35,6 +33,13 @@ namespace Vertica.Utilities_v4.Tests.Collections
 		{
 			var subject = new Pagination(pageSize, default(uint));
 			Assert.That(subject.PageCount(totalCount), Is.EqualTo(expectedNumberOfPages));
+		}
+
+		[Test]
+		public void PageCount_zero_Exception()
+		{
+			var subject = new Pagination(0, default(uint));
+			Assert.That(()=> subject.PageCount(0), Throws.InstanceOf<DivideByZeroException>());
 		}
 	}
 }

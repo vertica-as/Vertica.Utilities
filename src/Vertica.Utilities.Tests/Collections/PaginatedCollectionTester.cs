@@ -2,9 +2,9 @@
 using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
-using Vertica.Utilities_v4.Collections;
+using Vertica.Utilities.Collections;
 
-namespace Vertica.Utilities_v4.Tests.Collections
+namespace Vertica.Utilities.Tests.Collections
 {
 	[TestFixture]
 	public class PaginatedCollectionTester

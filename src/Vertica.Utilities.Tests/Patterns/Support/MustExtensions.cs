@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework.Constraints;
 using Testing.Commons;
 
-namespace Vertica.Utilities_v4.Tests.Patterns.Support
+namespace Vertica.Utilities.Tests.Patterns.Support
 {
 	public static class MustExtensions
 	{

@@ -1,10 +1,10 @@
 ﻿using NUnit.Framework;
 using Testing.Commons;
 using Testing.Commons.NUnit.Constraints;
-using Vertica.Utilities_v4.Extensions.AttributeExt;
-using Vertica.Utilities_v4.Tests.Extensions.Support;
+using Vertica.Utilities.Tests.Extensions.Support;
+using Vertica.Utilities.Extensions.AttributeExt;
 
-namespace Vertica.Utilities_v4.Tests.Extensions
+namespace Vertica.Utilities.Tests.Extensions
 {
 	[TestFixture]
 	public class AttributeExtensionsTester

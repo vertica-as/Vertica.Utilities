@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using NUnit.Framework;
-using Vertica.Utilities_v4.Comparisons;
-using Vertica.Utilities_v4.Tests.Comparisons.Support;
+using Vertica.Utilities.Tests.Comparisons.Support;
+using Vertica.Utilities.Comparisons;
 
-namespace Vertica.Utilities_v4.Tests.Comparisons
+namespace Vertica.Utilities.Tests.Comparisons
 {
 	[TestFixture]
 	public class OperatorComparerTester

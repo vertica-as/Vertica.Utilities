@@ -1,4 +1,4 @@
-namespace Vertica.Utilities_v4.Tests
+namespace Vertica.Utilities.Tests
 {
 	public class IMapperTester
 	{

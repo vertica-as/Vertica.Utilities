@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Globalization;
 using NUnit.Framework;
-using Testing.Commons;
 using Testing.Commons.Globalization;
-using Testing.Commons.NUnit.Constraints;
-using Vertica.Utilities_v4.Web;
+using Vertica.Utilities.Web;
 
-namespace Vertica.Utilities_v4.Tests.Web
+namespace Vertica.Utilities.Tests.Web
 {
 	[TestFixture]
 	public class QualityTester
@@ -36,12 +33,12 @@ namespace Vertica.Utilities_v4.Tests.Web
 			var subject = new Quality(qualityFactor);
 
 			string dotCultureRepresentation, commaCultureRepresentation;
-			using (CultureReseter.Set(CultureInfo.GetCultureInfo("en-US")))
+			using (CultureReseter.Set("en-US"))
 			{
 				dotCultureRepresentation = subject.ToString();
 			}
 
-			using (CultureReseter.Set(CultureInfo.GetCultureInfo("da-DK")))
+			using (CultureReseter.Set("da-DK"))
 			{
 				commaCultureRepresentation = subject.ToString();
 			}

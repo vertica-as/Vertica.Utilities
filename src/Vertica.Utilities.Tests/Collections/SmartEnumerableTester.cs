@@ -4,10 +4,10 @@ using System.Linq;
 using NUnit.Framework;
 using Testing.Commons;
 using Testing.Commons.NUnit.Constraints;
-using Vertica.Utilities_v4.Collections;
-using Vertica.Utilities_v4.Tests.Collections.Support;
+using Vertica.Utilities.Collections;
+using Vertica.Utilities.Tests.Collections.Support;
 
-namespace Vertica.Utilities_v4.Tests.Collections
+namespace Vertica.Utilities.Tests.Collections
 {
 	[TestFixture]
 	public class SmartEnumerableTester

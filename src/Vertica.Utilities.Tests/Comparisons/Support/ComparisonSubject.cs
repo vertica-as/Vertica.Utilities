@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vertica.Utilities_v4.Tests.Comparisons.Support
+namespace Vertica.Utilities.Tests.Comparisons.Support
 {
 	internal class ComparisonSubject : IComparable<ComparisonSubject>
 	{

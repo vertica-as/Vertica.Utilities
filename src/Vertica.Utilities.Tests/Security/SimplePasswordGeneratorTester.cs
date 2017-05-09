@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using Vertica.Utilities_v4.Security;
+using Vertica.Utilities.Security;
 
-namespace Vertica.Utilities_v4.Tests.Security
+namespace Vertica.Utilities.Tests.Security
 {
 	[TestFixture]
 	public class SimplePasswordGeneratorTester

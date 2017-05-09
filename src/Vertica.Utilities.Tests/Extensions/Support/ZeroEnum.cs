@@ -1,4 +1,4 @@
-﻿namespace Vertica.Utilities_v4.Tests.Extensions.Support
+﻿namespace Vertica.Utilities.Tests.Extensions.Support
 {
 	public enum ZeroEnum
 	{

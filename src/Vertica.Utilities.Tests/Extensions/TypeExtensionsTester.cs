@@ -1,9 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
-using Vertica.Utilities_v4.Extensions.TypeExt;
-using Vertica.Utilities_v4.Tests.Extensions.Support;
+using Vertica.Utilities.Tests.Extensions.Support;
+using Vertica.Utilities.Extensions.TypeExt;
 
-namespace Vertica.Utilities_v4.Tests.Extensions
+namespace Vertica.Utilities.Tests.Extensions
 {
 	[TestFixture]
 	public class TypeExtensionsTester
