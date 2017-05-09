@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Vertica.Utilities_v4.Extensions.StringExt;
-using Vertica.Utilities_v4.Resources;
+using Vertica.Utilities.Extensions.StringExt;
+using Vertica.Utilities.Resources;
 
-namespace Vertica.Utilities_v4
+namespace Vertica.Utilities
 {
 	public interface IEnumerated
 	{
@@ -26,15 +26,9 @@ namespace Vertica.Utilities_v4
 			_repo.Add(this);
 		}
 
-		public string Name { get; private set; }
+		public string Name { get; }
 
-		public static IEnumerable<T> Values
-		{
-			get
-			{
-				return _repo.FindAll();
-			}
-		}
+		public static IEnumerable<T> Values => _repo.FindAll();
 
 		public static IEnumerable<string> Names
 		{
@@ -126,12 +120,12 @@ namespace Vertica.Utilities_v4
 
 		private static void initializeType(Type t)
 		{
-			if (!t.IsSubclassOf(typeof(Enumerated<>))) return;
-			FieldInfo[] fis = t.GetFields(BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.Public);
+			if (!t.GetTypeInfo().IsSubclassOf(typeof(Enumerated<>))) return;
+			FieldInfo[] fis = t.GetTypeInfo().GetFields(BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.Public);
 			if (fis.Length > 0)
 				fis[0].GetValue(null);
 
-			initializeType(t.BaseType);
+			initializeType(t.GetTypeInfo().BaseType);
 		}
 
 		public IEnumerable<T> FindAll()

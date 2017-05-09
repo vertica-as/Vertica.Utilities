@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace Vertica.Utilities_v4
+namespace Vertica.Utilities
 {
 	/// <summary>
 	/// commons parts of percentages, thanks you lack of generic numeric super-type

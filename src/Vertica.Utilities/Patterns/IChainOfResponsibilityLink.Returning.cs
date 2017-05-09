@@ -1,4 +1,4 @@
-﻿namespace Vertica.Utilities_v4.Patterns
+﻿namespace Vertica.Utilities.Patterns
 {
 	public interface IChainOfResponsibilityLink<in T, out TResult>
 	{

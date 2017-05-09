@@ -5,9 +5,10 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Vertica.Utilities_v4.Resources;
+using Vertica.Utilities.Extensions.StringExt;
+using Vertica.Utilities.Resources;
 
-namespace Vertica.Utilities_v4
+namespace Vertica.Utilities
 {
 	public static class Enumeration
 	{
@@ -15,7 +16,7 @@ namespace Vertica.Utilities_v4
 
 		public static bool IsEnum<TEnum>() where TEnum : struct, IComparable, IFormattable, IConvertible
 		{
-			return typeof(TEnum).IsEnum;
+			return typeof(TEnum).GetTypeInfo().IsEnum;
 		}
 
 		public static void AssertEnum<TEnum>() where TEnum : struct, IComparable, IFormattable, IConvertible
@@ -666,7 +667,7 @@ namespace Vertica.Utilities_v4
 		public static FieldInfo GetField<TEnum>(TEnum value) where TEnum : struct, IComparable, IFormattable, IConvertible
 		{
 			AssertEnum<TEnum>();
-			return typeof(TEnum).GetField(value.ToString(CultureInfo.InvariantCulture));
+			return typeof(TEnum).GetTypeInfo().GetField(value.ToString(CultureInfo.InvariantCulture));
 		}
 
 		public static bool HasAttribute<TEnum, U>(TEnum value)
@@ -681,7 +682,7 @@ namespace Vertica.Utilities_v4
 			where U : Attribute
 		{
 			AssertEnum<TEnum>();
-			return (U)Attribute.GetCustomAttribute(GetField(value), typeof(U), false);
+			return GetField(value).GetCustomAttribute<U>(false);
 		}
 
 		public static string GetDescription<TEnum>(TEnum value)
@@ -698,7 +699,7 @@ namespace Vertica.Utilities_v4
 
 		public static bool IsFlags<TFlags>() where TFlags : struct, IComparable, IFormattable, IConvertible
 		{
-			return IsEnum<TFlags>() && typeof(TFlags).IsDefined(typeof(FlagsAttribute), false);
+			return IsEnum<TFlags>() && typeof(TFlags).GetTypeInfo().IsDefined(typeof(FlagsAttribute), false);
 		}
 
 		public static void AssertFlags<TFlags>() where TFlags : struct, IComparable, IFormattable, IConvertible
@@ -844,7 +845,7 @@ namespace Vertica.Utilities_v4
 				var objParam = Expression.Parameter(typeof(TEnum), "obj");
 				var underlyingType = Enum.GetUnderlyingType(typeof(TEnum));
 				var convertExpression = Expression.Convert(objParam, underlyingType);
-				var getHashCodeMethod = underlyingType.GetMethod("GetHashCode");
+				var getHashCodeMethod = underlyingType.GetTypeInfo().GetMethod("GetHashCode");
 				var getHashCodeExpression = Expression.Call(convertExpression, getHashCodeMethod);
 				return Expression.Lambda<Func<TEnum, int>>(getHashCodeExpression, new[] { objParam }).Compile();
 			}
@@ -878,5 +879,19 @@ namespace Vertica.Utilities_v4
 		}
 
 		#endregion
+	}
+
+	public class InvalidEnumArgumentException : ArgumentException
+	{
+		public InvalidEnumArgumentException() : this(null) { }
+
+		public InvalidEnumArgumentException(string message) : base(message) { }
+
+		public InvalidEnumArgumentException(string message, Exception inner) : base(message, inner) { }
+
+		public InvalidEnumArgumentException(string argumentName, int invalidValue, Type enumClass)
+			: base(Exceptions.Enumerated_Invalid
+				  .FormatWith(argumentName, invalidValue.ToString(CultureInfo.InvariantCulture), enumClass.Name),
+				argumentName) { }
 	}
 }

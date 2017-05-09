@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Vertica.Utilities_v4.Extensions.DomainExt
+namespace Vertica.Utilities.Extensions.DomainExt
 {
 	public static class DomainOfValuesExtensions
 	{

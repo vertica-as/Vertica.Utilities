@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Vertica.Utilities_v4.Patterns
+namespace Vertica.Utilities.Patterns
 {
 	public class ExpressionSpecification<T> : Specification<T>
 	{

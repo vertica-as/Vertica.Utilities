@@ -1,4 +1,4 @@
-﻿namespace Vertica.Utilities_v4.Extensions.Infrastructure
+﻿namespace Vertica.Utilities.Extensions.Infrastructure
 {
 	public static partial class EntryPoints
 	{

@@ -1,4 +1,4 @@
-﻿namespace Vertica.Utilities_v4.Security
+﻿namespace Vertica.Utilities.Security
 {
 	public class BCryptHasher : IPasswordHasher
 	{

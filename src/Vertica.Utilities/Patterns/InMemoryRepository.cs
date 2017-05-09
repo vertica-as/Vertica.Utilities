@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Vertica.Utilities_v4.Collections;
-using Vertica.Utilities_v4.Extensions.ObjectExt;
+using Vertica.Utilities.Collections;
+using Vertica.Utilities.Extensions.ObjectExt;
 
-namespace Vertica.Utilities_v4.Patterns
+namespace Vertica.Utilities.Patterns
 {
 	public class InMemoryRepository<T, K> : IRepository<T, K> where T : IIdentifiable<K>
 	{
@@ -71,12 +71,12 @@ namespace Vertica.Utilities_v4.Patterns
 			return entity.IsNotDefault();
 		}
 
-		public Vertica.Utilities_v4.Collections.IReadOnlyList<T> FindAll()
+		public Collections.IReadOnlyList<T> FindAll()
 		{
 			return new ReadOnlyListAdapter<T>(_inner);
 		}
 
-		public Vertica.Utilities_v4.Collections.IReadOnlyList<T> FindAll(Expression<Func<T, bool>> expression)
+		public Collections.IReadOnlyList<T> FindAll(Expression<Func<T, bool>> expression)
 		{
 
 			return new ReadOnlyListAdapter<T>(_inner.Where(expression.Compile()).ToList());

@@ -1,4 +1,4 @@
-﻿namespace Vertica.Utilities_v4.Web
+﻿namespace Vertica.Utilities.Web
 {
 	public class EchoPort : TcpPort
 	{

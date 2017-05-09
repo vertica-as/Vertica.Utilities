@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vertica.Utilities_v4.Web
+namespace Vertica.Utilities.Web
 {
 	public struct CompactGuid : IEquatable<CompactGuid>
 	{

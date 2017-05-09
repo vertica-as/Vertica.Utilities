@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Vertica.Utilities_v4.Collections
+namespace Vertica.Utilities.Collections
 {
 	public class Tree<TModel, TKey> : Tree<TModel, TModel, TKey>
 	{

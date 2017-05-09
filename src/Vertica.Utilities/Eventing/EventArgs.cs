@@ -1,4 +1,4 @@
-﻿namespace Vertica.Utilities_v4.Eventing
+﻿namespace Vertica.Utilities.Eventing
 {
 	public interface IValueEventArgs<out T> { T Value { get; } }
 

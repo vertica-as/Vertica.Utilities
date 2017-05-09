@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using Vertica.Utilities_v4.Collections;
-using Vertica.Utilities_v4.Comparisons;
+using Vertica.Utilities.Comparisons;
+using Vertica.Utilities.Collections;
 
-namespace Vertica.Utilities_v4.Extensions.QueryableExt
+namespace Vertica.Utilities.Extensions.QueryableExt
 {
 	public static class QueryableExtensions
 	{

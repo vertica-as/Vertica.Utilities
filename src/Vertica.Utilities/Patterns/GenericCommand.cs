@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vertica.Utilities_v4.Patterns
+namespace Vertica.Utilities.Patterns
 {
 	public class GenericCommand<TReceiver> : ICommand
 	{

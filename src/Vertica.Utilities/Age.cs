@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Text;
-using Vertica.Utilities_v4.Extensions.StringExt;
+using Vertica.Utilities.Extensions.StringExt;
 
-namespace Vertica.Utilities_v4
+namespace Vertica.Utilities
 {
 	public struct Age : IFormattable, IEquatable<Age>, IComparable, IComparable<Age>, IComparable<TimeSpan>
 	{
@@ -79,76 +79,49 @@ namespace Vertica.Utilities_v4
 		/// <summary>
 		/// Gets the number of years old
 		/// </summary>
-		public int Years
-		{
-			get { return _years; }
-		}
+		public int Years => _years;
 
 		private readonly int _months;
 		/// <summary>
 		/// Gets the number of months old
 		/// </summary>
-		public int Months
-		{
-			get { return _months; }
-		}
+		public int Months => _months;
 
 		private readonly int _weeks;
 		/// <summary>
 		/// Gets the number of weeks old
 		/// </summary>
-		public int Weeks
-		{
-			get { return _weeks; }
-		}
+		public int Weeks => _weeks;
 
 		private readonly int _days;
 		/// <summary>
 		/// Gets the number of days old
 		/// </summary>
-		public int Days
-		{
-			get { return _days; }
-		}
+		public int Days => _days;
 
 		private readonly DateTime _advent;
 		/// <summary>
 		/// Gets/Sets the start of the age
 		/// </summary>
-		public DateTime Advent
-		{
-			get { return _advent; }
-		}
+		public DateTime Advent => _advent;
 
 		private readonly DateTime _terminus;
 		/// <summary>
 		/// Gets/Sets the end of the age
 		/// </summary>
-		public DateTime Terminus
-		{
-			get { return _terminus; }
-		}
+		public DateTime Terminus => _terminus;
 
 		/// <summary>
 		/// Gets the elapsed time
 		/// </summary>
-		public TimeSpan Elapsed
-		{
-			get { return new TimeSpan(_terminus.Ticks - _advent.Ticks); }
-		}
+		public TimeSpan Elapsed => new TimeSpan(_terminus.Ticks - _advent.Ticks);
 
 		/// <summary>
 		/// Gets a value indicating that the age is empty (both advent and terminus dates are MinValue)
 		/// </summary>
 		/// <returns></returns>
-		public bool IsEmpty
-		{
-			get
-			{
-				return _advent == DateTime.MinValue
-					   && _terminus == DateTime.MinValue;
-			}
-		}
+		public bool IsEmpty => _advent == DateTime.MinValue
+		                       && _terminus == DateTime.MinValue;
 
 		#endregion
 
@@ -240,13 +213,13 @@ namespace Vertica.Utilities_v4
 			{
 				int parts = 0;
 				if (format.Length > 1 && char.IsDigit(format[1]))
-					parts = int.Parse(format[1].ToString(provider));
+					parts = int.Parse(format[1].ToString());
 				return ToString(parts);
 			}
 
 			if (char.IsDigit(first))
 			{
-				int parts = int.Parse(first.ToString(provider));
+				int parts = int.Parse(first.ToString());
 				return ToString(parts);
 			}
 

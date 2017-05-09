@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Vertica.Utilities_v4.Collections
+namespace Vertica.Utilities.Collections
 {
 	public class FrameworkRandomizer : IRandomizer
 	{

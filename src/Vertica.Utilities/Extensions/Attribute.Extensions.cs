@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
-namespace Vertica.Utilities_v4.Extensions.AttributeExt
+namespace Vertica.Utilities.Extensions.AttributeExt
 {
 	public static class AttributeExtensions
 	{
@@ -9,27 +10,28 @@ namespace Vertica.Utilities_v4.Extensions.AttributeExt
 
 		public static bool HasAttribute<T>(this object element, bool inherit = false) where T : Attribute
 		{
-			return element != null && Attribute.IsDefined(element.GetType(), typeof(T), inherit);
+			return element != null && 
+				element.GetType().GetTypeInfo().IsDefined(typeof(T), inherit);
 		}
 
-		public static bool HasAttribute<T>(this Assembly element, bool inherit = false) where T : Attribute
+		public static bool HasAttribute<T>(this Assembly element) where T : Attribute
 		{
-			return Attribute.IsDefined(element, typeof(T), inherit);
+			return element.IsDefined(typeof(T));
 		}
 
 		public static bool HasAttribute<T>(this MemberInfo element, bool inherit = false) where T : Attribute
 		{
-			return Attribute.IsDefined(element, typeof(T), inherit);
+			return element.IsDefined(typeof(T), inherit);
 		}
 
-		public static bool HasAttribute<T>(this Module element, bool inherit = false) where T : Attribute
+		public static bool HasAttribute<T>(this Module element) where T : Attribute
 		{
-			return Attribute.IsDefined(element, typeof(T), inherit);
+			return element.IsDefined(typeof(T));
 		}
 
 		public static bool HasAttribute<T>(this ParameterInfo element, bool inherit = false) where T : Attribute
 		{
-			return Attribute.IsDefined(element, typeof(T), inherit);
+			return element.IsDefined(typeof(T), inherit);
 		}
 
 		#endregion
@@ -38,27 +40,32 @@ namespace Vertica.Utilities_v4.Extensions.AttributeExt
 
 		public static T GetAttribute<T>(this object element, bool inherit = false) where T : Attribute
 		{
-			return Attribute.GetCustomAttribute(element.GetType(), typeof(T), inherit) as T;
+			Guard.AgainstNullArgument(nameof(element), element);
+			return element.GetType().GetTypeInfo().GetCustomAttribute<T>(inherit);
 		}
 
 		public static T GetAttribute<T>(this Assembly element, bool inherit = false) where T : Attribute
 		{
-			return Attribute.GetCustomAttribute(element, typeof(T), inherit) as T;
+			Guard.AgainstNullArgument(nameof(element), element);
+			return element.GetType().GetTypeInfo().GetCustomAttribute<T>(inherit);
 		}
 
 		public static T GetAttribute<T>(this MemberInfo element, bool inherit = false) where T : Attribute
 		{
-			return Attribute.GetCustomAttribute(element, typeof(T), inherit) as T;
+			Guard.AgainstNullArgument(nameof(element), element);
+			return element.GetType().GetTypeInfo().GetCustomAttribute<T>(inherit);
 		}
 
 		public static T GetAttribute<T>(this Module element, bool inherit = false) where T : Attribute
 		{
-			return Attribute.GetCustomAttribute(element, typeof(T), inherit) as T;
+			Guard.AgainstNullArgument(nameof(element), element);
+			return element.GetType().GetTypeInfo().GetCustomAttribute<T>(inherit);
 		}
 
 		public static T GetAttribute<T>(this ParameterInfo element, bool inherit = false) where T : Attribute
 		{
-			return Attribute.GetCustomAttribute(element, typeof(T), inherit) as T;
+			Guard.AgainstNullArgument(nameof(element), element);
+			return element.GetType().GetTypeInfo().GetCustomAttribute<T>(inherit);
 		}
 
 		#endregion
@@ -67,27 +74,32 @@ namespace Vertica.Utilities_v4.Extensions.AttributeExt
 
 		public static T[] GetAttributes<T>(this object element, bool inherit = false) where T : Attribute
 		{
-			return Attribute.GetCustomAttributes(element.GetType(), typeof(T), inherit) as T[];
+			Guard.AgainstNullArgument(nameof(element), element);
+			return element.GetType().GetTypeInfo().GetCustomAttributes<T>().ToArray();
 		}
 
 		public static T[] GetAttributes<T>(this Assembly element, bool inherit = false) where T : Attribute
 		{
-			return Attribute.GetCustomAttributes(element, typeof(T), inherit) as T[];
+			Guard.AgainstNullArgument(nameof(element), element);
+			return element.GetType().GetTypeInfo().GetCustomAttributes<T>().ToArray();
 		}
 
 		public static T[] GetAttributes<T>(this MemberInfo element, bool inherit = false) where T : Attribute
 		{
-			return Attribute.GetCustomAttributes(element, typeof(T), inherit) as T[];
+			Guard.AgainstNullArgument(nameof(element), element);
+			return element.GetType().GetTypeInfo().GetCustomAttributes<T>().ToArray();
 		}
 
 		public static T[] GetAttributes<T>(this Module element, bool inherit = false) where T : Attribute
 		{
-			return Attribute.GetCustomAttributes(element, typeof(T), inherit) as T[];
+			Guard.AgainstNullArgument(nameof(element), element);
+			return element.GetType().GetTypeInfo().GetCustomAttributes<T>().ToArray();
 		}
 
 		public static T[] GetAttributes<T>(this ParameterInfo element, bool inherit = false) where T : Attribute
 		{
-			return Attribute.GetCustomAttributes(element, typeof(T), inherit) as T[];
+			Guard.AgainstNullArgument(nameof(element), element);
+			return element.GetType().GetTypeInfo().GetCustomAttributes<T>().ToArray();
 		}
 
 		#endregion

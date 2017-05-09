@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Vertica.Utilities_v4.Extensions.StringExt;
+using Vertica.Utilities.Extensions.StringExt;
 
-namespace Vertica.Utilities_v4.Extensions.TypeExt
+namespace Vertica.Utilities.Extensions.TypeExt
 {
 	public static class TypeExtensions
 	{
 		public static IEnumerable<Type> AllInterfaces(this Type target)
 		{
-			foreach (var @interface in target.GetInterfaces())
+			foreach (var @interface in target.GetTypeInfo().GetInterfaces())
 			{
 				yield return @interface;
 				foreach (var childInterface in @interface.AllInterfaces())
@@ -25,7 +25,7 @@ namespace Vertica.Utilities_v4.Extensions.TypeExt
 		{
 			return 
 				new[]{target}.Concat(target.AllInterfaces())
-				.SelectMany(type => type.GetMethods());
+				.SelectMany(type => type.GetTypeInfo().GetMethods());
 		}
 
 		public static string NameWithNamespace(this Type target)
@@ -42,13 +42,13 @@ namespace Vertica.Utilities_v4.Extensions.TypeExt
 			if (includeNamespace) sb.Append(NameWithNamespace(target));
 			else sb.Append(target.Name);
 
-			if (target.IsGenericType)
+			if (target.GetTypeInfo().IsGenericType)
 			{
 				// remove generic apostrophes
 				sb.Remove(sb.Length - 2, 2);
 				sb.Append("<");
-				Type[] arguments = target.GetGenericArguments();
-				if (!target.IsGenericTypeDefinition)
+				Type[] arguments = target.GetTypeInfo().GetGenericArguments();
+				if (!target.GetTypeInfo().IsGenericTypeDefinition)
 				{
 					foreach (Type argument in arguments)
 					{
@@ -77,7 +77,7 @@ namespace Vertica.Utilities_v4.Extensions.TypeExt
 
 		public static object GetDefault(this Type t)
 		{
-			if (!t.IsValueType) return null;
+			if (!t.GetTypeInfo().IsValueType) return null;
 			return Activator.CreateInstance(t);
 		}
 
@@ -85,16 +85,16 @@ namespace Vertica.Utilities_v4.Extensions.TypeExt
 		{
 			if (type == null) return false;
 
-			return !type.IsValueType || type.IsNullable();
+			return !type.GetTypeInfo().IsValueType || type.IsNullable();
 		}
 
 		public static bool IsNullable(this Type type)
 		{
-			if ((type == null) || !type.IsValueType)
+			if ((type == null) || !type.GetTypeInfo().IsValueType)
 			{
 				return false;
 			}
-			return (type.IsGenericType && type.GetGenericTypeDefinition() == (typeof(Nullable<>)));
+			return (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == (typeof(Nullable<>)));
 		}
 	}
 }

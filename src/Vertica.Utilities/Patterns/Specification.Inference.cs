@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Vertica.Utilities_v4.Patterns
+namespace Vertica.Utilities.Patterns
 {
 	public static class PredicateSpecification
 	{

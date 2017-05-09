@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Specialized;
+using System.Linq;
+using Vertica.Utilities.Collections;
+using System.Net;
 using System.Text;
-using System.Web;
 
-namespace Vertica.Utilities_v4.Web
+namespace Vertica.Utilities.Web
 {
 	public static class QueryStringHelper
 	{
@@ -12,7 +13,7 @@ namespace Vertica.Utilities_v4.Web
 		static class ValueEncoding
 		{
 			internal static readonly Func<string, string> None = _ => _;
-			internal static readonly Func<string, string> Url = str => HttpUtility.UrlEncode(str);
+			internal static readonly Func<string, string> Url = str => WebUtility.UrlEncode(str);
 		}
 		static class Prepend
 		{
@@ -20,35 +21,35 @@ namespace Vertica.Utilities_v4.Web
 			internal static readonly Action<StringBuilder> Q = sb => sb.Insert(0, QueryStringHelper.Q);
 		}
 
-		public static string ToQueryString(this NameValueCollection collection)
+		public static string ToQueryString(this MutableLookup<string, string> collection)
 		{
 			return buildString(collection,
 				ValueEncoding.Url,
 				Prepend.Q);
 		}
 
-		public static string ToQuery(this NameValueCollection collection)
+		public static string ToQuery(this MutableLookup<string, string> collection)
 		{
 			return buildString(collection,
 				ValueEncoding.Url,
 				Prepend.Nothing);
 		}
 
-		public static string ToDecodedQueryString(this NameValueCollection collection)
+		public static string ToDecodedQueryString(this MutableLookup<string, string> collection)
 		{
 			return buildString(collection,
 				ValueEncoding.None,
 				Prepend.Q);
 		}
 
-		public static string ToDecodedQuery(this NameValueCollection collection)
+		public static string ToDecodedQuery(this MutableLookup<string, string> collection)
 		{
 			return buildString(collection,
 				ValueEncoding.None,
 				Prepend.Nothing);
 		}
 
-		private static string buildString(NameValueCollection collection,
+		private static string buildString(MutableLookup<string, string> collection,
 			Func<string, string> valueEncoding,
 			Action<StringBuilder> prependAction)
 		{
@@ -59,7 +60,7 @@ namespace Vertica.Utilities_v4.Web
 			{
 			    if (key != null)
 			    {
-                    string[] values = collection.GetValues(key);
+                    string[] values = collection[key].ToArray();
 
                     if (values != null)
                     {
@@ -86,12 +87,6 @@ namespace Vertica.Utilities_v4.Web
 				sb.Remove(sb.Length - 1, 1);
 			}
 			return sb.ToString();
-		}
-
-		public static NameValueCollection QueryString(this Uri uri)
-		{
-			string queryText = HttpUtility.UrlDecode(uri.Query);
-			return HttpUtility.ParseQueryString(queryText);
 		}
 	}
 }

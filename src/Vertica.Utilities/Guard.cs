@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Vertica.Utilities_v4.Extensions.StringExt;
+using Vertica.Utilities.Extensions.StringExt;
 
-namespace Vertica.Utilities_v4
+namespace Vertica.Utilities
 {
 	public static class Guard
 	{
@@ -83,7 +81,7 @@ namespace Vertica.Utilities_v4
 
 		public static void AgainstNullArgument<T>(T container) where T: class
 		{
-			if (container == null) throw new ArgumentNullException("container");
+			if (container == null) throw new ArgumentNullException(nameof(container));
 
 			NullChecker<T>.Check(container);
 		}
@@ -98,10 +96,10 @@ namespace Vertica.Utilities_v4
 				Expression body = Expression.Constant(null, typeof(string));
 				var param = Expression.Parameter(typeof(T), "obj");
 
-				foreach (PropertyInfo property in typeof(T).GetProperties())
+				foreach (PropertyInfo property in typeof(T).GetTypeInfo().DeclaredProperties)
 				{
 					Type propType = property.PropertyType;
-					if (propType.IsValueType && Nullable.GetUnderlyingType(propType) == null)
+					if (propType.GetTypeInfo().IsValueType && Nullable.GetUnderlyingType(propType) == null)
 					{
 						continue; // can't be null
 					}

@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Vertica.Utilities_v4.Extensions.Infrastructure;
+using Vertica.Utilities.Extensions.Infrastructure;
 
-namespace Vertica.Utilities_v4.Extensions.AnonymousExt
+namespace Vertica.Utilities.Extensions.AnonymousExt
 {
 	public static class AnonymousExtensions
 	{
@@ -48,7 +49,7 @@ namespace Vertica.Utilities_v4.Extensions.AnonymousExt
 		public static T AsAnonymous<T>(this IDictionary<string, object> dict, T anonymousPrototype) where T : class
 		{
 			// get the sole constructor
-			var ctor = anonymousPrototype.GetType().GetConstructors().Single();
+			var ctor = anonymousPrototype.GetType().GetTypeInfo().GetConstructors().Single();
 			
 			Func<IDictionary<string, object>, string, object> getValueOrDefault = (d, key) =>
 			{
@@ -59,7 +60,7 @@ namespace Vertica.Utilities_v4.Extensions.AnonymousExt
 			// conveniently named constructor parameters make this all possible...
 			var args = ctor.GetParameters()
 				.Select(p => new {p, val = getValueOrDefault(dict, p.Name)})
-				.Select(a => a.val != null && a.p.ParameterType.IsInstanceOfType(a.val) ?
+				.Select(a => a.val != null && a.p.ParameterType.GetTypeInfo().IsInstanceOfType(a.val) ?
 					a.val : null);
 
 			return (T)ctor.Invoke(args.ToArray());

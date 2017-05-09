@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using Vertica.Utilities_v4.Extensions.StringExt;
+using Vertica.Utilities.Extensions.StringExt;
 
-namespace Vertica.Utilities_v4
+namespace Vertica.Utilities
 {
 	public struct Pair<T> : IEnumerable<T>, IEquatable<Pair<T>>
 	{
@@ -71,7 +71,7 @@ namespace Vertica.Utilities_v4
 				Guard.AgainstArgument("pair", tokens.Length != 2,
 					Resources.Exceptions.Tuploids_ParseTemplate,
 					"2",
-					tokenizer.ToString(CultureInfo.InvariantCulture));
+					tokenizer.ToString());
 
 				result = new Pair<T>(
 					tokens[0].Parse<T>(),
@@ -158,7 +158,7 @@ namespace Vertica.Utilities_v4
 				Guard.AgainstArgument("pair", tokens.Length != 2,
 					Resources.Exceptions.Tuploids_ParseTemplate,
 					"3",
-					tokenizer.ToString(CultureInfo.InvariantCulture));
+					tokenizer.ToString());
 
 				result = new Triplet<T>(
 					tokens[0].Parse<T>(),
@@ -245,7 +245,7 @@ namespace Vertica.Utilities_v4
 				Guard.AgainstArgument("pair", tokens.Length != 4,
 					Resources.Exceptions.Tuploids_ParseTemplate,
 					"4",
-					tokenizer.ToString(CultureInfo.InvariantCulture));
+					tokenizer.ToString());
 
 				result = new Quartet<T>(
 					tokens[0].Parse<T>(),
@@ -338,7 +338,7 @@ namespace Vertica.Utilities_v4
 				Guard.AgainstArgument("pair", tokens.Length != 5,
 					Resources.Exceptions.Tuploids_ParseTemplate,
 					"5",
-					tokenizer.ToString(CultureInfo.InvariantCulture));
+					tokenizer.ToString());
 
 				result = new Quintet<T>(
 					tokens[0].Parse<T>(),

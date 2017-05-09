@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Vertica.Utilities_v4.Security
+namespace Vertica.Utilities.Security
 {
 	internal class Base64
 	{

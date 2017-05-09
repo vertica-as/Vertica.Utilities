@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Vertica.Utilities_v4.Extensions.EnumerableExt;
+using Vertica.Utilities.Extensions.EnumerableExt;
 
-namespace Vertica.Utilities_v4.Patterns
+namespace Vertica.Utilities.Patterns
 {
 	public interface IOperation<T>
 	{

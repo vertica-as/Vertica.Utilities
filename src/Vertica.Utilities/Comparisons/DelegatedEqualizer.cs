@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Vertica.Utilities_v4.Comparisons
+namespace Vertica.Utilities.Comparisons
 {
 	public class DelegatedEqualizer<T> : ChainableEqualizer<T>
 	{

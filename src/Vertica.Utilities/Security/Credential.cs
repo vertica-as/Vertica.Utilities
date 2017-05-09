@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using Vertica.Utilities_v4.Extensions.StringExt;
+using Vertica.Utilities.Extensions.StringExt;
 
-namespace Vertica.Utilities_v4.Security
+namespace Vertica.Utilities.Security
 {
 	public class Credential
 	{
@@ -111,7 +111,7 @@ namespace Vertica.Utilities_v4.Security
 
 		public static string RemoveDomainIfPresent(string accountName)
 		{
-			string userName = accountName.Substr().RightFromFirst(LogonNameSeparator.ToString(CultureInfo.InvariantCulture));
+			string userName = accountName.Substr().RightFromFirst(LogonNameSeparator.ToString());
 			return userName ?? accountName;
 		}
 	}

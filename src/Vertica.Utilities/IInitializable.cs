@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vertica.Utilities_v4
+namespace Vertica.Utilities
 {
 	public interface IInitializable<in T0, in T1, in T2, in T3, in T4, in T5, in T6, in T7, in T8>
 	{

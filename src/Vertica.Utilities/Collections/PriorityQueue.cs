@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 
-namespace Vertica.Utilities_v4.Collections
+namespace Vertica.Utilities.Collections
 {
 	public enum Priority
 	{

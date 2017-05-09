@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
-using Vertica.Utilities_v4.Extensions.TimeExt;
-using Vertica.Utilities_v4.Resources;
+using Vertica.Utilities.Extensions.TimeExt;
+using Vertica.Utilities.Resources;
 
-namespace Vertica.Utilities_v4
+namespace Vertica.Utilities
 {
 	public static class Time
 	{
@@ -24,52 +24,22 @@ namespace Vertica.Utilities_v4
 		}
 
 		private static DateTimeOffset? _now;
-		public static DateTimeOffset Now
-		{
-			get
-			{
-				return _now ?? DateTimeOffset.Now;
-			}
-		}
+		public static DateTimeOffset Now => _now ?? DateTimeOffset.Now;
 
 		private static DateTimeOffset? _utcNow;
-		public static DateTimeOffset UtcNow
-		{
-			get { return _utcNow ?? Now.ToUniversalTime(); }
-		}
+		public static DateTimeOffset UtcNow => _utcNow ?? Now.ToUniversalTime();
 
-		public static TimeSpan Offset
-		{
-			get { return Now.Offset; }
-		}
+		public static TimeSpan Offset => Now.Offset;
 
-		public static DateTimeOffset Today
-		{
-			get { return Now.SetTime(MidNight); }
-		}
+		public static DateTimeOffset Today => Now.SetTime(MidNight);
 
-		public static DateTimeOffset Tomorrow
-		{
-			get { return Today.Tomorrow(); }
-		}
+		public static DateTimeOffset Tomorrow => Today.Tomorrow();
 
-		public static DateTimeOffset Yesterday
-		{
-			get { return Today.Yesterday(); }
-		}
+		public static DateTimeOffset Yesterday => Today.Yesterday();
 
-		public static DateTimeOffset UnixEpoch
-		{
-			get { return new DateTimeOffset(new DateTime(1970, 1, 1), TimeSpan.Zero); }
-		}
+		public static DateTimeOffset UnixEpoch => new DateTimeOffset(new DateTime(1970, 1, 1), TimeSpan.Zero);
 
-		public static double UnixTimestamp
-		{
-			get
-			{
-				return ToUnixTime(Now);
-			}
-		}
+		public static double UnixTimestamp => ToUnixTime(Now);
 
 		public static double ToUnixTime(DateTimeOffset date)
 		{

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Vertica.Utilities_v4.Eventing;
+using Vertica.Utilities.Eventing;
 
-namespace Vertica.Utilities_v4.Collections
+namespace Vertica.Utilities.Collections
 {
 	public class NotifyingList<T> : IList<T>
 	{

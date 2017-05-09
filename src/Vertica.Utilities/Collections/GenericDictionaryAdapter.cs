@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Vertica.Utilities_v4.Collections
+namespace Vertica.Utilities.Collections
 {
 	/// <summary>
 	/// Reference generic implementation of <see cref="KeyValueAdapter{TKey,TValue}"/>.

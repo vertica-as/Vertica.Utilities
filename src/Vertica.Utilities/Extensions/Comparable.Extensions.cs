@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Vertica.Utilities_v4.Comparisons;
+using Vertica.Utilities.Comparisons;
 
-namespace Vertica.Utilities_v4.Extensions.ComparableExt
+namespace Vertica.Utilities.Extensions.ComparableExt
 {
 	public static class ComparableExtensions
 	{

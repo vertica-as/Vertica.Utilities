@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Vertica.Utilities_v4.Extensions.ComparableExt;
+using Vertica.Utilities.Extensions.ComparableExt;
 
-namespace Vertica.Utilities_v4
+namespace Vertica.Utilities
 {
 	public static class Bound
 	{

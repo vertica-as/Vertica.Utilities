@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vertica.Utilities_v4
+namespace Vertica.Utilities
 {
 	public class DisposableAction : IDisposable
 	{

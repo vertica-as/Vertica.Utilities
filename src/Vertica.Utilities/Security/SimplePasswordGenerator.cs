@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Vertica.Utilities_v4.Security
+namespace Vertica.Utilities.Security
 {
 	public class SimplePasswordGenerator
 	{

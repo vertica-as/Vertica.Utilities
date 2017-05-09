@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Vertica.Utilities_v4
+namespace Vertica.Utilities
 {
 	public abstract class ClassMapper<TFrom, TTo> : IMapper<TFrom, TTo>
 		where TFrom : class

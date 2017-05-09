@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Vertica.Utilities_v4.Collections
+namespace Vertica.Utilities.Collections
 {
 	/// <summary>
 	/// Type chaining an IEnumerable&lt;T&gt; to allow the iterating code

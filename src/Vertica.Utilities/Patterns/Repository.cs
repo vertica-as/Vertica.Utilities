@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using Vertica.Utilities_v4.Collections;
+using Vertica.Utilities.Collections;
 
-namespace Vertica.Utilities_v4.Patterns
+namespace Vertica.Utilities.Patterns
 {
 	public interface IRepository<T, in K> where T : IIdentifiable<K>
 	{

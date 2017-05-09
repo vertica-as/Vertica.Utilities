@@ -1,7 +1,6 @@
 ﻿using System;
-using Vertica.Utilities_v4.Extensions.DelegateExt;
 
-namespace Vertica.Utilities_v4.Patterns
+namespace Vertica.Utilities.Patterns
 {
 	public class PredicateSpecification<T> : Specification<T>
 	{
@@ -18,7 +17,7 @@ namespace Vertica.Utilities_v4.Patterns
 
 		public Predicate<T> Predicate { get { return _predicate; } }
 
-		public Func<T, bool> Function { get { return Predicate.Cast<Func<T, bool>>(); } }
+		public Func<T, bool> Function { get { return new Func<T, bool>(t => _predicate(t)); } }
 
 		#region operators
 

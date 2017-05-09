@@ -138,6 +138,9 @@
   <data name="Enumerated_DuplicatedTemplate" xml:space="preserve">
     <value>The enum with name '{0}' is already used.</value>
   </data>
+  <data name="Enumerated_Invalid" xml:space="preserve">
+    <value>The value of argument '{0}' ({1}) is invalid for Enum type '{2}'.</value>
+  </data>
   <data name="Enumerated_NotFoundTemplate" xml:space="preserve">
     <value>Cannot find enum with name '{0}'.</value>
   </data>

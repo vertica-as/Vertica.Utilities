@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 
-namespace Vertica.Utilities_v4.Comparisons
+namespace Vertica.Utilities.Comparisons
 {
 	public abstract class ChainableEqualizer<T> : IEqualityComparer<T>
 	{
@@ -21,7 +22,7 @@ namespace Vertica.Utilities_v4.Comparisons
 		private static bool? handleNulls(T x, T y)
 		{
 			bool? shortCircuit = null;
-			if (!typeof(T).IsValueType)
+			if (!typeof(T).GetTypeInfo().IsValueType)
 			{
 				// ReSharper disable CompareNonConstrainedGenericWithNull
 				if (x == null)

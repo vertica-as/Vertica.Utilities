@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Vertica.Utilities_v4.Comparisons
+namespace Vertica.Utilities.Comparisons
 {
 	public class OperatorComparer<T> : ChainableComparer<T>
 	{

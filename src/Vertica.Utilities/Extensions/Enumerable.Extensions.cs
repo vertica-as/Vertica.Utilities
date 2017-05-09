@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Vertica.Utilities_v4.Collections;
-using Vertica.Utilities_v4.Resources;
+using Vertica.Utilities.Collections;
+using Vertica.Utilities.Resources;
 
-namespace Vertica.Utilities_v4.Extensions.EnumerableExt
+namespace Vertica.Utilities.Extensions.EnumerableExt
 {
 	// ReSharper disable PossibleMultipleEnumeration
 	public static class EnumerableExtensions

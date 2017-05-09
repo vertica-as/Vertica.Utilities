@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Vertica.Utilities_v4
+namespace Vertica.Utilities
 {
 	public sealed class Option<T> : IEquatable<Option<T>>
 	{
@@ -86,9 +86,5 @@ namespace Vertica.Utilities_v4
 
 			return EqualityComparer<T>.Default.GetHashCode(_value);
 		}
-
-		
-
-		
 	}
 }

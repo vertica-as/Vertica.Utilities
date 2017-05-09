@@ -1,4 +1,4 @@
-﻿namespace Vertica.Utilities_v4
+﻿namespace Vertica.Utilities
 {
 	public interface IShallowCloneable<out T>
 	{

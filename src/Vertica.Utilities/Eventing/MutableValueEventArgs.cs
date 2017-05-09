@@ -1,6 +1,6 @@
 using System;
 
-namespace Vertica.Utilities_v4.Eventing
+namespace Vertica.Utilities.Eventing
 {
 	public class MutableValueEventArgs<T> : EventArgs, IMutableValueEventArgs<T>
 	{

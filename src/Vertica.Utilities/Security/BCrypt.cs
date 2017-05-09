@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Vertica.Utilities_v4.Security
+namespace Vertica.Utilities.Security
 {
 	public class BCrypt
 	{

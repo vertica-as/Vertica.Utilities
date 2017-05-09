@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Vertica.Utilities_v4.Extensions.ComparableExt;
-using Vertica.Utilities_v4.Resources;
+using Vertica.Utilities.Extensions.ComparableExt;
+using Vertica.Utilities.Resources;
 
-namespace Vertica.Utilities_v4
+namespace Vertica.Utilities
 {
 	public class Range<T> : IEquatable<Range<T>> where T : IComparable<T>
 	{

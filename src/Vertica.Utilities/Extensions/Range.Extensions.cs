@@ -1,7 +1,7 @@
 ﻿using System;
-using Vertica.Utilities_v4.Extensions.ComparableExt;
+using Vertica.Utilities.Extensions.ComparableExt;
 
-namespace Vertica.Utilities_v4.Extensions.RangeExt
+namespace Vertica.Utilities.Extensions.RangeExt
 {
 	public static class RangeExtensions
 	{

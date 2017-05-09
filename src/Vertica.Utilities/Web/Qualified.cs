@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Vertica.Utilities_v4.Extensions.EnumerableExt;
-using Vertica.Utilities_v4.Extensions.StringExt;
+using Vertica.Utilities.Extensions.EnumerableExt;
+using Vertica.Utilities.Extensions.StringExt;
 
-namespace Vertica.Utilities_v4.Web
+namespace Vertica.Utilities.Web
 {
 	public class Qualified : IComparable<Qualified>
 	{

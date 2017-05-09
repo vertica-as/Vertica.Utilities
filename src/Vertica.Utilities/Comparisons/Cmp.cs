@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vertica.Utilities_v4.Comparisons
+namespace Vertica.Utilities.Comparisons
 {
 	public static class Cmp<T>
 	{

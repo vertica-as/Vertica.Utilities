@@ -1,4 +1,4 @@
-﻿namespace Vertica.Utilities_v4.Patterns
+﻿namespace Vertica.Utilities.Patterns
 {
 	public abstract class Specification<T> : ISpecification<T>
 	{

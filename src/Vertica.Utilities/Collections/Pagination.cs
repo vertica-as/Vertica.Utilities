@@ -1,6 +1,5 @@
-﻿using System;
-
-namespace Vertica.Utilities_v4.Collections
+﻿
+namespace Vertica.Utilities.Collections
 {
 	public struct Pagination
 	{

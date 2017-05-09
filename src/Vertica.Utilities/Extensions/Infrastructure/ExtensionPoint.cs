@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vertica.Utilities_v4.Extensions.Infrastructure
+namespace Vertica.Utilities.Extensions.Infrastructure
 {
 	public class ExtensionPoint<T> : IExtensionPoint<T>
 	{

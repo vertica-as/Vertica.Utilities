@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Vertica.Utilities_v4.Collections
+namespace Vertica.Utilities.Collections
 {
 	public class PaginatedResults<T> : IPaginatedResults
 	{

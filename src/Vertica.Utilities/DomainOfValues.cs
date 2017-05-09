@@ -2,9 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 
-namespace Vertica.Utilities_v4
+namespace Vertica.Utilities
 {
 	public class DomainOfValues<T> : IEnumerable<T>
 	{
@@ -66,7 +65,6 @@ namespace Vertica.Utilities_v4
 		public InvalidDomainException() {}
 		public InvalidDomainException(string message) : base(message) {}
 		public InvalidDomainException(string message, Exception inner) : base(message, inner) {}
-		protected InvalidDomainException(SerializationInfo info, StreamingContext context) : base(info, context) {}
 
 		public InvalidDomainException(T actualValue, IEnumerable<T> expectedDomainValues)
 			: this(buildMessage(actualValue, expectedDomainValues)) { }

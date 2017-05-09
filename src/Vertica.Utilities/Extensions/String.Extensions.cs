@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.IO.Compression;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
-using Vertica.Utilities_v4.Extensions.Infrastructure;
-using Vertica.Utilities_v4.Extensions.ObjectExt;
+using Vertica.Utilities.Extensions.Infrastructure;
+using Vertica.Utilities.Extensions.ObjectExt;
 
-namespace Vertica.Utilities_v4.Extensions.StringExt
+namespace Vertica.Utilities.Extensions.StringExt
 {
 	public delegate bool TryParseDelegate<T>(string s, out T result);
 
@@ -61,7 +60,7 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 				{
 					foreach (char c in chars)
 					{
-						result = result.Replace(c.ToString(CultureInfo.CurrentCulture), string.Empty);
+						result = result.Replace(c.ToString(), string.Empty);
 					}
 				}
 				return result;
@@ -392,131 +391,22 @@ namespace Vertica.Utilities_v4.Extensions.StringExt
 
 		public static string UrlEncode(this HttpExtensionPoint str)
 		{
-			return HttpUtility.UrlEncode(str.ExtendedValue);
-		}
-
-		public static string UrlEncode(this HttpExtensionPoint str, Encoding e)
-		{
-			return HttpUtility.UrlEncode(str.ExtendedValue, e);
+			return WebUtility.UrlEncode(str.ExtendedValue);
 		}
 
 		public static string UrlDecode(this HttpExtensionPoint str)
 		{
-			return HttpUtility.UrlDecode(str.ExtendedValue);
-		}
-
-		public static string UrlDecode(this HttpExtensionPoint str, Encoding e)
-		{
-			return HttpUtility.UrlDecode(str.ExtendedValue, e);
+			return WebUtility.UrlDecode(str.ExtendedValue);
 		}
 
 		public static string HtmlEncode(this HttpExtensionPoint str)
 		{
-			return HttpUtility.HtmlEncode(str.ExtendedValue);
-		}
-
-		public static string AttributeEncode(this HttpExtensionPoint str)
-		{
-			return HttpUtility.HtmlAttributeEncode(str.ExtendedValue);
+			return WebUtility.HtmlEncode(str.ExtendedValue);
 		}
 
 		public static string HtmlDecode(this HttpExtensionPoint str)
 		{
-			return HttpUtility.HtmlDecode(str.ExtendedValue);
-		}
-
-		#endregion
-
-		#region VirtualPathUtilityExtensions
-
-		public class VirtualPathExtensionPoint : ExtensionPoint<string>
-		{
-			public VirtualPathExtensionPoint(string value) : base(value) { }
-		}
-
-		public static VirtualPathExtensionPoint VirtualPath(this string subject)
-		{
-			return new VirtualPathExtensionPoint(subject);
-		}
-
-		/// <summary>
-		/// Extension that calls <see cref="VirtualPathUtility.Combine"/>.
-		/// </summary>
-		public static string CombineWith(this VirtualPathExtensionPoint basePath, string relativePath)
-		{
-			return VirtualPathUtility.Combine(basePath.ExtendedValue, relativePath);
-		}
-
-		/// <summary>
-		/// Extension that calls <see cref="VirtualPathUtility.GetDirectory"/>.
-		/// </summary>
-		public static string GetDirectory(this VirtualPathExtensionPoint virtualPath)
-		{
-			return VirtualPathUtility.GetDirectory(virtualPath.ExtendedValue);
-		}
-
-		/// <summary>
-		/// Extension that calls <see cref="VirtualPathUtility.GetExtension"/>.
-		/// </summary>
-		public static string GetExtension(this VirtualPathExtensionPoint virtualPath)
-		{
-			return VirtualPathUtility.GetExtension(virtualPath.ExtendedValue);
-		}
-
-		/// <summary>
-		/// Extension that calls <see cref="VirtualPathUtility.GetFileName"/>.
-		/// </summary>
-		public static string GetFileName(this VirtualPathExtensionPoint virtualPath)
-		{
-			return VirtualPathUtility.GetFileName(virtualPath.ExtendedValue);
-		}
-
-		/// <summary>
-		/// Extension that calls <see cref="VirtualPathUtility.IsAbsolute"/>.
-		/// </summary>
-		public static bool IsAbsolute(this VirtualPathExtensionPoint virtualPath)
-		{
-			return VirtualPathUtility.IsAbsolute(virtualPath.ExtendedValue);
-		}
-
-		/// <summary>
-		/// Extension that calls <see cref="VirtualPathUtility.IsAppRelative"/>.
-		/// </summary>
-		public static bool IsAppRelative(this VirtualPathExtensionPoint virtualPath)
-		{
-			return VirtualPathUtility.IsAppRelative(virtualPath.ExtendedValue);
-		}
-
-		/// <summary>
-		/// Extension that calls <see cref="VirtualPathUtility.MakeRelative"/>.
-		/// </summary>
-		public static string MakeRelativeTo(this VirtualPathExtensionPoint fromPath, string toPath)
-		{
-			return VirtualPathUtility.MakeRelative(fromPath.ExtendedValue, toPath);
-		}
-
-		/// <summary>
-		/// Extension that calls <see cref="VirtualPathUtility.ToAbsolute(string)"/>.
-		/// </summary>
-		public static string ToAbsolute(this VirtualPathExtensionPoint virtualPath)
-		{
-			return VirtualPathUtility.ToAbsolute(virtualPath.ExtendedValue);
-		}
-
-		/// <summary>
-		/// Extension that calls <see cref="VirtualPathUtility.ToAbsolute(string,string)"/>.
-		/// </summary>
-		public static string ToAbsolute(this VirtualPathExtensionPoint virtualPath, string applicationPath)
-		{
-			return VirtualPathUtility.ToAbsolute(virtualPath.ExtendedValue, applicationPath);
-		}
-
-		/// <summary>
-		/// Extension that calls <see cref="VirtualPathUtility.ToAppRelative(string,string)"/>.
-		/// </summary>
-		public static string ToAppRelative(this VirtualPathExtensionPoint virtualPath, string applicationPath)
-		{
-			return VirtualPathUtility.ToAppRelative(virtualPath.ExtendedValue, applicationPath);
+			return WebUtility.HtmlDecode(str.ExtendedValue);
 		}
 
 		#endregion

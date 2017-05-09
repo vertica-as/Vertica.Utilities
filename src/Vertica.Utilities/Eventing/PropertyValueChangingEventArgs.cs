@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Vertica.Utilities_v4.Eventing
+namespace Vertica.Utilities.Eventing
 {
 	public class PropertyValueChangingEventArgs<T> : PropertyChangingEventArgs, IOldValueEventArgs<T>, INewValueEventArgs<T>, ICancelEventArgs
 	{

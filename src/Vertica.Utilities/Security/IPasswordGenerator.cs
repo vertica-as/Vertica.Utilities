@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vertica.Utilities_v4.Security
+namespace Vertica.Utilities.Security
 {
 	public interface IPasswordGenerator
 	{

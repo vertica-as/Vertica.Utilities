@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Vertica.Utilities_v4.Extensions.TypeExt;
+using System.Reflection;
+using Vertica.Utilities.Extensions.TypeExt;
 
-namespace Vertica.Utilities_v4.Extensions.ObjectExt
+namespace Vertica.Utilities.Extensions.ObjectExt
 {
 	public static class ObjectExtensions
 	{
 		#region safe
-		
+
 		public static string SafeToString<T>(this T instance, string @default = null) where T : class
 		{
 			return instance == null ? @default : instance.ToString();
@@ -17,7 +18,7 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 			where T : class
 			where U : class
 		{
-			return notSafe(argument, isSafe) ? null: func(argument);
+			return notSafe(argument, isSafe) ? null : func(argument);
 		}
 
 		public static U? SafeValue<T, U>(this T argument, Func<T, U> func, Predicate<T> isSafe = null)
@@ -31,7 +32,7 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 			where T : class
 			where U : struct
 		{
-			return notSafe(argument, isSafe) ? default(U?): func(argument);
+			return notSafe(argument, isSafe) ? default(U?) : func(argument);
 		}
 
 		private static bool notSafe<T>(T argument, Predicate<T> isSafe) where T : class
@@ -45,50 +46,46 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 		#region unbox, checking DbNull
 
 		/// <summary>
-		/// Returns <c>null</c> if the object cannot be converted somehow to bool or if it is<see cref="DBNull.Value"/>.
+		/// Returns <c>null</c> if the object cannot be converted somehow to bool.
 		/// </summary>
 		public static bool? UnboxBool(this object o)
 		{
 			bool? result = null;
 			try
 			{
-				if (o != DBNull.Value)
+				if (o is bool)
 				{
-					if (o is bool)
+					result = (bool)o;
+				}
+				else if (o.IsIntegral())
+				{
+					long l = Convert.ToInt64(o);
+					if (l == 0) result = false;
+					if (l == 1) result = true;
+				}
+				else if (o is char)
+				{
+					var c = (char)o;
+					if (c.Equals('0')) result = false;
+					if (c.Equals('1')) result = true;
+					if (c.Equals('t') || c.Equals('T')) result = true;
+					if (c.Equals('f') || c.Equals('F')) result = false;
+				}
+				else
+				{
+					var str = o as string;
+					bool parsed;
+					if (bool.TryParse(str, out parsed))
 					{
-						result = (bool)o;
-					}
-					else if (o.IsIntegral())
-					{
-						long l = Convert.ToInt64(o);
-						if (l == 0) result = false;
-						if (l == 1) result = true;
-					}
-					else if (o is char)
-					{
-						var c = (char)o;
-						if (c.Equals('0')) result = false;
-						if (c.Equals('1')) result = true;
-						if (c.Equals('t') || c.Equals('T')) result = true;
-						if (c.Equals('f') || c.Equals('F')) result = false;
+						result = parsed;
 					}
 					else
 					{
-						var str = o as string;
-						bool parsed;
-						if (bool.TryParse(str, out parsed))
-						{
-							result = parsed;
-						}
-						else
-						{
-							IEqualityComparer<string> comparer = StringComparer.OrdinalIgnoreCase;
-							if (comparer.Equals(str, "1")) result = true;
-							else if (comparer.Equals(str, "0")) result = false;
-							else if (comparer.Equals(str, "t")) result = true;
-							else if (comparer.Equals(str, "f")) result = false;
-						}
-
+						IEqualityComparer<string> comparer = StringComparer.OrdinalIgnoreCase;
+						if (comparer.Equals(str, "1")) result = true;
+						else if (comparer.Equals(str, "0")) result = false;
+						else if (comparer.Equals(str, "t")) result = true;
+						else if (comparer.Equals(str, "f")) result = false;
 					}
 				}
 			}
@@ -122,7 +119,7 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 			if (instance != null)
 			{
 				Type boxedType = instance.GetType();
-				isDefault = boxedType.IsValueType && instance.Equals(boxedType.GetDefault());
+				isDefault = boxedType.GetTypeInfo().IsValueType && instance.Equals(boxedType.GetDefault());
 			}
 			return isDefault;
 		}
@@ -156,7 +153,7 @@ namespace Vertica.Utilities_v4.Extensions.ObjectExt
 
 		public static T Cast<T>(this T instance)
 		{
-			return (T) instance;
+			return (T)instance;
 		}
 
 		#endregion

@@ -8,8 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Vertica.Utilities_v4.Resources {
+namespace Vertica.Utilities.Resources {
     using System;
+    using System.Reflection;
     
     
     /// <summary>
@@ -39,7 +40,7 @@ namespace Vertica.Utilities_v4.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Vertica.Utilities_v4.Resources.Exceptions", typeof(Exceptions).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Vertica.Utilities.Resources.Exceptions", typeof(Exceptions).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -120,6 +121,15 @@ namespace Vertica.Utilities_v4.Resources {
         internal static string Enumerated_DuplicatedTemplate {
             get {
                 return ResourceManager.GetString("Enumerated_DuplicatedTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value of argument &apos;{0}&apos; ({1}) is invalid for Enum type &apos;{2}&apos;..
+        /// </summary>
+        internal static string Enumerated_Invalid {
+            get {
+                return ResourceManager.GetString("Enumerated_Invalid", resourceCulture);
             }
         }
         
