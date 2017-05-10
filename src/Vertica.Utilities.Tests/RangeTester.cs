@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using Testing.Commons.Globalization;
@@ -44,7 +45,9 @@ namespace Vertica.Utilities.Tests
 		[Test]
 		public void Ctor_PoorlyConstructed_Exception()
 		{
-			using (CultureReseter.Set("da-DK"))
+			var platformAgnostic = new CultureInfo("dgg") { DateTimeFormat = { ShortDatePattern = "dd-MM-yyyy" } };
+			
+			using (CultureReseter.Set(platformAgnostic))
 			{
 				Assert.That(() => new Range<int>(5, 1), throwsBoundException(1, "1"));
 
@@ -99,7 +102,7 @@ namespace Vertica.Utilities.Tests
 		{
 			var subject = new Range<int>(1.Close(), 5.Close());
 			Assert.That(subject.ToString(), Is.EqualTo("[1..5]"));
-			
+
 			subject = Range.Closed(1, 5);
 			Assert.That(subject.ToString(), Is.EqualTo("[1..5]"));
 		}
@@ -109,7 +112,7 @@ namespace Vertica.Utilities.Tests
 		{
 			var subject = new Range<int>(1.Open(), 5.Open());
 			Assert.That(subject.ToString(), Is.EqualTo("(1..5)"));
-			
+
 			subject = Range.Open(1, 5);
 			Assert.That(subject.ToString(), Is.EqualTo("(1..5)"));
 		}
@@ -119,7 +122,7 @@ namespace Vertica.Utilities.Tests
 		{
 			var subject = new Range<int>(1.Close(), 5.Open());
 			Assert.That(subject.ToString(), Is.EqualTo("[1..5)"));
-			
+
 			subject = Range.HalfOpen(1, 5);
 			Assert.That(subject.ToString(), Is.EqualTo("[1..5)"));
 		}
@@ -129,7 +132,7 @@ namespace Vertica.Utilities.Tests
 		{
 			var subject = new Range<int>(1.Open(), 5.Close());
 			Assert.That(subject.ToString(), Is.EqualTo("(1..5]"));
-			
+
 			subject = Range.HalfClosed(1, 5);
 			Assert.That(subject.ToString(), Is.EqualTo("(1..5]"));
 		}
@@ -142,7 +145,7 @@ namespace Vertica.Utilities.Tests
 
 			subject = Range.New(1, 5);
 			Assert.That(subject.ToString(), Is.EqualTo("[1..5]"));
-			
+
 			subject = Range.Closed(1, 5);
 			Assert.That(subject.ToString(), Is.EqualTo("[1..5]"));
 		}

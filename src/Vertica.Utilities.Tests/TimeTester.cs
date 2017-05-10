@@ -60,11 +60,9 @@ namespace Vertica.Utilities.Tests
 		{
 			try
 			{
-				Assert.DoesNotThrow(() => Time.SetUtcNow(DateTimeOffset.UtcNow));
+				Assert.That(() => Time.SetUtcNow(DateTimeOffset.UtcNow), Throws.Nothing);
 
-				var plusTwoHours = TimeZoneInfo.FindSystemTimeZoneById("Central Europe Standard Time");
-				DateTimeOffset notUtc = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, plusTwoHours);
-
+				DateTimeOffset notUtc = 10.April(2017).In(2.Hours());
 				Assert.That(() => Time.SetUtcNow(notUtc), Throws.InstanceOf<InvalidTimeZoneException>().
 					With.Message.Contain("2"));
 			}
