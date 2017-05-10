@@ -77,7 +77,7 @@ namespace Vertica.Utilities.Tests
 				Assert.That(() => Range<TimeSpan>.AssertBounds(1.Hours(), 3.Seconds()),
 					throwsBoundException(3.Seconds(), "00:00:03"));
 				Assert.That(() => Range<DateTime>.AssertBounds(9.September(2010), 11.March(1977)),
-					throwsBoundException(11.March(1977), "11-03-1977 00:00:00"));
+					throwsBoundException(11.March(1977), "11-03-1977"));
 			}
 		}
 
