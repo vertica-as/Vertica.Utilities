@@ -14,20 +14,26 @@ namespace Vertica.Utilities.Tests
 	{
 		#region value sources
 
-		private static readonly Range<int>[] oneToFives = new[]
-		{
+		private static readonly Range<int>[] oneToFives = {
 			Range.Open(1, 5),
 			Range.Closed(1, 5),
 			Range.HalfOpen(1, 5),
 			Range.HalfClosed(1, 5)
 		};
 
-		private static readonly Range<int>[] oneToThrees = new[]
-		{
+		private static readonly Range<int>[] oneToThrees = {
 			Range.Open(1, 3),
 			Range.Closed(1, 3),
 			Range.HalfOpen(1, 3),
 			Range.HalfClosed(1, 3)
+		};
+
+		private static readonly CultureInfo _platformAgnostic = new CultureInfo("dgg")
+		{
+			DateTimeFormat =
+			{
+				ShortDatePattern = "dd-MM-yyyy", AMDesignator = string.Empty
+			}
 		};
 
 		#endregion
@@ -45,9 +51,7 @@ namespace Vertica.Utilities.Tests
 		[Test]
 		public void Ctor_PoorlyConstructed_Exception()
 		{
-			var platformAgnostic = new CultureInfo("dgg") { DateTimeFormat = { ShortDatePattern = "dd-MM-yyyy" } };
-			
-			using (CultureReseter.Set(platformAgnostic))
+			using (CultureReseter.Set(_platformAgnostic))
 			{
 				Assert.That(() => new Range<int>(5, 1), throwsBoundException(1, "1"));
 

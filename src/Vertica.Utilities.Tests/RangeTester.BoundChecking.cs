@@ -70,8 +70,7 @@ namespace Vertica.Utilities.Tests
 		[Test]
 		public void AssertBounds_IncorrectlyOrderedBounds_Exception()
 		{
-			var platformAgnostic = new CultureInfo("dgg") { DateTimeFormat = { ShortDatePattern = "dd-MM-yyyy" } };
-			using (CultureReseter.Set(platformAgnostic))
+			using (CultureReseter.Set(_platformAgnostic))
 			{
 				Assert.That(() => Range<char>.AssertBounds('z', 'a'), throwsBoundException('a', "a"));
 				Assert.That(() => Range<int>.AssertBounds(1, -1), throwsBoundException(-1, "-1"));
