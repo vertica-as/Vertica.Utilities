@@ -152,6 +152,17 @@ namespace Vertica.Utilities.Tests.Collections
 		}
 
 		[Test]
+		public void Indexer_GetValues_AreTheSame()
+		{
+			var subject = new KeyValuesCollection { { "a", "A" } };
+			subject.AddRange("b", "b", "B");
+
+			Assert.That(subject["a"], Is.EqualTo(subject.GetValues("a")));
+			Assert.That(subject.GetValues("b"), Is.EqualTo(subject["b"]));
+			Assert.That(subject["missing"], Is.EqualTo(subject.GetValues("missing")));
+		}
+
+		[Test]
 		public void Contains_ElementsInCollection_True()
 		{
 			var subject = new KeyValuesCollection { { "k", "v" } };

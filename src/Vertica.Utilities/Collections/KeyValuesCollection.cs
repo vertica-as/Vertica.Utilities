@@ -135,18 +135,17 @@ namespace Vertica.Utilities.Collections
 
 		public int Count => _groups.Count;
 
-	    public IEnumerable<TValue> this[TKey key]
+	    public IEnumerable<TValue> GetValues(TKey key)
 	    {
-			get
-			{
-				MutableGrouping group;
-				if (_groups.TryGetValue(key, out group))
-				{
-					return group;
-				}
-				return Empty;
-			}
-		}
+		    MutableGrouping group;
+		    if (_groups.TryGetValue(key, out group))
+		    {
+			    return group;
+		    }
+		    return Empty;
+	    }
+
+	    public IEnumerable<TValue> this[TKey key] => GetValues(key);
 
 	    internal sealed class MutableGrouping : IGrouping<TKey, TValue>
 	    {
