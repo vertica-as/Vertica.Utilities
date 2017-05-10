@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;netcoreapp1.0</TargetFrameworks>
+    <TargetFrameworks>net45;netcoreapp1.0</TargetFrameworks>
     <Authors>Vertica A/S</Authors>
     <Company>Vertica A/S</Company>
     <Product>Vertica.Utilities</Product>
