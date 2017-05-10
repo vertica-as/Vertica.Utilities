@@ -60,7 +60,7 @@ namespace Vertica.Utilities.Tests
 				Assert.That(() => new Range<TimeSpan>(3.Seconds(), 2.Seconds()), throwsBoundException(2.Seconds(), "00:00:02"));
 
 				Assert.That(() => new Range<DateTime>(11.March(1977), 31.October(1952)),
-					throwsBoundException(31.October(1952), "31-10-1952 12:00:00"));
+					throwsBoundException(31.October(1952), "31-10-1952"));
 			}
 		}
 
