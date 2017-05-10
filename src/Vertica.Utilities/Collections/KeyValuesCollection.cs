@@ -4,19 +4,24 @@ using System.Linq;
 
 namespace Vertica.Utilities.Collections
 {
-	public class MutableLookup : MutableLookup<string, string> { }
-    public class MutableLookup<T, U> : ILookup<T, U>
-    {
-	    private readonly Dictionary<T, MutableGrouping> _groups;
+	public class KeyValuesCollection : KeyValuesCollection<string, string>
+	{
+		public KeyValuesCollection() { }
 
-	    public MutableLookup(IEqualityComparer<T> keyComparer = null)
+		public KeyValuesCollection(IEqualityComparer<string> keyComparer) : base(keyComparer) { }
+	}
+    public class KeyValuesCollection<TKey, TValue> : ILookup<TKey, TValue>
+    {
+	    private readonly Dictionary<TKey, MutableGrouping> _groups;
+
+	    public KeyValuesCollection(IEqualityComparer<TKey> keyComparer = null)
 	    {
-		    _groups = new Dictionary<T, MutableGrouping>(keyComparer ?? EqualityComparer<T>.Default);
+		    _groups = new Dictionary<TKey, MutableGrouping>(keyComparer ?? EqualityComparer<TKey>.Default);
 	    }
 
-	    private static readonly IEnumerable<U> Empty = new U[0];
+	    private static readonly IEnumerable<TValue> Empty = new TValue[0];
 
-		public IEnumerator<IGrouping<T, U>> GetEnumerator()
+		public IEnumerator<IGrouping<TKey, TValue>> GetEnumerator()
 	    {
 			foreach (var group in _groups.Values)
 			{
@@ -29,7 +34,7 @@ namespace Vertica.Utilities.Collections
 		    return GetEnumerator();
 	    }
 
-	    public IEnumerable<T> Keys => _groups.Keys;
+	    public IEnumerable<TKey> Keys => _groups.Keys;
 
 	    public void TrimExcess()
 	    {
@@ -41,13 +46,13 @@ namespace Vertica.Utilities.Collections
 
 		#region Contains
 
-		public bool Contains(T key)
+		public bool Contains(TKey key)
 	    {
 		    MutableGrouping group;
 		    return _groups.TryGetValue(key, out group) && group.Count > 0;
 	    }
 
-	    public bool Contains(T key, U value)
+	    public bool Contains(TKey key, TValue value)
 	    {
 		    MutableGrouping group;
 		    return _groups.TryGetValue(key, out group) && group.Contains(value);
@@ -57,7 +62,7 @@ namespace Vertica.Utilities.Collections
 
 	    #region Add
 
-	    public void Add(T key, U value)
+	    public void Add(TKey key, TValue value)
 	    {
 		    MutableGrouping group;
 		    if (!_groups.TryGetValue(key, out group))
@@ -68,12 +73,12 @@ namespace Vertica.Utilities.Collections
 		    group.Add(value);
 	    }
 
-	    public void AddRange(T key, params U[] values)
+	    public void AddRange(TKey key, params TValue[] values)
 	    {
 		    AddRange(key, values.AsEnumerable());
 	    }
 
-	    public void AddRange(T key, IEnumerable<U> values)
+	    public void AddRange(TKey key, IEnumerable<TValue> values)
 	    {
 		    Guard.AgainstNullArgument(nameof(values), values);
 		    MutableGrouping group;
@@ -82,7 +87,7 @@ namespace Vertica.Utilities.Collections
 			    group = new MutableGrouping(key);
 			    _groups.Add(key, group);
 		    }
-		    foreach (U value in values)
+		    foreach (TValue value in values)
 		    {
 			    group.Add(value);
 		    }
@@ -92,11 +97,11 @@ namespace Vertica.Utilities.Collections
 		    }
 	    }
 
-	    public void AddRange(ILookup<T, U> lookup)
+	    public void AddRange(ILookup<TKey, TValue> lookup)
 	    {
 		    Guard.AgainstNullArgument(nameof(lookup), lookup);
 
-		    foreach (IGrouping<T, U> group in lookup)
+		    foreach (IGrouping<TKey, TValue> group in lookup)
 		    {
 			    AddRange(group.Key, group);
 		    }
@@ -106,12 +111,12 @@ namespace Vertica.Utilities.Collections
 
 	    #region Remove
 
-	    public bool Remove(T key)
+	    public bool Remove(TKey key)
 	    {
 		    return _groups.Remove(key);
 	    }
 
-	    public bool Remove(T key, U value)
+	    public bool Remove(TKey key, TValue value)
 	    {
 		    MutableGrouping group;
 		    bool removed = false;
@@ -130,7 +135,7 @@ namespace Vertica.Utilities.Collections
 
 		public int Count => _groups.Count;
 
-	    public IEnumerable<U> this[T key]
+	    public IEnumerable<TValue> this[TKey key]
 	    {
 			get
 			{
@@ -143,26 +148,26 @@ namespace Vertica.Utilities.Collections
 			}
 		}
 
-	    internal sealed class MutableGrouping : IGrouping<T, U>
+	    internal sealed class MutableGrouping : IGrouping<TKey, TValue>
 	    {
-		    private readonly List<U> _items = new List<U>();
-		    public T Key { get; }
+		    private readonly List<TValue> _items = new List<TValue>();
+		    public TKey Key { get; }
 
-		    public MutableGrouping(T key)
+		    public MutableGrouping(TKey key)
 		    {
 			    Key = key;
 		    }
 		    public int Count => _items.Count;
 
-		    public void Add(U item)
+		    public void Add(TValue item)
 		    {
 			    _items.Add(item);
 		    }
-		    public bool Contains(U item)
+		    public bool Contains(TValue item)
 		    {
 			    return _items.Contains(item);
 		    }
-		    public bool Remove(U item)
+		    public bool Remove(TValue item)
 		    {
 			    return _items.Remove(item);
 		    }
@@ -171,7 +176,7 @@ namespace Vertica.Utilities.Collections
 			    _items.TrimExcess();
 		    }
 
-		    public IEnumerator<U> GetEnumerator()
+		    public IEnumerator<TValue> GetEnumerator()
 		    {
 			    return _items.GetEnumerator();
 		    }

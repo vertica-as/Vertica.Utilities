@@ -12,7 +12,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToQueryString_EmptyCollection_Empty()
 		{
-			string qs = new MutableLookup().ToQueryString();
+			string qs = new KeyValuesCollection().ToQueryString();
 
 			Assert.That(qs, Is.Empty);
 		}
@@ -20,7 +20,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToQueryString_OneElement_PairWithoutAmp()
 		{
-			string qs = new MutableLookup { { "key", "value" } }
+			string qs = new KeyValuesCollection { { "key", "value" } }
 				.ToQueryString();
 			
 			Assert.That(qs, Is.EqualTo("?key=value"));
@@ -29,7 +29,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToQueryString_TwoElements_AmpSeparatedPairs()
 		{
-			string qs = new MutableLookup { { "key1", "value1" }, { "key2", "value2" } }
+			string qs = new KeyValuesCollection { { "key1", "value1" }, { "key2", "value2" } }
 				.ToQueryString();
 			
 			Assert.That(qs, Is.EqualTo("?key1=value1&key2=value2"));
@@ -38,7 +38,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToQueryString_EncodeableElementsEscaped_EncodedKeysAndValues()
 		{
-			string qs = new MutableLookup { { "key 1", "value /1" } }
+			string qs = new KeyValuesCollection { { "key 1", "value /1" } }
 				.ToQueryString();
 			
 			Assert.That(qs, Is.EqualTo("?key+1=value+%2F1"));
@@ -47,7 +47,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToQueryString_EmptyValuedElements_Kept()
 		{
-			string qs = new MutableLookup { { "key", string.Empty } }
+			string qs = new KeyValuesCollection { { "key", string.Empty } }
 				.ToQueryString();
 
 			Assert.That(qs, Is.EqualTo("?key="));
@@ -56,7 +56,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToQueryString_EmptyKeyedElements_Kept()
 		{
-			string qs = new MutableLookup { { string.Empty, "value" } }
+			string qs = new KeyValuesCollection { { string.Empty, "value" } }
 				.ToQueryString();
 
 			Assert.That(qs, Is.EqualTo("?=value"));
@@ -65,7 +65,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToQueryString_NullValuedElements_Kept()
 		{
-			string qs = new MutableLookup { { "key", null } }
+			string qs = new KeyValuesCollection { { "key", null } }
 				.ToQueryString();
 
 			Assert.That(qs, Is.EqualTo("?key="));
@@ -78,7 +78,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToQuery_EmptyCollection_Empty()
 		{
-			string q = new MutableLookup().ToQuery();
+			string q = new KeyValuesCollection().ToQuery();
 
 			Assert.That(q, Is.Empty);
 		}
@@ -86,7 +86,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToQuery_OneElement_PairWithoutAmp()
 		{
-			string q = new MutableLookup { { "key", "value" } }
+			string q = new KeyValuesCollection { { "key", "value" } }
 				.ToQuery();
 
 			Assert.That(q, Is.EqualTo("key=value"));
@@ -95,7 +95,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToQuery_TwoElements_AmpSeparatedPairs()
 		{
-			string q = new MutableLookup { { "key1", "value1" }, { "key2", "value2" } }
+			string q = new KeyValuesCollection { { "key1", "value1" }, { "key2", "value2" } }
 				.ToQuery();
 
 			Assert.That(q, Is.EqualTo("key1=value1&key2=value2"));
@@ -104,7 +104,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToQuery_EncodeableElementsEscaped_EncodedKeysAndValues()
 		{
-			string q = new MutableLookup { { "key 1", "value /1" } }
+			string q = new KeyValuesCollection { { "key 1", "value /1" } }
 				.ToQuery();
 
 			Assert.That(q, Is.EqualTo("key+1=value+%2F1"));
@@ -113,7 +113,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToQuery_EmptyValuedElements_Kept()
 		{
-			string q = new MutableLookup { { "key", string.Empty } }
+			string q = new KeyValuesCollection { { "key", string.Empty } }
 				.ToQuery();
 
 			Assert.That(q, Is.EqualTo("key="));
@@ -122,7 +122,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToQuery_EmptyKeyedElements_Kept()
 		{
-			string q = new MutableLookup { { string.Empty, "value" } }
+			string q = new KeyValuesCollection { { string.Empty, "value" } }
 				.ToQuery();
 
 			Assert.That(q, Is.EqualTo("=value"));
@@ -131,7 +131,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToQuery_NullValuedElements_Kept()
 		{
-			string q = new MutableLookup { { "key", null } }
+			string q = new KeyValuesCollection { { "key", null } }
 				.ToQuery();
 
 			Assert.That(q, Is.EqualTo("key="));
@@ -144,7 +144,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToDecodedQueryString_EmptyCollection_Empty()
 		{
-			string qs = new MutableLookup().ToDecodedQueryString();
+			string qs = new KeyValuesCollection().ToDecodedQueryString();
 
 			Assert.That(qs, Is.Empty);
 		}
@@ -152,7 +152,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToDecodedQueryString_OneElement_PairWithoutAmp()
 		{
-			string qs = new MutableLookup { { "key", "value" } }
+			string qs = new KeyValuesCollection { { "key", "value" } }
 				.ToDecodedQueryString();
 
 			Assert.That(qs, Is.EqualTo("?key=value"));
@@ -161,7 +161,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToDecodedQueryString_TwoElements_AmpSeparatedPairs()
 		{
-			string qs = new MutableLookup { { "key1", "value1" }, { "key2", "value2" } }
+			string qs = new KeyValuesCollection { { "key1", "value1" }, { "key2", "value2" } }
 				.ToDecodedQueryString();
 
 			Assert.That(qs, Is.EqualTo("?key1=value1&key2=value2"));
@@ -170,7 +170,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToDecodedQueryString_EncodeableElementsEscaped_NotEncodedKeysAndValues()
 		{
-			string qs = new MutableLookup { { "key 1", "value /1" } }
+			string qs = new KeyValuesCollection { { "key 1", "value /1" } }
 				.ToDecodedQueryString();
 
 			Assert.That(qs, Is.EqualTo("?key 1=value /1"));
@@ -179,7 +179,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToDecodedQueryString_EmptyValuedElements_Kept()
 		{
-			string qs = new MutableLookup { { "key", string.Empty } }
+			string qs = new KeyValuesCollection { { "key", string.Empty } }
 				.ToDecodedQueryString();
 
 			Assert.That(qs, Is.EqualTo("?key="));
@@ -188,7 +188,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToDecodedQueryString_EmptyKeyedElements_Kept()
 		{
-			string qs = new MutableLookup { { string.Empty, "value" } }
+			string qs = new KeyValuesCollection { { string.Empty, "value" } }
 				.ToDecodedQueryString();
 
 			Assert.That(qs, Is.EqualTo("?=value"));
@@ -197,7 +197,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToDecodedQueryString_NullValuedElements_Kept()
 		{
-			string qs = new MutableLookup { { "key", null } }
+			string qs = new KeyValuesCollection { { "key", null } }
 				.ToDecodedQueryString();
 
 			Assert.That(qs, Is.EqualTo("?key="));
@@ -206,7 +206,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
         public void ToDecodedQueryString_MultiValuedKey_RepeatsKeyQs()
         {
-            string qs = new MutableLookup { { "key", "value1" }, { "key", "value2" } }
+            string qs = new KeyValuesCollection { { "key", "value1" }, { "key", "value2" } }
                 .ToDecodedQueryString();
 
             Assert.That(qs, Is.EqualTo("?key=value1&key=value2"));
@@ -219,7 +219,7 @@ namespace Vertica.Utilities.Tests.Web
         [Test]
 		public void ToDecodedQuery_EmptyCollection_Empty()
 		{
-			string q = new MutableLookup().ToDecodedQuery();
+			string q = new KeyValuesCollection().ToDecodedQuery();
 
 			Assert.That(q, Is.Empty);
 		}
@@ -227,7 +227,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToDecodedQuery_OneElement_PairWithoutAmp()
 		{
-			string q = new MutableLookup { { "key", "value" } }
+			string q = new KeyValuesCollection { { "key", "value" } }
 				.ToDecodedQuery();
 
 			Assert.That(q, Is.EqualTo("key=value"));
@@ -236,7 +236,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToDecodedQuery_TwoElements_AmpSeparatedPairs()
 		{
-			string q = new MutableLookup { { "key1", "value1" }, { "key2", "value2" } }
+			string q = new KeyValuesCollection { { "key1", "value1" }, { "key2", "value2" } }
 				.ToDecodedQuery();
 
 			Assert.That(q, Is.EqualTo("key1=value1&key2=value2"));
@@ -245,7 +245,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToDecodedQuery_EncodeableElementsEscaped_NotEncodedKeysAndValues()
 		{
-			string q = new MutableLookup { { "key 1", "value /1" } }
+			string q = new KeyValuesCollection { { "key 1", "value /1" } }
 				.ToDecodedQuery();
 
 			Assert.That(q, Is.EqualTo("key 1=value /1"));
@@ -254,7 +254,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToDecodedQuery_EmptyValuedElements_Kept()
 		{
-			string q = new MutableLookup { { "key", string.Empty } }
+			string q = new KeyValuesCollection { { "key", string.Empty } }
 				.ToDecodedQuery();
 
 			Assert.That(q, Is.EqualTo("key="));
@@ -263,7 +263,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToDecodedQuery_EmptyKeyedElements_Kept()
 		{
-			string q = new MutableLookup { { string.Empty, "value" } }
+			string q = new KeyValuesCollection { { string.Empty, "value" } }
 				.ToDecodedQuery();
 
 			Assert.That(q, Is.EqualTo("=value"));
@@ -272,7 +272,7 @@ namespace Vertica.Utilities.Tests.Web
 		[Test]
 		public void ToDecodedQuery_NullValuedElements_Kept()
 		{
-			string q = new MutableLookup { { "key", null } }
+			string q = new KeyValuesCollection { { "key", null } }
 				.ToDecodedQuery();
 
 			Assert.That(q, Is.EqualTo("key="));

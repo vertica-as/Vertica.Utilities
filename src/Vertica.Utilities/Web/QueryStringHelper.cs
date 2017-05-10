@@ -21,35 +21,35 @@ namespace Vertica.Utilities.Web
 			internal static readonly Action<StringBuilder> Q = sb => sb.Insert(0, QueryStringHelper.Q);
 		}
 
-		public static string ToQueryString(this MutableLookup<string, string> collection)
+		public static string ToQueryString(this KeyValuesCollection collection)
 		{
 			return buildString(collection,
 				ValueEncoding.Url,
 				Prepend.Q);
 		}
 
-		public static string ToQuery(this MutableLookup<string, string> collection)
+		public static string ToQuery(this KeyValuesCollection collection)
 		{
 			return buildString(collection,
 				ValueEncoding.Url,
 				Prepend.Nothing);
 		}
 
-		public static string ToDecodedQueryString(this MutableLookup<string, string> collection)
+		public static string ToDecodedQueryString(this KeyValuesCollection collection)
 		{
 			return buildString(collection,
 				ValueEncoding.None,
 				Prepend.Q);
 		}
 
-		public static string ToDecodedQuery(this MutableLookup<string, string> collection)
+		public static string ToDecodedQuery(this KeyValuesCollection collection)
 		{
 			return buildString(collection,
 				ValueEncoding.None,
 				Prepend.Nothing);
 		}
 
-		private static string buildString(MutableLookup<string, string> collection,
+		private static string buildString(KeyValuesCollection collection,
 			Func<string, string> valueEncoding,
 			Action<StringBuilder> prependAction)
 		{
@@ -62,7 +62,7 @@ namespace Vertica.Utilities.Web
 			    {
                     string[] values = collection[key].ToArray();
 
-                    if (values != null)
+                    if (values.Length > 1)
                     {
                         foreach (var value in values)
                         {
