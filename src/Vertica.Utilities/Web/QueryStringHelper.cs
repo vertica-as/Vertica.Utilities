@@ -60,9 +60,9 @@ namespace Vertica.Utilities.Web
 			{
 			    if (key != null)
 			    {
-                    string[] values = collection[key].ToArray();
+                    var values = collection[key].ToArray();
 
-                    if (values.Length > 1)
+                    if (values.Any())
                     {
                         foreach (var value in values)
                         {
