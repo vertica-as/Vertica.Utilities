@@ -3,5 +3,5 @@
 Helpers, value objects, pattern implementations... and a bag of chips
 
 ## Get it
-Latest versions of the package are deployed to http://nuget.vertica.dk/nuget.
-Or... one can always build from source.
+From version 5.0 and on, package is **not** deployed to Vertica's internal package feed, but to NuGet's public one.
+Or... one can always build from source using either Visual Studio 2017 or a .NET Core SDK.
