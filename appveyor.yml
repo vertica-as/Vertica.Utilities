@@ -49,11 +49,11 @@ test:
 
 # to run your custom scripts instead of automatic tests
 test_script:
-  - dotnet test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c $(configuration)
+  - dotnet test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c %CONFIGURATION%
 
 # scripts to run after tests
 after_test:
-  - dotnet pack .\src\Vertica.Utilities\Vertica.Utilities.csproj -c $(configuration)
+  - dotnet pack .\src\Vertica.Utilities\Vertica.Utilities.csproj -c %CONFIGURATION%
 
 #---------------------------------#
 #      artifacts configuration    #
