@@ -38,7 +38,7 @@ configuration: Release
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
-  - dotnet build -c $(configuration)
+  - dotnet build -c %CONFIGURATION%
   
 #---------------------------------#
 #       tests configuration       #
