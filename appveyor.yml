@@ -49,7 +49,7 @@ test:
 
 # to run your custom scripts instead of automatic tests
 test_script:
-  - dotnet test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c %CONFIGURATION%
+  - dotnet test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c %CONFIGURATION% -l Appveyor
 
 # scripts to run after tests
 after_test:
