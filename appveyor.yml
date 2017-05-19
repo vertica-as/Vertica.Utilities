@@ -44,12 +44,13 @@ build_script:
 #       tests configuration       #
 #---------------------------------#
 
-# to run tests again only selected assemblies and/or categories
-test:
-
 # to run your custom scripts instead of automatic tests
 test_script:
-  - dotnet test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c %CONFIGURATION% -l Appveyor
+  - dotnet test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c %CONFIGURATION% --logger:trx;LogFileName=tests-results.xml
+  - ps: >-
+    $wc = New-Object 'System.Net.WebClient'
+
+    $wc.UploadFile("https://ci.appveyor.com/api/testresults/mstests/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\src\Vertica.Utilities.Tests\TestResults\test-results.xml))
 
 # scripts to run after tests
 after_test:
