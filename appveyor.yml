@@ -46,7 +46,7 @@ build_script:
 
 # to run your custom scripts instead of automatic tests
 test_script:
-  - dotnet test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c %CONFIGURATION% --logger:trx;LogFileName=tests-results.xml
+  - dotnet test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c %CONFIGURATION% --logger:trx;LogFileName=test-results.xml
   - ps: >-
       $wc = New-Object 'System.Net.WebClient'
       $wc.UploadFile("https://ci.appveyor.com/api/testresults/mstests/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\src\Vertica.Utilities.Tests\TestResults\test-results.xml))
