@@ -48,8 +48,8 @@ build_script:
 test_script:
   - dotnet test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c %CONFIGURATION% --logger:trx;LogFileName=tests-results.xml
   - ps >-
-    $wc = New-Object 'System.Net.WebClient'
-    $wc.UploadFile("https://ci.appveyor.com/api/testresults/mstests/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\src\Vertica.Utilities.Tests\TestResults\test-results.xml))
+      $wc = New-Object 'System.Net.WebClient'
+      $wc.UploadFile("https://ci.appveyor.com/api/testresults/mstests/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\src\Vertica.Utilities.Tests\TestResults\test-results.xml))
 
 # scripts to run after tests
 after_test:
