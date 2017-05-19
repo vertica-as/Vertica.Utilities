@@ -36,6 +36,25 @@ install:
 # build Configuration, i.e. Debug, Release, etc.
 configuration: Release
 
+# to run your custom scripts instead of automatic MSBuild
+build_script:
+  - dotnet build -c $(configuration)
+  
+#---------------------------------#
+#       tests configuration       #
+#---------------------------------#
+
+# to run tests again only selected assemblies and/or categories
+test:
+
+# to run your custom scripts instead of automatic tests
+test_script:
+  - dotnet test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c $(configuration)
+
+# scripts to run after tests
+after_test:
+  - dotnet pack .\src\Vertica.Utilities\Vertica.Utilities.csproj -c $(configuration)
+
 #---------------------------------#
 #      artifacts configuration    #
 #---------------------------------#
