@@ -2,11 +2,11 @@
 #      general configuration      #
 #---------------------------------#
 
+environment:
+  
+
 # version format
 version: 5.0.{build}
-
-# you can use {branch} name in version format too
-# version: 1.0.{build}-{branch}
 
 # branches to build
 branches:
@@ -26,8 +26,10 @@ image: Visual Studio 2017
 
 # scripts that run after cloning repository
 install:
-  # by default, all script lines are interpreted as batch
   - dotnet restore
+  - ps: $env:Path = "C:\\Python34;C:\\Python34\\Scripts;" + $env:Path
+  - pip install codecov
+  - nuget install opencover -OutputDirectory .\tools
 
 #---------------------------------#
 #       build configuration       #
@@ -39,6 +41,11 @@ configuration: Release
 # to run your custom scripts instead of automatic MSBuild
 build_script:
   - dotnet build -c %CONFIGURATION%
+
+# environment variables
+environment:
+  codecov_token:
+    secure: l7a3GWenI/cpY8OtMA684PnWojnc5sZnIGcfV70mpgmI+Vz7bBHqumUV5N77TdQ/
   
 #---------------------------------#
 #       tests configuration       #
@@ -52,6 +59,8 @@ test_script:
 # scripts to run after tests
 after_test:
   - dotnet pack .\src\Vertica.Utilities\Vertica.Utilities.csproj -c %CONFIGURATION%
+  - ps: $open_cover = (Get-ChildItem -File -Name Opencover.Console.exe -Path .\tools\ -Recurse | % { Resolve-Path (Join-Path .\tools\ $_) })[0]
+  - & $open_cover -target:dotnet.exe -targetargs:"test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c Coverage -f net45 -v q" -filter:"+[Vertica.Utilities]*" -mergebyhash -skipautoprops -register:user -output:CoverageResult.xml -hideskipped:"File;Filter;MissingPdb" -threshold:10000
 
 #---------------------------------#
 #      artifacts configuration    #
@@ -62,3 +71,5 @@ artifacts:
   # pushing all *.nupkg files in build directory recursively
   - path: '**\*.nupkg'
     name: nupkg
+  - path: 'CoverageResult.xml'
+    name: coverage
