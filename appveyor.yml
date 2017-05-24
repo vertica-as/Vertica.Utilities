@@ -24,9 +24,7 @@ image: Visual Studio 2017
 # scripts that run after cloning repository
 install:
   - dotnet restore
-  - ps: $env:Path = "C:\\Python34;C:\\Python34\\Scripts;" + $env:Path
-  - pip install codecov
-  - nuget install opencover -OutputDirectory .\tools
+  - ps: .\build\Install-Extra-Tools.ps1
 
 #---------------------------------#
 #       build configuration       #
@@ -51,13 +49,12 @@ environment:
 # to run your custom scripts instead of automatic tests
 test_script:
   - dotnet test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c %CONFIGURATION% --logger:trx;LogFileName=test-results.xml
-  - ps: $wc = New-Object 'System.Net.WebClient'; $wc.UploadFile("https://ci.appveyor.com/api/testresults/mstest/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\src\Vertica.Utilities.Tests\TestResults\test-results.xml))
+  - ps: .\build\Upload-Test-Results.ps1
 
 # scripts to run after tests
 after_test:
   - dotnet pack .\src\Vertica.Utilities\Vertica.Utilities.csproj -c %CONFIGURATION%
-  - ps: $open_cover = (Get-ChildItem -File -Name Opencover.Console.exe -Path .\tools\ -Recurse | % { Resolve-Path (Join-Path .\tools\ $_) })[0]
-  - ps: (&$open_cover) -target:dotnet.exe -targetargs:"test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c Coverage -f net45 -v q" -filter:"+[Vertica.Utilities]*" -mergebyhash -skipautoprops -register:user -output:CoverageResult.xml -hideskipped:"File;Filter;MissingPdb" -threshold:10000
+  - ps: .\build\Generate-Coverage.ps1 -CoverageFile .\CoverageResult.xml
 
 #---------------------------------#
 #      artifacts configuration    #
