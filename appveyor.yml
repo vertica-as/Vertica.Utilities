@@ -41,7 +41,7 @@ build_script:
 environment:
   codecov_token:
     secure: l7a3GWenI/cpY8OtMA684PnWojnc5sZnIGcfV70mpgmI+Vz7bBHqumUV5N77TdQ/
-  
+
 #---------------------------------#
 #       tests configuration       #
 #---------------------------------#
@@ -69,7 +69,6 @@ artifacts:
   - path: 'CoverageResult.xml'
     name: coverage
 
-	
 #---------------------------------#
 #     deployment configuration    #
 #---------------------------------#
