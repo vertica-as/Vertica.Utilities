@@ -8,9 +8,12 @@
 		<Description>Helpers, extensions, utilities, better practices, patterns to be used within (or beyond) Vertica.</Description>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<Folder Include="Properties\" />
-	</ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Coverage|AnyCPU'" />
+
+	<PropertyGroup Condition="'$(Configuration)'=='Coverage'">
+		<DebugType>full</DebugType>
+		<DebugSymbols>True</DebugSymbols>
+	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='netstandard1.5'">
 		<PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />

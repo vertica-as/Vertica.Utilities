@@ -1,10 +1,10 @@
 @SET config=Release
 
-REM dotnet restore -v q
+dotnet restore -v q
 
-REM dotnet build -c %config% -v q
+dotnet build -c %config% -v q
 
-REM dotnet test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c %config% -v q
+dotnet test .\src\Vertica.Utilities.Tests\Vertica.Utilities.Tests.csproj -c %config% -v q
 
 dotnet pack .\src\Vertica.Utilities\Vertica.Utilities.csproj -c %config% --no-build -v m
 

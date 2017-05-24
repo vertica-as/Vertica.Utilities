@@ -9,6 +9,8 @@
     <Description>Helpers, extensions, utilities, better practices, patterns to be used within (or beyond) Vertica.</Description>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Coverage|net45|AnyCPU'" />
+
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
     <PackageReference Include="NSubstitute" Version="2.0.3" />
