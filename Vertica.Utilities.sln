@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02E13767-9611-4F2D-9965-7D4266AFD86B}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,14 +14,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vertica.Utilities.Tests", "
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Coverage|Any CPU = Coverage|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB74095D-3D99-482F-9EF7-B62F29C4BB0C}.Coverage|Any CPU.ActiveCfg = Coverage|Any CPU
+		{EB74095D-3D99-482F-9EF7-B62F29C4BB0C}.Coverage|Any CPU.Build.0 = Coverage|Any CPU
 		{EB74095D-3D99-482F-9EF7-B62F29C4BB0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EB74095D-3D99-482F-9EF7-B62F29C4BB0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB74095D-3D99-482F-9EF7-B62F29C4BB0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB74095D-3D99-482F-9EF7-B62F29C4BB0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2409ED55-1155-4008-8F89-5858822C2718}.Coverage|Any CPU.ActiveCfg = Coverage|Any CPU
+		{2409ED55-1155-4008-8F89-5858822C2718}.Coverage|Any CPU.Build.0 = Coverage|Any CPU
 		{2409ED55-1155-4008-8F89-5858822C2718}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2409ED55-1155-4008-8F89-5858822C2718}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2409ED55-1155-4008-8F89-5858822C2718}.Release|Any CPU.ActiveCfg = Release|Any CPU
