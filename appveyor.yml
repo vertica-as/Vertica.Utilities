@@ -2,9 +2,6 @@
 #      general configuration      #
 #---------------------------------#
 
-environment:
-  
-
 # version format
 version: 5.0.{build}
 
