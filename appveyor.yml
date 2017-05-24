@@ -63,7 +63,19 @@ after_test:
 artifacts:
 
   # pushing all *.nupkg files in build directory recursively
-  - path: '**\*.nupkg'
+  - path: '**\Vertica*.nupkg'
     name: nupkg
+
   - path: 'CoverageResult.xml'
     name: coverage
+
+	
+#---------------------------------#
+#     deployment configuration    #
+#---------------------------------#
+
+deploy:
+
+# to run your custom scripts instead of provider deployments
+deploy_script:
+  - codecov -f "CoverageResult.xml"
