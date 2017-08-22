@@ -2,6 +2,7 @@
 
 namespace Vertica.Utilities.Tests.Reflection.Support
 {
+	#pragma warning disable 649, 67
 	internal class StaticReflectionSubjectType
 	{
 		public int Func3(int i, int j) { return 0; }
@@ -22,6 +23,8 @@ namespace Vertica.Utilities.Tests.Reflection.Support
 		public int VoidFunction() { return 0; }
 		public int NonVoidFunction(int i) { return 0; }
 	}
+	#pragma warning restore 649, 67
+
 
 	internal class StaticReflectionSubjectType2
 	{

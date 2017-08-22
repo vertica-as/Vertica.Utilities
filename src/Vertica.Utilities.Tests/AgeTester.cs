@@ -5,9 +5,11 @@ using Testing.Commons.Time;
 using Vertica.Utilities.Extensions.TimeExt;
 using Vertica.Utilities.Testing;
 using Vertica.Utilities.Tests.Support;
+// ReSharper disable EqualExpressionComparison
 
 namespace Vertica.Utilities.Tests
 {
+	#pragma warning disable 1718
 	[TestFixture]
 	public class AgeTester
 	{
@@ -16,8 +18,10 @@ namespace Vertica.Utilities.Tests
 		[Test, Category("Exploratory")]
 		public void Explore()
 		{
+			// ReSharper disable UnusedVariable
 			var thirtySomething = new Age(11.March(1977)); // terminus is injectable (Time.xxxNow)
 			var oneWeekOld = new Age(7.November(2012), 14.November(2012));
+			// ReSharper restore UnusedVariable
 
 			DateTime terminus = 27.November(2012);
 			DateTime advent = terminus.AddYears(-300).AddDays(-15).AddHours(-3).AddMinutes(-30).AddSeconds(-15).AddMilliseconds(-3);
@@ -264,7 +268,9 @@ namespace Vertica.Utilities.Tests
 		public void CompareTo_NonCompatibleType_Exception()
 		{
 			Age twoYears = new Age(_keyDateInHistory, _keyDateInHistory.AddYears(2));
+			// ReSharper disable ReturnValueOfPureMethodIsNotUsed
 			Assert.Throws<ArgumentException>(() => twoYears.CompareTo(3));
+			// ReSharper restore ReturnValueOfPureMethodIsNotUsed
 		}
 
 		[Test]
@@ -484,4 +490,6 @@ namespace Vertica.Utilities.Tests
 
 		#endregion
 	}
+
+	#pragma warning restore 1718
 }
