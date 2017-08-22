@@ -1,4 +1,4 @@
-# Vertica.Utilities v4
+# Vertica.Utilities
 
 Helpers, value objects, pattern implementations... and a bag of chips
 
