@@ -254,22 +254,5 @@ namespace Vertica.Utilities.Tests.Collections
 			// c4 references a parent thats not there
 			Assert.That(tree.Count, Is.EqualTo(3));
 		}
-
-	    [Test]
-	    public void ChildCount_Should_Not_Have_State()
-	    {
-	        var categories = new[] { c1, c2, c3 };
-
-	        Tree<Category, int> tree = categories.ToTree(
-	            c => c.Id,
-	            (c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
-
-	        var treeNode = tree.Get(c1.Id);
-
-	        var childCountFirstTime = treeNode.ToArray().Length;
-	        var childCountSecondTime = treeNode.ToArray().Length;
-
-            Assert.That(childCountFirstTime, Is.EqualTo(childCountSecondTime));
-        }
     }
 }
