@@ -264,7 +264,7 @@ namespace Vertica.Utilities.Tests.Collections
 	            c => c.Id,
 	            (c, p) => c.ParentId.HasValue ? p.Value(c.ParentId.Value) : p.None);
 
-	        var treeNode = tree.Get(c1.Id);
+	        TreeNode<Category> treeNode = tree.Get(c1.Id);
 
 	        var childCountFirstTime = treeNode.ToArray().Length;
 	        var childCountSecondTime = treeNode.ToArray().Length;
