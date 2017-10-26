@@ -41,7 +41,7 @@ namespace Vertica.Utilities.Tests.Web
 			string qs = new KeyValuesCollection { { "key 1", "value /1" } }
 				.ToQueryString();
 			
-			Assert.That(qs, Is.EqualTo("?key+1=value+%2F1"));
+			Assert.That(qs, Is.EqualTo("?key%201=value%20%2F1"));
 		}
 
 		[Test]
@@ -107,7 +107,7 @@ namespace Vertica.Utilities.Tests.Web
 			string q = new KeyValuesCollection { { "key 1", "value /1" } }
 				.ToQuery();
 
-			Assert.That(q, Is.EqualTo("key+1=value+%2F1"));
+			Assert.That(q, Is.EqualTo("key%201=value%20%2F1"));
 		}
 
 		[Test]
