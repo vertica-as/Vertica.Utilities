@@ -86,5 +86,16 @@ namespace Vertica.Utilities
 
 			return EqualityComparer<T>.Default.GetHashCode(_value);
 		}
+
+		public void Do(Action<T> whenSome, Action<T> whenNone)
+		{
+			if(IsSome) whenSome(Value);
+			else whenNone(_default);
+		}
+
+		public void Do(Action<T> whenSome)
+		{
+			if(IsSome) whenSome(Value);
+		}
 	}
 }

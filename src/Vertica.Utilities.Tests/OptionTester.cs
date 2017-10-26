@@ -512,5 +512,64 @@ namespace Vertica.Utilities.Tests
 			Option<int> nullable = null;
 			Assert.That(()=>nullable.IsSome, Throws.InstanceOf<NullReferenceException>());
 		}
+		#region Do
+
+		[Test]
+		public void Do_Some_SomeActionIsPerformedWithValue()
+		{
+			int? value = null;
+			bool noneExecuted = false;
+
+			Option<int> subject = Option.Some(1);
+
+			subject.Do(
+				whenSome: (v) => value = v,
+				whenNone: (d) => noneExecuted = true);
+
+			Assert.That(value, Is.EqualTo(1));
+			Assert.That(noneExecuted, Is.False);
+		}
+
+		[Test]
+		public void Do_None_NoneActionIsPerformedWithDefault()
+		{
+			int? value = null;
+			bool someExecuted = false;
+
+			Option<int> subject = Option.None(1);
+
+			subject.Do(
+				whenSome: (v) => someExecuted = true,
+				whenNone: (d) => value = d);
+
+			Assert.That(value, Is.EqualTo(1));
+			Assert.That(someExecuted, Is.False);
+		}
+
+		[Test]
+		public void Do_SingleSome_ActionIsPerformedWithValue()
+		{
+			int? value = null;
+			
+			Option<int> subject = Option.Some(1);
+
+			subject.Do((v) => value = v);
+
+			Assert.That(value, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Do_SigleNone_ActionIsNotPerformed()
+		{
+			bool someExecuted = false;
+
+			Option<int> subject = Option.None(1);
+			
+			subject.Do((v) => someExecuted = true);
+
+			Assert.That(someExecuted, Is.False);
+		}
+
+		#endregion
 	}
 }
