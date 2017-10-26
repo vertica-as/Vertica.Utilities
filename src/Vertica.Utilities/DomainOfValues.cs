@@ -7,24 +7,33 @@ namespace Vertica.Utilities
 {
 	public class DomainOfValues<T> : IEnumerable<T>
 	{
-		private readonly IEnumerable<T> _expectedValues;
-		public DomainOfValues(params T[] expectedValues) : this(expectedValues.AsEnumerable()) { }
-
-		public DomainOfValues(IEnumerable<T> expectedValues)
-		{
-			_expectedValues = expectedValues ?? Enumerable.Empty<T>();
+		private readonly T[] _expectedValues;
+		public DomainOfValues(params T[] expectedValues)
+		{ 
+			_expectedValues = expectedValues ?? new T[0];
 		}
+
+		public DomainOfValues(IEnumerable<T> expectedValues) : this(expectedValues?.ToArray()) { }
 
 		#region Check
 
 		public bool CheckContains(T actualValue)
 		{
-			return _expectedValues != null && _expectedValues.Contains(actualValue);
+			return CheckContains(actualValue, EqualityComparer<T>.Default);
 		}
 
 		public bool CheckContains(T actualValue, IEqualityComparer<T> comparer)
 		{
-			return _expectedValues != null && _expectedValues.Contains(actualValue, comparer);
+			bool contains = false;
+			if (_expectedValues != null)
+			{
+				for (int i = 0; i < _expectedValues.Length; i++)
+				{
+					contains = comparer.Equals(actualValue, _expectedValues[i]);
+					if (contains) break;
+				}
+			}
+			return contains;
 		}
 
 		#endregion
@@ -51,7 +60,7 @@ namespace Vertica.Utilities
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			return _expectedValues.GetEnumerator();
+			return _expectedValues.Cast<T>().GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
