@@ -60,6 +60,14 @@ namespace Vertica.Utilities.Tests
 			var missingCollection = Option.Maybe(new int[0]);
 			Assert.That(missingCollection.IsNone, Is.True);
 			Assert.That(missingCollection.ValueOrDefault, Is.Empty);
+
+			Option.Some(1).Do(v => Assert.That(v, Is.EqualTo(1)));
+			Option.Some(1).Do(
+				v => Assert.That(v, Is.EqualTo(1)),
+				d => throw new Exception("should not happen"));
+			Option.None(-1).Do(
+				whenSome: v => throw new Exception("should not happen"),
+				whenNone: d => Assert.That(d, Is.EqualTo(-1)));
 		}
 
 		#endregion
