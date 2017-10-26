@@ -44,6 +44,11 @@ namespace Vertica.Utilities
 			return IsSome ? Value : defaultValue;
 		}
 
+		public T GetValueOrDefault(Func<T> defaultFactory)
+		{
+			return IsSome ? Value : defaultFactory();
+		}
+
 		private readonly T _value;
 		private bool _defaultChanged;
 		private T _default;
@@ -70,6 +75,7 @@ namespace Vertica.Utilities
 
 			return false;
 		}
+
 		public bool Equals(Option<T> other)
 		{
 			if (other == null) return false;
@@ -80,6 +86,7 @@ namespace Vertica.Utilities
 			}
 			return other.IsSome && EqualityComparer<T>.Default.Equals(_value, other._value);
 		}
+
 		public override int GetHashCode()
 		{
 			if (IsNone) return 0;

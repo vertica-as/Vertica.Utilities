@@ -26,12 +26,14 @@ namespace Vertica.Utilities.Tests
 			Assert.That(some.Value, Is
 				.EqualTo(some.ValueOrDefault).And
 				.EqualTo(some.GetValueOrDefault("default")).And
+				.EqualTo(some.GetValueOrDefault(() => "default")).And
 				.EqualTo("something"));
 
 			var none = Option<string>.None;
 			Assert.That(()=> none.Value, Throws.InvalidOperationException);
 			Assert.That(none.ValueOrDefault, Is.Null);
 			Assert.That(none.GetValueOrDefault("default"), Is.EqualTo("default"));
+			Assert.That(none.GetValueOrDefault(() => "default"), Is.EqualTo("default"));
 
 			var missingWithDefault = Option<Exception>.NoneWithDefault(new Exception());
 			var inferredMissing = Option.None("default");
@@ -82,6 +84,21 @@ namespace Vertica.Utilities.Tests
 			Assert.That(subject.Value, Is.EqualTo(3m));
 			Assert.That(subject.ValueOrDefault, Is.EqualTo(3m));
 			Assert.That(subject.GetValueOrDefault(5m), Is.EqualTo(3m));
+		}
+
+		[Test]
+		public void GetValueOrDefault_Some_DefaultFactoryNotInvoked()
+		{
+			bool factoryInvoked = false;
+			Func<decimal> factory = ()=>
+			{ 
+				factoryInvoked = true;
+				return 1.1m;
+			};
+			var subject = Option.Some(3m);
+
+			Assert.That(subject.GetValueOrDefault(factory), Is.EqualTo(3m));
+			Assert.That(factoryInvoked, Is.False);
 		}
 
 		[Test]
@@ -143,7 +160,22 @@ namespace Vertica.Utilities.Tests
 			
 			Assert.That(() => subject.Value, Throws.InvalidOperationException);
 			Assert.That(subject.ValueOrDefault, Is.EqualTo(5));
-			Assert.That(subject.GetValueOrDefault(null), Is.Null);
+			Assert.That(subject.GetValueOrDefault(default(int?)), Is.Null);
+		}
+
+		[Test]
+		public void GetValueOrDefault_None_FactoryInvoked()
+		{
+			bool factoryInvoked = false;
+			Func<decimal> factory = ()=>
+			{ 
+				factoryInvoked = true;
+				return 1.1m;
+			};
+			var subject = Option.None(3m);
+
+			Assert.That(subject.GetValueOrDefault(factory), Is.EqualTo(1.1m));
+			Assert.That(factoryInvoked, Is.True);
 		}
 
 		#endregion
