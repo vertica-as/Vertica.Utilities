@@ -14,7 +14,7 @@ namespace Vertica.Utilities.Web
 		static class ValueEncoding
 		{
 			internal static readonly Func<string, string> None = _ => _;
-			internal static readonly Func<string, string> Url = str => WebUtility.UrlEncode(str);
+			internal static readonly Func<string, string> Url = str => Uri.EscapeDataString(str ?? string.Empty);
 		}
 		static class Prepend
 		{
@@ -67,7 +67,7 @@ namespace Vertica.Utilities.Web
 						sb.Append(valueEncoding(v));
 						sb.Append(AMP);
 					});
-					return acc;
+					return sb;
 				},
 				sb =>
 				{
