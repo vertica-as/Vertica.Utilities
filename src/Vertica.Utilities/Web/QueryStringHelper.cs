@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Vertica.Utilities.Collections;
+using Vertica.Utilities.Extensions.EnumerableExt;
 using System.Net;
 using System.Text;
 
@@ -55,38 +56,30 @@ namespace Vertica.Utilities.Web
 		{
 			Guard.AgainstNullArgument("collection", collection);
 
-			var sb = new StringBuilder();
-			foreach (string key in collection.Keys)
-			{
-			    if (key != null)
-			    {
-                    var values = collection[key].ToArray();
+			string str = collection.Keys
+				.Aggregate(new StringBuilder(),
+				(sb, k)=>
+				{
+					collection.GetValues(k).ForEach(v =>
+					{
+						sb.Append(valueEncoding(k));
+						sb.Append(EQ);
+						sb.Append(valueEncoding(v));
+						sb.Append(AMP);
+					});
+					return acc;
+				},
+				sb =>
+				{
+					if (sb.Length > 0)
+					{
+						prependAction(sb);
+						sb.Remove(sb.Length - 1, 1);
+					}
+					return sb.ToString();
+				});
 
-                    if (values.Any())
-                    {
-                        foreach (var value in values)
-                        {
-                            sb.Append(valueEncoding(key));
-                            sb.Append(EQ);
-                            sb.Append(valueEncoding(value));
-                            sb.Append(AMP);
-                        }
-                    }
-                    else
-                    {
-                        sb.Append(valueEncoding(key));
-                        sb.Append(EQ);
-                        sb.Append(AMP);
-                    }
-                }
-			}
-			// maybe insert first ? and remove last &
-			if (sb.Length > 0)
-			{
-				prependAction(sb);
-				sb.Remove(sb.Length - 1, 1);
-			}
-			return sb.ToString();
+			return str;
 		}
 	}
 }
