@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net45;netstandard1.5</TargetFrameworks>
-		<Version>5.1.0</Version>
+		<Version>5.1.1</Version>
 		<Authors>Vertica A/S</Authors>
 		<Company>Vertica A/S</Company>
 		<PackageProjectUrl>https://github.com/vertica-as/Vertica.Utilities/</PackageProjectUrl>

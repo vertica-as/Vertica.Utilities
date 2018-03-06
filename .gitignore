@@ -26,3 +26,6 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+
+# Visual Studio 2015/2017 cache/options directory
+.vs/

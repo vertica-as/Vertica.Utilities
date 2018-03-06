@@ -666,6 +666,24 @@ namespace Vertica.Utilities.Tests.Extensions
 			Assert.That(s1, Is.EqualTo(s2));
 		}
 
+
+		// ISSUE #56: cannot read memory stream
+		[Test]
+		public void GetMemoryStream_ExternalReading_YieldsOriginalValue()
+		{
+			string original = "Hello World!";
+			MemoryStream m = original.IO().GetMemoryStream();
+
+			Assert.AreEqual(12, m.Length);
+
+			using (var sr = new StreamReader(m))
+			{
+				string read = sr.ReadToEnd();
+
+				Assert.That(read, Is.EqualTo(original));
+			}
+		}
+
 		#endregion
 
 		#region HttpUtility

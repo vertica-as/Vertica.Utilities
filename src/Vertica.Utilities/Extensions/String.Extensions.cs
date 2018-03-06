@@ -352,7 +352,7 @@ namespace Vertica.Utilities.Extensions.StringExt
 		{
 			string result = null;
 
-			if (m != null && m.ExtendedValue != null && m.ExtendedValue.Length > 0)
+			if (m?.ExtendedValue != null && m.ExtendedValue.Length > 0)
 			{
 				m.ExtendedValue.Flush();
 				m.ExtendedValue.Position = 0;
@@ -362,15 +362,21 @@ namespace Vertica.Utilities.Extensions.StringExt
 			return result;
 		}
 
+		/// <summary>
+		/// Default encoding set to <see cref="Encoding.UTF8"/>
+		/// </summary>
 		public static MemoryStream GetMemoryStream(this IOExtensionPoint<string> s)
+		{
+			return GetMemoryStream(s, Encoding.UTF8);
+		}
+
+		public static MemoryStream GetMemoryStream(this IOExtensionPoint<string> s, Encoding encoding)
 		{
 			MemoryStream result = null;
 			if (s.ExtendedValue.IsNotEmpty())
 			{
-				result = new MemoryStream();
-				var sw = new StreamWriter(result);
-				sw.Write(s.ExtendedValue);
-				sw.Flush();
+				byte[] bytes = encoding.GetBytes(s.ExtendedValue);
+				result = new MemoryStream(bytes);
 			}
 			return result;
 		}
