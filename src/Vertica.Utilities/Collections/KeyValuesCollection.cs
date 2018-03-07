@@ -133,12 +133,24 @@ namespace Vertica.Utilities.Collections
 
 		#endregion
 
+	    public void Clear()
+	    {
+			_groups.Clear();
+	    }
+
+	    public void Clear(TKey key)
+	    {
+		    if (_groups.TryGetValue(key, out MutableGrouping group))
+		    {
+				group.Clear();
+		    }
+	    }
+
 		public int Count => _groups.Count;
 
 	    public IEnumerable<TValue> GetValues(TKey key)
 	    {
-		    MutableGrouping group;
-		    if (_groups.TryGetValue(key, out group))
+		    if (_groups.TryGetValue(key, out MutableGrouping group))
 		    {
 			    return group;
 		    }
@@ -183,6 +195,11 @@ namespace Vertica.Utilities.Collections
 		    IEnumerator IEnumerable.GetEnumerator()
 		    {
 			    return GetEnumerator();
+		    }
+
+		    public void Clear()
+		    {
+				_items.Clear();
 		    }
 	    }
 	}

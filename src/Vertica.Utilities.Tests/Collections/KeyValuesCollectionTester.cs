@@ -120,7 +120,7 @@ namespace Vertica.Utilities.Tests.Collections
 		{
 			var subject = new KeyValuesCollection<int, int>();
 			ILookup<int, int> @null = null;
-			Assert.That(()=>subject.AddRange(@null), Throws.ArgumentNullException);
+			Assert.That(() => subject.AddRange(@null), Throws.ArgumentNullException);
 		}
 
 		[Test]
@@ -211,7 +211,7 @@ namespace Vertica.Utilities.Tests.Collections
 		[Test]
 		public void Remove_ExistingKey_TrueAndOutOfCollection()
 		{
-			var subject = new KeyValuesCollection{{"a", "b"}};
+			var subject = new KeyValuesCollection { { "a", "b" } };
 
 			Assert.That(subject.Remove("a"), Is.True);
 			Assert.That(subject.Contains("a"), Is.False);
@@ -248,6 +248,57 @@ namespace Vertica.Utilities.Tests.Collections
 			System.Collections.IEnumerable nonGeneric = subject;
 
 			Assert.That(nonGeneric, Has.All.InstanceOf<IGrouping<int, string>>());
+		}
+
+		[Test]
+		public void Clear_EmptyCollection_RemainEmpty()
+		{
+			var empty = new KeyValuesCollection<int, string>();
+
+			empty.Clear();
+
+			Assert.That(empty, Is.Empty);
+		}
+
+		[Test]
+		public void Clear_NotEmptyCollection_RemovesElements()
+		{
+			var notEmpty = new KeyValuesCollection<int, string>()
+			{
+				{ 1, "uno" }
+			};
+
+			notEmpty.Clear();
+
+			Assert.That(notEmpty, Is.Empty);
+		}
+
+		[Test]
+		public void Clear_NonExistingKey_NoOp()
+		{
+			var subject = new KeyValuesCollection
+			{
+				{"k", "v"}
+			};
+
+			subject.Clear("not_in_collection");
+
+			Assert.That(subject, Is.Not.Empty);
+			Assert.That(subject.GetValues("k"), Is.Not.Empty);
+		}
+
+		[Test]
+		public void Clear_ExistingKey_RmovesValuesFromGrouping()
+		{
+			var subject = new KeyValuesCollection
+			{
+				{"k", "v"}
+			};
+
+			subject.Clear("k");
+
+			Assert.That(subject, Is.Not.Empty);
+			Assert.That(subject.GetValues("k"), Is.Empty);
 		}
 	}
 }
