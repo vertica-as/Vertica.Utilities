@@ -36,6 +36,8 @@ namespace Vertica.Utilities.Tests.Eventing
 			IIndexEventArgs index = new ValueIndexEventArgs<string>(2, "value");
 			index = Args.Index(2, "value");
 
+			IChainedEventArgs chained = new ChainedEventArgs();
+			chained = Args.Chained();
 		}
 	}
 }

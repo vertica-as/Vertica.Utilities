@@ -5,7 +5,7 @@
     <Authors>Vertica A/S</Authors>
     <Company>Vertica A/S</Company>
     <Product>Vertica.Utilities</Product>
-    <Version>5.1.1</Version>
+    <Version>5.2.0</Version>
     <Description>Helpers, extensions, utilities, better practices, patterns to be used within (or beyond) Vertica.</Description>
   </PropertyGroup>
 

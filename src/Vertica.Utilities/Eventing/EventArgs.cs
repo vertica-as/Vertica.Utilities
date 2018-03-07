@@ -72,5 +72,10 @@
 		{
 			return new ValueIndexEventArgs<T>(index, value);
 		}
+
+		public static ChainedEventArgs Chained()
+		{
+			return new ChainedEventArgs();
+		}
 	}
 }
