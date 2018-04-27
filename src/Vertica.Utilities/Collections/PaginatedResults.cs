@@ -38,14 +38,14 @@ namespace Vertica.Utilities.Collections
 			return pageOfResults.Length < pagination.PageSize;
 		}
 
-		public T[] PageOfResults { get; private set; }
-		public uint CurrentPage { get; private set; }
-		public uint TotalResults { get; private set; }
-		public uint TotalPages { get; private set; }
-		public Range<uint> RecordNumbers { get; private set; }
+		public T[] PageOfResults { get; }
+		public uint CurrentPage { get; }
+		public uint TotalResults { get; }
+		public uint TotalPages { get; }
+		public Range<uint> RecordNumbers { get; }
 
-		public string PageNumber { get { return "PageNumber"; } }
-		public Pagination Pagination { get; private set; }
+		public string PageNumber => "PageNumber";
+		public Pagination Pagination { get; }
 
 		/// <summary>
 		/// Projects each element of this PaginatedResults into a new form.

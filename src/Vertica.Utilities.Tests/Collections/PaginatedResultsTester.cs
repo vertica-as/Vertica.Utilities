@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Vertica.Utilities.Collections;
 
 namespace Vertica.Utilities.Tests.Collections
@@ -78,14 +77,14 @@ namespace Vertica.Utilities.Tests.Collections
 		[Test]
 		public void ctor_EmptyCollection_NoException()
 		{
-			var zeroSize = new Pagination();
-			var subject = new PaginatedCollection<int>(zeroSize, Enumerable.Empty<int>());
+			var pagination = new Pagination(40, 1);
 
-			Assert.That(subject, Is.Empty);
-			Assert.That(subject.Collection, Is.Empty);
-			Assert.That(subject.Pagesize, Is.EqualTo(0));
-			Assert.That(subject.CurrentPage, Is.EqualTo(0));
-			Assert.That(subject.NumberOfPages, Is.EqualTo(0));
+			var subject = new PaginatedResults<int>(new int[0], 0, pagination);
+
+			Assert.That(subject.PageOfResults, Is.Empty);
+			Assert.That(subject.CurrentPage, Is.EqualTo(pagination.PageNumber));
+			Assert.That(subject.TotalResults, Is.EqualTo(0));
+			Assert.That(subject.TotalResults, Is.EqualTo(0));
 		}
 	}
 }

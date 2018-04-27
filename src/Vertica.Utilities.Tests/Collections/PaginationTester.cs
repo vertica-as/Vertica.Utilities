@@ -51,5 +51,24 @@ namespace Vertica.Utilities.Tests.Collections
 
 			Assert.That(subject.PageCount(0), Is.EqualTo(0));
 		}
+
+		[Test]
+		public void Next_IncreasePageNumber_DefaultIncrementOfOne()
+		{
+			var subject = new Pagination(42, 3);
+
+			Pagination next = subject.Next();
+			Assert.That(next, Has.Property(nameof(Pagination.PageSize)).EqualTo(subject.PageSize).And
+				.Property(nameof(Pagination.PageNumber)).EqualTo(4));
+		}
+
+		[Test]
+		public void Next_CustomIncreasePageNumber_CustomIncrement()
+		{
+			var subject = new Pagination(42, 3);
+
+			Pagination next = subject.Next(2);
+			Assert.That(next.PageNumber, Is.EqualTo(5));
+		}
 	}
 }

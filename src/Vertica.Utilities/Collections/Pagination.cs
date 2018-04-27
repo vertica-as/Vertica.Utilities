@@ -1,5 +1,4 @@
-﻿
-namespace Vertica.Utilities.Collections
+﻿namespace Vertica.Utilities.Collections
 {
 	public struct Pagination
 	{
@@ -27,6 +26,11 @@ namespace Vertica.Utilities.Collections
 			}
 
 			return numberOfPages;
+		}
+
+		public Pagination Next(uint increment = 1u)
+		{
+			return new Pagination(PageSize, PageNumber + increment);
 		}
 	}
 }
