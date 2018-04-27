@@ -9,36 +9,22 @@ namespace Vertica.Utilities.Collections
 			PageNumber = pageNumber;
 		}
 
-		public uint PageNumber { get; private set; }
-		public uint PageSize { get; private set; }
+		public uint PageNumber { get; }
+		public uint PageSize { get; }
 
-		public uint FirstRecord
-		{
-			get
-			{
-				return (PageNumber == 0) ?
-					1 :
-					((PageNumber - 1) * PageSize) + 1;
-			}
-		}
+		public uint FirstRecord => PageNumber == 0 ? 1 : ((PageNumber - 1) * PageSize) + 1;
 
-		public uint LastRecord
-		{
-			get
-			{
-				return (PageSize == 0) ?
-					FirstRecord :
-					FirstRecord + PageSize - 1;
-			}
-		}
+		public uint LastRecord => PageSize == 0 ? FirstRecord : FirstRecord + PageSize - 1;
 
 		public uint PageCount(uint totalCount)
 		{
-			uint n = totalCount % PageSize;
+			uint numberOfPages = 0u;
 
-			uint numberOfPages = n > 0 ?
-				(totalCount / PageSize) + 1 :
-				totalCount / PageSize;
+			if (PageSize != 0)
+			{
+				uint n = totalCount % PageSize;
+				numberOfPages = n > 0 ? (totalCount / PageSize) + 1 : totalCount / PageSize;
+			}
 
 			return numberOfPages;
 		}

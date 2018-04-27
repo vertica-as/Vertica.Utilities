@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Vertica.Utilities.Collections;
 
 namespace Vertica.Utilities.Tests.Collections
@@ -36,10 +35,21 @@ namespace Vertica.Utilities.Tests.Collections
 		}
 
 		[Test]
-		public void PageCount_zero_Exception()
+		public void PageCount_ZeroPageSize_ZeroRegardlessOfTotalCount(
+			[Values(0u, 1u, 2u)]
+			uint totalCount)
 		{
 			var subject = new Pagination(0, default(uint));
-			Assert.That(()=> subject.PageCount(0), Throws.InstanceOf<DivideByZeroException>());
+
+			Assert.That(subject.PageCount(totalCount), Is.EqualTo(0));
+		}
+
+		[Test]
+		public void PageCount_Zero_Zero()
+		{
+			var subject = new Pagination(1u, 1u);
+
+			Assert.That(subject.PageCount(0), Is.EqualTo(0));
 		}
 	}
 }
