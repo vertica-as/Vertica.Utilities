@@ -34,7 +34,8 @@ namespace Vertica.Utilities.Tests.Testing
 			var born = 11.March(1977);
 			using (TimeReseter.Set(born))
 			{
-				Assert.That(Time.UtcNow.DateTime, Is.Not.EqualTo(born));
+			    var isUtcTimeZone = DateTime.Now - DateTime.UtcNow < TimeSpan.FromMinutes(1);
+			    Assert.That(Time.UtcNow.DateTime, isUtcTimeZone ? Is.EqualTo(born) : Is.Not.EqualTo(born));
 			}
 		}
 
