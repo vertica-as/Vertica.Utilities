@@ -18,7 +18,6 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
     <PackageReference Include="testing.Commons" Version="2.0.0" />
     <PackageReference Include="testing.Commons.NUnit" Version="4.0.0.20170419" />
-	<DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
