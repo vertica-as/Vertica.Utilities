@@ -8,6 +8,7 @@
 		<PackageProjectUrl>https://github.com/vertica-as/Vertica.Utilities/</PackageProjectUrl>
 		<PackageLicenseUrl>https://raw.githubusercontent.com/vertica-as/Vertica.Utilities/master/LICENSE</PackageLicenseUrl>
 		<Description>Helpers, extensions, utilities, better practices, patterns to be used within (or beyond) Vertica.</Description>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Coverage|AnyCPU'" />
